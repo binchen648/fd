@@ -51,20 +51,26 @@ describe('Zouken Builder owner provenance and runtime boundary', () => {
     }
   });
 
-  it('keeps unsupported mechanics explicit while retaining the accepted s5 automatic contract', () => {
+  it('keeps unsupported mechanics explicit while retaining the accepted s1 and s5 automatic contracts', () => {
     const sourceArchive = readJson(SOURCE_ARCHIVE_PATH);
     const activeArchive = readJson(ACTIVE_ARCHIVE_PATH);
     const pack = rules.loadAuthoringJson(activeArchive);
+    expect(pack.cards['master.zouken.skill.s1']!.abilities[0]!.execution.mode).toBe('automatic');
+    expect(rules.isZoukenManaBootstrapSemantic(pack.cards['master.zouken.skill.s1']!.abilities[0]!)).toBe(true);
     expect(pack.cards['master.zouken.skill.s5']!.abilities[0]!.execution.mode).toBe('automatic');
     expect(rules.isGameStartRuleOverrideSemantic(pack.cards['master.zouken.skill.s5']!.abilities[0]!)).toBe(true);
     expect(activeArchive.cards[0].verification.implementationStatus).toBe('complete');
-    expect(sourceArchive.cards.filter((card: any) => card.id !== 'master.zouken.skill.s5')
+    expect(sourceArchive.cards.filter((card: any) => ['ascension', 's2', 's3', 's4'].includes(card.legacyId))
       .every((card: any) => card.abilities[0].execution.mode === 'host_adjudicated')).toBe(true);
     expect(pack.report).toEqual([]);
     const compiled = compileExecutableCardPack(compileLoadedPlaytestPack(loadPlaytestContentPack(
       resolve(PACK_PATH),
       { workspaceRoot: resolve('.') },
     )).library);
+    expect(compiled.cards['master.zouken.skill.s1']).toMatchObject({
+      ownerId: 'master.zouken',
+      cardType: 'master_skill',
+    });
     expect(compiled.cards['master.zouken.skill.s5']).toMatchObject({
       ownerId: 'master.zouken',
       cardType: 'master_skill',

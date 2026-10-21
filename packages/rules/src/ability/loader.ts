@@ -57,7 +57,7 @@ const supportedTypes = new Set([
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
-  'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
+  'record_master_directive', 'adjust_command_seals', 'set_mana', 'set_mana_cap', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',
@@ -219,6 +219,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       else if (limit.type && !['unique', 'per_game', 'per_round'].includes(str(limit.type))) issue('limit', 'Unmapped activation limit', id);
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
       for (const effect of nodes(a.effects)) {
+        if (effect.type === 'set_mana_cap') {
+          const keys = Object.keys(effect).sort();
+          const exactKeys = ['amount', 'id', 'player', 'type'];
+          if (JSON.stringify(keys) !== JSON.stringify(exactKeys) || effect.id !== 'set-controller-mana-cap' || effect.player !== 'controller' || effect.amount !== 16) {
+            issue('effects', 'set_mana_cap is reserved for the exact Zouken game-start mana bootstrap contract', id);
+          }
+        }
         if (effect.type === 'play_selected_cards' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'hand')) {
           issue('effects.target', 'Effect play requires a declared hand-card target', id);
         }

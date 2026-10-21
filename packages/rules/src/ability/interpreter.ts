@@ -653,6 +653,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
+  if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -688,6 +689,58 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
 function isGameStartRuleOverrideCandidate(a: AuthoringAbility): boolean {
   return a.effects.some((effect) => effect.type === 'install_rule_override');
 }
+
+function exactNodeKeys(nodeValue: RuleNode, keys: string[]): boolean {
+  const actual = Object.keys(nodeValue).sort();
+  const expected = [...keys].sort();
+  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+}
+
+function isExactZoukenManaSetEffect(effect: RuleNode | undefined): boolean {
+  return !!effect && effect.type === 'set_mana' && effect.id === 'set-controller-mana' &&
+    effect.player === 'controller' && effect.amount === 10 &&
+    exactNodeKeys(effect, ['id', 'type', 'player', 'amount']);
+}
+
+function isExactZoukenManaCapEffect(effect: RuleNode | undefined): boolean {
+  return !!effect && effect.type === 'set_mana_cap' && effect.id === 'set-controller-mana-cap' &&
+    effect.player === 'controller' && effect.amount === 16 &&
+    exactNodeKeys(effect, ['id', 'type', 'player', 'amount']);
+}
+
+export function isZoukenManaBootstrapCandidate(a: AuthoringAbility): boolean {
+  return str(a.activation.trigger) === 'game_start' &&
+    a.effects.some((effect) => effect.type === 'set_mana' || effect.type === 'set_mana_cap');
+}
+
+export function isZoukenManaBootstrapSemantic(a: AuthoringAbility): boolean {
+  if (!isZoukenManaBootstrapCandidate(a) || a.kind !== 'forced_trigger' || a.execution.mode !== 'automatic' ||
+    !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length) return false;
+  if (str(a.activation.trigger) !== 'game_start' || Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
+  if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.limit).length || Object.keys(a.visibility).length || Object.keys(a.lifecycle).length) return false;
+  return a.effects.length === 2 && isExactZoukenManaSetEffect(a.effects[0]) && isExactZoukenManaCapEffect(a.effects[1]);
+}
+
+function executeZoukenManaBootstrap(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isZoukenManaBootstrapSemantic(a)) reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
+  // The typed set_mana primitive supplies cap validation, events, and transaction rollback.
+  executeResolutionEffects(s, ctx, [a.effects[0]!]);
+  const r = runtime(s);
+  const previousCap = r.manaCaps[ctx.controllerId] ?? 12;
+  r.manaCaps[ctx.controllerId] = 16;
+  if (previousCap !== 16) {
+    r.events.push({
+      type: 'mana_cap_set', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, resource: 'mana', before: previousCap, after: 16,
+    });
+  }
+}
+
 export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
   if (!isGameStartRuleOverrideCandidate(a) || a.kind !== 'forced_trigger' || a.execution.mode !== 'automatic' ||
     !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length) return false;
@@ -2747,6 +2800,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isZoukenManaBootstrapSemantic(a)) {
+    executeZoukenManaBootstrap(s, ctx, a);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -2881,6 +2938,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) {
     reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
+  }
+  if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) {
+    reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');

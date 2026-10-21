@@ -23,7 +23,7 @@
       "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9",
       "locator": "master.zouken/间桐脏砚"
     },
-    "note": "Only s5 has an accepted target-runtime contract in this executable archive. The five other source-grounded cards remain in master.zouken-source-candidates.json and are intentionally not active-pack executable content."
+    "note": "s1 and s5 have accepted target-runtime contracts in this executable archive. The other four source-grounded cards remain in master.zouken-source-candidates.json and are intentionally not active-pack executable content."
   },
   "sources": [
     {
@@ -33,6 +33,61 @@
     }
   ],
   "cards": [
+    {
+      "id": "master.zouken.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "大空洞的亡者",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "zouken.dead-in-great-cavern",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+          "activation": { "trigger": "game_start" },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            { "id": "set-controller-mana", "type": "set_mana", "player": "controller", "amount": 10 },
+            { "id": "set-controller-mana-cap", "type": "set_mana_cap", "player": "controller", "amount": 16 }
+          ],
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s1", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s1", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [
+          { "locator": "legacy-content.json#masters[14].skills[0].text#line=1", "sha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945" }
+        ],
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": { "gameStartManaBootstrap": "P3-ZOUKEN-S1-MANA-BOOTSTRAP" }
+      },
+      "verification": { "implementationStatus": "complete" }
+    },
     {
       "id": "master.zouken.skill.s5",
       "aliases": ["s5"],

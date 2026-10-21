@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 7,
+    "masters": 8,
     "servants": 7,
     "events": 20,
     "blockingIssues": 0
@@ -722,6 +722,50 @@
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
       ]
+    },
+    {
+      "entityId": "master.zouken",
+      "displayName": "间桐脏砚",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.zouken.overview",
+      "displayName": "间桐脏砚",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.zouken.skill.s1",
+      "displayName": "大空洞的亡者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "master.zouken.skill.s5",
+      "displayName": "间桐家的宗主",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles",
