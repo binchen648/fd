@@ -110,3 +110,139 @@ claim is produced by this preflight.
 5. Regenerate the frozen inventory/audit, then implement one six-skill owner
    Candidate with focused tests, typecheck, and diff-check.
 
+## Cross-repository source audit (read-only)
+
+The second audit searched the preserved `Fate_Domination-开发版` source tree,
+the dirty `Fate_Domination-重构版` tree, and `binchen648_fd/archive`. It found
+useful **source candidates**, but no additional source-aligned card archive
+that is legal to bind into the current `fd-playtest-v1` pack.
+
+Companion cross-repository audit record:
+`E:\Codex\FD\.fd-takeover-audit-20261018\FD-ZOUKEN-CROSS-REPO-SOURCE-AUDIT-20261021.md`
+(SHA-256 `8CBF562644144572B7E6A3A27BB2526B1A2AF8E1B6F513E1A362424B02F7BEAC`).
+That record independently confirms the six texts, source hashes, and the rule
+that these are candidates only—not an accepted Reviewer verdict or active-pack
+binding.
+
+### Full original-text candidate
+
+`E:\Codex\FD\Fate_Domination-开发版\data_masters.js` (SHA-256
+`C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825`, 102627
+bytes, line 19) contains the complete `m_zouken` record: `initMana: 10`,
+s1–s5, and ascension text. The six mappings are:
+
+| Skill | Text present in `data_masters.js` | Current `fd` active-pack binding |
+| --- | --- | --- |
+| s1 / 大空洞的亡者 | game start mana 10, cap 16 | No — external legacy source only |
+| s2 / 五百年的活尸 | creator + five-hundred-year obsession derived names | No — FM09 provisioning contract still absent |
+| s3 / 创造者 | command-seal substitution and 2X→X power/round reward | No — old runtime contract only |
+| s4 / 五百年的执念 | round-end VP loss, blood-worms, bug-form | No — old runtime contract only |
+| s5 / 间桐家的宗主 | situation card cannot forbid Noble Phantasm | No — current canonical archive is not pack-registered |
+| ascension / 幕后主使 | engagement bypass, blood-worm win-gate removal, 6-mana seal loss | No — old runtime contract only |
+
+This is strong original-text evidence, but it is an external local development
+tree with no Git provenance in this workspace. It is not a Phase 3 structured
+authoring card, has no accepted `phase3Evidence` packet, and is therefore not
+by itself sufficient to clear `SEMANTIC_SOURCE_REQUIRED` or enter active pack.
+
+The same development tree contains the owner art
+`E:\Codex\FD\Fate_Domination-开发版\images\masters\间桐脏砚.png`
+(SHA-256 `4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9`,
+631359 bytes). Its visible card text covers s1, s2, and s5. The development
+image index
+`Fate_Domination-重构版/src/content/generated/development-image-sources.json`
+(SHA-256 `5FDB8B0EA95D81A0317202B6E8F7EB01B8398AAFABEC37ACA0CB069DBCA0D5C9`,
+99798 bytes, lines 200–210) maps this owner image to all six IDs, but that
+index is metadata and does not make the absent s4 card face or runtime contract
+canonical.
+
+### Preserved card-art candidates
+
+The old repository has these two matching card images:
+
+| Skill | File and SHA-256 | Binding result |
+| --- | --- | --- |
+| ascension / 幕后主使 | `E:\Codex\FD\Fate_Domination-重构版\assets\cards\skills\master-间桐脏砚-ascension.png`; `D762F7F387744CC353E1267B6CDD1F2FA36A4FCCE8F9EAF48D80DF41D3A8794F` | Original-text image candidate; not active-pack bindable |
+| s3 / 创造者 | `E:\Codex\FD\Fate_Domination-重构版\assets\cards\skills\master-间桐脏砚-s3.png`; `5349F02028B972C8D0B6E1EDD83F888CADC75C9B5F2E1451BCAD1E0605363EEE` | Original-text image candidate; not active-pack bindable |
+
+The ascension image is byte-identical to the preserved source image
+`E:\Codex\FD\卡图原图\Images\httpssteamusercontentaakamaihdnetugc17107898504809433183EB1BCECC8730DF17E1F6D8BF1E433F79E22C285.png`
+(same SHA-256, 709410 bytes). The migration index
+`src/content/generated/card-art-migration.json` (SHA-256
+`4A29FDDEFC6DA0D492C9D90ABFE9F9D5A12CB78D772774E6EB0FB061C33BBE45`) records
+ascension and s3 as matched, but records s1, s2, s4, and s5 as
+`matchMethod=unmatched`, with no source file and no target image. Thus these
+assets do not provide a six-card pack bundle.
+
+### Preserved legacy text snapshot
+
+`E:\Codex\FD\binchen648_fd\archive\legacy-content-ref.json` (SHA-256
+`BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A`, 1879958
+bytes) contains all six exact texts and the same development-image/legacy
+source references. Its warning is explicit: `activation` is machine-inferred
+and cannot be final rule adjudication. Every Zouken skill has
+`implementation: "pending"`; the snapshot is evidence/lookup material, not a
+bindable authoring card.
+
+The corresponding old-repository copies are also only candidates:
+
+- `Fate_Domination-重构版/docs/print-manifest.csv` — SHA-256
+  `00835C8DAB9591423D0DC1738BA3F7049240333E46FA9BA92516BE4ED80B06A6`;
+- `Fate_Domination-重构版/docs/print-manifest.json` — SHA-256
+  `3DD864E990B296C976E283BF9A0181EA64CFD83BC14464A7B15BBC43BB9C680D`;
+- `Fate_Domination-重构版/docs/partial-current.json` — SHA-256
+  `C8D217B07D5633B5D84B1F3BBBC615B24EFF55F2789EEDD60BFB422E9418B0FE`;
+- `Fate_Domination-重构版/docs/skill-migration-queue.json` — SHA-256
+  `A82FA901287A1694256816F2B53D21C610B6D9EA856B2BA18A01B4AB1091CDB2`.
+
+The print manifests carry all six printed texts. `partial-current.json` has
+only ascension, s3, and s4 with partial host-adjudicated rules. The migration
+queue labels all six `FULL`, but the entries retain their clauses in
+`unparsedEffects`; this is a legacy classification/runtime result, not the
+current canonical normalization contract. None is eligible for active-pack
+binding without an accepted migration/evidence decision.
+
+### Legacy structured/runtime candidates
+
+Additional old-repository files were recorded for traceability, but are not
+accepted canonical sources:
+
+- `src/content/structured-batch-009.ts`, SHA-256
+  `6C7D8B3E1398F0A457E1C3C4AE8C5D67C787E2AB8B8AE1C53BB8822D8252B414`:
+  partial clauses for ascension, s3, and s4 under `core.structured-skill`;
+- `src/content/confirmed-skill-overrides.ts`, SHA-256
+  `6AF7050C0FC46008FC1DDBEF56699271257969A960EB910B35D75EF274DF83A8`:
+  legacy `FULL` handler declarations for all six, including the old
+  `core.zouken-*` contracts;
+- `src/rules-core/zouken.ts`, SHA-256
+  `91BBE14E243F5DEB2A344769DFEEEF39FBEB7CEAB114C4287500EF7191433661`:
+  legacy specific handlers for s3, s4, and ascension;
+- `test/skill-zouken-package.test.js`, SHA-256
+  `740A97E5DE9FF79746C33051E61E3F9A2D76F67E28FF95ABBB2F0B7FD15AD72D`:
+  legacy behavior tests only.
+
+The original development runtime also has observable hooks in
+`Fate_Domination-开发版/index.html` (SHA-256
+`1ADEB8CA963D18BC53A6FE18EDD365EABD1125D554E25A393E036CEF9E28C3D1`),
+including s3 power/reward storage, s4 blood-worm and round-end handling, and
+the s5 situation-forbid exception. These are useful behavior observations but
+are not the current target runtime contract and must not be copied as accepted
+semantics.
+
+### Audit conclusion after source discovery
+
+The audit upgrades the evidence statement from “no local source text found” to
+“complete local original text and partial card-art/legacy structured candidates
+found.” It does **not** change the implementation decision:
+
+- original text candidate coverage: 6/6 (`data_masters.js`, legacy snapshot);
+- direct card-art coverage: 2/6 (ascension, s3), plus owner art displaying s1/s2/s5;
+- accepted target authoring coverage: 1/6 (canonical s5 archive only);
+- active-pack binding: 0/6;
+- accepted target-runtime Zouken routes: 0.
+
+The next legal step is to promote these candidates through an explicit source
+evidence/authoring decision packet, with clause hashes and target-runtime
+contracts. Until then, they remain auditable references and cannot clear the
+frozen `SOURCE_EVIDENCE_REQUIRED` block.
+
