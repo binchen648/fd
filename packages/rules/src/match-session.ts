@@ -836,6 +836,10 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
         isRestoreFiniteNumber(entry.threshold) && isRestoreFiniteNumber(entry.amount)))) return false;
   if (value.ignoreSituationPlayForbidAttributesByPlayer !== undefined && (!isRestoreStringArrayMap(value.ignoreSituationPlayForbidAttributesByPlayer) ||
       !restoreRecordKeysBelongTo(value.ignoreSituationPlayForbidAttributesByPlayer, playerIds))) return false;
+  if (value.zoukenFounderPowerByPlayer !== undefined && (!isRestoreRecord(value.zoukenFounderPowerByPlayer) ||
+      !restoreRecordKeysBelongTo(value.zoukenFounderPowerByPlayer, playerIds) ||
+      !Object.values(value.zoukenFounderPowerByPlayer).every((entry) => isRestoreRecord(entry) &&
+        isRestoreSafeInteger(entry.round, 1) && isRestoreFiniteNumber(entry.amount)))) return false;
   return true;
 }
 

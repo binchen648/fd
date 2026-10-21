@@ -179,6 +179,8 @@ export interface RuleOverrideState {
   extraAttackPlayAllowanceByManaByPlayer?: Record<string, { threshold: number; amount: number }>;
   viewFaceDownEventsPlayerIds?: string[];
   ignoreSituationPlayForbidAttributesByPlayer?: Record<string, string[]>;
+  /** Source-specific Zouken s3 action bonus for the current round. */
+  zoukenFounderPowerByPlayer?: Record<string, { round: number; amount: number }>;
 }
 
 export interface GameState {
