@@ -1124,6 +1124,42 @@ function abigailS1Ledger(s: GameState, controllerId: string): NonNullable<NonNul
   return s.ruleOverrides?.abigailSanityLossByPlayer?.[controllerId];
 }
 
+function isCanonicalAbigailS1RecycledCard(s: GameState, controllerId: string, recipientPlayerId: string, instanceId: string): boolean {
+  const created = s.cards.find((candidate) => candidate.instanceId === instanceId);
+  const state = runtime(s).cardState[instanceId];
+  const recycleEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === instanceId);
+  return !!created && created.ownerPlayerId === controllerId && created.controllerPlayerId === controllerId && created.zone === 'discard' &&
+    created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === controllerId && state?.active === false &&
+    recycleEvents.length === 1 && recycleEvents[0]!.playerId === recipientPlayerId && recipientPlayerId !== controllerId &&
+    recycleEvents[0]!.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleEvents[0]!.recipientPlayerId === controllerId &&
+    recycleEvents[0]!.fromZone === 'attack_area' && recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
+    typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string';
+}
+
+function isCanonicalAbigailS1DistributionProvenance(s: GameState, controllerId: string,
+  sourceCardId: string, distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>): boolean {
+  const events = runtime(s).events.filter((event) => event.type === 'abigail_s1_outside_life_distributed');
+  const seen = new Set<string>();
+  for (const event of events) {
+    if (event.playerId !== controllerId || event.sourceCardId !== sourceCardId || event.abilityId !== ABIGAIL_S1_DISTRIBUTE_ID ||
+        !Array.isArray(event.cardInstanceIds) || !Array.isArray(event.targetPlayerIds) ||
+        event.cardInstanceIds.length !== event.targetPlayerIds.length ||
+        event.movedCount !== event.cardInstanceIds.length || new Set(event.cardInstanceIds).size !== event.cardInstanceIds.length ||
+        new Set(event.targetPlayerIds).size !== event.targetPlayerIds.length) return false;
+    event.cardInstanceIds.forEach((instanceId, index) => {
+      if (seen.has(instanceId)) return;
+      seen.add(instanceId);
+      const entry = distributed.find((candidate) => candidate.cardInstanceId === instanceId);
+      if (!entry || entry.recipientPlayerId !== event.targetPlayerIds![index]) seen.add(`__invalid:${instanceId}`);
+    });
+  }
+  return seen.size === distributed.length && distributed.every((entry) => {
+    const matching = events.filter((event) => event.cardInstanceIds?.includes(entry.cardInstanceId));
+    return matching.length === 1 && matching[0]!.cardInstanceIds!.indexOf(entry.cardInstanceId) >= 0 &&
+      matching[0]!.targetPlayerIds![matching[0]!.cardInstanceIds!.indexOf(entry.cardInstanceId)] === entry.recipientPlayerId;
+  });
+}
+
 function isCanonicalAbigailS1Ledger(s: GameState, controllerId: string, ledger: NonNullable<NonNullable<GameState['ruleOverrides']>['abigailSanityLossByPlayer']>[string]): boolean {
   const source = s.cards.find((candidate) => candidate.instanceId === ledger.sourceCardId);
   const sourceDefinition = source && runtime(s).pack.cards[source.definitionId];
@@ -1137,8 +1173,10 @@ function isCanonicalAbigailS1Ledger(s: GameState, controllerId: string, ledger: 
     const createdDefinition = created && runtime(s).pack.cards[created.definitionId];
     return !!created && !!createdDefinition && !!recipient && recipient.id !== controllerId &&
       createdDefinition.id === ABIGAIL_OUTSIDE_LIFE_ID && created.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
-      created.ownerPlayerId === entry.recipientPlayerId && created.controllerPlayerId === entry.recipientPlayerId;
-  });
+      ((created.ownerPlayerId === entry.recipientPlayerId && created.controllerPlayerId === entry.recipientPlayerId && created.zone === 'hand' &&
+        created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === entry.recipientPlayerId) ||
+        isCanonicalAbigailS1RecycledCard(s, controllerId, entry.recipientPlayerId, entry.cardInstanceId));
+  }) && isCanonicalAbigailS1DistributionProvenance(s, controllerId, ledger.sourceCardId, ledger.distributed);
 }
 
 function abigailS1SameLocationOpponents(s: GameState, controllerId: string): string[] {

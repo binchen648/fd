@@ -480,7 +480,38 @@ function isRestoreSafeEvent(value: unknown): boolean {
   for (const key of ['revision','movedCount','roundNumber'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
   if (value.targetPlayerIds !== undefined && !isRestoreStringArray(value.targetPlayerIds)) return false;
+  if (value.cardInstanceIds !== undefined && !isRestoreStringArray(value.cardInstanceIds)) return false;
   return true;
+}
+
+function isRestoreAbigailS1DistributionProvenance(events: unknown[], controllerId: string, sourceCardId: string,
+  distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>): boolean {
+  const candidates = events.filter((event): event is Record<string, unknown> => isRestoreRecord(event) &&
+    event.type === 'abigail_s1_outside_life_distributed');
+  const seen = new Set<string>();
+  for (const event of candidates) {
+    if (event.playerId !== controllerId || event.sourceCardId !== sourceCardId ||
+        event.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' ||
+        !isRestoreStringArray(event.cardInstanceIds) || !isRestoreStringArray(event.targetPlayerIds) ||
+        event.cardInstanceIds.length !== event.targetPlayerIds.length ||
+        event.movedCount !== event.cardInstanceIds.length ||
+        new Set(event.cardInstanceIds).size !== event.cardInstanceIds.length ||
+        new Set(event.targetPlayerIds).size !== event.targetPlayerIds.length) return false;
+    const cardInstanceIds = event.cardInstanceIds as string[];
+    const targetPlayerIds = event.targetPlayerIds as string[];
+    cardInstanceIds.forEach((instanceId, index) => {
+      if (seen.has(instanceId)) return;
+      seen.add(instanceId);
+      const entry = distributed.find((candidate) => candidate.cardInstanceId === instanceId);
+      if (!entry || entry.recipientPlayerId !== targetPlayerIds[index]) seen.add(`__invalid:${instanceId}`);
+    });
+  }
+  return seen.size === distributed.length && distributed.every((entry) => {
+    const matching = candidates.filter((event) => (event.cardInstanceIds as string[] | undefined)?.includes(entry.cardInstanceId));
+    if (matching.length !== 1) return false;
+    const index = (matching[0]!.cardInstanceIds as string[]).indexOf(entry.cardInstanceId);
+    return (matching[0]!.targetPlayerIds as string[])[index] === entry.recipientPlayerId;
+  });
 }
 
 function isRestoreCalculation(value: unknown): boolean {
@@ -1159,11 +1190,27 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
           entry.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' ||
           !isRestoreRecord(sourceState) || sourceState.faceDown === true ||
           new Set(distributedIds).size !== distributedIds.length ||
+          !isRestoreAbigailS1DistributionProvenance(abilityRuntime.events as unknown[], playerId, entry.sourceCardId, entry.distributed) ||
           !entry.distributed.every((item) => {
             const created = cardsByInstance.get(item.cardInstanceId);
+            const unchanged = !!created && created.ownerPlayerId === item.recipientPlayerId && created.controllerPlayerId === item.recipientPlayerId &&
+              created.zone === 'hand' && isRestoreRecord(created.visibility) && created.visibility.scope === 'owner_only' &&
+              created.visibility.ownerPlayerId === item.recipientPlayerId;
+            const recycledState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[item.cardInstanceId] : undefined;
+            const recycled = !!created && created.ownerPlayerId === playerId && created.controllerPlayerId === playerId && created.zone === 'discard' &&
+              isRestoreRecord(created.visibility) && created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === playerId &&
+              isRestoreRecord(recycledState) && recycledState.active === false && Array.isArray(abilityRuntime.events) &&
+              (() => {
+                const recycleEvents = abilityRuntime.events.filter((event) => isRestoreRecord(event) &&
+                  event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === item.cardInstanceId);
+                return recycleEvents.length === 1 && recycleEvents[0]!.playerId === item.recipientPlayerId &&
+                  recycleEvents[0]!.abilityId === 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard' &&
+                  recycleEvents[0]!.recipientPlayerId === playerId && recycleEvents[0]!.fromZone === 'attack_area' &&
+                  recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
+                  typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string';
+              })();
             return !!created && created.definitionId === 'servant.abigail.skill.sc-abigail-4' &&
-              created.generatedBy === 'servant.abigail.skill.sc-abigail-1' && created.ownerPlayerId === item.recipientPlayerId &&
-              created.controllerPlayerId === item.recipientPlayerId && item.recipientPlayerId !== playerId;
+              created.generatedBy === 'servant.abigail.skill.sc-abigail-1' && item.recipientPlayerId !== playerId && (unchanged || recycled);
           })) return false;
     }
   }

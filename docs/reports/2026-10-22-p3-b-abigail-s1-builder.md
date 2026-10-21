@@ -34,11 +34,12 @@ The active authoring/provenance record uses the exact printed S1 text, source lo
 
 Final checks were run from this worktree before commit:
 
-- Abigail S1 focused regression: 8/8 pass, including exact victory proof binding, serialize/restore provenance rejection, forged source/record rejection, and pre-existing winner stop handling
-- MatchSession and seven-servant-decks regressions: 32/32 pass
+- Abigail S1 focused regression: 11/11 pass, including the real S1 -> S4 use -> Abigail discard -> next-round S1 path, immutable per-card distribution provenance, cross-record/wrong-recipient/repeated-event rejection, and serialize/restore provenance rejection
+- MatchSession/replay/related Abigail regressions: 62/62 pass (`match-session`, replay, Abigail S3a/S3b/S4)
 - Typecheck: pass
 - `content:validate`: pass
-- `verify:generated-content`: pass
+- `verify:generated-content`: pass (deterministic hashes unchanged)
+- `verify:playtest-v1`: pass (8 masters, 8 servants, 20 events, 96 starting-deck cards, 0 private-view leaks)
 - `git diff --check`: pass
 
 Known boundary: this Builder does not claim acceptance of Abigail S1, and it does not alter Abigail S2/S3/S4 or any frozen inventory state. Independent GPT-6 Sol review is required before any Candidate or accounting action.
@@ -48,3 +49,7 @@ Known boundary: this Builder does not claim acceptance of Abigail S1, and it doe
 The follow-up Builder repair makes the S1 winner state fail-closed: `winnerPlayerIds` is accepted only with exactly one matching S1 victory envelope; that envelope must reference the exact source card, owner/controller, win ability, and the exact ordered 12-card ledger record set. Restore rejects isolated winners, source swaps, missing/extra/duplicate records, and cross-player bindings. MatchSession also returns `match_complete` before resetting stop state or entering any interaction when an authoritative winner is already present.
 
 The final restore boundary additionally requires the authoritative `action` phase, the source card to remain public in `attack_area` with `cardState.active === true`, and the controller's servant identity to remain `servant.abigail`. Phase, zone, visibility, active-state, and servant-identity tampering are covered by focused restore tests and leave the forged snapshot unchanged after rejection.
+
+## Cross-skill provenance repair
+
+The S1 ledger now binds every immutable `cardInstanceId` and original recipient back to the canonical S1 distribution event (source, controller, ability, target/card pairing, and exact-once card occurrence). A ledger entry remains valid in hand, or after the canonical S4 cleanup receipt moves that same card from the recipient's active attack area to Abigail's owner-only discard. The S4 transition requires the original recipient as the cleanup controller, Abigail as the cleanup recipient, exact zones, a unique terminal receipt, and the terminal/trigger identities. Arbitrary owner/controller/zone edits, replaced cards, cross-record bindings, duplicate distribution or recycle receipts, and wrong source/recipient provenance fail closed in both live resolution and MatchSession restore validation.
