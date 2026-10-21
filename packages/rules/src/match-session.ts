@@ -1089,11 +1089,17 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       const source = cardsByInstance.get(entry.sourceCardId);
       const sourceDefinition = source && definitions[source.definitionId as string];
       const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[entry.sourceCardId] : undefined;
+      const usage = isRestoreRecord(abilityRuntime.usedAbilities) ? abilityRuntime.usedAbilities[`${entry.sourceCardId}:${entry.abilityId}`] : undefined;
+      const paymentRecorded = Array.isArray(abilityRuntime.events) && abilityRuntime.events.some((event) =>
+        isRestoreRecord(event) && event.type === 'zouken_s3_power_conversion' && event.playerId === playerId &&
+        event.sourceCardId === entry.sourceCardId && event.abilityId === entry.abilityId && event.roundNumber === entry.round &&
+        event.resource === 'mana' && event.requestedDelta === -entry.paidMana && event.delta === -entry.paidMana &&
+        event.before === entry.manaBefore && event.after === entry.manaAfter);
       if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
           !['field', 'attack_area'].includes(source.zone as string) || !isRestoreRecord(sourceDefinition) ||
           sourceDefinition.id !== 'master.zouken.skill.s3' || entry.controllerId !== playerId ||
           entry.abilityId !== 'zouken.founder.power-conversion' || entry.round !== roundNumber ||
-          !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
+          usage !== entry.round || !paymentRecorded || !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
     }
   }
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;

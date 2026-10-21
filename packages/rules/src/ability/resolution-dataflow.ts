@@ -1637,9 +1637,12 @@ function adjustCommandSeals(
     // four-mana replacement path.
     if (transaction.context.abilityId === 'command-spell.gain-mana' && amount === -1) {
       const eventId = `${transaction.context.resolutionId}.${effect.id}.zouken_founder_virtual_seal`;
+      const beforeMana = player.mana;
+      if (beforeMana < 4) throw new ResolutionRuntimeError('insufficient_mana', 'Zouken founder command-seal replacement requires four mana.');
+      player.mana -= 4;
       transaction.emittedEvents.push({ type: 'zouken_s3_command_seal_replaced', playerId: player.id,
         sourceCardId: transaction.context.sourceCardId, abilityId: transaction.context.abilityId,
-        resource: 'mana', requestedDelta: -4, delta: 0, before: player.mana, after: player.mana });
+        resource: 'mana', requestedDelta: -4, delta: -4, before: beforeMana, after: player.mana });
       return {
         effectId: effect.id, effectType: 'adjust_command_seals', status: 'no_op', affectedEntities: [],
         payload: { playerId: player.id, requestedAmount: amount, actualAmount: 0, before, after: before }, emittedEventIds: [eventId],

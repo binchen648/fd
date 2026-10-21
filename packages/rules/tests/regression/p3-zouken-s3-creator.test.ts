@@ -109,7 +109,7 @@ describe('P3 Zouken s3 creator source-specific contract', () => {
     state.players[0]!.mana = 5;
     (state.players[0] as unknown as { commandSpells: number }).commandSpells = 3;
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: commandInstance, abilityId: 'command-spell.gain-mana' }).ok).toBe(true);
-    expect(state.players[0]!.mana).toBe(9);
+    expect(state.players[0]!.mana).toBe(5);
     expect((state.players[0] as unknown as { commandSpells: number }).commandSpells).toBe(3);
     expect(rules.projectAbilityState(state, 'p1').players[0]!.commandSpells).toBe(0);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({ type: 'zouken_s3_command_seal_replaced', requestedDelta: -4 }));
@@ -125,10 +125,8 @@ describe('P3 Zouken s3 creator source-specific contract', () => {
     source!.zone = 'field';
     session.state.abilityRuntime!.cardState[source!.instanceId] = { active: true, faceDown: false, playedRound: 1 };
     const owner = session.state.players.find((candidate) => candidate.id === ownerId)!;
-    session.state.ruleOverrides = { zoukenFounderPowerByPlayer: { [ownerId]: {
-      round: 1, amount: 2, sourceCardId: source!.instanceId, abilityId: ACTION_ID, controllerId: ownerId,
-      paidMana: 4, manaBefore: owner.mana + 4, manaAfter: owner.mana,
-    } } };
+    session.state.round.activePhase = 'action'; session.state.round.prioritySeat = owner.seat; owner.mana = 10;
+    expect(rules.dispatchAbilityCommand(session.state, ownerId, { type: 'activate_ability', cardInstanceId: source!.instanceId, abilityId: ACTION_ID, variables: { X: 2 } }).ok).toBe(true);
     const snapshot = session.serializeSession();
     expect(() => rules.restoreMatchSession(snapshot)).not.toThrow();
     const forged = structuredClone(snapshot);
