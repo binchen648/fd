@@ -983,6 +983,31 @@ function executeZoukenAscensionAction(s: GameState, ctx: EffectContext, a: Autho
   });
 }
 
+function validateZoukenAscensionPendingContinuation(
+  s: GameState,
+  contextValue: EffectContext,
+  ability: AuthoringAbility,
+  selected: string[],
+): void {
+  if (!isZoukenAscensionActionSemantic(ability) || !isZoukenAscensionSource(s, contextValue.sourceCardId)) {
+    reject('resolution_failed', 'Unsupported Zouken ascension continuation semantic shape');
+  }
+  const source = card(s, contextValue.sourceCardId);
+  const controller = player(s, contextValue.controllerId);
+  if (source.controllerPlayerId !== contextValue.controllerId || !active(s, source.instanceId) ||
+      runtime(s).cardState[source.instanceId]?.faceDown === true || phase(s) !== 'action' ||
+      s.round.prioritySeat !== controller.seat || controller.mana < 6 || selected.length !== 1) {
+    reject('resolution_failed', 'Zouken ascension continuation is stale');
+  }
+  const targetId = selected[0]!;
+  const target = player(s, targetId);
+  const seals = Number((target as unknown as { commandSpells?: number }).commandSpells ?? 3);
+  if (target.status !== 'active' || targetId === contextValue.controllerId ||
+      !sameBattlefield(s, controller.locationId, target.locationId) || !isBattlefield(s, target.locationId) || seals < 1) {
+    reject('illegal_target', 'Zouken ascension continuation target is no longer legal');
+  }
+}
+
 function executeZoukenS4Move(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   if (!isZoukenS4MoveSemantic(a) || player(s, ctx.controllerId).mana < 7) reject('insufficient_mana', 'Zouken S4 movement requires seven mana');
   executeResolutionEffects(s, ctx, [...a.cost, ...a.effects]);
@@ -3627,6 +3652,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       } else {
         const allowed = candidates(s, d.context, d.target);
         if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
+      }
+      const continuationAbility = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+      if (!d.interaction && isZoukenAscensionActionSemantic(continuationAbility)) {
+        validateZoukenAscensionPendingContinuation(s, d.context, continuationAbility, selected);
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       executeEffects(s, d.context, d.remainingEffects); break;

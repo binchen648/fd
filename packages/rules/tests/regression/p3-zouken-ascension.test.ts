@@ -114,4 +114,19 @@ describe('P3 Zouken ascension source-specific contract', () => {
     const restored = JSON.parse(JSON.stringify(setup().state)) as GameState;
     expect(rules.getLegalActions(restored, 'p1').some((entry) => entry.type === 'activate_ability' && entry.abilityId === ACTION_ID)).toBe(true);
   });
+
+  it('rejects stale phase/source continuations before paying or removing a seal', () => {
+    const { state } = setup();
+    const action = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === ACTION_ID)!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', action as never).ok).toBe(true);
+    const pending = state.abilityRuntime!.pendingDecision!;
+    state.round.activePhase = 'battle';
+    state.abilityRuntime!.cardState[CARD_INSTANCE]!.active = false;
+    const before = JSON.stringify(state);
+    const rejected = rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: pending.id, selectedIds: ['p2'] });
+    expect(rejected.ok).toBe(false);
+    expect(state.players[0]!.mana).toBe(10);
+    expect((state.players[1] as unknown as { commandSpells: number }).commandSpells).toBe(2);
+    expect(JSON.stringify(state)).toBe(before);
+  });
 });
