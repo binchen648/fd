@@ -39,14 +39,11 @@ function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][n
   const source = sourceCard(state);
   if (!source) return undefined;
   state.eventDeck ??= [];
-  // Return the consumed physical card to the deck only after drawing. This
-  // prevents an immediate redraw of the same physical card while preserving
-  // normal shuffled draws for every other card. If it is the only card, the
-  // new placement still receives a fresh physical ruleInstanceId and a real
-  // event_activated dispatch; the bounded pending queue is the explicit
-  // continuation boundary rather than a silent terminal.
-  const sameCardIndex = state.eventDeck.indexOf(old.eventCardId);
-  if (sameCardIndex >= 0) state.eventDeck.splice(sameCardIndex, 1);
+  // The consumed placement is already out of the deck. Shuffle and draw from
+  // the remaining physical cards, then return the consumed card. This avoids
+  // deleting an unrelated same-name card (the deck stores definitions, not
+  // placement identities) while still making a one-card deck draw a fresh
+  // replacement instance below.
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
   const replacementId = state.eventDeck.shift() ?? old.eventCardId;
   state.eventDeck.push(old.eventCardId);
@@ -115,6 +112,8 @@ export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
   const source = sourceCard(state);
   const provenance = r.wodimeAtlantisPlacementProvenance ?? {};
   const handled = r.wodimeAtlantisHandledEventPlacementIds ?? {};
+  const livePlacementIds = state.eventPlacements.map((placement) => placement.ruleInstanceId).filter((id): id is string => typeof id === 'string');
+  if (new Set(livePlacementIds).size !== livePlacementIds.length) return false;
   if (Object.keys(handled).some((id) => !provenance[id]) || Object.keys(provenance).some((id) => !handled[id])) return false;
   const auditIds = new Set(r.events.filter((event) => event.type === 'wodime_atlantis_placement_handled')
     .map((event) => event.wodimePlacementId).filter((id): id is string => typeof id === 'string'));
@@ -144,6 +143,13 @@ export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
         audit[0]!.wodimePlacementEventCardId !== provenanceRecord.eventCardId) return false;
   }
   if (terminalAudits.some((event) => typeof event.wodimePlacementId !== 'string' || !terminalIds[event.wodimePlacementId])) return false;
+  const blocked = r.wodimeAtlantisReplacementBlocked;
+  if (blocked !== undefined) {
+    const pending = r.wodimeAtlantisPendingReplacementEvents ?? [];
+    if (blocked.reason !== 'replacement_depth_bound' || pending.length !== 1 || pending[0]!.id !== blocked.eventId ||
+        pending[0]!.sourceCardId !== blocked.sourceCardId || pending[0]!.locationId !== blocked.locationId ||
+        pending[0]!.revealedId !== blocked.eventCardId) return false;
+  } else if ((r.wodimeAtlantisPendingReplacementEvents?.length ?? 0) > 0) return false;
   if (r.wodimeAtlantisPendingReplacementEvents !== undefined) {
     const pendingIds = new Set<string>();
     const pendingPlacementIds = new Set<string>();

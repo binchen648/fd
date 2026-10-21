@@ -8788,6 +8788,7 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   // an unrelated event may resume behind the player's back. Only the exact
   // pending event id can consume its own queue entry after restore.
   const pendingReplacement = r.wodimeAtlantisPendingReplacementEvents?.[0];
+  if (r.wodimeAtlantisReplacementBlocked?.eventId === event.id) return;
   if (pendingReplacement && event.id === pendingReplacement.id) {
     r.wodimeAtlantisPendingReplacementEvents!.shift();
     processEvent(s, pendingReplacement);
@@ -8842,6 +8843,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
       if (!r.wodimeAtlantisPendingReplacementEvents.some((pending) => pending.id === next.id)) {
         r.wodimeAtlantisPendingReplacementEvents.push(next);
       }
+      r.wodimeAtlantisReplacementBlocked = {
+        eventId: next.id, sourceCardId: next.sourceCardId!, locationId: next.locationId!, eventCardId: next.revealedId!,
+        reason: 'replacement_depth_bound',
+      };
     }
   }
   rememberTrustedBattleResultSnapshot(r, event);

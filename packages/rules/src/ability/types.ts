@@ -848,6 +848,10 @@ export interface AbilityRuntime {
   }>;
   /** Replacement reveals that reached the explicit same-card safety boundary. */
   wodimeAtlantisPendingReplacementEvents?: AbilityEvent[];
+  /** Host-visible stop state for a replacement chain at the bounded depth. */
+  wodimeAtlantisReplacementBlocked?: {
+    eventId: string; sourceCardId: string; locationId: string; eventCardId: string; reason: 'replacement_depth_bound';
+  };
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;
   shirouMealProcurementRoundByPlayer?: Record<PlayerId, { round: number; attributes: string[] }>;

@@ -100,6 +100,10 @@ describe('Wodime frozen authoring archive', () => {
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-close', { type: 'after_battle_ended', battlefieldId: 'shinto' });
     expect(state.eventPlacements).toHaveLength(1);
     expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(battlefield.ruleInstanceId);
+    const duplicatePlacement = structuredClone(state.eventPlacements[0]);
+    state.eventPlacements.push(duplicatePlacement);
+    expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(false);
+    state.eventPlacements.pop();
     // The replacement is dispatched through the normal event_activated path;
     // this multi-card draw selects a different event and therefore does not
     // create another Hephaestus grant.
@@ -153,6 +157,10 @@ describe('Wodime frozen authoring archive', () => {
     expect(state.eventPlacements.some((entry) => entry.ruleInstanceId === pending[0].sourceCardId)).toBe(true);
     const terminalIds = (state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds;
     expect(terminalIds).toEqual({});
+    expect((state.abilityRuntime as any).wodimeAtlantisReplacementBlocked).toMatchObject({
+      eventId: pending[0].id, sourceCardId: pending[0].sourceCardId, locationId: pending[0].locationId,
+      eventCardId: pending[0].revealedId, reason: 'replacement_depth_bound',
+    });
     expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(true);
     // Persist the pending event and prove unrelated events do not consume it.
     const session = createMatchSession({ seed: 902, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
@@ -169,11 +177,11 @@ describe('Wodime frozen authoring archive', () => {
     } as any);
     expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual(pendingBeforeUnrelated);
     expect((restored.state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds).toEqual(terminalIds);
-    // Only explicit submission of the queued event resumes one continuation.
-    const queued = (restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents[0];
-    rules.processAbilityEvent(restored.state, queued);
-    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toHaveLength(1);
-    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents[0].id).not.toBe(queued.id);
+    // The normal MatchSession scheduler reports the explicit blocked state;
+    // it does not dispatch the same pending event forever or via an unrelated
+    // trigger.
+    expect(restored.autoResolveNonInteractiveWindows()).toBe('host_directive');
+    expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual(pendingBeforeUnrelated);
   });
 
   it('activates God Legacy at the real elimination transition before the first later event reveal', () => {

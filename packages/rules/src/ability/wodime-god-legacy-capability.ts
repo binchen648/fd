@@ -153,6 +153,11 @@ export function settleWodimeGodLegacyEvent(state: GameState, event: AbilityEvent
       revealedKind: 'event', revealedId: event.revealedId, locationId: event.locationId,
       payloadDigest: eventPayloadDigest(event.id, event.sourceCardId, 'event', event.revealedId, event.locationId),
     };
+    const origin = source(state);
+    if (origin) r.events.push({ type: 'wodime_god_legacy_event_activated', sourceCardId: origin.cardId,
+      abilityId: SOURCE_ABILITY, controllerId: origin.playerId, visibility: 'public', triggerEventId: event.id,
+      wodimePlacementId: event.sourceCardId, wodimePlacementLocationId: event.locationId,
+      wodimePlacementEventCardId: event.revealedId });
   }
   if (!ensureActivated(state, event.id, true)) return;
   const origin = source(state);
@@ -182,6 +187,11 @@ export function settleWodimeGodLegacyEvent(state: GameState, event: AbilityEvent
 }
 
 export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
+  // This is a structural consistency predicate, not an authenticity oracle:
+  // every field below is part of the editable game snapshot.  Automatic
+  // restore acceptance is provided only by MatchSession's host-owned HMAC
+  // envelope (deferredRuntimeStateSeal); callers that have no host seal must
+  // treat a positive result as HOST_ADJUDICATED rather than as authorization.
   const r = state.abilityRuntime;
   if (!r) return true;
   const players = new Set(state.players.map((player) => player.id));
@@ -204,6 +214,7 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
   const lineage = r.wodimeGodLegacyPlacementLineage ?? {};
   const eventActivations = r.wodimeGodLegacyEventActivations ?? {};
   const eventLedger = r.wodimeGodLegacyEventLedger ?? {};
+  const eventAudits = r.events.filter((candidate) => candidate.type === 'wodime_god_legacy_event_activated');
   if (Object.keys(processed).some((id) => !provenance[id] || !lineage[id]) ||
       Object.keys(provenance).some((id) => !processed[id] || !lineage[id]) ||
       Object.keys(lineage).some((id) => !processed[id] || !provenance[id])) return false;
@@ -215,6 +226,10 @@ export function isWodimeGodLegacyRuntimeStateValid(state: GameState): boolean {
         ledger.sourceCardId !== event.sourceCardId || ledger.revealedKind !== event.revealedKind ||
         ledger.revealedId !== event.revealedId || ledger.locationId !== event.locationId ||
         ledger.payloadDigest !== eventPayloadDigest(eventId, event.sourceCardId, event.revealedKind, event.revealedId, event.locationId)) return false;
+    const matchingAudits = eventAudits.filter((candidate) => candidate.triggerEventId === eventId);
+    if (matchingAudits.length !== 1 || matchingAudits[0]!.wodimePlacementId !== event.sourceCardId ||
+        matchingAudits[0]!.wodimePlacementLocationId !== event.locationId || matchingAudits[0]!.wodimePlacementEventCardId !== event.revealedId ||
+        matchingAudits[0]!.abilityId !== SOURCE_ABILITY || matchingAudits[0]!.visibility !== 'public') return false;
     if (!r.processedEvents.includes(eventId) || event.revealedKind !== 'event' ||
         event.revealedId !== ATLANTIS_EVENT || !event.locationId ||
         !state.map.locations.some((location) => location.id === event.locationId)) return false;
