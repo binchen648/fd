@@ -107,6 +107,23 @@ describe('P3 Zouken s4 pseudo-vampire source-specific contract', () => {
     expect(state.players[1]!.mana).toBe(4);
   });
 
+  it('rejects forged terminal winners or phase participants from the event envelope', () => {
+    const { state } = setup();
+    appendBattleResult(state);
+    state.players[0]!.mana = 4;
+    state.players[1]!.mana = 5;
+    const forgedWinner = terminalEvent();
+    forgedWinner.battleOutcomes = [{ battlefieldId: 'miyama_town', winnerPlayerIds: ['p2'] }];
+    expect(() => rules.processAbilityEvent(state, forgedWinner)).toThrow();
+    expect(state.players[0]!.mana).toBe(4);
+    expect(state.players[1]!.mana).toBe(5);
+    const forgedParticipants = terminalEvent();
+    forgedParticipants.battleParticipantIds = ['p1'];
+    expect(() => rules.processAbilityEvent(state, forgedParticipants)).toThrow();
+    expect(state.players[0]!.mana).toBe(4);
+    expect(state.players[1]!.mana).toBe(5);
+  });
+
   it('opens a legal combat movement target and pays seven mana before moving', () => {
     const { state } = setup();
     state.round.activePhase = 'battle';

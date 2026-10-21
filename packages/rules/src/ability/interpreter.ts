@@ -814,24 +814,38 @@ function zoukenS4BattleLosers(battle: GameState['battleResults'][number]): strin
   return battle.militaryAdjustments.filter((entry) => entry.delta < 0 && !winners.has(entry.playerId)).map((entry) => entry.playerId);
 }
 
+function exactZoukenS4PlayerSet(left: readonly string[], right: readonly string[]): boolean {
+  if (left.length !== new Set(left).size || right.length !== new Set(right).size || left.length !== right.length) return false;
+  const expected = new Set(right);
+  return left.every((id) => expected.has(id));
+}
+
 function zoukenS4TerminalBattles(s: GameState, event: AbilityEvent): Array<{ battleId: string; battle: GameState['battleResults'][number]; winnerIds: string[]; loserIds: string[]; participantIds: string[] }> {
   if (event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId || !Array.isArray(event.battleIds) || !Array.isArray(event.resultIds) ||
       !Array.isArray(event.battleParticipantIds) || !Array.isArray(event.battleOutcomes) || event.battleIds.length !== event.resultIds.length ||
       event.battleIds.length !== event.battleOutcomes.length) {
     reject('invalid_event', 'Zouken S4 battle settlement requires the complete terminal battle envelope');
   }
-  return event.battleIds!.map((battleId, index) => {
+  const entries = event.battleIds!.map((battleId, index) => {
     const outcome = event.battleOutcomes![index]!; const prefix = `${event.battlePhaseResolutionId}:battle:${outcome.battlefieldId}:`;
     if (typeof battleId !== 'string' || !battleId.startsWith(prefix)) reject('invalid_event', 'Zouken S4 terminal battle id is not canonical');
     const ordinal = Number(battleId.slice(prefix.length)); const battle = s.battleResults[ordinal - 1];
     if (!Number.isSafeInteger(ordinal) || ordinal < 1 || !battle || battle.battlefieldId !== outcome.battlefieldId ||
         event.resultIds![index] !== `${battleId}:result`) reject('invalid_event', 'Zouken S4 terminal battle provenance does not match battle history');
-    const winnerIds = [...outcome.winnerPlayerIds]; const loserIds = zoukenS4BattleLosers(battle);
-    const participantIds = battle.participantBreakdowns?.map((entry) => entry.playerId) ?? [...new Set([...winnerIds, ...loserIds])];
-    if (!winnerIds.every((id) => participantIds.includes(id)) || loserIds.some((id) => !participantIds.includes(id)) ||
+    const winnerIds = [...outcome.winnerPlayerIds]; const canonicalWinnerIds = [...battle.winnerPlayerIds];
+    const loserIds = zoukenS4BattleLosers(battle);
+    const participantIds = battle.participantBreakdowns?.map((entry) => entry.playerId) ?? [...new Set([...canonicalWinnerIds, ...loserIds])];
+    if (!exactZoukenS4PlayerSet(winnerIds, canonicalWinnerIds) || !exactZoukenS4PlayerSet(participantIds, [...new Set(participantIds)]) ||
+        !winnerIds.every((id) => participantIds.includes(id)) || loserIds.some((id) => !participantIds.includes(id)) ||
         participantIds.some((id) => !event.battleParticipantIds!.includes(id))) reject('invalid_event', 'Zouken S4 terminal participant provenance is inconsistent');
     return { battleId, battle, winnerIds, loserIds, participantIds };
   });
+  const canonicalParticipants = [...new Set(entries.flatMap((entry) => entry.participantIds))];
+  if (!exactZoukenS4PlayerSet(event.battleParticipantIds!, canonicalParticipants)) reject('invalid_event', 'Zouken S4 phase participant provenance is inconsistent');
+  if (new Set(entries.map((entry) => entry.battleId)).size !== entries.length || new Set(entries.map((entry) => entry.battle.battlefieldId)).size !== entries.length) {
+    reject('invalid_event', 'Zouken S4 terminal battle envelope contains duplicate identities');
+  }
+  return entries;
 }
 
 function settleZoukenS4RoundEnd(s: GameState, ctx: EffectContext): void {

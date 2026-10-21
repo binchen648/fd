@@ -38,7 +38,10 @@ ability ID, trigger, cost, target shape, or widened amount is rejected.
   operation idempotent and is restore-validated.
 * Battle end: the exact `after_battle_ended` envelope must contain canonical
   phase, battle IDs, result IDs, participant IDs, and outcome cardinality.
-  Battle history supplies losers; a deterministic seat-first loser is chosen.
+  Each event winner set must exactly equal the corresponding authoritative
+  `state.battleResults[ordinal - 1].winnerPlayerIds` set, and the event phase
+  participant set must exactly equal the union of authoritative per-battle
+  participant sets. Battle history supplies losers; a deterministic seat-first loser is chosen.
   If the controller is at `recon`, or there is no other participant, the
   fallback grants three mana. Otherwise the selected loser supplies up to
   three. Recipient cap is applied first and only the actual gain is deducted,
