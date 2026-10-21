@@ -616,6 +616,15 @@ describe('Wodime frozen authoring archive', () => {
     forgedDecision.context.event!.id = 'forged-ascension-trigger';
     forgedDecision.interaction!.triggerEventId = 'forged-ascension-trigger';
     expect(() => restoreMatchSession(forgedTrigger, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
+    const forgedNonWinTrigger = structuredClone(pendingSnapshot);
+    const nonWinDecision = forgedNonWinTrigger.state.abilityRuntime!.pendingDecision!;
+    nonWinDecision.context.event!.id = 'result-1:victory:p1';
+    nonWinDecision.interaction!.triggerEventId = 'result-1:victory:p1';
+    expect(forgedNonWinTrigger.state.abilityRuntime!.processedEvents).toContain('result-1:victory:p1');
+    expect(() => restoreMatchSession(forgedNonWinTrigger, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
+    const forgedMetaMismatch = structuredClone(pendingSnapshot);
+    forgedMetaMismatch.state.abilityRuntime!.pendingDecision!.interaction!.triggerEventId = 'result-1:victory:p1';
+    expect(() => restoreMatchSession(forgedMetaMismatch, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
     const ownerResume = restoreMatchSession(pendingSnapshot, { restorePackKind: 'trusted_authoring_fixture' });
     const ownerDecision = ownerResume.state.abilityRuntime!.pendingDecision!;
     expect(ownerResume.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: ownerDecision.id, selectedIds: ['round:4'] }).ok).toBe(false);

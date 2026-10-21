@@ -5674,10 +5674,14 @@ function isWodimeAstrologyAscensionPendingDecisionLiveValid(s: GameState, decisi
   let ability: AuthoringAbility;
   try { ability = abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId); } catch { return false; }
   const event = decision.context.event;
+  const expectedTriggerEventId = event?.resultId && event.playerId
+    ? `${event.resultId}:win:${event.playerId}`
+    : undefined;
   const root = event?.type === 'after_controller_wins_battle' && event.resultId
     ? runtime(s).trustedBattleResultSnapshots?.[event.resultId]
     : undefined;
   const battleResultIsTrusted = !!root && root.resultId === event?.resultId &&
+    expectedTriggerEventId === event?.id && expectedTriggerEventId === meta.triggerEventId &&
     runtime(s).processedEvents.includes(root.resultId) && runtime(s).processedEvents.includes(event.id) &&
     root.battlePhaseResolutionId === event.battlePhaseResolutionId && root.battleId === event.battleId &&
     root.battlefieldId === event.battlefieldId &&
