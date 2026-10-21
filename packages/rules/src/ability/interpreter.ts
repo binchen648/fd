@@ -668,6 +668,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isZoukenS3AbilityCandidate(a) && (!isZoukenS3Source(s, sourceId) || !isZoukenS3Semantic(a))) return false;
   if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, sourceId) || !isZoukenS4Semantic(a))) return false;
   if (isAbigailS3aCandidate(a) && (!isAbigailS3aSource(s, sourceId) || !isAbigailS3aSemantic(a))) return false;
+  if (isAbigailS3bCandidate(a) && (!isAbigailS3aSource(s, sourceId) || !isAbigailS3bSemantic(a))) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -699,6 +700,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAbigailS3aSemantic(a)) {
     const ctx = context(s, sourceId, a.id, event);
     if (!isAbigailS3aSource(s, sourceId) || !active(s, sourceId) || phase(s) !== 'action' || abigailS3aTargetCandidates(s, ctx, a).length < 1) return false;
+  }
+  if (isAbigailS3bActionSemantic(a)) {
+    const ctx = context(s, sourceId, a.id, event);
+    if (!isAbigailS3aSource(s, sourceId) || !active(s, sourceId) || phase(s) !== 'action') return false;
   }
   if (isZoukenS3ActionSemantic(a)) {
     const controller = player(s, card(s, sourceId).controllerPlayerId);
@@ -796,6 +801,11 @@ const ABIGAIL_S3A_ABILITY_ID = 'servant.abigail.skill.sc-abigail-3.banish-outsid
 const ABIGAIL_S3A_CLAUSE = '被动/行动阶段：移除手牌的一张【领域外生命】。若如此，获得2点魔力。';
 const ABIGAIL_OUTSIDE_LIFE_ID = 'servant.abigail.skill.sc-abigail-4';
 const ABIGAIL_OUTSIDE_LIFE_GENERATED_BY = 'servant.abigail.skill.sc-abigail-1';
+const ABIGAIL_S3B_ACTION_ID = 'servant.abigail.skill.sc-abigail-3.play-outside-life';
+const ABIGAIL_S3B_CLEANUP_ID = 'servant.abigail.skill.sc-abigail-3.recycle-active-outside-life';
+const ABIGAIL_S3B_ACTION_CLAUSE = '行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。';
+const ABIGAIL_S3B_CLEANUP_CLAUSE = '战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。';
+const ABIGAIL_S3B_MAX_PLAY_COUNT = 12;
 
 function isAbigailS3aSource(s: GameState, sourceCardId: string): boolean {
   const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
@@ -806,6 +816,10 @@ function isAbigailS3aSource(s: GameState, sourceCardId: string): boolean {
 
 export function isAbigailS3aCandidate(a: AuthoringAbility): boolean {
   return a.id === ABIGAIL_S3A_ABILITY_ID;
+}
+
+export function isAbigailS3bCandidate(a: AuthoringAbility): boolean {
+  return [ABIGAIL_S3B_ACTION_ID, ABIGAIL_S3B_CLEANUP_ID].includes(a.id);
 }
 
 export function isAbigailS3aSemantic(a: AuthoringAbility): boolean {
@@ -835,14 +849,20 @@ export function isAbigailS3aSemantic(a: AuthoringAbility): boolean {
     exactNodeKeys(mana, ['id', 'type', 'player', 'amount']);
 }
 
-function isCanonicalAbigailOutsideLife(s: GameState, controllerId: string, instanceId: string): boolean {
+function isCanonicalAbigailOutsideLifeCard(s: GameState, controllerId: string, instanceId: string, zones: readonly string[]): boolean {
   const candidate = s.cards.find((entry) => entry.instanceId === instanceId);
   const targetDefinition = candidate && runtime(s).pack.cards[candidate.definitionId];
   return !!candidate && !!targetDefinition && targetDefinition.id === ABIGAIL_OUTSIDE_LIFE_ID &&
     targetDefinition.cardType === 'servant_deck_card' && candidate.ownerPlayerId === controllerId &&
-    candidate.controllerPlayerId === controllerId && candidate.zone === 'hand' &&
+    candidate.controllerPlayerId === controllerId && zones.includes(candidate.zone) &&
     candidate.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
-    candidate.visibility.scope === 'owner_only' && candidate.visibility.ownerPlayerId === controllerId;
+    ((candidate.zone === 'field' || candidate.zone === 'attack_area')
+      ? candidate.visibility.scope === 'public'
+      : candidate.visibility.scope === 'owner_only' && candidate.visibility.ownerPlayerId === controllerId);
+}
+
+function isCanonicalAbigailOutsideLife(s: GameState, controllerId: string, instanceId: string): boolean {
+  return isCanonicalAbigailOutsideLifeCard(s, controllerId, instanceId, ['hand']);
 }
 
 function abigailS3aTargetCandidates(s: GameState, ctx: EffectContext, a: AuthoringAbility): string[] {
@@ -875,6 +895,94 @@ function executeAbigailS3a(s: GameState, ctx: EffectContext, a: AuthoringAbility
   const work = structuredClone(s);
   resolveEffect(work, ctx, a.effects[0]!);
   resolveEffect(work, ctx, a.effects[1]!);
+  Object.assign(s, work);
+}
+
+function isExactAbigailS3bShell(a: AuthoringAbility, kind: string, activationKeys: string[]): boolean {
+  if (a.kind !== kind || a.execution.mode !== 'automatic' || !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length) return false;
+  if (!Object.keys(a.activation).every((key) => activationKeys.includes(key))) return false;
+  if (a.conditions.length || a.cost.length || a.creates.length || a.ruleModifiers.length || Object.keys(a.lifecycle).length ||
+      Object.keys(a.limit).length || Object.keys(a.visibility).length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+      (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+      (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
+  return true;
+}
+
+export function isAbigailS3bActionSemantic(a: AuthoringAbility): boolean {
+  if (!isExactAbigailS3bShell(a, 'phase_action', ['phase', 'opens', 'requiresSourceState']) ||
+      a.id !== ABIGAIL_S3B_ACTION_ID || a.printedClause !== ABIGAIL_S3B_ACTION_CLAUSE ||
+      a.activation.phase !== 'action' || a.activation.opens !== 'controller_action_window' || a.activation.requiresSourceState !== 'active' ||
+      a.targets.length !== 1 || a.effects.length !== 1) return false;
+  const target = a.targets[0]!; const scope = node(target.scope); const count = node(target.count); const constraints = nodes(target.constraints);
+  const effect = a.effects[0]!;
+  return target.id === 'outside_life_discard' && target.type === 'card_instance' &&
+    exactNodeKeys(target, ['id', 'type', 'scope', 'count', 'visibility', 'constraints']) &&
+    exactNodeKeys(scope, ['zone', 'controller', 'owner']) && scope.zone === 'discard' && scope.controller === 'self' && scope.owner === 'controller' &&
+    exactNodeKeys(count, ['min', 'max']) && Number(count.min) === 0 && Number(count.max) === ABIGAIL_S3B_MAX_PLAY_COUNT &&
+    target.visibility === 'private_to_controller' && constraints.length === 1 &&
+    exactNodeKeys(constraints[0]!, ['type', 'cardId']) && constraints[0]!.type === 'has_card_id' && constraints[0]!.cardId === ABIGAIL_OUTSIDE_LIFE_ID &&
+    effect.type === 'play_selected_cards' && effect.id === 'play-outside-life-from-discard' && effect.target === 'outside_life_discard' && effect.face === 'face_up' &&
+    exactNodeKeys(effect, ['id', 'type', 'target', 'face']);
+}
+
+export function isAbigailS3bCleanupSemantic(a: AuthoringAbility): boolean {
+  if (!isExactAbigailS3bShell(a, 'forced_trigger', ['trigger', 'requiresSourceState']) ||
+      a.id !== ABIGAIL_S3B_CLEANUP_ID || a.printedClause !== ABIGAIL_S3B_CLEANUP_CLAUSE ||
+      a.activation.trigger !== 'after_battle_ended' || a.activation.requiresSourceState !== 'active' || a.targets.length || a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'shuffle_abigail_active_outside_life_into_deck' && effect.id === 'recycle-active-outside-life' &&
+    exactNodeKeys(effect, ['id', 'type']);
+}
+
+export function isAbigailS3bSemantic(a: AuthoringAbility): boolean {
+  return isAbigailS3bActionSemantic(a) || isAbigailS3bCleanupSemantic(a);
+}
+
+function abigailS3bTargetCandidates(s: GameState, ctx: EffectContext, a: AuthoringAbility): string[] {
+  const target = a.targets[0];
+  if (!target || !isAbigailS3bActionSemantic(a)) return [];
+  return candidates(s, ctx, target).filter((instanceId) => isCanonicalAbigailOutsideLifeCard(s, ctx.controllerId, instanceId, ['discard']));
+}
+
+function findAbigailS3bPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
+  if (!isAbigailS3bActionSemantic(a) || Object.prototype.hasOwnProperty.call(ctx.selections, 'outside_life_discard')) return undefined;
+  const qualifying = abigailS3bTargetCandidates(s, ctx, a);
+  return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target: a.targets[0]!, candidates: qualifying,
+    min: 0, max: Math.min(ABIGAIL_S3B_MAX_PLAY_COUNT, qualifying.length), context: structuredClone(ctx), remainingEffects: effects };
+}
+
+function validateAbigailS3bActionContinuation(s: GameState, ctx: EffectContext, a: AuthoringAbility, selected: string[]): void {
+  if (!isAbigailS3bActionSemantic(a) || !isAbigailS3aSource(s, ctx.sourceCardId) || !active(s, ctx.sourceCardId) || phase(s) !== 'action' ||
+      s.round.prioritySeat !== player(s, ctx.controllerId).seat || selected.length > ABIGAIL_S3B_MAX_PLAY_COUNT || new Set(selected).size !== selected.length ||
+      selected.some((instanceId) => !isCanonicalAbigailOutsideLifeCard(s, ctx.controllerId, instanceId, ['discard']))) {
+    reject('resolution_failed', 'Abigail S3b action continuation is stale or forged');
+  }
+}
+
+function executeAbigailS3bAction(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  const selected = ctx.selections.outside_life_discard ?? [];
+  validateAbigailS3bActionContinuation(s, ctx, a, selected);
+  const work = structuredClone(s);
+  playBatch(work, ctx.controllerId, selected.map((instanceId) => ({ type: 'play_card' as const, cardInstanceId: instanceId })), 'effect', true);
+  Object.assign(s, work);
+}
+
+function executeAbigailS3bCleanup(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAbigailS3bCleanupSemantic(a) || !isAbigailS3aSource(s, ctx.sourceCardId) || !active(s, ctx.sourceCardId) ||
+      !ctx.event || ctx.event.type !== 'after_battle_ended' || !ctx.event.battlePhaseResolutionId) {
+    reject('invalid_event', 'Abigail S3b cleanup requires its canonical active source and battle-terminal event');
+  }
+  const work = structuredClone(s);
+  const movedCardIds = work.cards.filter((candidate) =>
+    isCanonicalAbigailOutsideLifeCard(work, ctx.controllerId, candidate.instanceId, ['field', 'attack_area']) && active(work, candidate.instanceId))
+    .map((candidate) => candidate.instanceId);
+  for (const instanceId of movedCardIds) moveCard(work, instanceId, 'deck');
+  if (movedCardIds.length) shuffle(work, ctx.controllerId);
+  runtime(work).events.push({ type: 'abigail_s3b_active_outside_life_recycled', playerId: ctx.controllerId,
+    sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceIds: movedCardIds, movedCount: movedCardIds.length,
+    battlePhaseResolutionId: ctx.event.battlePhaseResolutionId, triggerEventId: ctx.event.id });
   Object.assign(s, work);
 }
 
@@ -1313,10 +1421,10 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, allowDiscard = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
-  if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
+  if (c.controllerPlayerId !== p || (!['hand', 'skill'].includes(c.zone) && !(allowDiscard && c.zone === 'discard')) || player(s, p).status !== 'active') return 'illegal_action';
   if (c.zone === 'skill' && isActivationOnlyDefinition(s, c.definitionId)) return 'activation_only';
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
   const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
@@ -1943,6 +2051,17 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
       const expectedCandidates = abigailS3aTargetCandidates(s, decision.context, ability);
       return decision.min === 1 && decision.max === 1 && exactRestoreValue(decision.target, ability.targets[0]) &&
         exactRestoreValue(decision.candidates, expectedCandidates) && expectedCandidates.length > 0 &&
+        exactRestoreValue(decision.remainingEffects, ability.effects);
+    }
+    if (isAbigailS3bActionSemantic(ability)) {
+      if (!isAbigailS3aSource(s, decision.context.sourceCardId) || !active(s, decision.context.sourceCardId) || phase(s) !== 'action' ||
+          s.round.prioritySeat !== player(s, decision.context.controllerId).seat) return false;
+      const contextKeys = Object.keys(decision.context).sort();
+      if (contextKeys.join(',') !== 'abilityId,controllerId,selections,sourceCardId,variables' ||
+          Object.keys(decision.context.variables).length !== 0 || Object.keys(decision.context.selections).length !== 0) return false;
+      const expectedCandidates = abigailS3bTargetCandidates(s, decision.context, ability);
+      return decision.min === 0 && decision.max === Math.min(ABIGAIL_S3B_MAX_PLAY_COUNT, expectedCandidates.length) &&
+        exactRestoreValue(decision.target, ability.targets[0]) && exactRestoreValue(decision.candidates, expectedCandidates) &&
         exactRestoreValue(decision.remainingEffects, ability.effects);
     }
     const targetIds = new Set(ability.targets.map((target) => str(target.id)).filter(Boolean));
@@ -3383,6 +3502,16 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     executeAbigailS3a(s, ctx, a);
     return;
   }
+  if (isAbigailS3bActionSemantic(a)) {
+    const pending = findAbigailS3bPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    executeAbigailS3bAction(s, ctx, a);
+    return;
+  }
+  if (isAbigailS3bCleanupSemantic(a)) {
+    executeAbigailS3bCleanup(s, ctx, a);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -3536,6 +3665,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isAbigailS3aCandidate(a) && (!isAbigailS3aSource(s, ctx.sourceCardId) || !isAbigailS3aSemantic(a))) {
     reject('resolution_failed', 'Unsupported Abigail S3a source-bound semantic shape');
   }
+  if (isAbigailS3bCandidate(a) && (!isAbigailS3aSource(s, ctx.sourceCardId) || !isAbigailS3bSemantic(a))) {
+    reject('resolution_failed', 'Unsupported Abigail S3b source-bound semantic shape');
+  }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
   }
@@ -3599,6 +3731,12 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     if (!isAbigailS3aSource(s, ctx.sourceCardId) || !active(s, ctx.sourceCardId) || phase(s) !== 'action' ||
         abigailS3aTargetCandidates(s, sourceCtx, a).length < 1) {
       reject('resolution_failed', 'Abigail S3a source or target lifecycle is stale');
+    }
+  }
+  if (isAbigailS3bActionSemantic(a)) {
+    if (!isAbigailS3aSource(s, ctx.sourceCardId) || !active(s, ctx.sourceCardId) || phase(s) !== 'action' ||
+        s.round.prioritySeat !== player(s, ctx.controllerId).seat) {
+      reject('resolution_failed', 'Abigail S3b source or action lifecycle is stale');
     }
   }
   const p = player(s, ctx.controllerId); let manaCost = 0;
@@ -3982,6 +4120,13 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         }
         validateAbigailS3aContinuation(s, d.context, continuationAbility, selected);
       }
+      if (!d.interaction && isAbigailS3bActionSemantic(continuationAbility)) {
+        if (!exactRestoreValue(d.candidates, abigailS3bTargetCandidates(s, d.context, continuationAbility)) ||
+            d.min !== 0 || d.max !== Math.min(ABIGAIL_S3B_MAX_PLAY_COUNT, d.candidates.length)) {
+          reject('resolution_failed', 'Abigail S3b pending target provenance changed');
+        }
+        validateAbigailS3bActionContinuation(s, d.context, continuationAbility, selected);
+      }
       if (!d.interaction && isZoukenAscensionActionSemantic(continuationAbility)) {
         validateZoukenAscensionPendingContinuation(s, d.context, continuationAbility, selected);
       }
@@ -4002,7 +4147,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   cleanupOngoing(s); checkFormulaTriggers(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular'): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', allowDiscard = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const requiredAdditionalIds = new Set(choices
     .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
@@ -4018,7 +4163,8 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   let cost = 0;
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional);
+    const discardAllowed = allowDiscard && quota === 'effect';
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, discardAllowed);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     if (!c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
   }

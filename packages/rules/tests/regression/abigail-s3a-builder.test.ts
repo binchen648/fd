@@ -35,7 +35,11 @@ describe('Abigail s3a source-bound first clause', () => {
       locator: 'servants[178].skills[2].text#line=1',
       sha256: '967eb0e8af3fde249604483793fb7d414e2e702dc7f37dff62ebd122b3675838',
     });
-    expect(pack.cards[sourceDefinition].abilities.map((a: any) => a.id)).toEqual([abilityId]);
+    expect(pack.cards[sourceDefinition].abilities.map((a: any) => a.id)).toEqual([
+      abilityId,
+      'servant.abigail.skill.sc-abigail-3.play-outside-life',
+      'servant.abigail.skill.sc-abigail-3.recycle-active-outside-life',
+    ]);
     expect(raw.cards[3].provenance).toMatchObject({
       canonicalIdentity: 'outside-life', generatedBy: 'servant.abigail.skill.sc-abigail-1', sourceBound: true,
     });

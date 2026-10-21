@@ -2676,7 +2676,7 @@
         "special"
       ],
       "printedValue": 0,
-      "printedCost": 0,
+      "printedCost": 1,
       "printedText": "领域外生命。",
       "timing": [
         "action"
@@ -9929,6 +9929,92 @@
               "mode": "automatic",
               "allowedOperations": []
             }
+          },
+          {
+            "id": "servant.abigail.skill.sc-abigail-3.play-outside-life",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [
+              {
+                "id": "outside_life_discard",
+                "type": "card_instance",
+                "scope": {
+                  "zone": "discard",
+                  "controller": "self",
+                  "owner": "controller"
+                },
+                "count": {
+                  "min": 0,
+                  "max": 12
+                },
+                "visibility": "private_to_controller",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.abigail.skill.sc-abigail-4"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "id": "play-outside-life-from-discard",
+                "type": "play_selected_cards",
+                "target": "outside_life_discard",
+                "face": "face_up"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "servant.abigail.skill.sc-abigail-3.recycle-active-outside-life",
+            "kind": "forced_trigger",
+            "printedClause": "战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。",
+            "activation": {
+              "trigger": "after_battle_ended",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "id": "recycle-active-outside-life",
+                "type": "shuffle_abigail_active_outside_life_into_deck"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
           }
         ],
         "mode": "automatic",
@@ -9946,7 +10032,7 @@
           "attributes": [
             "特殊"
           ],
-          "cost": 0,
+          "cost": 1,
           "basePower": 0
         },
         "playTiming": {
@@ -11780,11 +11866,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "1d9ab4beb4a71f6dc14492ec6102196433390ba4a0d5ca3058fdc77ca85eb76d",
+    "definitionHash": "f95eb14fdd6fff20036954b3efe22daf1f20b629d80d71efd626c2b6b5fe4b33",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "1d9ab4beb4a71f6dc14492ec6102196433390ba4a0d5ca3058fdc77ca85eb76d"
+      "definitionHash": "f95eb14fdd6fff20036954b3efe22daf1f20b629d80d71efd626c2b6b5fe4b33"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -12844,6 +12930,20 @@
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[15].cards[2].abilities[0]"
+      },
+      "servant.abigail.skill.sc-abigail-3#servant.abigail.skill.sc-abigail-3.play-outside-life": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[15].cards[2].abilities[1]"
+      },
+      "servant.abigail.skill.sc-abigail-3#servant.abigail.skill.sc-abigail-3.recycle-active-outside-life": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[15].cards[2].abilities[2]"
       },
       "servant.abigail.skill.sc-abigail-4": {
         "archiveId": "servant.abigail",
