@@ -746,6 +746,17 @@
       "issueCodes": []
     },
     {
+      "entityId": "master.zouken.skill.ascension",
+      "displayName": "幕后主使",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
       "entityId": "master.zouken.skill.s1",
       "displayName": "大空洞的亡者",
       "entityKind": "master_skill",

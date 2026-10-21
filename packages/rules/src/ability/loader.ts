@@ -64,6 +64,7 @@ const supportedTypes = new Set([
   'look_at_match_deck_bottoms', 'swap_revealed_with_deck_bottom',
   'soul_drag_power_bonus', 'transform_to_return_silence_on_loss', 'return_silence_battle_start',
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
+  'zouken_same_battlefield_opponent', 'zouken_command_seals_at_least',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
   OPPONENT_CLOSE_NON_RESIDUAL_TO_ONE_EFFECT,
@@ -141,7 +142,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (n.formulaRef && n.formulaRef !== 'cardFace.basePower') issue(`${path}.formulaRef`, 'Unmapped formula reference', abilityId);
       if (n.owner && n.owner !== 'controller') issue(`${path}.owner`, 'Only controller ownership is supported', abilityId);
-      if (n.player && n.player !== 'controller') issue(`${path}.player`, 'Only controller resource/movement effects are supported', abilityId);
+      const zoukenAscensionTargetSealEffect = abilityId === 'zouken.illusive-mastermind.seal-loss' &&
+        n.type === 'adjust_command_seals' && n.player === 'target';
+      if (n.player && n.player !== 'controller' && !zoukenAscensionTargetSealEffect) issue(`${path}.player`, 'Only controller resource/movement effects are supported', abilityId);
       if (n.type === 'reveal_information' && n.subject !== 'controller.servant') issue(`${path}.subject`, 'Only controller servant reveal is supported', abilityId);
       if (['adjust_mana', 'adjust_victory_points', 'pay_mana', 'can_adjust_mana'].includes(str(n.type)) &&
         (n.amount === undefined || typeof n.amount === 'string' || typeof n.amount === 'boolean')) issue(`${path}.amount`, 'Expected a numeric amount or controlled AST', abilityId);

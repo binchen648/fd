@@ -242,7 +242,8 @@
       "skillCardIds": [
         "master.zouken.skill.s1",
         "master.zouken.skill.s4",
-        "master.zouken.skill.s5"
+        "master.zouken.skill.s5",
+        "master.zouken.skill.ascension"
       ],
       "linkedCards": {
         "generated": []
@@ -2353,7 +2354,7 @@
       "id": "master.zouken.overview",
       "name": "间桐脏砚",
       "cardType": "master_overview",
-      "printedText": "大空洞的亡者: 游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。\n五百年的执念: 回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。\n间桐家的宗主: 局势牌无法禁止你使用宝具。",
+      "printedText": "大空洞的亡者: 游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。\n五百年的执念: 回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。\n间桐家的宗主: 局势牌无法禁止你使用宝具。\n幕后主使: 当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
       "capability": {
         "status": "FULL"
       },
@@ -2361,6 +2362,27 @@
         "htmPath": "chm-extract/间桐脏砚.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
         "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "master.zouken.skill.ascension",
+      "name": "幕后主使",
+      "cardType": "master_skill",
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/间桐脏砚.htm",
+        "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+        "imageIndex": 4,
         "reviewedAgainstImage": true
       }
     },
@@ -5339,6 +5361,121 @@
               }
             ],
             "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "master.zouken",
+        "playKind": "support",
+        "destinationZone": "field",
+        "initialZone": "skill"
+      },
+      "master.zouken.skill.ascension": {
+        "id": "master.zouken.skill.ascension",
+        "name": "幕后主使",
+        "cardType": "master_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "zouken.illusive-mastermind",
+            "kind": "passive",
+            "printedClause": "当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "id": "zouken-illusive-mastermind",
+                "type": "record_master_directive",
+                "directive": "zouken_illusive_mastermind"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "zouken.illusive-mastermind.seal-loss",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [
+              {
+                "id": "opponent",
+                "type": "player",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "zouken_same_battlefield_opponent"
+                  },
+                  {
+                    "type": "zouken_command_seals_at_least",
+                    "amount": 1
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "id": "zouken-ascension-remove-seal",
+                "type": "adjust_command_seals",
+                "player": "target",
+                "target": "opponent",
+                "amount": -1,
+                "directive": "zouken_illusive_mastermind_remove_seal"
+              }
+            ],
+            "cost": [
+              {
+                "id": "zouken-ascension-pay-six",
+                "type": "pay_mana",
+                "player": "controller",
+                "amount": 6
+              }
+            ],
             "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
@@ -10774,7 +10911,8 @@
         "cardIds": [
           "master.zouken.skill.s1",
           "master.zouken.skill.s4",
-          "master.zouken.skill.s5"
+          "master.zouken.skill.s5",
+          "master.zouken.skill.ascension"
         ],
         "publicInformation": {
           "type": "master_package",
@@ -11028,11 +11166,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "a6e11a84bcf2ff071d1320066754f56a92d44cb1b40dc506429fdd26389a2db4",
+    "definitionHash": "29e66fbe3e19b2136fb568f9549c1276d5c92defd0c7d4d8c17b0593bbd3a883",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "a6e11a84bcf2ff071d1320066754f56a92d44cb1b40dc506429fdd26389a2db4"
+      "definitionHash": "29e66fbe3e19b2136fb568f9549c1276d5c92defd0c7d4d8c17b0593bbd3a883"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11464,6 +11602,26 @@
         "cardIndex": 2,
         "abilityIndex": 0,
         "path": "archives[7].cards[2].abilities[0]"
+      },
+      "master.zouken.skill.ascension": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 3,
+        "path": "archives[7].cards[3]"
+      },
+      "master.zouken.skill.ascension#zouken.illusive-mastermind": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 3,
+        "abilityIndex": 0,
+        "path": "archives[7].cards[3].abilities[0]"
+      },
+      "master.zouken.skill.ascension#zouken.illusive-mastermind.seal-loss": {
+        "archiveId": "master.zouken",
+        "archiveIndex": 7,
+        "cardIndex": 3,
+        "abilityIndex": 1,
+        "path": "archives[7].cards[3].abilities[1]"
       },
       "servant.artoriac.skill.sc-artoriac-1": {
         "archiveId": "servant.artoriac",
