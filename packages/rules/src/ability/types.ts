@@ -118,6 +118,7 @@ export interface AbilityEvent {
   wodimePlacementLocationId?: string;
   wodimePlacementEventCardId?: string;
   grantedTokens?: number;
+  triggerEventId?: string;
 }
 export interface TriggeredAbility { cardInstanceId: string; abilityId: string; controllerId: PlayerId }
 export interface UniqueTriggerGroup { groupId: string; policy: 'only_one_effect_may_activate_per_window' }
@@ -819,7 +820,12 @@ export interface AbilityRuntime {
   /** Authenticated provenance for every God Legacy placement marker. */
   wodimeGodLegacyPlacementProvenance?: Record<string, {
     locationId: string; eventCardId: string; sourceCardId: string; controllerId: PlayerId;
-    grantedTokens: number; activatedRound: number;
+    grantedTokens: number; activatedRound: number; triggerEventId: string;
+  }>;
+  /** Immutable activation lineage captured from the authentic placement before it can be consumed. */
+  wodimeGodLegacyPlacementLineage?: Record<string, {
+    locationId: string; eventCardId: string; sourceCardId: string; controllerId: PlayerId;
+    grantedTokens: number; activatedRound: number; triggerEventId: string;
   }>;
   /** Idempotent event placements processed by Wodime's Atlantis replacement rule. */
   wodimeAtlantisHandledEventPlacementIds?: Record<string, true>;

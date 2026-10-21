@@ -664,10 +664,28 @@ function isRestoreSafeEvent(value: unknown): boolean {
   if (value.rewardBranch !== undefined && value.rewardBranch !== 'mana' && value.rewardBranch !== 'victory_points') return false;
   for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
   for (const key of ['revision','roundNumber','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
+  for (const key of ['wodimePlacementId','wodimePlacementLocationId','wodimePlacementEventCardId'] as const) {
+    if (value[key] !== undefined && typeof value[key] !== 'string') return false;
+  }
+  if (value.grantedTokens !== undefined && (!isRestoreSafeInteger(value.grantedTokens, 0) || Number(value.grantedTokens) > 3)) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
   if (value.revealedCardDefinitionIds !== undefined && !isRestoreStringArray(value.revealedCardDefinitionIds)) return false;
   if (value.revealedCardInstanceIds !== undefined && !isRestoreStringArray(value.revealedCardInstanceIds)) return false;
   return true;
+}
+
+function isRestoreWodimePlacementAudit(value: unknown, type: 'wodime_god_legacy_placement_provisioned' | 'wodime_atlantis_placement_handled'): boolean {
+  if (!isRestoreRecord(value) || !isRestoreSafeEvent(value) || value.type !== type) return false;
+  if (typeof value.sourceCardId !== 'string' || typeof value.abilityId !== 'string' || typeof value.controllerId !== 'string' ||
+      value.visibility !== 'public' || typeof value.wodimePlacementId !== 'string' || typeof value.wodimePlacementLocationId !== 'string' ||
+      typeof value.wodimePlacementEventCardId !== 'string') return false;
+  if (type === 'wodime_god_legacy_placement_provisioned') {
+    return hasExactRestoreKeys(value, ['type','sourceCardId','abilityId','controllerId','visibility','wodimePlacementId','wodimePlacementLocationId','wodimePlacementEventCardId','grantedTokens','triggerEventId']) &&
+      value.abilityId === 'wodime.god-legacy' && value.grantedTokens === 3 && typeof value.triggerEventId === 'string' && value.triggerEventId.length > 0 &&
+      value.wodimePlacementEventCardId === 'event.wodime.atlantis.hephaestus';
+  }
+  return hasExactRestoreKeys(value, ['type','sourceCardId','abilityId','controllerId','visibility','wodimePlacementId','wodimePlacementLocationId','wodimePlacementEventCardId']) &&
+    value.abilityId === 'wodime.atlantis' && value.wodimePlacementEventCardId.startsWith('event.wodime.atlantis.');
 }
 
 function isRestoreCalculation(value: unknown): boolean {
@@ -1333,7 +1351,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !Array.isArray(value.ongoingEffects) || !value.ongoingEffects.every(isRestoreOngoingEffect) ||
       !Array.isArray(value.responseWindows) || !value.responseWindows.every(isRestoreResponseWindow) ||
       !isRestoreNonNegativeIntegerMap(value.usedAbilities) || !isRestoreStringArray(value.processedEvents) ||
-      !isRestoreStringArray(value.revealedServants) || !Array.isArray(value.events) || !value.events.every(isRestoreSafeEvent) ||
+      !isRestoreStringArray(value.revealedServants) || !Array.isArray(value.events) || !value.events.every((event) =>
+        isRestoreSafeEvent(event) && (event.type !== 'wodime_god_legacy_placement_provisioned' || isRestoreWodimePlacementAudit(event, 'wodime_god_legacy_placement_provisioned')) &&
+        (event.type !== 'wodime_atlantis_placement_handled' || isRestoreWodimePlacementAudit(event, 'wodime_atlantis_placement_handled'))) ||
       !Array.isArray(value.calculations) || !value.calculations.every(isRestoreCalculation) ||
       !Array.isArray(value.rulerSealBindings) || !value.rulerSealBindings.every(isRestoreRulerSealBinding) ||
       !isRestoreNestedNonNegativeIntegerMap(value.rulerSealBindingHistory) ||
@@ -1399,10 +1419,16 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       Object.values(value.wodimeGodLegacyProcessedPlacementIds).some((entry) => entry !== true))) return false;
   if (value.wodimeGodLegacyPlacementProvenance !== undefined && (!isRestoreRecord(value.wodimeGodLegacyPlacementProvenance) ||
       !Object.values(value.wodimeGodLegacyPlacementProvenance).every((entry) => isRestoreRecord(entry) &&
-        hasExactRestoreKeys(entry, ['locationId','eventCardId','sourceCardId','controllerId','grantedTokens','activatedRound']) &&
+        hasExactRestoreKeys(entry, ['locationId','eventCardId','sourceCardId','controllerId','grantedTokens','activatedRound','triggerEventId']) &&
         typeof entry.locationId === 'string' && entry.eventCardId === 'event.wodime.atlantis.hephaestus' &&
         typeof entry.sourceCardId === 'string' && typeof entry.controllerId === 'string' &&
-        entry.grantedTokens === 3 && isRestoreSafeInteger(entry.activatedRound, 1)))) return false;
+        entry.grantedTokens === 3 && isRestoreSafeInteger(entry.activatedRound, 1) && typeof entry.triggerEventId === 'string' && entry.triggerEventId.length > 0))) return false;
+  if (value.wodimeGodLegacyPlacementLineage !== undefined && (!isRestoreRecord(value.wodimeGodLegacyPlacementLineage) ||
+      !Object.values(value.wodimeGodLegacyPlacementLineage).every((entry) => isRestoreRecord(entry) &&
+        hasExactRestoreKeys(entry, ['locationId','eventCardId','sourceCardId','controllerId','grantedTokens','activatedRound','triggerEventId']) &&
+        typeof entry.locationId === 'string' && entry.eventCardId === 'event.wodime.atlantis.hephaestus' &&
+        typeof entry.sourceCardId === 'string' && typeof entry.controllerId === 'string' &&
+        entry.grantedTokens === 3 && isRestoreSafeInteger(entry.activatedRound, 1) && typeof entry.triggerEventId === 'string' && entry.triggerEventId.length > 0))) return false;
   for (const key of ['wodimeAtlantisHandledEventPlacementIds', 'wodimeAtlantisPendingBattlefieldRemovalIds', 'wodimeAtlantisConsumedEventPlacementIds'] as const) {
     const record = value[key];
     if (record !== undefined && (!isRestoreRecord(record) || Object.values(record).some((entry) => entry !== true))) return false;
@@ -1412,10 +1438,15 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         hasExactRestoreKeys(entry, ['eventCardId','locationId','sourceCardId','controllerId']) &&
         typeof entry.eventCardId === 'string' && entry.eventCardId.startsWith('event.wodime.atlantis.') &&
         typeof entry.locationId === 'string' && typeof entry.sourceCardId === 'string' && typeof entry.controllerId === 'string'))) return false;
-  if (value.wodimeAtlantisPendingReplacementEvents !== undefined && (!Array.isArray(value.wodimeAtlantisPendingReplacementEvents) ||
-      !value.wodimeAtlantisPendingReplacementEvents.every((event) => isRestoreSafeEvent(event) && event.type === 'event_activated' &&
+  const pendingReplacementEvents = value.wodimeAtlantisPendingReplacementEvents;
+  if (pendingReplacementEvents !== undefined && (!Array.isArray(pendingReplacementEvents) ||
+      !pendingReplacementEvents.every((event) => isRestoreSafeEvent(event) && typeof event.id === 'string' && event.type === 'event_activated' &&
         typeof event.sourceCardId === 'string' && typeof event.revealedId === 'string' && typeof event.locationId === 'string' &&
-        event.revealedId.startsWith('event.wodime.atlantis.')))) return false;
+        event.sourceCardId.startsWith('wodime-atlantis-replacement:') &&
+        event.revealedId.startsWith('event.wodime.atlantis.') &&
+        isRestoreSafeInteger(event.wodimeReplacementDepth, 9) && Number(event.wodimeReplacementDepth) >= 9 &&
+        new Set(pendingReplacementEvents.map((pending) => (pending as Record<string, unknown>).id)).size === pendingReplacementEvents.length &&
+        new Set(pendingReplacementEvents.map((pending) => (pending as Record<string, unknown>).sourceCardId)).size === pendingReplacementEvents.length))) return false;
   if (value.structuredRoundFlagKeysByPlayer !== undefined && !isRestoreStructuredRoundFlagKeys(value.structuredRoundFlagKeysByPlayer)) return false;
   if (value.deductionRecordsByPlayer !== undefined && (!isRestoreRecord(value.deductionRecordsByPlayer) || !Object.values(value.deductionRecordsByPlayer).every((entry) =>
       isRestoreRecord(entry) && typeof entry.definitionId === 'string' && DEDUCTION_RECORD_ATTRIBUTES.includes(entry.attribute as typeof DEDUCTION_RECORD_ATTRIBUTES[number]) && isRestoreSafeInteger(entry.recordedRound, 1)))) return false;

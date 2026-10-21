@@ -122,9 +122,20 @@ export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
       return !placement || !isBattlefield(state, placement.locationId) || placement.eventCardId !== provenance[id]?.eventCardId;
     })) return false;
   }
-  if (r.wodimeAtlantisPendingReplacementEvents !== undefined && r.wodimeAtlantisPendingReplacementEvents.some((event) =>
-    event.type !== 'event_activated' || typeof event.sourceCardId !== 'string' || typeof event.revealedId !== 'string' ||
-    typeof event.locationId !== 'string' || !state.eventPlacements.some((placement) => placement.ruleInstanceId === event.sourceCardId &&
-      placement.eventCardId === event.revealedId && placement.locationId === event.locationId))) return false;
+  if (r.wodimeAtlantisPendingReplacementEvents !== undefined) {
+    const pendingIds = new Set<string>();
+    const pendingPlacementIds = new Set<string>();
+    for (const event of r.wodimeAtlantisPendingReplacementEvents) {
+      if (event.type !== 'event_activated' || typeof event.id !== 'string' || pendingIds.has(event.id) ||
+          typeof event.sourceCardId !== 'string' || typeof event.revealedId !== 'string' || typeof event.locationId !== 'string' ||
+          !event.sourceCardId.startsWith('wodime-atlantis-replacement:') || pendingPlacementIds.has(event.sourceCardId) ||
+          !Number.isSafeInteger(event.wodimeReplacementDepth) || Number(event.wodimeReplacementDepth) < 9 ||
+          handled[event.sourceCardId] ||
+          !state.eventPlacements.some((placement) => placement.ruleInstanceId === event.sourceCardId &&
+            placement.eventCardId === event.revealedId && placement.locationId === event.locationId)) return false;
+      pendingIds.add(event.id);
+      pendingPlacementIds.add(event.sourceCardId);
+    }
+  }
   return true;
 }
