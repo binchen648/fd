@@ -34,7 +34,7 @@ The active authoring/provenance record uses the exact printed S1 text, source lo
 
 Final checks were run from this worktree before commit:
 
-- Abigail S1 focused regression: 6/6 pass
+- Abigail S1 focused regression: 7/7 pass, including serialize/restore provenance rejection
 - MatchSession and seven-servant-decks regressions: 32/32 pass
 - Typecheck: pass
 - `content:validate`: pass

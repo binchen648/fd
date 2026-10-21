@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 
 import * as rules from '../src/index';
+import { restoreMatchSession } from '../src/match-session';
 import { createSeededGameState } from '../src/tools/seeded-state';
 import type { GameState } from '../src/schema/game';
 
@@ -97,6 +98,26 @@ describe('Abigail S1 source-bound X ledger', () => {
     const before = JSON.stringify(state);
     expect(() => rules.processAbilityEvent(state, { id: 's1-forged-ledger', type: 'on_card_played', playerId: 'p1', sourceCardId: 'abigail-s1' })).toThrow(/canonical ledger/);
     expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('restores a canonical ledger and rejects forged generated cards', () => {
+    const session = rules.createMatchSession({ seed: 20261022, humanPlayerId: 'p1' });
+    const state = (session as unknown as { state: GameState }).state;
+    state.players[0]!.servantCardId = 'servant.abigail';
+    state.cards.push({ instanceId: 'restore-abigail-s1', definitionId: S1, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+    state.cards.push({ instanceId: 'restore-outside-life', definitionId: S4, ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'hand', visibility: { scope: 'owner_only', ownerPlayerId: 'p2' }, generatedBy: S1 });
+    state.abilityRuntime!.cardState['restore-abigail-s1'] = { active: true, faceDown: false, playedRound: 1 };
+    state.ruleOverrides ??= {};
+    state.ruleOverrides.abigailSanityLossByPlayer = {
+      p1: { sourceCardId: 'restore-abigail-s1', abilityId: S1_ACTION, controllerId: 'p1', distributed: [{ cardInstanceId: 'restore-outside-life', recipientPlayerId: 'p2' }] },
+    };
+    const snapshot = session.serializeSession();
+    const restored = restoreMatchSession(snapshot);
+    expect(restored.getState().ruleOverrides?.abigailSanityLossByPlayer?.p1?.distributed).toEqual([{ cardInstanceId: 'restore-outside-life', recipientPlayerId: 'p2' }]);
+    const forged = structuredClone(snapshot);
+    const forgedCard = forged.state.cards.find((card) => card.instanceId === 'restore-outside-life')!;
+    forgedCard.generatedBy = 'forged-source';
+    expect(() => restoreMatchSession(forged)).toThrow('Invalid MatchSession state container');
   });
 
   it('loads the source-bound S1 contract in a live MatchSession executable pack', () => {
