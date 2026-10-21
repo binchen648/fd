@@ -1179,6 +1179,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
     for (const [playerId, entry] of Object.entries(abigailVictories)) {
       const source = cardsByInstance.get(entry.sourceCardId);
       const sourceDefinition = source && definitions[source.definitionId as string];
+      const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[entry.sourceCardId] : undefined;
       const ledger = restoredState.ruleOverrides?.abigailSanityLossByPlayer?.[playerId];
       const ledgerIds = ledger?.distributed.map((item) => item.cardInstanceId);
       const controller = restoredState.players.find((candidate) => candidate.id === playerId);
@@ -1189,6 +1190,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
           entry.x !== 12 || !restoredState.winnerPlayerIds?.includes(playerId) ||
           !ledger || ledger.sourceCardId !== entry.sourceCardId || ledger.controllerId !== entry.controllerId ||
           ledger.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' || ledger.distributed.length !== 12 ||
+          !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true ||
           entry.distributedCardInstanceIds.length !== ledgerIds!.length ||
           entry.distributedCardInstanceIds.some((id, index) => id !== ledgerIds![index])) return false;
     }

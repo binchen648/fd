@@ -171,6 +171,7 @@ describe('Abigail S1 source-bound X ledger', () => {
       (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.cards.find((card) => card.instanceId === 'restore-victory-s1')!.zone = 'discard'; },
       (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.cards.find((card) => card.instanceId === 'restore-victory-s1')!.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' }; },
       (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.players.find((player) => player.id === 'p1')!.servantCardId = 'servant.ereshkigal'; },
+      (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.abilityRuntime.cardState['restore-victory-s1']!.active = false; },
     ]) {
       const forged = structuredClone(valid.snapshot);
       mutate(forged);
