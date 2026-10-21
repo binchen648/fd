@@ -195,6 +195,56 @@ describe('Wodime frozen authoring archive', () => {
     expect((restored.state.abilityRuntime as any).wodimeAtlantisPendingReplacementEvents).toEqual(pendingBeforeUnrelated);
   });
 
+  it('keeps battlefield Atlantis removed when replacement deck is exhausted', () => {
+    const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
+    const loaded = rules.loadAuthoringJson(raw);
+    for (const definition of Object.values(loaded.cards)) { definition.ownerId = 'master.wodime'; definition.initialPlacement = 'outside_game'; }
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = []; state.players[0]!.masterCardId = 'master.wodime';
+    rules.initializeAbilityRuntime(state, loaded, { seed: 903 });
+    installMasterSupportOwnerCards(state, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
+    const first = { locationId: 'shinto' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-empty-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
+    const second = { ...first, ruleInstanceId: 'wodime-atlantis-empty-2' };
+    state.eventPlacements = [first, second]; state.eventDeck = [];
+    for (const placement of [first, second]) {
+      rules.processAbilitySystemEvent(state, `wodime-atlantis-empty-reveal-${placement.ruleInstanceId}`, {
+        type: 'event_activated', sourceCardId: placement.ruleInstanceId, revealedKind: 'event', revealedId: placement.eventCardId, locationId: placement.locationId,
+      });
+    }
+    rules.processAbilitySystemEvent(state, 'wodime-atlantis-empty-close', { type: 'after_battle_ended', battlefieldId: 'shinto' });
+    expect(state.eventDeck).toEqual([]);
+    expect(state.eventPlacements.map((entry) => entry.ruleInstanceId)).toEqual([second.ruleInstanceId]);
+    expect((state.abilityRuntime as any).wodimeAtlantisReplacementBlocked).toMatchObject({
+      sourceCardId: first.ruleInstanceId, locationId: 'shinto', eventCardId: first.eventCardId, reason: 'replacement_deck_exhausted',
+    });
+    expect((state.abilityRuntime as any).events).toContainEqual(expect.objectContaining({
+      type: 'wodime_atlantis_replacement_deck_exhausted', wodimePlacementId: first.ruleInstanceId,
+      wodimeReplacementReason: 'replacement_deck_exhausted',
+    }));
+    expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(true);
+    const session = createMatchSession({ seed: 902, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
+    session.state = state;
+    const restored = restoreMatchSession(session.serializeSession(), { restorePackKind: 'trusted_authoring_fixture' });
+    expect(restored.autoResolveNonInteractiveWindows()).toBe('host_directive');
+
+    const nonBattleState = createSeededGameState({ activeSeats: [1, 2] });
+    nonBattleState.cards = []; nonBattleState.players[0]!.masterCardId = 'master.wodime';
+    rules.initializeAbilityRuntime(nonBattleState, loaded, { seed: 905 });
+    installMasterSupportOwnerCards(nonBattleState, loaded as any, { ownerId: 'master.wodime', playerId: 'p1' });
+    const nonBattle = { locationId: 'clock_tower' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-empty-nonbattle', visibility: { scope: 'public' as const }, victoryPoints: 0 };
+    nonBattleState.eventPlacements = [nonBattle]; nonBattleState.eventDeck = [];
+    rules.processAbilitySystemEvent(nonBattleState, 'wodime-atlantis-empty-nonbattle-reveal', {
+      type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId,
+    });
+    expect(nonBattleState.eventDeck).toEqual([]);
+    expect(nonBattleState.eventPlacements).toHaveLength(1);
+    expect(nonBattleState.eventPlacements[0]!.eventCardId).toBe(nonBattle.eventCardId);
+    expect(nonBattleState.eventPlacements[0]!.ruleInstanceId).not.toBe(nonBattle.ruleInstanceId);
+    // Returning the only non-battle card makes a legal same-card replacement;
+    // the normal dispatcher then reaches its existing bounded-chain stop.
+    expect((nonBattleState.abilityRuntime as any).wodimeAtlantisReplacementBlocked).toMatchObject({ reason: 'replacement_depth_bound' });
+  });
+
   it('activates God Legacy at the real elimination transition before the first later event reveal', () => {
     const raw = JSON.parse(readFileSync(archivePath, 'utf8'));
     const loaded = rules.loadAuthoringJson(raw);

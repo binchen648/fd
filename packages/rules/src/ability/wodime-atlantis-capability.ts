@@ -42,13 +42,28 @@ function replaceAtLocation(
 ): AbilityEvent | undefined {
   const source = sourceCard(state);
   if (!source) return undefined;
+  const oldPlacementId = old.ruleInstanceId;
+  if (!oldPlacementId) return undefined;
   state.eventDeck ??= [];
   // Non-battlefield Atlantis is washed back before drawing. A battlefield
   // Atlantis is removed from the game after resolution, so it must stay out
   // of the deck while the replacement is drawn from the remaining cards.
   if (returnConsumedToDeck) state.eventDeck.push(old.eventCardId);
+  if (!returnConsumedToDeck && state.eventDeck.length === 0) {
+    const blockedEventId = `${oldPlacementId}:replacement:deck-exhausted:${++runtime(state).sequence}`;
+    runtime(state).wodimeAtlantisReplacementBlocked = {
+      eventId: blockedEventId, sourceCardId: oldPlacementId, locationId: old.locationId,
+      eventCardId: old.eventCardId, reason: 'replacement_deck_exhausted',
+    };
+    runtime(state).events.push({ type: 'wodime_atlantis_replacement_deck_exhausted', sourceCardId: source.instanceId,
+      abilityId: SOURCE_ABILITY, controllerId: source.controllerId, visibility: 'public', triggerEventId: blockedEventId,
+      wodimePlacementId: oldPlacementId, wodimePlacementLocationId: old.locationId,
+      wodimePlacementEventCardId: old.eventCardId, wodimeReplacementReason: 'replacement_deck_exhausted' });
+    return undefined;
+  }
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
-  const replacementId = state.eventDeck.shift() ?? old.eventCardId;
+  const replacementId = state.eventDeck.shift();
+  if (!replacementId) return undefined;
   const replacement = replacementPlacement(state, old, replacementId);
   state.eventPlacements.push(replacement);
   const sourceCardId = replacement.ruleInstanceId;
@@ -99,6 +114,7 @@ export function settleWodimeAtlantisEvent(state: GameState, event: AbilityEvent)
       r.wodimeAtlantisConsumedEventPlacementIds[placement.ruleInstanceId] = true;
       const replacement = replaceAtLocation(state, placement, false);
       if (replacement) replacements.push(replacement);
+      if (r.wodimeAtlantisReplacementBlocked) break;
     }
     return replacements;
   }
@@ -148,9 +164,17 @@ export function isWodimeAtlantisRuntimeStateValid(state: GameState): boolean {
   const blocked = r.wodimeAtlantisReplacementBlocked;
   if (blocked !== undefined) {
     const pending = r.wodimeAtlantisPendingReplacementEvents ?? [];
-    if (blocked.reason !== 'replacement_depth_bound' || pending.length !== 1 || pending[0]!.id !== blocked.eventId ||
-        pending[0]!.sourceCardId !== blocked.sourceCardId || pending[0]!.locationId !== blocked.locationId ||
-        pending[0]!.revealedId !== blocked.eventCardId) return false;
+    if (blocked.reason === 'replacement_depth_bound') {
+      if (pending.length !== 1 || pending[0]!.id !== blocked.eventId ||
+          pending[0]!.sourceCardId !== blocked.sourceCardId || pending[0]!.locationId !== blocked.locationId ||
+          pending[0]!.revealedId !== blocked.eventCardId) return false;
+    } else {
+      const exhaustedAudits = r.events.filter((event) => event.type === 'wodime_atlantis_replacement_deck_exhausted' &&
+        event.triggerEventId === blocked.eventId && event.wodimePlacementId === blocked.sourceCardId &&
+        event.wodimePlacementLocationId === blocked.locationId && event.wodimePlacementEventCardId === blocked.eventCardId &&
+        event.wodimeReplacementReason === 'replacement_deck_exhausted');
+      if (pending.length !== 0 || exhaustedAudits.length !== 1) return false;
+    }
   } else if ((r.wodimeAtlantisPendingReplacementEvents?.length ?? 0) > 0) return false;
   if (r.wodimeAtlantisPendingReplacementEvents !== undefined) {
     const pendingIds = new Set<string>();

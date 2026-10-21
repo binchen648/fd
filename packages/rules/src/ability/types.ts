@@ -527,6 +527,7 @@ export interface SafeEvent {
   wodimePlacementId?: string;
   wodimePlacementLocationId?: string;
   wodimePlacementEventCardId?: string;
+  wodimeReplacementReason?: 'replacement_deck_exhausted';
   grantedTokens?: number;
 }
 export interface CardRuntimeState {
@@ -850,7 +851,8 @@ export interface AbilityRuntime {
   wodimeAtlantisPendingReplacementEvents?: AbilityEvent[];
   /** Host-visible stop state for a replacement chain at the bounded depth. */
   wodimeAtlantisReplacementBlocked?: {
-    eventId: string; sourceCardId: string; locationId: string; eventCardId: string; reason: 'replacement_depth_bound';
+    eventId: string; sourceCardId: string; locationId: string; eventCardId: string;
+    reason: 'replacement_depth_bound' | 'replacement_deck_exhausted';
   };
   /** Owner-scoped typed food resources and once-per-round procurement authority. */
   shirouMealFoodByPlayer?: Record<PlayerId, { 肉: number; 蔬菜: number; 鱼: number }>;

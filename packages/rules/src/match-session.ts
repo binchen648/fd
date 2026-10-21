@@ -697,6 +697,16 @@ function isRestoreWodimeEventActivationAudit(value: unknown): boolean {
     value.wodimePlacementEventCardId === 'event.wodime.atlantis.hephaestus';
 }
 
+function isRestoreWodimeReplacementExhaustedAudit(value: unknown): boolean {
+  return isRestoreRecord(value) && isRestoreSafeEvent(value) && value.type === 'wodime_atlantis_replacement_deck_exhausted' &&
+    hasExactRestoreKeys(value, ['type','sourceCardId','abilityId','controllerId','visibility','triggerEventId','wodimePlacementId','wodimePlacementLocationId','wodimePlacementEventCardId','wodimeReplacementReason']) &&
+    typeof value.sourceCardId === 'string' && value.abilityId === 'wodime.atlantis' && typeof value.controllerId === 'string' &&
+    value.visibility === 'public' && typeof value.triggerEventId === 'string' && value.triggerEventId.length > 0 &&
+    typeof value.wodimePlacementId === 'string' && typeof value.wodimePlacementLocationId === 'string' &&
+    typeof value.wodimePlacementEventCardId === 'string' && value.wodimePlacementEventCardId.startsWith('event.wodime.atlantis.') &&
+    value.wodimeReplacementReason === 'replacement_deck_exhausted';
+}
+
 function isRestoreCalculation(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.controllerId === 'string' && Array.isArray(value.lines) &&
     value.lines.every((line) => isRestoreRecord(line) && typeof line.label === 'string' && isRestoreFiniteNumber(line.value));
@@ -1364,7 +1374,8 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
         isRestoreSafeEvent(event) && (event.type !== 'wodime_god_legacy_placement_provisioned' || isRestoreWodimePlacementAudit(event, 'wodime_god_legacy_placement_provisioned')) &&
         (event.type !== 'wodime_god_legacy_event_activated' || isRestoreWodimeEventActivationAudit(event)) &&
         (event.type !== 'wodime_atlantis_placement_handled' || isRestoreWodimePlacementAudit(event, 'wodime_atlantis_placement_handled')) &&
-        (event.type !== 'wodime_atlantis_replacement_terminal' || isRestoreWodimePlacementAudit(event, 'wodime_atlantis_replacement_terminal'))) ||
+        (event.type !== 'wodime_atlantis_replacement_terminal' || isRestoreWodimePlacementAudit(event, 'wodime_atlantis_replacement_terminal')) &&
+        (event.type !== 'wodime_atlantis_replacement_deck_exhausted' || isRestoreWodimeReplacementExhaustedAudit(event))) ||
       !Array.isArray(value.calculations) || !value.calculations.every(isRestoreCalculation) ||
       !Array.isArray(value.rulerSealBindings) || !value.rulerSealBindings.every(isRestoreRulerSealBinding) ||
       !isRestoreNestedNonNegativeIntegerMap(value.rulerSealBindingHistory) ||
@@ -1461,7 +1472,8 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !hasExactRestoreKeys(value.wodimeAtlantisReplacementBlocked, ['eventId','sourceCardId','locationId','eventCardId','reason']) ||
       typeof value.wodimeAtlantisReplacementBlocked.eventId !== 'string' || typeof value.wodimeAtlantisReplacementBlocked.sourceCardId !== 'string' ||
       typeof value.wodimeAtlantisReplacementBlocked.locationId !== 'string' || typeof value.wodimeAtlantisReplacementBlocked.eventCardId !== 'string' ||
-      value.wodimeAtlantisReplacementBlocked.reason !== 'replacement_depth_bound')) return false;
+      value.wodimeAtlantisReplacementBlocked.reason !== 'replacement_depth_bound' &&
+      value.wodimeAtlantisReplacementBlocked.reason !== 'replacement_deck_exhausted')) return false;
   if (value.wodimeAtlantisPlacementProvenance !== undefined && (!isRestoreRecord(value.wodimeAtlantisPlacementProvenance) ||
       !Object.values(value.wodimeAtlantisPlacementProvenance).every((entry) => isRestoreRecord(entry) &&
         hasExactRestoreKeys(entry, ['eventCardId','locationId','sourceCardId','controllerId']) &&
