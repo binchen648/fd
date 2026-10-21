@@ -89,6 +89,7 @@ describe('Wodime frozen authoring archive', () => {
     const battlefield = { locationId: 'shinto' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-battle-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [battlefield];
     state.eventDeck = ['event.wodime.atlantis.zeus'];
+    const deckBeforeFirstReplacement = [...state.eventDeck];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal', { type: 'event_activated', sourceCardId: battlefield.ruleInstanceId, revealedKind: 'event', revealedId: battlefield.eventCardId, locationId: battlefield.locationId });
     expect(state.eventPlacements).toHaveLength(1);
     expect((state.abilityRuntime as any).wodimeGodLegacyByLocation.shinto.tokens).toBe(3);
@@ -100,6 +101,11 @@ describe('Wodime frozen authoring archive', () => {
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-close', { type: 'after_battle_ended', battlefieldId: 'shinto' });
     expect(state.eventPlacements).toHaveLength(1);
     expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(battlefield.ruleInstanceId);
+    // The consumed definition is returned before the draw.  Therefore the
+    // physical definition multiset is conserved even when the replacement is
+    // a legal same-card draw.
+    expect([...state.eventDeck, state.eventPlacements[0]!.eventCardId].sort()).toEqual(
+      [...deckBeforeFirstReplacement, battlefield.eventCardId].sort());
     const duplicatePlacement = structuredClone(state.eventPlacements[0]);
     state.eventPlacements.push(duplicatePlacement);
     expect(isWodimeAtlantisRuntimeStateValid(state)).toBe(false);
@@ -122,9 +128,12 @@ describe('Wodime frozen authoring archive', () => {
     expect(new Set(state.eventPlacements.filter((entry) => entry.locationId === 'shinto').map((entry) => entry.ruleInstanceId)).size).toBe(2);
     const nonBattle = { locationId: 'clock_tower' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-nonbattle-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [nonBattle]; state.eventDeck = ['event.wodime.atlantis.zeus'];
+    const nonBattleDeckBefore = [...state.eventDeck];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-reveal-nonbattle', { type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId });
     expect(state.eventPlacements).toHaveLength(1);
     expect(state.eventPlacements[0]!.ruleInstanceId).not.toBe(nonBattle.ruleInstanceId);
+    expect([...state.eventDeck, state.eventPlacements[0]!.eventCardId].sort()).toEqual(
+      [...nonBattleDeckBefore, nonBattle.eventCardId].sort());
     const replacementId = state.eventPlacements[0]!.ruleInstanceId;
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-replay-nonbattle', { type: 'event_activated', sourceCardId: nonBattle.ruleInstanceId, revealedKind: 'event', revealedId: nonBattle.eventCardId, locationId: nonBattle.locationId });
     expect(state.eventPlacements[0]!.ruleInstanceId).toBe(replacementId);
@@ -148,6 +157,7 @@ describe('Wodime frozen authoring archive', () => {
     const placement = { locationId: 'magic_workshop' as const, eventCardId: 'event.wodime.atlantis.hephaestus', ruleInstanceId: 'wodime-atlantis-repeat-1', visibility: { scope: 'public' as const }, victoryPoints: 0 };
     state.eventPlacements = [placement];
     state.eventDeck = ['event.wodime.atlantis.hephaestus'];
+    const singleCardDeckBefore = [...state.eventDeck];
     rules.processAbilitySystemEvent(state, 'wodime-atlantis-repeat', { type: 'event_activated', sourceCardId: placement.ruleInstanceId, revealedKind: 'event', revealedId: placement.eventCardId, locationId: placement.locationId });
     // A same-card-only deck still creates a fresh placement and event. The
     // depth boundary is explicit and restorable rather than a silent no-draw.
@@ -155,6 +165,7 @@ describe('Wodime frozen authoring archive', () => {
     expect(pending).toHaveLength(1);
     expect(pending[0]).toMatchObject({ type: 'event_activated', revealedId: placement.eventCardId, locationId: placement.locationId, wodimeReplacementDepth: 9 });
     expect(state.eventPlacements.some((entry) => entry.ruleInstanceId === pending[0].sourceCardId)).toBe(true);
+    expect(state.eventDeck).toEqual(singleCardDeckBefore);
     const terminalIds = (state.abilityRuntime as any).wodimeAtlantisReplacementTerminalIds;
     expect(terminalIds).toEqual({});
     expect((state.abilityRuntime as any).wodimeAtlantisReplacementBlocked).toMatchObject({

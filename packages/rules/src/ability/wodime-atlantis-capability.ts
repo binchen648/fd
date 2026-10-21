@@ -39,14 +39,14 @@ function replaceAtLocation(state: GameState, old: GameState['eventPlacements'][n
   const source = sourceCard(state);
   if (!source) return undefined;
   state.eventDeck ??= [];
-  // The consumed placement is already out of the deck. Shuffle and draw from
-  // the remaining physical cards, then return the consumed card. This avoids
-  // deleting an unrelated same-name card (the deck stores definitions, not
-  // placement identities) while still making a one-card deck draw a fresh
-  // replacement instance below.
+  // Return the consumed physical card to the complete deck before drawing.
+  // The deck stores definitions rather than placement identities, so this
+  // preserves duplicate definitions and permits a legitimate same-card draw;
+  // the fresh placement instance below still distinguishes the physical
+  // replacement from the consumed placement.
+  state.eventDeck.push(old.eventCardId);
   shuffleInPlace(state.eventDeck, state.round.roundNumber + state.eventPlacements.length + runtime(state).revision);
   const replacementId = state.eventDeck.shift() ?? old.eventCardId;
-  state.eventDeck.push(old.eventCardId);
   const replacement = replacementPlacement(state, old, replacementId);
   state.eventPlacements.push(replacement);
   const sourceCardId = replacement.ruleInstanceId;
