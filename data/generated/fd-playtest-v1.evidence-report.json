@@ -839,7 +839,7 @@
     },
     {
       "entityId": "servant.abigail.skill.sc-abigail-1",
-      "displayName": "理智丧失",
+      "displayName": "于深渊化作光",
       "entityKind": "servant_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",

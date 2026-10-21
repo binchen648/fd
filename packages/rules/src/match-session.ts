@@ -858,6 +858,20 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
         entry.targetPlayerIds[0] === entry.controllerId &&
         (entry.controllerId === entry.abigailPlayerId || entry.targetPlayerIds[1] === entry.abigailPlayerId) &&
         isRestoreSafeInteger(entry.amount) && entry.amount === 6))) return false;
+  if (value.abigailSanityLossByPlayer !== undefined && (!isRestoreRecord(value.abigailSanityLossByPlayer) ||
+      !restoreRecordKeysBelongTo(value.abigailSanityLossByPlayer, playerIds) ||
+      !Object.values(value.abigailSanityLossByPlayer).every((entry) => isRestoreRecord(entry) &&
+        typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' &&
+        typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
+        isRestoreRecord(entry) && Array.isArray(entry.distributed) &&
+        entry.distributed.every((item) => isRestoreRecord(item) && typeof item.cardInstanceId === 'string' &&
+          typeof item.recipientPlayerId === 'string' && playerIds.has(item.recipientPlayerId))))) return false;
+  if (value.abigailSanityLossVictoryByPlayer !== undefined && (!isRestoreRecord(value.abigailSanityLossVictoryByPlayer) ||
+      !restoreRecordKeysBelongTo(value.abigailSanityLossVictoryByPlayer, playerIds) ||
+      !Object.values(value.abigailSanityLossVictoryByPlayer).every((entry) => isRestoreRecord(entry) &&
+        typeof entry.sourceCardId === 'string' && entry.abilityId === 'servant.abigail.skill.sc-abigail-1.win-at-x12' &&
+        typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
+        isRestoreSafeInteger(entry.x) && entry.x === 12))) return false;
   return true;
 }
 
@@ -1054,6 +1068,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const enabledLocationIds = locationConfig.enabledLocationIds as string[];
   if (new Set(enabledLocationIds).size !== enabledLocationIds.length || !enabledLocationIds.every((id) => locationIds.has(id))) return false;
   const enabledLocations = new Set(enabledLocationIds);
+  if (value.winnerPlayerIds !== undefined && !restoreIdsBelongTo(value.winnerPlayerIds, playerIds)) return false;
   if (!players.every((player) => player.locationId === undefined ||
       (typeof player.locationId === 'string' && locationIds.has(player.locationId) &&
         (enabledLocations.size === 0 || enabledLocations.has(player.locationId))))) return false;
@@ -1128,6 +1143,38 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
           source.generatedBy !== 'servant.abigail.skill.sc-abigail-1' || entry.abigailPlayerId !== abigailPlayerId ||
           !isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-4' ||
           !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
+    }
+  }
+  const abigailLedger = restoredState.ruleOverrides?.abigailSanityLossByPlayer;
+  if (abigailLedger !== undefined) {
+    for (const [playerId, entry] of Object.entries(abigailLedger)) {
+      const source = cardsByInstance.get(entry.sourceCardId);
+      const sourceDefinition = source && definitions[source.definitionId as string];
+      const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[entry.sourceCardId] : undefined;
+      const distributedIds = entry.distributed.map((item) => item.cardInstanceId);
+      if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+          (!isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-1') || entry.controllerId !== playerId ||
+          entry.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' ||
+          !isRestoreRecord(sourceState) || sourceState.faceDown === true ||
+          new Set(distributedIds).size !== distributedIds.length ||
+          !entry.distributed.every((item) => {
+            const created = cardsByInstance.get(item.cardInstanceId);
+            return !!created && created.definitionId === 'servant.abigail.skill.sc-abigail-4' &&
+              created.generatedBy === 'servant.abigail.skill.sc-abigail-1' && created.ownerPlayerId === item.recipientPlayerId &&
+              created.controllerPlayerId === item.recipientPlayerId && item.recipientPlayerId !== playerId;
+          })) return false;
+    }
+  }
+  const abigailVictories = restoredState.ruleOverrides?.abigailSanityLossVictoryByPlayer;
+  if (abigailVictories !== undefined) {
+    for (const [playerId, entry] of Object.entries(abigailVictories)) {
+      const source = cardsByInstance.get(entry.sourceCardId);
+      const sourceDefinition = source && definitions[source.definitionId as string];
+      const ledger = restoredState.ruleOverrides?.abigailSanityLossByPlayer?.[playerId];
+      if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+          (!isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-1') || entry.controllerId !== playerId ||
+          entry.x !== 12 || !restoredState.winnerPlayerIds?.includes(playerId) ||
+          !ledger || ledger.distributed.length !== 12) return false;
     }
   }
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
@@ -1749,6 +1796,9 @@ export class MatchSession {
       rejection: result.rejection,
     });
     this.consumeAppliedDirectives();
+    if (result.ok && (this.state.winnerPlayerIds?.length ?? 0) > 0) {
+      this.pause('match_complete');
+    }
     this.checkpoint(`${playerId}:${command.type}`);
     return result;
   }
@@ -1928,6 +1978,7 @@ export class MatchSession {
       if (!result.ok) return this.pause('backend_rejection');
       const windowPause = this.autoResolveNonInteractiveWindows();
       if (windowPause) return this.pause(windowPause);
+      if ((this.state.winnerPlayerIds?.length ?? 0) > 0) return this.pause('match_complete');
     }
     if (!hadAnyAction) this.record('ai_passed', `${playerId}:no legal action`);
     return undefined;
