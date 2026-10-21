@@ -2263,6 +2263,7 @@ function isRestoreWodimeOlympusExpansionDirective(
   return (wodimeOlympusEventIds as readonly string[]).includes(replacement as string) &&
     isRestoreSafeInteger(slot, 0) && (slot as number) < 2 &&
     typeof value.replacedEventCardId === 'string' && eventIds.has(value.replacedEventCardId) &&
+    value.replacedEventCardId === drawnEventCardIds[slot as number] &&
     outside.includes(value.replacedEventCardId) && olympusCount(replacement as string) === 1 &&
     resolvedEventCardIds[slot as number] === replacement &&
     resolvedEventCardIds[(slot as number) ^ 1] === drawnEventCardIds[(slot as number) ^ 1];
@@ -3711,6 +3712,12 @@ export class MatchSession {
       return viewId === id || rawId === id;
     });
     if (!directive) return false;
+    if (directive.consumed === true) return false;
+    if (directive.directive === 'wodime_olympus_expansion_shortage') {
+      const available = (this.state.eventDeck?.length ?? 0) + (this.state.eventDiscardPile?.length ?? 0);
+      if (available < 2) return false;
+      this.modeState().wodimeOlympusExpansionShortagePending = false;
+    }
     if (directive.directive === 'wodime_olympus_expansion' &&
         !applyWodimeOlympusExpansionDirective(this.state, directive, choice, this.seed)) return false;
     directive.consumed = true;
@@ -4408,7 +4415,8 @@ export class MatchSession {
       // queue item; the other legacy audit directives remain display-only.
       const pendingHost = entry.consumed !== true &&
         ((directive === 'event_effect_host_review' && wodimeEventRequiresHostAdjudication(this.state, String(entry.eventCardId ?? ''))) ||
-          directive === 'wodime_olympus_lostbelt' || directive === 'wodime_olympus_expansion');
+          directive === 'wodime_olympus_lostbelt' || directive === 'wodime_olympus_expansion' ||
+          directive === 'wodime_olympus_expansion_shortage');
       return classifyDirective({ id: `directive:${index + 1}`, ...entry }, pendingHost ? false : true);
     });
     const host = (this.state.abilityRuntime?.hostRequests ?? []).map((entry, index) => ({

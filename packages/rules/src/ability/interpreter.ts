@@ -2784,6 +2784,10 @@ function wodimeLostbeltExpanded(s: GameState, lostbelt: 'atlantis' | 'olympus'):
   return Array.isArray(ids) && ids.length > 0;
 }
 
+function wodimeOlympusEventCapacity(s: GameState): number {
+  return (s.eventDeck?.length ?? 0) + (s.eventDiscardPile?.length ?? 0);
+}
+
 function canWodimeLostbeltExpansion(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (!isWodimeLostbeltExpansionSemantic(a)) return false;
   const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
@@ -2791,7 +2795,8 @@ function canWodimeLostbeltExpansion(s: GameState, sourceId: string, a: Authoring
   if (a.id === 'wodime.crypter.atlantis') return event?.type === 'game_start' && !wodimeLostbeltExpanded(s, 'atlantis');
   const p = player(s, source.controllerPlayerId);
   return phase(s) === 'action' && s.round.prioritySeat === p.seat && !wodimeLostbeltExpanded(s, 'olympus') &&
-    structuredCounterValue(s, p.id, WODIME_GOD_LEGACY_KEY) >= 5 && (s.eventDeck?.length ?? 0) >= 2;
+    structuredCounterValue(s, p.id, WODIME_GOD_LEGACY_KEY) >= 5 &&
+    modeState(s).wodimeOlympusExpansionShortagePending !== true;
 }
 
 function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
@@ -2806,9 +2811,30 @@ function resolveWodimeLostbeltExpansion(s: GameState, ctx: EffectContext, a: Aut
     state.wodimeAtlantisExpandedSkillIds = [...WODIME_ATLANTIS_SOURCE_IDS];
     (state.wodimeLostbeltResponsibilityByPlayer ??= {})[ctx.controllerId] = 'atlantis,olympus';
   } else {
+    const state = modeState(s);
+    if (wodimeOlympusEventCapacity(s) < 2) {
+      state.wodimeOlympusExpansionShortagePending = true;
+      pushModeDirective(s, {
+        directive: 'wodime_olympus_expansion_shortage',
+        controllerId: ctx.controllerId,
+        sourceCardId: ctx.sourceCardId,
+        abilityId: ctx.abilityId,
+        requiredEventCardCount: 2,
+        availableEventCardCount: wodimeOlympusEventCapacity(s),
+        consumed: false,
+      });
+      runtime(s).events.push({ type: 'wodime_olympus_expansion_shortage', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, visibility: 'public' });
+      return;
+    }
     setStructuredCounter(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY,
       structuredCounterValue(s, ctx.controllerId, WODIME_GOD_LEGACY_KEY) - 5);
     s.eventDeck ??= [];
+    if (s.eventDeck.length < 2 && s.eventDiscardPile?.length) {
+      const recycled = s.eventDiscardPile.map((entry) => entry.eventCardId);
+      s.eventDeck.push(...deterministicShuffleIds(s, recycled));
+      s.eventDiscardPile = [];
+      runtime(s).events.push({ type: 'event_deck_recycled', visibility: 'public' });
+    }
     const drawnEventCardIds = s.eventDeck.splice(0, 2);
     const eventOutsideGame = initializeWodimeOlympusOutsideGame(s);
     pushModeDirective(s, {

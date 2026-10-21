@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import * as rules from '../src/index';
 import { createSeededGameState } from '../src/tools/seeded-state';
 import { createMatchSession, installMasterSupportOwnerCards, restoreMatchSession } from '../src/match-session';
+import { createMatchRoom } from '../src/match-room';
 import { isWodimeGodLegacyRuntimeStateValid } from '../src/ability/wodime-god-legacy-capability';
 import { isWodimeAtlantisRuntimeStateValid } from '../src/ability/wodime-atlantis-capability';
 
@@ -49,17 +50,28 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: astrology.id, selectedIds: ['round:1', 'round:2'] }).ok).toBe(true);
     state.round.activePhase = 'action';
     state.round.prioritySeat = state.players[0]!.seat;
-    state.eventDeck = ['event.waxing_moon_ritual.ritual'];
-    expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
-    state.eventDeck = ['event.waxing_moon_ritual.ritual', 'event.waxing_moon_ritual.resistance'];
-    (state.abilityRuntime as any).structuredPlayerFlagsByPlayer = { p1: { 'wodime.god_legacy': 6 } };
     const s1 = state.cards.find((card) => card.definitionId === 'master.wodime.skill.s1')!;
+    state.eventDeck = ['event.waxing_moon_ritual.ritual'];
+    state.eventDiscardPile = [];
+    (state.abilityRuntime as any).structuredPlayerFlagsByPlayer = { p1: { 'wodime.god_legacy': 6 } };
+    expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(true);
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' }).ok).toBe(true);
+    expect((state.abilityRuntime as any).structuredPlayerFlagsByPlayer.p1['wodime.god_legacy']).toBe(6);
+    expect((state as any).modeState.masterDirectives).toContainEqual(expect.objectContaining({
+      directive: 'wodime_olympus_expansion_shortage', consumed: false, availableEventCardCount: 1,
+    }));
+    (state as any).modeState.wodimeOlympusExpansionShortagePending = false;
+    (state as any).modeState.masterDirectives = (state as any).modeState.masterDirectives
+      .filter((entry: any) => entry.directive !== 'wodime_olympus_expansion_shortage');
+    state.eventDeck = ['event.waxing_moon_ritual.ritual'];
+    state.eventDiscardPile = [{ eventCardId: 'event.waxing_moon_ritual.resistance' } as any];
     const legal = rules.projectAbilityState(state, 'p1').legalActions;
     expect(legal).toContainEqual(expect.objectContaining({ type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' }));
     const result = rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: s1.instanceId, abilityId: 'wodime.crypter.olympus' });
     expect(result.ok).toBe(true);
     expect((state as any).modeState.wodimeOlympusExpandedSkillIds).toEqual(['master.wodime.skill.s7', 'master.wodime.skill.s8', 'master.wodime.skill.s9']);
     expect(state.eventDeck).toEqual([]);
+    expect(state.eventDiscardPile).toEqual([]);
     expect(state.eventOutsideGame).toEqual([
       'event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter',
       'event.wodime.olympus.zeus', 'event.wodime.olympus.aphrodite', 'event.wodime.olympus.demeter',
@@ -161,6 +173,11 @@ describe('Wodime frozen authoring archive', () => {
     expect(pending).toBeDefined();
     expect(restored.consumeDirective(pending!.id, { replacementEventCardId: 'event.waxing_moon_ritual.ritual', replacementSlot: 1 })).toBe(false);
     expect(restored.consumeDirective(pending!.id, { replacementEventCardId: 'event.wodime.olympus.zeus', replacementSlot: 1 })).toBe(true);
+    const deckAfterConsume = [...(restored.state.eventDeck ?? [])];
+    const outsideAfterConsume = [...(restored.state.eventOutsideGame ?? [])];
+    expect(restored.consumeDirective(pending!.id, { replacementEventCardId: 'event.wodime.olympus.aphrodite', replacementSlot: 0 })).toBe(false);
+    expect(restored.state.eventDeck).toEqual(deckAfterConsume);
+    expect(restored.state.eventOutsideGame).toEqual(outsideAfterConsume);
     expect(restored.state.eventDeck).toHaveLength(2);
     expect(restored.state.eventDeck).toContain('event.waxing_moon_ritual.ritual');
     expect(restored.state.eventDeck).toContain('event.wodime.olympus.zeus');
@@ -171,6 +188,43 @@ describe('Wodime frozen authoring archive', () => {
       label: 'wodime_olympus_expansion', kind: 'display', status: 'consumed',
       payload: expect.objectContaining({ replacementEventCardId: 'event.wodime.olympus.zeus', replacementSlot: 1 }),
     }));
+
+    const inconsistent = structuredClone(restored.serializeSession());
+    inconsistent.state.modeState.masterDirectives[0].replacedEventCardId = 'event.waxing_moon_ritual.ritual';
+    expect(() => restoreMatchSession(inconsistent, { restorePackKind: 'production_executable' })).toThrow();
+  });
+
+  it('consumes the s5 directive through the host MatchRoom exactly once', () => {
+    const room = createMatchRoom({ seed: 506, hostClientId: 'host-a' });
+    room.joinRoom({ clientId: 'alice', displayName: 'Alice' });
+    room.selectSeat('alice', 1);
+    room.startMatch('host-a');
+    const session = room.session!;
+    session.state.players[0]!.masterCardId = 'master.wodime';
+    const source = structuredClone(session.state.cards.find((card) => card.controllerPlayerId === 'p1')!);
+    source.instanceId = 'host-support-p1-master.wodime.skill.s1';
+    source.definitionId = 'master.wodime.skill.s1';
+    source.ownerPlayerId = 'p1';
+    source.controllerPlayerId = 'p1';
+    source.zone = 'skill';
+    session.state.cards.push(source);
+    session.state.eventDeck = ['event.waxing_moon_ritual.ritual', 'event.waxing_moon_ritual.resistance'];
+    session.state.round.activePhase = 'action';
+    session.state.round.prioritySeat = session.state.players[0]!.seat;
+    (session.state.abilityRuntime as any).structuredPlayerFlagsByPlayer = { p1: { 'wodime.god_legacy': 5 } };
+    expect(session.projectToClientState('p1').view.legalActions).toContainEqual(expect.objectContaining({
+      type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'wodime.crypter.olympus',
+    }));
+    expect(room.dispatchClientCommand('alice', {
+      type: 'activate_ability', cardInstanceId: source.instanceId, abilityId: 'wodime.crypter.olympus',
+    })).toMatchObject({ ok: true });
+    const pending = room.getProjection('host-a').match!.directives.find((entry) => entry.label === 'wodime_olympus_expansion')!;
+    expect(room.consumeDirective('host-a', pending.id, { replacementEventCardId: 'event.wodime.olympus.zeus', replacementSlot: 1 })).toBe(true);
+    const deckAfterConsume = [...(session.state.eventDeck ?? [])];
+    const outsideAfterConsume = [...(session.state.eventOutsideGame ?? [])];
+    expect(room.consumeDirective('host-a', pending.id, { replacementEventCardId: 'event.wodime.olympus.aphrodite', replacementSlot: 0 })).toBe(false);
+    expect(session.state.eventDeck).toEqual(deckAfterConsume);
+    expect(session.state.eventOutsideGame).toEqual(outsideAfterConsume);
   });
 
   it('draws, places, and restores a Wodime event through the canonical event directory', () => {
