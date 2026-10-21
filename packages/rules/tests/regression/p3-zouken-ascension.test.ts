@@ -41,6 +41,13 @@ describe('P3 Zouken ascension source-specific contract', () => {
   });
 
   it('accepts exact passive/action semantics and rejects widened source shapes', () => {
+    const raw = JSON.parse(readFileSync(ARCHIVE, 'utf8')) as { cards: Array<{ id: string; cardFace: { typeLabel: string }; phase3Evidence?: { clauseSources?: Array<{ locator: string }> } }> };
+    const source = raw.cards.find((card) => card.id === CARD_ID)!;
+    expect(source.cardFace.typeLabel).toBe('升华技');
+    expect(source.phase3Evidence?.clauseSources?.map((entry) => entry.locator)).toEqual([
+      'legacy-content.json#masters[14].skills[5].text#line=1',
+      'legacy-content.json#masters[14].skills[5].text#line=2',
+    ]);
     const { pack } = setup();
     const abilities = pack.cards[CARD_ID]!.abilities;
     expect(rules.isZoukenAscensionPassiveSemantic(abilities[0]!)).toBe(true);

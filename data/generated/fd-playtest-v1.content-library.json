@@ -5387,7 +5387,7 @@
         "name": "幕后主使",
         "cardType": "master_skill",
         "cardFace": {
-          "typeLabel": "被动",
+          "typeLabel": "升华技",
           "attributes": [],
           "cost": 0,
           "basePower": 0
@@ -11166,11 +11166,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "29e66fbe3e19b2136fb568f9549c1276d5c92defd0c7d4d8c17b0593bbd3a883",
+    "definitionHash": "e863901b4872b7b7dc5b49645c1b0b6bb823b7cfb71edbc45bb4c44775db1de4",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "29e66fbe3e19b2136fb568f9549c1276d5c92defd0c7d4d8c17b0593bbd3a883"
+      "definitionHash": "e863901b4872b7b7dc5b49645c1b0b6bb823b7cfb71edbc45bb4c44775db1de4"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
