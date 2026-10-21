@@ -76,11 +76,21 @@ describe('Wodime frozen authoring archive', () => {
     ] as const;
     for (const [eventCardId, directive] of eventCases) {
       const session = createMatchSession({ seed: 505, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
+      const modeState = ((session.state as any).modeState ??= {});
+      if (eventCardId === 'event.wodime.atlantis.hephaestus') {
+        modeState.wodimeAtlantisExpandedSkillIds = ['master.wodime.skill.s6'];
+      } else {
+        modeState.wodimeOlympusExpandedSkillIds = [
+          eventCardId === 'event.wodime.olympus.zeus' ? 'master.wodime.skill.s7' :
+            eventCardId === 'event.wodime.olympus.aphrodite' ? 'master.wodime.skill.s8' : 'master.wodime.skill.s9',
+        ];
+      }
       session.state.eventDeck = [eventCardId];
       (session as any).startRound(2, session.state);
       expect(session.state.eventPlacements).toContainEqual(expect.objectContaining({ eventCardId, locationId: 'miyama_town' }));
       expect(session.state.modeState.masterDirectives).toContainEqual(expect.objectContaining({
         directive: 'event_effect_host_review', eventCardId, locationId: 'miyama_town', timing: 'on_event_placed_or_revealed',
+        consumed: false,
       }));
       // The frozen event-specific directive remains visible in the canonical
       // content/runtime boundary; no automatic defeat/token mutation is
@@ -92,7 +102,16 @@ describe('Wodime frozen authoring archive', () => {
       expect(restored.state.eventPlacements).toContainEqual(expect.objectContaining({ eventCardId, locationId: 'miyama_town' }));
       expect(restored.state.modeState.masterDirectives).toContainEqual(expect.objectContaining({ eventCardId, directive: 'event_effect_host_review' }));
       expect(restored.projectToClientState('p1').directives).toContainEqual(expect.objectContaining({
-        kind: 'display', label: 'event_effect_host_review', payload: expect.objectContaining({ eventCardId }),
+        kind: 'host_adjudicated', status: 'pending', label: 'event_effect_host_review',
+        payload: expect.objectContaining({ eventCardId, consumed: false }),
+      }));
+      expect(restored.autoResolveNonInteractiveWindows()).toBe('host_directive');
+      const pending = restored.projectToClientState('p1').directives.find((entry) =>
+        entry.label === 'event_effect_host_review' && (entry.payload as any).eventCardId === eventCardId && entry.status === 'pending');
+      expect(pending).toBeDefined();
+      expect(restored.consumeDirective(pending!.id)).toBe(true);
+      expect(restored.projectToClientState('p1').directives).toContainEqual(expect.objectContaining({
+        kind: 'display', status: 'consumed', label: 'event_effect_host_review', payload: expect.objectContaining({ eventCardId, consumed: true }),
       }));
 
       const forged = structuredClone(snapshot);

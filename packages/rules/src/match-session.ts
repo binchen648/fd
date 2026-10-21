@@ -2677,6 +2677,20 @@ function eventHasHostAdjudicatedEffects(eventCardId: string): boolean {
     .some((effect) => !automatic.has(String(effect.type ?? '')));
 }
 
+function wodimeEventRequiresHostAdjudication(state: GameState, eventCardId: string): boolean {
+  const mode = modeStateOf(state);
+  if (eventCardId === 'event.wodime.atlantis.hephaestus') {
+    return Array.isArray(mode.wodimeAtlantisExpandedSkillIds) && mode.wodimeAtlantisExpandedSkillIds.includes('master.wodime.skill.s6');
+  }
+  const olympusSourceByEvent: Record<string, string> = {
+    'event.wodime.olympus.zeus': 'master.wodime.skill.s7',
+    'event.wodime.olympus.aphrodite': 'master.wodime.skill.s8',
+    'event.wodime.olympus.demeter': 'master.wodime.skill.s9',
+  };
+  const sourceId = olympusSourceByEvent[eventCardId];
+  return sourceId !== undefined && Array.isArray(mode.wodimeOlympusExpandedSkillIds) && mode.wodimeOlympusExpandedSkillIds.includes(sourceId);
+}
+
 function visibleScope(zone: string, ownerPlayerId: string) {
   return zone === 'field' || zone === 'attack_area' || zone === 'master'
     ? { scope: 'public' as const }
@@ -3794,7 +3808,11 @@ export class MatchSession {
         eventCardId,
         locationId,
         timing: 'on_event_placed_or_revealed',
-        consumed: true,
+        // Only an actually expanded Wodime source turns its event effect into
+        // a pending host directive. Other host-adjudicated event records stay
+        // display-only, preserving the normal event loop until the relevant
+        // Wodime expansion has happened.
+        consumed: !wodimeEventRequiresHostAdjudication(targetState, eventCardId),
       });
       modeState.masterDirectives = masterDirectives;
     }
@@ -4277,7 +4295,16 @@ export class MatchSession {
 
   private directiveViews(): MatchDirectiveView[] {
     const directives = (this.modeState().masterDirectives as Array<Record<string, unknown>> | undefined) ?? [];
-    const applied = directives.map((entry, index) => classifyDirective({ id: `directive:${index + 1}`, ...entry }, true));
+    const applied = directives.map((entry, index) => {
+      const directive = String(entry.directive ?? entry.type ?? '');
+      // Wodime's event effects and Olympus expansion are explicitly
+      // host-adjudicated.  Preserve their unconsumed state as a real pending
+      // queue item; the other legacy audit directives remain display-only.
+      const pendingHost = entry.consumed !== true &&
+        ((directive === 'event_effect_host_review' && wodimeEventRequiresHostAdjudication(this.state, String(entry.eventCardId ?? ''))) ||
+          directive === 'wodime_olympus_lostbelt');
+      return classifyDirective({ id: `directive:${index + 1}`, ...entry }, pendingHost ? false : true);
+    });
     const host = (this.state.abilityRuntime?.hostRequests ?? []).map((entry, index) => ({
       id: `host:${index + 1}`,
       controllerId: entry.controllerId,
