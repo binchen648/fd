@@ -757,13 +757,24 @@
       "issueCodes": []
     },
     {
+      "entityId": "master.zouken.skill.s4",
+      "displayName": "五百年的执念",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
       "entityId": "master.zouken.skill.s5",
       "displayName": "间桐家的宗主",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
-      "imageIndex": 2,
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": []
     },

@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import * as rules from '../../src/index';
 import { createSeededGameState } from '../../src/tools/seeded-state';
 import type { GameState } from '../../src/schema/game';
+import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 
 const ACTIVE_ARCHIVE_PATH = 'data/authoring/masters/master.zouken.json';
 const S4_ID = 'master.zouken.skill.s4';
@@ -47,6 +48,28 @@ function appendBattleResult(state: GameState, withLoser = true): void {
 }
 
 describe('P3 Zouken s4 pseudo-vampire source-specific contract', () => {
+  it('is present in the checked-in generated pack and live seven-player MatchSession', () => {
+    const generated = contentLibrary.rules.cards[S4_ID];
+    expect(generated).toBeDefined();
+    expect(generated!.abilities.map((ability) => ability.id)).toEqual([
+      'zouken.pseudo-vampire.round-end',
+      'zouken.pseudo-vampire.battle-end',
+      'zouken.pseudo-vampire.bug-body',
+    ]);
+    const session = rules.createMatchSession({ seed: 20260904, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+    const runtimeCard = session.state.abilityRuntime!.pack.cards[S4_ID];
+    expect(runtimeCard).toEqual(generated);
+    expect(session.rawCards.get(S4_ID)).toEqual(generated);
+    const zoukenPairing = session.pairings.find((pairing) => pairing.master.id === 'master.zouken');
+    expect(zoukenPairing).toBeDefined();
+    expect(session.state.cards).toContainEqual(expect.objectContaining({
+      definitionId: S4_ID,
+      ownerPlayerId: zoukenPairing!.playerId,
+      controllerPlayerId: zoukenPairing!.playerId,
+      zone: 'skill',
+    }));
+  });
+
   it('loads all three exact source-bound clauses and rejects a widened movement shape', () => {
     const { pack } = setup();
     const abilities = pack.cards[S4_ID]!.abilities;
