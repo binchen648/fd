@@ -179,6 +179,11 @@ export interface RuleOverrideState {
   extraAttackPlayAllowanceByManaByPlayer?: Record<string, { threshold: number; amount: number }>;
   viewFaceDownEventsPlayerIds?: string[];
   ignoreSituationPlayForbidAttributesByPlayer?: Record<string, string[]>;
+  /** Source-specific Zouken s3 action bonus with an auditable payment envelope. */
+  zoukenFounderPowerByPlayer?: Record<string, {
+    round: number; amount: number; sourceCardId: string; abilityId: string; controllerId: string;
+    paidMana: number; manaBefore: number; manaAfter: number;
+  }>;
 }
 
 export interface GameState {
