@@ -1354,7 +1354,12 @@ function hasCoherentReplayRestoreEnvelope(
   return true;
 }
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
-const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
+// Keep the established seven-player roster deterministic while Abigail's new
+// source-bound card archive is validated through the live executable pack.
+// Her pairing is enabled only once the remaining source-only clauses have a
+// complete owner contract; s3a itself must not perturb existing pairings.
+const servantCharacters = Object.values(runtimeContent.rules.characters)
+  .filter((character) => character.kind === 'servant' && character.id !== 'servant.abigail');
 
 const attributeTags = {
   strength: '力量',

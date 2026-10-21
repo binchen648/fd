@@ -17,6 +17,7 @@
     "data/authoring/servants/servant.ereshkigal.json",
     "data/authoring/servants/servant.tomoe.json",
     "data/authoring/servants/servant.kintoki.json"
+    ,"data/authoring/servants/servant.abigail.json"
   ],
   "authoringMasterFiles": [
     "data/authoring/masters/master.kayneth.json",

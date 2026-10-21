@@ -359,6 +359,7 @@ function mapDeckCard(cardId: string, copies: number): ServantDefinition['startin
   if (lower === 'card.x-pilgrimcall') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-4', copies };
   if (lower === 'card.x-pilgrimrespite') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-5', copies };
   if (lower === 'card.x-pilgrimdestiny') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-6', copies };
+  if (lower === 'card.x-foreigner') return { entryType: 'named', attribute: 'special', cardId: 'servant.abigail.skill.sc-abigail-4', copies };
   if (lower === 'card.cardluck') return { entryType: 'named', attribute: 'special', cardId: 'basic.luck', copies };
   if (lower === 'card.cardsurveil') return { entryType: 'named', attribute: 'special', cardId: 'basic.surveil', copies };
   if (lower === 'card.cardpreparation') return { entryType: 'named', attribute: 'special', cardId: 'basic.preparation', copies };

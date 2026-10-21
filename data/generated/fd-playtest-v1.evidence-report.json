@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 8,
-    "servants": 7,
+    "servants": 8,
     "events": 20,
     "blockingIssues": 0
   },
@@ -810,6 +810,84 @@
       "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": []
+    },
+    {
+      "entityId": "servant.abigail",
+      "displayName": "阿比盖尔·威廉姆斯",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+      "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.abigail.overview",
+      "displayName": "阿比盖尔·威廉姆斯",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+      "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.abigail.skill.sc-abigail-1",
+      "displayName": "理智丧失",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+      "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.abigail.skill.sc-abigail-2",
+      "displayName": "深渊凝视",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+      "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.abigail.skill.sc-abigail-3",
+      "displayName": "领域外生命",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+      "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.abigail.skill.sc-abigail-4",
+      "displayName": "领域外生命",
+      "entityKind": "generated",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+      "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "imageIndex": 4,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
     },
     {
       "entityId": "servant.achilles",
@@ -1689,6 +1767,48 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.shinji.skill.useless-person source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
       "entityId": "master.shinji.skill.useless-person",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.abigail source image was not verified in this checkout: Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "entityId": "servant.abigail",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.abigail.overview source image was not verified in this checkout: Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "entityId": "servant.abigail.overview",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.abigail.skill.sc-abigail-1 source image was not verified in this checkout: Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "entityId": "servant.abigail.skill.sc-abigail-1",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.abigail.skill.sc-abigail-2 source image was not verified in this checkout: Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "entityId": "servant.abigail.skill.sc-abigail-2",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.abigail.skill.sc-abigail-3 source image was not verified in this checkout: Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "entityId": "servant.abigail.skill.sc-abigail-3",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.abigail.skill.sc-abigail-4 source image was not verified in this checkout: Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+      "entityId": "servant.abigail.skill.sc-abigail-4",
       "field": "source.imagePath",
       "blocking": false
     },

@@ -264,6 +264,91 @@
   ],
   "servants": [
     {
+      "id": "servant.abigail",
+      "name": "阿比盖尔·威廉姆斯",
+      "classTag": "Foreigner",
+      "overviewCardId": "servant.abigail.overview",
+      "startingDeck": {
+        "size": 12,
+        "entries": [
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 1,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 2,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 1,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 2,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 3,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 4,
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "servant.abigail.skill.sc-abigail-4",
+            "copies": 2
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.surveil",
+            "copies": 2
+          }
+        ],
+        "attributeCounts": {
+          "strength": 0,
+          "agility": 3,
+          "magecraft": 5,
+          "special": 4
+        }
+      },
+      "skillCardIds": [
+        "servant.abigail.skill.sc-abigail-1",
+        "servant.abigail.skill.sc-abigail-2",
+        "servant.abigail.skill.sc-abigail-3"
+      ],
+      "linkedCards": {
+        "generated": [
+          "servant.abigail.skill.sc-abigail-4"
+        ]
+      },
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Authoring servant converted for seven-player product playtest."
+      },
+      "source": {
+        "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+        "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "servant.achilles",
       "name": "阿喀琉斯",
       "classTag": "Rider",
@@ -2489,6 +2574,120 @@
       "source": {
         "htmPath": "chm-extract/间桐脏砚.htm",
         "imagePath": "../../Fate_Domination-开发版/images/masters/间桐脏砚.png",
+        "imageIndex": 4,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.abigail.overview",
+      "name": "阿比盖尔·威廉姆斯",
+      "cardType": "servant_overview",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+        "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-1",
+      "name": "理智丧失",
+      "cardType": "servant_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "理智丧失。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+        "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+        "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-2",
+      "name": "深渊凝视",
+      "cardType": "servant_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "深渊凝视。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+        "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-3",
+      "name": "领域外生命",
+      "cardType": "servant_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "被动/行动阶段：移除手牌的一张【领域外生命】。若如此，获得2点魔力。\n行动阶段：将你的弃牌堆中任意数量的【领域外生命】打出，战斗阶段结束后将你所有激活的【领域外生命】洗入牌库。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+        "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.abigail.skill.sc-abigail-4",
+      "name": "领域外生命",
+      "cardType": "generated",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 0,
+      "printedText": "领域外生命。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/阿比盖尔·威廉姆斯.htm",
+        "imagePath": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png",
         "imageIndex": 4,
         "reviewedAgainstImage": true
       }
@@ -9602,6 +9801,165 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
+      "servant.abigail.skill.sc-abigail-1": {
+        "id": "servant.abigail.skill.sc-abigail-1",
+        "name": "理智丧失",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "特殊",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [],
+        "mode": "automatic",
+        "ownerId": "servant.abigail",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.abigail.skill.sc-abigail-2": {
+        "id": "servant.abigail.skill.sc-abigail-2",
+        "name": "深渊凝视",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "特殊",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [],
+        "mode": "automatic",
+        "ownerId": "servant.abigail",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.abigail.skill.sc-abigail-3": {
+        "id": "servant.abigail.skill.sc-abigail-3",
+        "name": "领域外生命",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "主动",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [
+          {
+            "id": "servant.abigail.skill.sc-abigail-3.banish-outside-life",
+            "kind": "phase_action",
+            "printedClause": "被动/行动阶段：移除手牌的一张【领域外生命】。若如此，获得2点魔力。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [
+              {
+                "id": "outside_life",
+                "type": "card_instance",
+                "scope": {
+                  "zone": "hand",
+                  "controller": "self",
+                  "owner": "controller"
+                },
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "visibility": "private_to_controller",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.abigail.skill.sc-abigail-4"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "id": "banish-outside-life",
+                "type": "move_card",
+                "target": "outside_life",
+                "to": {
+                  "zone": "removed_from_game"
+                }
+              },
+              {
+                "id": "gain-two-mana",
+                "type": "adjust_mana",
+                "player": "controller",
+                "amount": 2
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.abigail",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.abigail.skill.sc-abigail-4": {
+        "id": "servant.abigail.skill.sc-abigail-4",
+        "name": "领域外生命",
+        "cardType": "servant_deck_card",
+        "cardFace": {
+          "typeLabel": "特殊",
+          "attributes": [
+            "特殊"
+          ],
+          "cost": 0,
+          "basePower": 0
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [],
+        "abilities": [],
+        "mode": "automatic",
+        "ownerId": "servant.abigail",
+        "playKind": "attack",
+        "destinationZone": "attack_area"
+      },
       "card.derived.master.shirou-emiya.ganjiang-moye": {
         "id": "card.derived.master.shirou-emiya.ganjiang-moye",
         "name": "干将·莫邪",
@@ -11285,6 +11643,19 @@
           "servant.kintoki.skill.sc-kintoki-3"
         ],
         "publicInformation": {}
+      },
+      "servant.abigail": {
+        "id": "servant.abigail",
+        "name": "阿比盖尔·威廉姆斯",
+        "class": "Foreigner",
+        "kind": "servant",
+        "cardIds": [
+          "servant.abigail.skill.sc-abigail-1",
+          "servant.abigail.skill.sc-abigail-2",
+          "servant.abigail.skill.sc-abigail-3",
+          "servant.abigail.skill.sc-abigail-4"
+        ],
+        "publicInformation": {}
       }
     },
     "decks": {
@@ -11385,6 +11756,20 @@
         "basic.agility.5",
         "basic.luck",
         "basic.luck"
+      ],
+      "servant.abigail": [
+        "basic.agility.1",
+        "basic.agility.1",
+        "basic.agility.2",
+        "basic.magecraft.1",
+        "basic.magecraft.2",
+        "basic.magecraft.2",
+        "basic.magecraft.3",
+        "basic.magecraft.4",
+        "servant.abigail.skill.sc-abigail-4",
+        "servant.abigail.skill.sc-abigail-4",
+        "basic.surveil",
+        "basic.surveil"
       ]
     },
     "fallbackCommandSpells": {
@@ -11395,11 +11780,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "ceea954363c5aa4b908d9673970abce758f2c76ed113401673d5448f265086a4",
+    "definitionHash": "1d9ab4beb4a71f6dc14492ec6102196433390ba4a0d5ca3058fdc77ca85eb76d",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "ceea954363c5aa4b908d9673970abce758f2c76ed113401673d5448f265086a4"
+      "definitionHash": "1d9ab4beb4a71f6dc14492ec6102196433390ba4a0d5ca3058fdc77ca85eb76d"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -12435,18 +12820,49 @@
         "abilityIndex": 1,
         "path": "archives[14].cards[2].abilities[1]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "archiveId": "master.shirou-emiya",
+      "servant.abigail.skill.sc-abigail-1": {
+        "archiveId": "servant.abigail",
         "archiveIndex": 15,
         "cardIndex": 0,
         "path": "archives[15].cards[0]"
       },
+      "servant.abigail.skill.sc-abigail-2": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 1,
+        "path": "archives[15].cards[1]"
+      },
+      "servant.abigail.skill.sc-abigail-3": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 2,
+        "path": "archives[15].cards[2]"
+      },
+      "servant.abigail.skill.sc-abigail-3#servant.abigail.skill.sc-abigail-3.banish-outside-life": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[15].cards[2].abilities[0]"
+      },
+      "servant.abigail.skill.sc-abigail-4": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 3,
+        "path": "archives[15].cards[3]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 16,
+        "cardIndex": 0,
+        "path": "archives[16].cards[0]"
+      },
       "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
         "archiveId": "master.shirou-emiya",
-        "archiveIndex": 15,
+        "archiveIndex": 16,
         "cardIndex": 0,
         "abilityIndex": 0,
-        "path": "archives[15].cards[0].abilities[0]"
+        "path": "archives[16].cards[0].abilities[0]"
       }
     }
   }

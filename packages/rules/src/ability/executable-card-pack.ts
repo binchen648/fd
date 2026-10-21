@@ -100,6 +100,7 @@ const namedLegacyDeckIds: Record<string, string> = {
   'card.x-pilgrimcall': 'servant.artoriac.skill.sc-artoriac-4',
   'card.x-pilgrimrespite': 'servant.artoriac.skill.sc-artoriac-5',
   'card.x-pilgrimdestiny': 'servant.artoriac.skill.sc-artoriac-6',
+  'card.x-foreigner': 'servant.abigail.skill.sc-abigail-4',
 };
 
 function canonicalize(value: unknown): unknown {
