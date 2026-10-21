@@ -470,15 +470,16 @@ function isRestoreResponseWindow(value: unknown): boolean {
 
 function isRestoreSafeEvent(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.type !== 'string') return false;
-  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
+  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','recipientPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
     if (value[key] !== undefined && typeof value[key] !== 'string') return false;
   }
   if (value.unpreventable !== undefined && typeof value.unpreventable !== 'boolean') return false;
   if (value.resource !== undefined && !['mana','command_seals','victory_points'].includes(String(value.resource))) return false;
   if (value.rewardBranch !== undefined && value.rewardBranch !== 'mana' && value.rewardBranch !== 'victory_points') return false;
-  for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
+  for (const key of ['delta','before','after','requestedDelta','amount'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
   for (const key of ['revision','movedCount','roundNumber'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
+  if (value.targetPlayerIds !== undefined && !isRestoreStringArray(value.targetPlayerIds)) return false;
   return true;
 }
 
@@ -846,6 +847,17 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
         isRestoreFiniteNumber(entry.manaAfter) && entry.paidMana === entry.amount * 2 &&
         entry.manaBefore - entry.manaAfter === entry.paidMana && entry.manaAfter >= 0 &&
         entry.amount <= Math.floor(entry.manaBefore / 2)))) return false;
+  if (value.abigailTrueNamePowerBySource !== undefined && (!isRestoreRecord(value.abigailTrueNamePowerBySource) ||
+      !Object.entries(value.abigailTrueNamePowerBySource).every(([sourceCardId, entry]) => isRestoreRecord(entry) &&
+        entry.sourceCardId === sourceCardId && entry.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
+        typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
+        typeof entry.abigailPlayerId === 'string' && playerIds.has(entry.abigailPlayerId) &&
+        isRestoreStringArray(entry.targetPlayerIds) && new Set(entry.targetPlayerIds).size === entry.targetPlayerIds.length &&
+        entry.targetPlayerIds.length === (entry.controllerId === entry.abigailPlayerId ? 1 : 2) &&
+        entry.targetPlayerIds.every((id) => id === entry.controllerId || id === entry.abigailPlayerId) &&
+        entry.targetPlayerIds[0] === entry.controllerId &&
+        (entry.controllerId === entry.abigailPlayerId || entry.targetPlayerIds[1] === entry.abigailPlayerId) &&
+        isRestoreSafeInteger(entry.amount) && entry.amount === 6))) return false;
   return true;
 }
 
@@ -1100,6 +1112,22 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
           sourceDefinition.id !== 'master.zouken.skill.s3' || entry.controllerId !== playerId ||
           entry.abilityId !== 'zouken.founder.power-conversion' || entry.round !== roundNumber ||
           usage !== entry.round || !paymentRecorded || !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
+    }
+  }
+  const abigailPower = restoredState.ruleOverrides?.abigailTrueNamePowerBySource;
+  if (abigailPower !== undefined) {
+    const activeAbigailPlayers = restoredState.players.filter((player) => player.status === 'active' && player.servantCardId === 'servant.abigail');
+    if (activeAbigailPlayers.length !== 1) return false;
+    const abigailPlayerId = activeAbigailPlayers[0]!.id;
+    for (const [sourceCardId, entry] of Object.entries(abigailPower)) {
+      const source = cardsByInstance.get(sourceCardId);
+      const sourceDefinition = source && definitions[source.definitionId as string];
+      const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[sourceCardId] : undefined;
+      if (!source || source.definitionId !== 'servant.abigail.skill.sc-abigail-4' || (source.ownerPlayerId !== entry.abigailPlayerId && source.ownerPlayerId !== entry.controllerId) ||
+          source.controllerPlayerId !== entry.controllerId || source.zone !== 'attack_area' || !isRestoreRecord(source.visibility) || source.visibility.scope !== 'public' ||
+          source.generatedBy !== 'servant.abigail.skill.sc-abigail-1' || entry.abigailPlayerId !== abigailPlayerId ||
+          !isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-4' ||
+          !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
     }
   }
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
