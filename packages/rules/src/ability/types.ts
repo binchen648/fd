@@ -198,6 +198,7 @@ export interface SafeEvent {
   toState?: string;
   revision?: number;
   cardInstanceId?: string;
+  cardInstanceIds?: string[];
   sourcePlayerId?: PlayerId;
   targetPlayerId?: PlayerId;
   roundNumber?: number;

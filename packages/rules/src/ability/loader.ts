@@ -36,7 +36,7 @@ function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleN
 }
 const supportedTypes = new Set([
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
-  'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
+  'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'shuffle_abigail_active_outside_life_into_deck', 'base_power_at_most',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining',
   'shuffle_zone_into_deck', 'shuffle_deck', 'adjust_mana', 'adjust_victory_points', 'move_player', 'branch',
   'create_card', 'pay_mana', 'move_source_card', 'integer', 'lte', 'gt', 'exists_target', 'played_this_round',
@@ -229,7 +229,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
             issue('effects', 'set_mana_cap is reserved for the exact Zouken game-start mana bootstrap contract', id);
           }
         }
-        if (effect.type === 'play_selected_cards' && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'hand')) {
+        const isAbigailS3bDiscardPlay = id === 'servant.abigail.skill.sc-abigail-3.play-outside-life' &&
+          effect.type === 'play_selected_cards' && effect.target === 'outside_life_discard' &&
+          nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'discard');
+        if (effect.type === 'play_selected_cards' && !isAbigailS3bDiscardPlay && !nodes(a.targets).some(t => t.id === effect.target && t.type === 'card_instance' && node(t.scope).zone === 'hand')) {
           issue('effects.target', 'Effect play requires a declared hand-card target', id);
         }
       }
