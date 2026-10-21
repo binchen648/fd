@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.zouken",
+  "name": "间桐脏砚",
+  "class": "Master",
+  "publicInformation": { "type": "master_package", "initialMana": 10 },
+  "overviewCapabilityStatus": "HOST_ADJUDICATED",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "cross-repo-source-audit-20261021",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "crossRepoSourceAudit": {
+      "path": "E:/Codex/FD/.fd-takeover-audit-20261018/FD-ZOUKEN-CROSS-REPO-SOURCE-AUDIT-20261021.md",
+      "sha256": "8CBF562644144572B7E6A3A27BB2526B1A2AF8E1B6F513E1A362424B02F7BEAC"
+    },
+    "textSource": {
+      "path": "E:/Codex/FD/Fate_Domination-开发版/data_masters.js",
+      "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825",
+      "locator": "line=19; record=m_zouken"
+    },
+    "artSource": {
+      "path": "E:/Codex/FD/Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9",
+      "locator": "master.zouken/间桐脏砚"
+    },
+    "note": "Builder provenance binds preserved development text and owner art as external source candidates with exact locators and hashes. The legacy runtime and old handler files are not semantic authorization. Unsupported owner mechanics remain explicit HOST_ADJUDICATED until a target-runtime contract is accepted.",
+    "sourceLocators": {
+      "development": "Fate_Domination-开发版/images/masters/间桐脏砚.png#master.zouken/间桐脏砚",
+      "text": "Fate_Domination-开发版/data_masters.js#line=19#record=m_zouken",
+      "legacySnapshot": "binchen648_fd/archive/legacy-content-ref.json#master/master.zouken"
+    }
+  },
+  "sources": [
+    {
+      "id": "development_card_images",
+      "type": "development_image_set",
+      "imageOrder": ["../../Fate_Domination-开发版/images/masters/间桐脏砚.png"]
+    }
+  ],
+  "cards": [
+    {
+      "id": "master.zouken.skill.ascension",
+      "aliases": ["ascension"], "legacyId": "ascension", "name": "幕后主使", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+      "cardFace": { "typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "zouken.illusive-mastermind", "kind": "passive",
+        "printedClause": "当你移动时，可以无视交战状态。移除【刻印虫】\"如果你赢得一场战斗\"的触发条件。\n行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "zouken_illusive_mastermind" }],
+        "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "6bec5e2443f416546ea830907c255e87b2ad2d9cad9ddb12dfd8436c0b0ee7b7",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.ascension", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/ascension", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [
+          { "locator": "legacy-content.json#masters[14].skills[5].text#line=1", "sha256": "2a10ede8362da34c2511a6c94f910963465056eaabee3dd078815df0def9d850" },
+          { "locator": "legacy-content.json#masters[14].skills[5].text#line=2", "sha256": "70b82fdcad753cb335baf3fab65c66acf4f57f50cd52fd00813e8306ca2c56af" }
+        ],
+        "implementationStatus": "host_adjudicated"
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.zouken.skill.s1", "aliases": ["s1"], "legacyId": "s1", "name": "大空洞的亡者", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "zouken.dead-in-great-cavern", "kind": "passive", "printedClause": "游戏开始时，将你的魔力设置为10点且你的魔力上限为16点。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "zouken_dead_in_great_cavern" }],
+        "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s1", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s1", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [{ "locator": "legacy-content.json#masters[14].skills[0].text#line=1", "sha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945" }],
+        "implementationStatus": "host_adjudicated"
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.zouken.skill.s2", "aliases": ["s2"], "legacyId": "s2", "name": "五百年的活尸", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "zouken.five-hundred-year-undead", "kind": "passive", "printedClause": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "zouken_five_hundred_year_undead" }],
+        "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s2", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s2", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [{ "locator": "legacy-content.json#masters[14].skills[1].text#line=1", "sha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3" }],
+        "implementationStatus": "host_adjudicated"
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.zouken.skill.s3", "aliases": ["s3"], "legacyId": "s3", "name": "创造者", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+      "cardFace": { "typeLabel": "行动阶段", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "zouken.founder", "kind": "passive", "printedClause": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "zouken_founder" }],
+        "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "cea95dc5010d588158e85f29d23cbbfa92f4a3211825312a12d0f641b7648b44",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s3", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s3", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [
+          { "locator": "legacy-content.json#masters[14].skills[2].text#line=1", "sha256": "f94b2f9c32f7e86e65aa93611e9fcd140aaed7aae300388a85b1e86ce3f79ede" },
+          { "locator": "legacy-content.json#masters[14].skills[2].text#line=2", "sha256": "eebcb82e2cc75d9f64efcdee761235dbfdf49182c5a36d1a1b7dc1eb850afe10" }
+        ],
+        "implementationStatus": "host_adjudicated"
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.zouken.skill.s4", "aliases": ["s4"], "legacyId": "s4", "name": "五百年的执念", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "zouken.pseudo-vampire", "kind": "passive", "printedClause": "回合结束时，若你本回合获得的魔力少于3点，失去2点战果。\n刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。\n虫之身-战斗阶段：花费7点魔力，移动至一处地点。",
+        "activation": { "trigger": "while_active" },
+        "effects": [{ "type": "record_master_directive", "directive": "zouken_pseudo_vampire" }],
+        "execution": { "mode": "host_adjudicated", "allowedOperations": [] }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "3b66cc0b2d7c1e95bdd02b34e62de54f5383e53b20a736b69cb023f3388f2f49",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s4", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s4", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [
+          { "locator": "legacy-content.json#masters[14].skills[3].text#line=1", "sha256": "dea05b1024efdc4802497595a372ed1a2290fb5268c35fe6330fd96f7e1b9305" },
+          { "locator": "legacy-content.json#masters[14].skills[3].text#line=2", "sha256": "3326dc0bdd2db20f88c2652a09ebfb25691c0b4beabf0a2dd86f3f53d76cee98" },
+          { "locator": "legacy-content.json#masters[14].skills[3].text#line=3", "sha256": "1a648249487df828988dd2ecfa5dbbbbaf632d1a84ac55302eaa31428863e1fc" }
+        ],
+        "implementationStatus": "host_adjudicated"
+      },
+      "verification": { "implementationStatus": "host_adjudicated" }
+    },
+    {
+      "id": "master.zouken.skill.s5", "aliases": ["s5"], "legacyId": "s5", "name": "间桐家的宗主", "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.zouken" },
+      "printedText": "局势牌无法禁止你使用宝具。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "playRequirements": [],
+      "abilities": [{
+        "id": "master.zouken.skill.s5.game-start-rules", "kind": "forced_trigger", "printedClause": "局势牌无法禁止你使用宝具。",
+        "activation": { "trigger": "game_start" },
+        "effects": [{ "type": "install_rule_override", "player": "controller", "rule": "ignore_situation_play_forbid_attribute", "attribute": "宝具" }],
+        "execution": { "mode": "automatic" }
+      }],
+      "phase3Evidence": {
+        "sourceTextSha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f",
+        "sourceReferences": [
+          { "kind": "development-text", "document": "Fate_Domination-开发版/data_masters.js", "locator": "line=19#record=m_zouken.s5", "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825" },
+          { "kind": "development-image", "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png", "locator": "master.zouken/间桐脏砚", "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9" },
+          { "kind": "legacy-snapshot", "document": "binchen648_fd/archive/legacy-content-ref.json", "locator": "master/master.zouken/s5", "sha256": "BFF4C268CA3F292E3F32FD2A3B51C7520E3D8C475C703BDB854A43B48318BF2A" }
+        ],
+        "clauseSources": [{ "locator": "legacy-content.json#masters[14].skills[4].text#line=1", "sha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f" }],
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "acceptedContracts": { "gameStartRuleOverrides": "P3-R39/FB2-14" },
+        "implementationStatus": "automatic"
+      },
+      "verification": { "implementationStatus": "automatic" }
+    }
+  ]
+}

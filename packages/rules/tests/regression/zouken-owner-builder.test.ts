@@ -1,10 +1,14 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
+import { compileLoadedPlaytestPack, loadPlaytestContentPack } from '@fd/content';
 import * as rules from '../../src/index';
+import { compileExecutableCardPack } from '../../src/ability/executable-card-pack';
 
-const ARCHIVE_PATH = 'data/authoring/masters/master.zouken.json';
+const SOURCE_ARCHIVE_PATH = 'data/authoring/masters/master.zouken-source-candidates.json';
+const ACTIVE_ARCHIVE_PATH = 'data/authoring/masters/master.zouken.json';
 const PACK_PATH = 'data/packs/fd-playtest-v1/pack.json';
 const IDs = [
   'master.zouken.skill.ascension',
@@ -29,7 +33,7 @@ function readJson(path: string): any {
 
 describe('Zouken Builder owner provenance and runtime boundary', () => {
   it('binds exactly six source-grounded cards with stable text hashes and art provenance', () => {
-    const archive = readJson(ARCHIVE_PATH);
+    const archive = readJson(SOURCE_ARCHIVE_PATH);
     expect(archive.id).toBe('master.zouken');
     expect(archive.cards.map((card: any) => card.id)).toEqual(IDs);
     expect(archive.sourcePolicy.textSource.sha256).toBe('C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825');
@@ -41,17 +45,31 @@ describe('Zouken Builder owner provenance and runtime boundary', () => {
         expect.objectContaining({ kind: 'development-image', sha256: archive.sourcePolicy.artSource.sha256 }),
       ]));
       expect(card.phase3Evidence.sourceTextSha256).toBe(TEXT_SHA[card.legacyId]);
+      if (card.legacyId === 's5') {
+        expect(card.phase3Evidence.f1Commit).toBe('59f145434695d29bdd17e4cb3adc887e84182377');
+      }
     }
   });
 
   it('keeps unsupported mechanics explicit while retaining the accepted s5 automatic contract', () => {
-    const archive = readJson(ARCHIVE_PATH);
-    const pack = rules.loadAuthoringJson(archive);
+    const sourceArchive = readJson(SOURCE_ARCHIVE_PATH);
+    const activeArchive = readJson(ACTIVE_ARCHIVE_PATH);
+    const pack = rules.loadAuthoringJson(activeArchive);
     expect(pack.cards['master.zouken.skill.s5']!.abilities[0]!.execution.mode).toBe('automatic');
     expect(rules.isGameStartRuleOverrideSemantic(pack.cards['master.zouken.skill.s5']!.abilities[0]!)).toBe(true);
-    expect(IDs.slice(0, 5).every((id) => pack.cards[id]!.abilities[0]!.execution.mode === 'host_adjudicated')).toBe(true);
-    expect(pack.report.some((entry) => entry.status === 'unsupported')).toBe(true);
+    expect(activeArchive.cards[0].verification.implementationStatus).toBe('complete');
+    expect(sourceArchive.cards.filter((card: any) => card.id !== 'master.zouken.skill.s5')
+      .every((card: any) => card.abilities[0].execution.mode === 'host_adjudicated')).toBe(true);
+    expect(pack.report).toEqual([]);
+    const compiled = compileExecutableCardPack(compileLoadedPlaytestPack(loadPlaytestContentPack(
+      resolve(PACK_PATH),
+      { workspaceRoot: resolve('.') },
+    )).library);
+    expect(compiled.cards['master.zouken.skill.s5']).toMatchObject({
+      ownerId: 'master.zouken',
+      cardType: 'master_skill',
+    });
     const manifest = readJson(PACK_PATH);
-    expect(manifest.authoringMasterFiles).toContain(ARCHIVE_PATH);
+    expect(manifest.authoringMasterFiles).toContain(ACTIVE_ARCHIVE_PATH);
   });
 });

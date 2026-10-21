@@ -41,6 +41,32 @@
       "src/rules-core/skill-rule-program.ts": "3fe8e5595ec1707774b28245b5843f4d2f8abb4d2fdd803368c4499300f78cfa"
     }
   },
+  "builderProvenance": {
+    "status": "CANDIDATE_BOUND_NOT_ACCEPTED",
+    "auditDocument": {
+      "path": "E:/Codex/FD/.fd-takeover-audit-20261018/FD-ZOUKEN-CROSS-REPO-SOURCE-AUDIT-20261021.md",
+      "sha256": "8cbf562644144572b7e6a3a27bb2526b1a2af8e1b6f513e1a362424b02f7beac"
+    },
+    "textSource": {
+      "path": "E:/Codex/FD/Fate_Domination-开发版/data_masters.js",
+      "sha256": "c596af5730846ef9092375f18c4200b84f032028dc2e8f5483377d8ddcc22825",
+      "locator": "line=19; record=m_zouken"
+    },
+    "artSource": {
+      "path": "E:/Codex/FD/Fate_Domination-开发版/images/masters/间桐脏砚.png",
+      "sha256": "4e4f3f5607d7b39bc16f4acb01831976e4036f38ebc180514c4e6bc28f75c6b9",
+      "locator": "master.zouken/间桐脏砚"
+    },
+    "skills": {
+      "master.zouken.skill.ascension": { "legacyLocator": "master/master.zouken/ascension", "sourceTextSha256": "6bec5e2443f416546ea830907c255e87b2ad2d9cad9ddb12dfd8436c0b0ee7b7", "status": "TEXT_BOUND_SEMANTIC_CONTRACT_BLOCKED" },
+      "master.zouken.skill.s1": { "legacyLocator": "master/master.zouken/s1", "sourceTextSha256": "2d006d8244b028397a5c341b2a37dd634616152d15afcd708aea3163e2b88945", "status": "TEXT_BOUND_SEMANTIC_CONTRACT_BLOCKED" },
+      "master.zouken.skill.s2": { "legacyLocator": "master/master.zouken/s2", "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3", "status": "TEXT_BOUND_SEMANTIC_CONTRACT_BLOCKED" },
+      "master.zouken.skill.s3": { "legacyLocator": "master/master.zouken/s3", "sourceTextSha256": "cea95dc5010d588158e85f29d23cbbfa92f4a3211825312a12d0f641b7648b44", "status": "TEXT_BOUND_SEMANTIC_CONTRACT_BLOCKED" },
+      "master.zouken.skill.s4": { "legacyLocator": "master/master.zouken/s4", "sourceTextSha256": "3b66cc0b2d7c1e95bdd02b34e62de54f5383e53b20a736b69cb023f3388f2f49", "status": "TEXT_BOUND_SEMANTIC_CONTRACT_BLOCKED" },
+      "master.zouken.skill.s5": { "legacyLocator": "master/master.zouken/s5", "sourceTextSha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f", "status": "TEXT_BOUND_ACCEPTED_S5_CONTRACT" }
+    },
+    "boundary": "The six text/art candidates are now auditable, but inventory semanticNormalization and phase3 mapping remain unchanged BLOCKED/EXPLICIT_BLOCK. No source block is cleared solely by this provenance attachment."
+  },
   "summary": {
     "staticSkillCount": 943,
     "dynamicSkillCount": 1,
