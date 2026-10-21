@@ -402,6 +402,17 @@ export function deriveBattleParticipantsFromState(
       }
       const founderPower = state.ruleOverrides?.zoukenFounderPowerByPlayer?.[player.id];
       if (founderPower?.round === state.round.roundNumber) persistentPowerAdjustment += founderPower.amount;
+      for (const entry of Object.values(state.ruleOverrides?.abigailTrueNamePowerBySource ?? {})) {
+        const source = state.cards.find((candidate) => candidate.instanceId === entry.sourceCardId);
+        const sourceState = state.abilityRuntime?.cardState[entry.sourceCardId];
+        if (entry.abilityId === "servant.abigail.skill.sc-abigail-4.true-name-release" &&
+            entry.targetPlayerIds.includes(player.id) && source?.definitionId === "servant.abigail.skill.sc-abigail-4" &&
+            source.generatedBy === "servant.abigail.skill.sc-abigail-1" && source.controllerPlayerId === entry.controllerId &&
+            source.zone === "attack_area" && source.visibility.scope === "public" &&
+            sourceState?.active === true && sourceState.faceDown !== true && Number.isFinite(entry.amount)) {
+          persistentPowerAdjustment += entry.amount;
+        }
+      }
       const participant = {
         playerId: player.id,
         totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,

@@ -187,7 +187,9 @@ export interface SafeEvent {
   before?: number;
   after?: number;
   requestedDelta?: number;
+  amount?: number;
   qualifyingPlayerIds?: PlayerId[];
+  targetPlayerIds?: PlayerId[];
   battlePhaseResolutionId?: string;
   battleId?: string;
   battlefieldId?: string;
@@ -200,6 +202,7 @@ export interface SafeEvent {
   cardInstanceId?: string;
   cardInstanceIds?: string[];
   sourcePlayerId?: PlayerId;
+  recipientPlayerId?: PlayerId;
   targetPlayerId?: PlayerId;
   roundNumber?: number;
   fromZone?: string;

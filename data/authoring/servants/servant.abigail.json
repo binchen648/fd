@@ -5,7 +5,7 @@
   "name": "阿比盖尔·威廉姆斯",
   "class": "Foreigner",
   "canonicalIdSource": "phase3_cross_repo_source_candidate",
-  "authoringStatus": "s3ab_source_bound_builder",
+  "authoringStatus": "s3abc_source_bound_builder",
   "sourcePolicy": {
     "priority": ["original_card_image", "chm_association", "main_repo_legacy_content"],
     "notes": ["实现 sc-abigail-3 两条款；其余技能保留 source-only。", "领域外生命的唯一自动来源标记为 servant.abigail.skill.sc-abigail-1。"]
@@ -13,6 +13,7 @@
   "sources": [
     { "id": "development_image", "type": "original_card_image", "path": "Fate_Domination-开发版/images/servants/阿比盖尔·威廉姆斯.png", "sha256": "3A049A05FC5B7A1C8CA864EA3152239C2E353E15CA509C623487A91B73179D1F", "priority": "original_card_image" },
     { "id": "legacy_skill_text", "type": "main_repo_legacy_content", "path": "Fate_Domination-重构版/src/content/generated/legacy-content.json", "sha256": "8DE23E47529D59E1E05BB8FBD74E1FAAADF21687CBCCDD859B5A8ACFB85E277C", "locator": "servants[178].skills[2].text", "priority": "main_repo_legacy_content" },
+    { "id": "legacy_s4_skill_text", "type": "main_repo_legacy_content", "path": "Fate_Domination-重构版/src/content/generated/legacy-content.json", "sha256": "8DE23E47529D59E1E05BB8FBD74E1FAAADF21687CBCCDD859B5A8ACFB85E277C", "locator": "servants[178].skills[3].text", "priority": "main_repo_legacy_content" },
     { "id": "development_source", "type": "cross_repo_development_source", "path": "Fate_Domination-开发版/batch_berserker_extra.js", "sha256": "6BF26E40FF08FF632AC5DCEE88A9CDA4684E60CA71C39ADADBB239D1F3723FDC", "locator": "servant.abigail", "priority": "chm_association" }
   ],
   "deck": [
@@ -96,8 +97,40 @@
       "id": "servant.abigail.skill.sc-abigail-4", "name": "领域外生命", "cardType": "servant_deck_card",
       "owner": { "type": "servant", "id": "servant.abigail" },
       "printedText": "领域外生命。", "cardFace": { "typeLabel": "特殊", "attributes": ["特殊"], "cost": 1, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "abilities": [],
-      "provenance": { "canonicalIdentity": "outside-life", "generatedBy": "servant.abigail.skill.sc-abigail-1", "zone": "hand", "owner": "controller", "sourceBound": true }
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "abilities": [
+        {
+          "id": "servant.abigail.skill.sc-abigail-4.true-name-release", "kind": "declaration_reveal", "printedClause": "【真名解放】",
+          "activation": { "trigger": "on_use_declared", "requiresSourceState": "active" }, "conditions": [], "targets": [], "cost": [],
+          "effects": [{ "id": "abigail-s4-true-name-release", "type": "abigail_true_name_release" }],
+          "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": { "revealsTrueName": true, "revealScope": "servant_package", "revealTiming": "on_use_declared" },
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard", "kind": "forced_trigger", "printedClause": "战斗阶段结束后，将此牌加入阿比盖尔的弃牌堆。",
+          "activation": { "trigger": "after_battle_ended", "requiresSourceState": "active" }, "conditions": [], "targets": [], "cost": [],
+          "effects": [{ "id": "abigail-s4-recycle-to-abigail-discard", "type": "abigail_true_name_recycle_to_discard" }],
+          "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": { "order": "turn_order", "passBehavior": "decline_this_window" },
+          "limit": {}, "visibility": {}, "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "provenance": { "canonicalIdentity": "outside-life", "generatedBy": "servant.abigail.skill.sc-abigail-1", "zone": "hand", "owner": "controller", "sourceBound": true },
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.abigail/阿比盖尔·威廉姆斯", "sha256": "3A049A05FC5B7A1C8CA864EA3152239C2E353E15CA509C623487A91B73179D1F" },
+          { "kind": "legacy-generated-content", "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[3].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "kind": "legacy-generated-content", "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[3].text#line=2", "sha256": "6a848e72c9475916be224140aae1bd920e23d7716e82ced6b7c039321ea54a60" },
+          { "kind": "legacy-generated-content", "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[3].text#line=3", "sha256": "04d91af3bd1b263a8e9a2ed8d6562257fc21cdb07810c9344230caa419ad1231" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[3].text#line=1", "sha256": "34d0686e0a3e32928564917e173f901363e57039d02d16fb7d63a4003209ab4c" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[3].text#line=2", "sha256": "6a848e72c9475916be224140aae1bd920e23d7716e82ced6b7c039321ea54a60" },
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[3].text#line=3", "sha256": "04d91af3bd1b263a8e9a2ed8d6562257fc21cdb07810c9344230caa419ad1231" }
+        ],
+        "implementationBoundary": "sc-abigail-4 true-name release, source-bound total-power envelope, and after-battle return are implemented; other Abigail skills remain source-only."
+      },
+      "verification": { "printedTextStatus": "source_candidate_cross_checked", "canonicalIdStatus": "coordinator_confirmed", "implementationStatus": "complete" }
     }
   ]
 }
