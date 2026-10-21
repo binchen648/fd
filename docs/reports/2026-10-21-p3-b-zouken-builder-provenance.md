@@ -58,4 +58,3 @@ npm run content:validate could not run in this isolated checkout because
 node_modules/.bin/tsx is absent. Static JSON/hash and git diff --check checks
 are run in Builder. No production runtime outside Zouken authoring/manifest
 was modified.
-
