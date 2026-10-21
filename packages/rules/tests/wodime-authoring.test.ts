@@ -594,7 +594,7 @@ describe('Wodime frozen authoring archive', () => {
     expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_rounds_recorded')).not.toHaveProperty('roundNumbers');
     expect(rules.projectAbilityState(state, 'p2').pendingDecision).toBeUndefined();
     state.round.roundNumber = 3;
-    rules.processAbilityEvent(state, { id: 'wodime-ascension-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    rules.processAbilityEvent(state, { id: 'result-1', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
     const ascension = state.abilityRuntime!.pendingDecision!;
     expect(ascension.controllerId).toBe('p1');
     expect(ascension.interaction?.kind).toBe('wodime_astrology_ascension_round_v1');
@@ -602,6 +602,27 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.projectAbilityState(state, 'p2').pendingDecision).toBeUndefined();
     expect(rules.projectAbilityState(state, 'p2').waitingLabel).toBe('等待响应结算');
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: ascension.id, selectedIds: ['round:2'] }).ok).toBe(false);
+    const session = createMatchSession({ seed: 902, humanPlayerId: 'p1', restorePackKind: 'trusted_authoring_fixture' });
+    session.state = state;
+    (session as any).checkpoint('wodime-ascension-pending');
+    const pendingSnapshot = session.serializeSession();
+    const restored = restoreMatchSession(pendingSnapshot, { restorePackKind: 'trusted_authoring_fixture' });
+    expect(restored.state.abilityRuntime!.pendingDecision?.interaction?.kind).toBe('wodime_astrology_ascension_round_v1');
+    const forgedMissingRoot = structuredClone(pendingSnapshot);
+    delete forgedMissingRoot.state.abilityRuntime!.trustedBattleResultSnapshots!['result-1'];
+    expect(() => restoreMatchSession(forgedMissingRoot, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
+    const forgedTrigger = structuredClone(pendingSnapshot);
+    const forgedDecision = forgedTrigger.state.abilityRuntime!.pendingDecision!;
+    forgedDecision.context.event!.id = 'forged-ascension-trigger';
+    forgedDecision.interaction!.triggerEventId = 'forged-ascension-trigger';
+    expect(() => restoreMatchSession(forgedTrigger, { restorePackKind: 'trusted_authoring_fixture' })).toThrow();
+    const ownerResume = restoreMatchSession(pendingSnapshot, { restorePackKind: 'trusted_authoring_fixture' });
+    const ownerDecision = ownerResume.state.abilityRuntime!.pendingDecision!;
+    expect(ownerResume.dispatchPlayerAction('p2', { type: 'choose_target', decisionId: ownerDecision.id, selectedIds: ['round:4'] }).ok).toBe(false);
+    expect(ownerResume.state.abilityRuntime!.pendingDecision?.id).toBe(ownerDecision.id);
+    expect(ownerResume.dispatchPlayerAction('p1', { type: 'choose_target', decisionId: ownerDecision.id, selectedIds: ['round:4'] }).ok).toBe(true);
+    rules.processAbilityEvent(ownerResume.state, { id: 'result-1', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(ownerResume.state.abilityRuntime!.pendingDecision).toBeUndefined();
     const selectedAscension = rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: ascension.id, selectedIds: ['round:4'] });
     expect(selectedAscension.ok).toBe(true);
     expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
@@ -609,7 +630,7 @@ describe('Wodime frozen authoring archive', () => {
     expect(state.abilityRuntime!.events.find((event: any) => event.type === 'wodime_astrology_ascension_round_recorded')).not.toHaveProperty('roundNumber');
     // Replaying the exact authoritative battle-result id is idempotent and
     // cannot reopen or duplicate the private round choice.
-    rules.processAbilityEvent(state, { id: 'wodime-ascension-win', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    rules.processAbilityEvent(state, { id: 'result-1', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-1', resultId: 'result-1', battlefieldId: 'shinto', battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
     expect(state.abilityRuntime!.pendingDecision).toBeUndefined();
     expect((state.abilityRuntime as any).wodimeAstrologyRoundsByPlayer.p1).toEqual([2, 4, 7]);
   });

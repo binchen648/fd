@@ -5674,6 +5674,20 @@ function isWodimeAstrologyAscensionPendingDecisionLiveValid(s: GameState, decisi
   let ability: AuthoringAbility;
   try { ability = abilityDefinition(s, meta.sourceCardInstanceId, meta.abilityId); } catch { return false; }
   const event = decision.context.event;
+  const root = event?.type === 'after_controller_wins_battle' && event.resultId
+    ? runtime(s).trustedBattleResultSnapshots?.[event.resultId]
+    : undefined;
+  const battleResultIsTrusted = !!root && root.resultId === event?.resultId &&
+    runtime(s).processedEvents.includes(root.resultId) && runtime(s).processedEvents.includes(event.id) &&
+    root.battlePhaseResolutionId === event.battlePhaseResolutionId && root.battleId === event.battleId &&
+    root.battlefieldId === event.battlefieldId &&
+    exactPlayerArray(root.battleParticipantIds, event.battleParticipantIds ?? []) &&
+    exactPlayerArray(root.winners, event.battleResult?.winners ?? []) &&
+    exactPlayerArray(root.loserIds, event.battleResult?.loserIds ?? []) &&
+    ((root.battleParticipantPowers === undefined && event.battleParticipantPowers === undefined) ||
+      (root.battleParticipantPowers !== undefined && event.battleParticipantPowers !== undefined &&
+        Object.keys(root.battleParticipantPowers).length === Object.keys(event.battleParticipantPowers).length &&
+        Object.entries(root.battleParticipantPowers).every(([playerId, power]) => event.battleParticipantPowers![playerId] === power)));
   const source = s.cards.find((candidate) => candidate.instanceId === meta.sourceCardInstanceId);
   const generated = s.cards.filter((candidate) => candidate.definitionId === 'master.wodime.skill.s2' &&
     candidate.ownerPlayerId === meta.controllerId && candidate.controllerPlayerId === meta.controllerId);
@@ -5686,7 +5700,8 @@ function isWodimeAstrologyAscensionPendingDecisionLiveValid(s: GameState, decisi
       decision.controllerId !== meta.controllerId || decision.context.controllerId !== meta.controllerId ||
       decision.context.sourceCardId !== meta.sourceCardInstanceId || decision.context.abilityId !== meta.abilityId ||
       !event || event.type !== 'after_controller_wins_battle' || event.id !== meta.triggerEventId || event.playerId !== meta.controllerId ||
-      !event.battleResult?.winners.includes(meta.controllerId) || meta.sourceCardInstanceId !== decision.context.sourceCardId ||
+      !event.battleResult?.winners.includes(meta.controllerId) || !root?.winners.includes(meta.controllerId) || !battleResultIsTrusted ||
+      meta.sourceCardInstanceId !== decision.context.sourceCardId ||
       meta.abilityId !== decision.context.abilityId || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
       meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${decision.id}:continuation` ||
       (meta.createdRevision !== runtime(s).revision && meta.createdRevision !== runtime(s).revision - 1) ||
@@ -9417,7 +9432,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const source = s.cards.find((candidate) => candidate.instanceId === d.context.sourceCardId);
           const s2 = s.cards.find((candidate) => candidate.definitionId === 'master.wodime.skill.s2' && candidate.ownerPlayerId === playerId && candidate.controllerPlayerId === playerId);
           const expectedOptions = Array.isArray(rounds) ? WODIME_ASTROLOGY_ROUND_OPTIONS.filter((id) => !rounds.includes(Number(id.slice('round:'.length)))) : [];
-          if (!isWodimeAstrologyAscensionSemantic(ability) || !source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+          if (!isWodimeAstrologyAscensionPendingDecisionLiveValid(s, d) || !isWodimeAstrologyAscensionSemantic(ability) || !source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
               source.zone !== 'skill' || !s2 || !event || event.type !== 'after_controller_wins_battle' || event.playerId !== playerId ||
               !event.battleResult?.winners.includes(playerId) || meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
               meta.controllerId !== playerId || meta.triggerEventId !== event.id || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
