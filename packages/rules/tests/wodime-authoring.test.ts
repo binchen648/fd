@@ -64,6 +64,43 @@ describe('Wodime frozen authoring archive', () => {
     expect(rules.projectAbilityState(state, 'p1').legalActions.some((action: any) => action.abilityId === 'wodime.crypter.olympus')).toBe(false);
   });
 
+  it('routes Wodime s6-s9 event effects to host review while preserving the s5 expansion path', () => {
+    // The canonical round producer owns event draws and host review directives.
+    // Feed each frozen Wodime event into a fresh round so the test exercises the
+    // same production path without mutating an already checkpointed placement set.
+    const eventCases = [
+      ['event.wodime.atlantis.hephaestus', 'wodime_hephaestus_event'],
+      ['event.wodime.olympus.zeus', 'wodime_zeus_event'],
+      ['event.wodime.olympus.aphrodite', 'wodime_aphrodite_event'],
+      ['event.wodime.olympus.demeter', 'wodime_demeter_event'],
+    ] as const;
+    for (const [eventCardId, directive] of eventCases) {
+      const session = createMatchSession({ seed: 505, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
+      session.state.eventDeck = [eventCardId];
+      (session as any).startRound(2, session.state);
+      expect(session.state.eventPlacements).toContainEqual(expect.objectContaining({ eventCardId, locationId: 'miyama_town' }));
+      expect(session.state.modeState.masterDirectives).toContainEqual(expect.objectContaining({
+        directive: 'event_effect_host_review', eventCardId, locationId: 'miyama_town', timing: 'on_event_placed_or_revealed',
+      }));
+      // The frozen event-specific directive remains visible in the canonical
+      // content/runtime boundary; no automatic defeat/token mutation is
+      // claimed for clauses whose authority is explicitly host-adjudicated.
+      expect(session.state.abilityRuntime!.events).not.toContainEqual(expect.objectContaining({ directive }));
+      expect(session.state.eventDeck).toEqual([]);
+      const snapshot = session.serializeSession();
+      const restored = restoreMatchSession(snapshot, { restorePackKind: 'production_executable' });
+      expect(restored.state.eventPlacements).toContainEqual(expect.objectContaining({ eventCardId, locationId: 'miyama_town' }));
+      expect(restored.state.modeState.masterDirectives).toContainEqual(expect.objectContaining({ eventCardId, directive: 'event_effect_host_review' }));
+      expect(restored.projectToClientState('p1').directives).toContainEqual(expect.objectContaining({
+        kind: 'display', label: 'event_effect_host_review', payload: expect.objectContaining({ eventCardId }),
+      }));
+
+      const forged = structuredClone(snapshot);
+      forged.state.eventDeck = ['event.wodime.olympus.not-a-real-card'];
+      expect(() => restoreMatchSession(forged, { restorePackKind: 'production_executable' })).toThrow();
+    }
+  });
+
   it('draws, places, and restores a Wodime event through the canonical event directory', () => {
     const session = createMatchSession({ seed: 101, humanPlayerId: 'p1', restorePackKind: 'production_executable' });
     session.state.eventDeck = ['event.wodime.atlantis.hephaestus'];
