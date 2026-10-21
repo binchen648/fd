@@ -3,6 +3,7 @@ import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/l
 
 import { canOccupyLocation, getLocationById } from "./map-engine";
 import { movementLockedByPersistentRule } from "./rule-overrides";
+import { hasActiveZoukenAscension } from "./zouken-ascension";
 
 const STARTING_LOCATION_BY_SEAT: Record<number, LocationId> = {
   1: "miyama_town",
@@ -250,7 +251,8 @@ function failure(state: GameState, reason: MovePlayerResult["reason"]): MovePlay
 }
 
 function isPlayerEngaged(state: GameState, playerId: string): boolean {
-  if (state.ruleOverrides?.ignoreEngagementForMovementPlayerIds?.includes(playerId)) {
+  if (state.ruleOverrides?.ignoreEngagementForMovementPlayerIds?.includes(playerId) ||
+      hasActiveZoukenAscension(state, playerId)) {
     return false;
   }
 

@@ -8,6 +8,7 @@ import { isCardCloseForbidden } from './card-close-forbid';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
+import { hasActiveZoukenAscension } from '../core/zouken-ascension';
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
@@ -433,6 +434,12 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
         if (c.type === 'at_battlefield') return isBattlefield(s, candidate.locationId);
+        if (c.type === 'zouken_same_battlefield_opponent') {
+          return candidate.id !== ctx.controllerId && sameBattlefield(s, player(s, ctx.controllerId).locationId, candidate.locationId);
+        }
+        if (c.type === 'zouken_command_seals_at_least') {
+          return Number((candidate as unknown as { commandSpells?: number }).commandSpells ?? 3) >= Number(c.amount);
+        }
         if (c.type === 'existing_attack_controlled_by_target') {
           return s.cards.some(card =>
             card.controllerPlayerId === candidate.id &&
@@ -655,6 +662,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isOpponentCloseToOneCandidate(a) && !isAcceptedOpponentCloseToOneAbility(a, 'compiled')) return false;
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) return false;
+  if (isZoukenAscensionAbilityCandidate(a) && (!isZoukenAscensionSource(s, sourceId) || !isZoukenAscensionSemantic(a))) return false;
   if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, sourceId) || !isZoukenS4Semantic(a))) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
@@ -680,6 +688,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
   if (isZoukenS4MoveSemantic(a) && !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
+  if (isZoukenAscensionActionSemantic(a)) {
+    const ctx = context(s, sourceId, a.id, event);
+    if (!hasAvailableManaForFixedCosts(s, ctx, a) || !hasMandatoryTargetAvailability(s, ctx, a)) return false;
+  }
   if (isCloseSourceCardOnPlayedTrigger(a) && closeSourceStateError(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   if (isAlterEgoTransformSemantic(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -751,9 +763,18 @@ const ZOUKEN_S4_MOVE_ABILITY_ID = 'zouken.pseudo-vampire.bug-body';
 const ZOUKEN_S4_ROUND_CLAUSE = '回合结束时，若你本回合获得的魔力少于3点，失去2点战果。';
 const ZOUKEN_S4_BATTLE_CLAUSE = '刻印虫-战斗阶段：战斗阶段结束后，如果你赢得一场战斗，从该战斗的一名败者处吸取至多3点魔力；若该战斗没有其他玩家或你位于侦查，你获得3点魔力。';
 const ZOUKEN_S4_MOVE_CLAUSE = '虫之身-战斗阶段：花费7点魔力，移动至一处地点。';
+const ZOUKEN_ASCENSION_SOURCE_ID = 'master.zouken.skill.ascension';
+const ZOUKEN_ASCENSION_PASSIVE_ID = 'zouken.illusive-mastermind';
+const ZOUKEN_ASCENSION_ACTION_ID = 'zouken.illusive-mastermind.seal-loss';
+const ZOUKEN_ASCENSION_PASSIVE_CLAUSE = '当你移动时，可以无视交战状态。移除【刻印虫】"如果你赢得一场战斗"的触发条件。';
+const ZOUKEN_ASCENSION_ACTION_CLAUSE = '行动阶段：花费6点魔力，使与你处于同一战场的对手失去一枚令咒。';
 
 function isZoukenS4Source(s: GameState, sourceCardId: string): boolean {
   return definition(s, sourceCardId)?.id === ZOUKEN_S4_SOURCE_ID;
+}
+
+function isZoukenAscensionSource(s: GameState, sourceCardId: string): boolean {
+  return definition(s, sourceCardId)?.id === ZOUKEN_ASCENSION_SOURCE_ID;
 }
 
 function isExactZoukenS4Directive(effect: RuleNode | undefined, id: string, directive: string): boolean {
@@ -806,6 +827,56 @@ export function isZoukenS4MoveSemantic(a: AuthoringAbility): boolean {
 
 export function isZoukenS4Semantic(a: AuthoringAbility): boolean {
   return isZoukenS4RoundEndSemantic(a) || isZoukenS4BattleEndSemantic(a) || isZoukenS4MoveSemantic(a);
+}
+
+function isExactZoukenAscensionDirective(effect: RuleNode | undefined, id: string, directive: string): boolean {
+  return !!effect && effect.type === 'record_master_directive' && effect.id === id && effect.directive === directive &&
+    exactNodeKeys(effect, ['id', 'type', 'directive']);
+}
+
+export function isZoukenAscensionAbilityCandidate(a: AuthoringAbility): boolean {
+  return [ZOUKEN_ASCENSION_PASSIVE_ID, ZOUKEN_ASCENSION_ACTION_ID].includes(a.id);
+}
+
+function isExactZoukenAscensionShell(a: AuthoringAbility, kind: string, activationKeys: string[]): boolean {
+  if (a.kind !== kind || a.execution.mode !== 'automatic' || !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length) return false;
+  if (!Object.keys(a.activation).every((key) => activationKeys.includes(key))) return false;
+  if (a.conditions.length || a.creates.length || a.ruleModifiers.length || Object.keys(a.lifecycle).length ||
+      Object.keys(a.limit).length || Object.keys(a.visibility).length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+      (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+      (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
+  return true;
+}
+
+export function isZoukenAscensionPassiveSemantic(a: AuthoringAbility): boolean {
+  return isExactZoukenAscensionShell(a, 'passive', ['trigger']) && a.id === ZOUKEN_ASCENSION_PASSIVE_ID &&
+    a.printedClause === ZOUKEN_ASCENSION_PASSIVE_CLAUSE && a.activation.trigger === 'while_active' &&
+    a.targets.length === 0 && a.cost.length === 0 && a.effects.length === 1 &&
+    isExactZoukenAscensionDirective(a.effects[0], 'zouken-illusive-mastermind', 'zouken_illusive_mastermind');
+}
+
+export function isZoukenAscensionActionSemantic(a: AuthoringAbility): boolean {
+  if (!isExactZoukenAscensionShell(a, 'phase_action', ['phase', 'opens', 'requiresSourceState']) ||
+      a.id !== ZOUKEN_ASCENSION_ACTION_ID || a.printedClause !== ZOUKEN_ASCENSION_ACTION_CLAUSE ||
+      a.activation.phase !== 'action' || a.activation.opens !== 'controller_action_window' ||
+      a.activation.requiresSourceState !== 'active' || a.targets.length !== 1 || a.cost.length !== 1 || a.effects.length !== 1) return false;
+  const target = a.targets[0]!; const count = node(target.count); const constraints = nodes(target.constraints);
+  const cost = a.cost[0]!; const effect = a.effects[0]!;
+  return target.id === 'opponent' && target.type === 'player' && Number(count.min) === 1 && Number(count.max) === 1 &&
+    exactNodeKeys(target, ['id', 'type', 'count', 'constraints']) && constraints.length === 2 &&
+    constraints[0]!.type === 'zouken_same_battlefield_opponent' && exactNodeKeys(constraints[0]!, ['type']) &&
+    constraints[1]!.type === 'zouken_command_seals_at_least' && constraints[1]!.amount === 1 && exactNodeKeys(constraints[1]!, ['type', 'amount']) &&
+    cost.type === 'pay_mana' && cost.id === 'zouken-ascension-pay-six' && cost.player === 'controller' && cost.amount === 6 &&
+    exactNodeKeys(cost, ['id', 'type', 'player', 'amount']) && effect.type === 'adjust_command_seals' &&
+    effect.id === 'zouken-ascension-remove-seal' && effect.player === 'target' && effect.amount === -1 &&
+    effect.directive === 'zouken_illusive_mastermind_remove_seal' && effect.target === 'opponent' &&
+    exactNodeKeys(effect, ['id', 'type', 'player', 'amount', 'directive', 'target']);
+}
+
+export function isZoukenAscensionSemantic(a: AuthoringAbility): boolean {
+  return isZoukenAscensionPassiveSemantic(a) || isZoukenAscensionActionSemantic(a);
 }
 
 function zoukenS4BattleLosers(battle: GameState['battleResults'][number]): string[] {
@@ -869,14 +940,16 @@ function settleZoukenS4BattleEnd(s: GameState, ctx: EffectContext): void {
   const settled = r.zoukenS4BattleSettledBySource ??= {}; const prior = settled[ctx.sourceCardId] ?? [];
   if (prior.includes(event.battlePhaseResolutionId!)) return;
   const controller = player(s, ctx.controllerId);
+  const ascensionRemovesWinGate = hasActiveZoukenAscension(s, ctx.controllerId);
   for (const entry of battles) {
-    if (!entry.winnerIds.includes(ctx.controllerId)) continue;
+    if (!entry.winnerIds.includes(ctx.controllerId) && !ascensionRemovesWinGate) continue;
     const atRecon = controller.locationId === 'recon';
     const hasOtherPlayer = entry.participantIds.some((id) => id !== ctx.controllerId);
-    if (!atRecon && hasOtherPlayer && entry.loserIds.length === 0) continue;
+    const eligibleLosers = entry.loserIds.filter((id) => id !== ctx.controllerId);
+    if (!atRecon && hasOtherPlayer && eligibleLosers.length === 0) continue;
     let sourcePlayerId: string | undefined; let requested = 3;
     if (!atRecon && hasOtherPlayer) {
-      sourcePlayerId = [...entry.loserIds].sort((left, right) => player(s, left).seat - player(s, right).seat)[0];
+      sourcePlayerId = [...eligibleLosers].sort((left, right) => player(s, left).seat - player(s, right).seat)[0];
       if (sourcePlayerId) requested = Math.min(3, player(s, sourcePlayerId).mana);
     }
     const before = controller.mana;
@@ -890,6 +963,49 @@ function settleZoukenS4BattleEnd(s: GameState, ctx: EffectContext): void {
       qualifyingPlayerIds: sourcePlayerId ? [sourcePlayerId] : [] });
   }
   settled[ctx.sourceCardId] = [...prior, event.battlePhaseResolutionId!];
+}
+
+function executeZoukenAscensionAction(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isZoukenAscensionActionSemantic(a)) reject('resolution_failed', 'Unsupported Zouken ascension action semantic shape');
+  const targetId = ctx.selections.opponent?.[0];
+  if (!targetId || targetId === ctx.controllerId || !sameBattlefield(s, player(s, ctx.controllerId).locationId, player(s, targetId).locationId)) {
+    reject('illegal_target', 'Zouken ascension requires an opponent at the controller battlefield');
+  }
+  const target = player(s, targetId);
+  const seals = Number((target as unknown as { commandSpells?: number }).commandSpells ?? 3);
+  if (target.status !== 'active' || seals < 1) reject('illegal_target', 'Zouken ascension target must have a command seal');
+  const before = seals;
+  (target as unknown as { commandSpells: number }).commandSpells = before - 1;
+  runtime(s).events.push({
+    type: 'zouken_ascension_command_seal_removed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, targetPlayerId: targetId, resource: 'command_seals', requestedDelta: -1,
+    delta: -1, before, after: before - 1, roundNumber: s.round.roundNumber,
+  });
+}
+
+function validateZoukenAscensionPendingContinuation(
+  s: GameState,
+  contextValue: EffectContext,
+  ability: AuthoringAbility,
+  selected: string[],
+): void {
+  if (!isZoukenAscensionActionSemantic(ability) || !isZoukenAscensionSource(s, contextValue.sourceCardId)) {
+    reject('resolution_failed', 'Unsupported Zouken ascension continuation semantic shape');
+  }
+  const source = card(s, contextValue.sourceCardId);
+  const controller = player(s, contextValue.controllerId);
+  if (source.controllerPlayerId !== contextValue.controllerId || !active(s, source.instanceId) ||
+      runtime(s).cardState[source.instanceId]?.faceDown === true || phase(s) !== 'action' ||
+      s.round.prioritySeat !== controller.seat || controller.mana < 6 || selected.length !== 1) {
+    reject('resolution_failed', 'Zouken ascension continuation is stale');
+  }
+  const targetId = selected[0]!;
+  const target = player(s, targetId);
+  const seals = Number((target as unknown as { commandSpells?: number }).commandSpells ?? 3);
+  if (target.status !== 'active' || targetId === contextValue.controllerId ||
+      !sameBattlefield(s, controller.locationId, target.locationId) || !isBattlefield(s, target.locationId) || seals < 1) {
+    reject('illegal_target', 'Zouken ascension continuation target is no longer legal');
+  }
 }
 
 function executeZoukenS4Move(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
@@ -2814,7 +2930,8 @@ function usesAcceptedFixedControllerManaCostComponent(a: AuthoringAbility): bool
     isAddToAttackRouteCandidate(a) ||
     isFixedControllerAdvanceDrawActionSemantic(a) ||
     classifyAlterEgoTransformVariant(a) === 'ex' ||
-    isZoukenS4MoveSemantic(a);
+    isZoukenS4MoveSemantic(a) ||
+    isZoukenAscensionActionSemantic(a);
 }
 
 function hasFixedManaCost(costs: RuleNode[], amount: number): boolean {
@@ -2977,6 +3094,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     executeZoukenS4Move(s, ctx, a);
     return;
   }
+  if (isZoukenAscensionActionSemantic(a)) {
+    const pending = findPendingTarget(s, ctx, a, effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    executeResolutionEffects(s, ctx, a.cost);
+    executeZoukenAscensionAction(s, ctx, a);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -3114,6 +3238,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) {
     reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
+  }
+  if (isZoukenAscensionAbilityCandidate(a) && (!isZoukenAscensionSource(s, ctx.sourceCardId) || !isZoukenAscensionSemantic(a))) {
+    reject('resolution_failed', 'Unsupported Zouken ascension semantic shape');
   }
   if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, ctx.sourceCardId) || !isZoukenS4Semantic(a))) {
     reject('resolution_failed', 'Unsupported Zouken S4 semantic shape');
@@ -3525,6 +3652,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       } else {
         const allowed = candidates(s, d.context, d.target);
         if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
+      }
+      const continuationAbility = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+      if (!d.interaction && isZoukenAscensionActionSemantic(continuationAbility)) {
+        validateZoukenAscensionPendingContinuation(s, d.context, continuationAbility, selected);
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
       executeEffects(s, d.context, d.remainingEffects); break;
