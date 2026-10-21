@@ -37,6 +37,7 @@ function twelveRecordSessionSnapshot() {
   const state = (session as unknown as { state: GameState }).state;
   const sourceCardId = 'restore-victory-s1';
   state.players[0]!.servantCardId = 'servant.abigail';
+  state.round.activePhase = 'action';
   state.cards.push({ instanceId: sourceCardId, definitionId: S1, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
   state.abilityRuntime!.cardState[sourceCardId] = { active: true, faceDown: false, playedRound: 1 };
   const distributedCardInstanceIds = Array.from({ length: 12 }, (_, index) => `restore-victory-outside-${index}`);
@@ -164,6 +165,20 @@ describe('Abigail S1 source-bound X ledger', () => {
       ...valid.distributedCardInstanceIds.slice(0, 11), 'forged-extra-record',
     ];
     expect(() => restoreMatchSession(recordSwap)).toThrow('Invalid MatchSession state container');
+
+    for (const mutate of [
+      (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.round.activePhase = 'round_end'; },
+      (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.cards.find((card) => card.instanceId === 'restore-victory-s1')!.zone = 'discard'; },
+      (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.cards.find((card) => card.instanceId === 'restore-victory-s1')!.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' }; },
+      (snapshot: ReturnType<typeof twelveRecordSessionSnapshot>['snapshot']) => { snapshot.state.players.find((player) => player.id === 'p1')!.servantCardId = 'servant.ereshkigal'; },
+    ]) {
+      const forged = structuredClone(valid.snapshot);
+      mutate(forged);
+      const afterMutation = JSON.stringify(forged.state);
+      expect(() => restoreMatchSession(forged)).toThrow('Invalid MatchSession state container');
+      expect(JSON.stringify(forged.state)).toBe(afterMutation);
+      expect(JSON.stringify(valid.snapshot.state)).not.toBe(JSON.stringify(forged.state));
+    }
   });
 
   it('loads the source-bound S1 contract in a live MatchSession executable pack', () => {

@@ -1181,7 +1181,10 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       const sourceDefinition = source && definitions[source.definitionId as string];
       const ledger = restoredState.ruleOverrides?.abigailSanityLossByPlayer?.[playerId];
       const ledgerIds = ledger?.distributed.map((item) => item.cardInstanceId);
-      if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+      const controller = restoredState.players.find((candidate) => candidate.id === playerId);
+      if (restoredState.round.activePhase !== 'action' || !controller || controller.servantCardId !== 'servant.abigail' ||
+          !source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || source.zone !== 'attack_area' ||
+          !isRestoreRecord(source.visibility) || source.visibility.scope !== 'public' ||
           (!isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-1') || entry.controllerId !== playerId ||
           entry.x !== 12 || !restoredState.winnerPlayerIds?.includes(playerId) ||
           !ledger || ledger.sourceCardId !== entry.sourceCardId || ledger.controllerId !== entry.controllerId ||

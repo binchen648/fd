@@ -43,6 +43,8 @@ Final checks were run from this worktree before commit:
 
 Known boundary: this Builder does not claim acceptance of Abigail S1, and it does not alter Abigail S2/S3/S4 or any frozen inventory state. Independent GPT-6 Sol review is required before any Candidate or accounting action.
 
-## Reviewer R1 repair
+## Reviewer R1/R2/R3 repair
 
 The follow-up Builder repair makes the S1 winner state fail-closed: `winnerPlayerIds` is accepted only with exactly one matching S1 victory envelope; that envelope must reference the exact source card, owner/controller, win ability, and the exact ordered 12-card ledger record set. Restore rejects isolated winners, source swaps, missing/extra/duplicate records, and cross-player bindings. MatchSession also returns `match_complete` before resetting stop state or entering any interaction when an authoritative winner is already present.
+
+The final restore boundary additionally requires the authoritative `action` phase, the source card to remain public in `attack_area`, and the controller's servant identity to remain `servant.abigail`. Phase, zone, visibility, and servant-identity tampering are covered by focused restore tests and leave the forged snapshot unchanged after rejection.
