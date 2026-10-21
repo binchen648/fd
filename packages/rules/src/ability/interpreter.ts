@@ -203,6 +203,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    abigailS4PlayProvenance: {}, abigailS4RecycleProvenance: {},
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -1127,13 +1128,29 @@ function abigailS1Ledger(s: GameState, controllerId: string): NonNullable<NonNul
 function isCanonicalAbigailS1RecycledCard(s: GameState, controllerId: string, recipientPlayerId: string, instanceId: string): boolean {
   const created = s.cards.find((candidate) => candidate.instanceId === instanceId);
   const state = runtime(s).cardState[instanceId];
+  const playProof = runtime(s).abigailS4PlayProvenance?.[instanceId];
+  const recycleProof = runtime(s).abigailS4RecycleProvenance?.[instanceId];
+  const releaseEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_released' && event.sourceCardId === instanceId);
   const recycleEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === instanceId);
   return !!created && created.ownerPlayerId === controllerId && created.controllerPlayerId === controllerId && created.zone === 'discard' &&
     created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === controllerId && state?.active === false &&
+    runtime(s).pack.cards[created.definitionId]?.id === ABIGAIL_OUTSIDE_LIFE_ID && created.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
+    !!playProof && playProof.controllerId === recipientPlayerId &&
+    runtime(s).processedEvents.includes(playProof.onUseEventId) && runtime(s).processedEvents.includes(playProof.onCardPlayedEventId) &&
+    releaseEvents.length === 1 && releaseEvents[0]!.playerId === recipientPlayerId &&
+    releaseEvents[0]!.abilityId === ABIGAIL_S4_RELEASE_ID && releaseEvents[0]!.triggerEventId === playProof.onUseEventId &&
+    releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
+    !!recycleProof && recycleProof.controllerId === recipientPlayerId && recycleProof.recipientPlayerId === controllerId &&
+    recycleProof.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleProof.playEventId === playProof.onCardPlayedEventId &&
+    recycleProof.releaseEventId === playProof.onUseEventId &&
     recycleEvents.length === 1 && recycleEvents[0]!.playerId === recipientPlayerId && recipientPlayerId !== controllerId &&
     recycleEvents[0]!.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleEvents[0]!.recipientPlayerId === controllerId &&
     recycleEvents[0]!.fromZone === 'attack_area' && recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
-    typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string';
+    recycleEvents[0]!.playEventId === playProof.onCardPlayedEventId && recycleEvents[0]!.releaseEventId === playProof.onUseEventId &&
+    recycleEvents[0]!.battlePhaseResolutionId === recycleProof.battlePhaseResolutionId &&
+    recycleEvents[0]!.triggerEventId === recycleProof.triggerEventId &&
+    typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string' &&
+    runtime(s).processedEvents.includes(recycleProof.triggerEventId);
 }
 
 function isCanonicalAbigailS1DistributionProvenance(s: GameState, controllerId: string,
@@ -1286,9 +1303,12 @@ function executeAbigailS4Release(s: GameState, ctx: EffectContext, a: AuthoringA
     amount: ABIGAIL_S4_POWER_AMOUNT,
   };
   reveal(s, abigailPlayerId);
+  const playProof = runtime(s).abigailS4PlayProvenance?.[source.instanceId];
   runtime(s).events.push({
     type: 'abigail_s4_true_name_released', playerId: ctx.controllerId, sourceCardId: source.instanceId,
     abilityId: ctx.abilityId, targetPlayerIds, amount: ABIGAIL_S4_POWER_AMOUNT,
+    triggerEventId: ctx.event.id,
+    ...(playProof ? { playEventId: playProof.onCardPlayedEventId } : {}),
   });
 }
 
@@ -1320,10 +1340,24 @@ function executeAbigailS4Cleanup(s: GameState, ctx: EffectContext, a: AuthoringA
   targetState.faceDown = false;
   delete work.ruleOverrides!.abigailTrueNamePowerBySource![target.instanceId];
   if (!Object.keys(work.ruleOverrides!.abigailTrueNamePowerBySource!).length) delete work.ruleOverrides!.abigailTrueNamePowerBySource;
+  const playProof = runtime(work).abigailS4PlayProvenance?.[target.instanceId];
+  const releaseEvent = runtime(work).events.find((candidate) => candidate.type === 'abigail_s4_true_name_released' &&
+    candidate.sourceCardId === target.instanceId && candidate.playerId === ctx.controllerId && candidate.abilityId === ABIGAIL_S4_RELEASE_ID);
+  if (!playProof || !releaseEvent || releaseEvent.triggerEventId !== playProof.onUseEventId ||
+      releaseEvent.playEventId !== playProof.onCardPlayedEventId) {
+    reject('resolution_failed', 'Abigail s4 cleanup requires the canonical S4 play and release chain');
+  }
+  runtime(work).abigailS4RecycleProvenance ??= {};
+  runtime(work).abigailS4RecycleProvenance![target.instanceId] = {
+    controllerId: ctx.controllerId, recipientPlayerId: abigailPlayerId, abilityId: ctx.abilityId,
+    playEventId: playProof.onCardPlayedEventId, releaseEventId: playProof.onUseEventId,
+    battlePhaseResolutionId: event.battlePhaseResolutionId, triggerEventId: event.id,
+  };
   runtime(work).events.push({
     type: 'abigail_s4_true_name_card_recycled', playerId: ctx.controllerId, sourceCardId: target.instanceId,
     abilityId: ctx.abilityId, recipientPlayerId: abigailPlayerId, fromZone: 'attack_area', toZone: 'discard',
     battlePhaseResolutionId: event.battlePhaseResolutionId, triggerEventId: event.id, movedCount: 1,
+    playEventId: playProof.onCardPlayedEventId, releaseEventId: playProof.onUseEventId,
   });
   Object.assign(s, work);
 }
@@ -4591,8 +4625,16 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
   }
   for (const c of choices.filter(c => !c.faceDown)) {
-    processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
-    processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
+    const onUseEventId = nextId(s, 'declare');
+    const onCardPlayedEventId = nextId(s, 'play');
+    if (definition(s, c.cardInstanceId)?.id === ABIGAIL_OUTSIDE_LIFE_ID) {
+      runtime(s).abigailS4PlayProvenance ??= {};
+      runtime(s).abigailS4PlayProvenance![c.cardInstanceId] = {
+        controllerId: playerId, onUseEventId, onCardPlayedEventId, round: s.round.roundNumber,
+      };
+    }
+    processEvent(s, { id: onUseEventId, type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
+    processEvent(s, { id: onCardPlayedEventId, type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
   }
 }
 /** Trusted server hook after the enclosing action validates its normal/effect play quota. Not an AbilityCommand. */

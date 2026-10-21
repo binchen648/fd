@@ -470,7 +470,7 @@ function isRestoreResponseWindow(value: unknown): boolean {
 
 function isRestoreSafeEvent(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.type !== 'string') return false;
-  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','recipientPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
+  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','recipientPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','playEventId','releaseEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
     if (value[key] !== undefined && typeof value[key] !== 'string') return false;
   }
   if (value.unpreventable !== undefined && typeof value.unpreventable !== 'boolean') return false;
@@ -482,6 +482,17 @@ function isRestoreSafeEvent(value: unknown): boolean {
   if (value.targetPlayerIds !== undefined && !isRestoreStringArray(value.targetPlayerIds)) return false;
   if (value.cardInstanceIds !== undefined && !isRestoreStringArray(value.cardInstanceIds)) return false;
   return true;
+}
+
+function isRestoreAbigailS4PlayProvenance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.controllerId === 'string' && typeof value.onUseEventId === 'string' &&
+    typeof value.onCardPlayedEventId === 'string' && isRestoreSafeInteger(value.round, 1);
+}
+
+function isRestoreAbigailS4RecycleProvenance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.controllerId === 'string' && typeof value.recipientPlayerId === 'string' &&
+    typeof value.abilityId === 'string' && typeof value.playEventId === 'string' && typeof value.releaseEventId === 'string' &&
+    typeof value.battlePhaseResolutionId === 'string' && typeof value.triggerEventId === 'string';
 }
 
 function isRestoreAbigailS1DistributionProvenance(events: unknown[], controllerId: string, sourceCardId: string,
@@ -721,6 +732,10 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !isRestoreNonNegativeIntegerMap(value.battlefieldsPassedOrStayedThisRound) || !isRestoreRoundByPlayerNumberState(value.manaGainedThisRound) ||
       (value.zoukenS4RoundSettledBySource !== undefined && !isRestoreNonNegativeIntegerMap(value.zoukenS4RoundSettledBySource)) ||
       (value.zoukenS4BattleSettledBySource !== undefined && !isRestoreStringArrayMap(value.zoukenS4BattleSettledBySource)) ||
+      (value.abigailS4PlayProvenance !== undefined && (!isRestoreRecord(value.abigailS4PlayProvenance) ||
+        !Object.values(value.abigailS4PlayProvenance).every(isRestoreAbigailS4PlayProvenance))) ||
+      (value.abigailS4RecycleProvenance !== undefined && (!isRestoreRecord(value.abigailS4RecycleProvenance) ||
+        !Object.values(value.abigailS4RecycleProvenance).every(isRestoreAbigailS4RecycleProvenance))) ||
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
@@ -1201,13 +1216,33 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
               isRestoreRecord(created.visibility) && created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === playerId &&
               isRestoreRecord(recycledState) && recycledState.active === false && Array.isArray(abilityRuntime.events) &&
               (() => {
-                const recycleEvents = abilityRuntime.events.filter((event) => isRestoreRecord(event) &&
-                  event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === item.cardInstanceId);
-                return recycleEvents.length === 1 && recycleEvents[0]!.playerId === item.recipientPlayerId &&
+                const playProofMap = isRestoreRecord(abilityRuntime.abigailS4PlayProvenance) ? abilityRuntime.abigailS4PlayProvenance : undefined;
+                const recycleProofMap = isRestoreRecord(abilityRuntime.abigailS4RecycleProvenance) ? abilityRuntime.abigailS4RecycleProvenance : undefined;
+                const playProof = playProofMap && isRestoreRecord(playProofMap[item.cardInstanceId]) ? playProofMap[item.cardInstanceId] as Record<string, unknown> : undefined;
+                const recycleProof = recycleProofMap && isRestoreRecord(recycleProofMap[item.cardInstanceId]) ? recycleProofMap[item.cardInstanceId] as Record<string, unknown> : undefined;
+                const releaseEvents = (abilityRuntime.events as unknown[]).filter((event) => isRestoreRecord(event) &&
+                  event.type === 'abigail_s4_true_name_released' && event.sourceCardId === item.cardInstanceId) as Array<Record<string, unknown>>;
+                const recycleEvents = (abilityRuntime.events as unknown[]).filter((event) => isRestoreRecord(event) &&
+                  event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === item.cardInstanceId) as Array<Record<string, unknown>>;
+                return !!playProof && !!recycleProof && releaseEvents.length === 1 &&
+                  playProof.controllerId === item.recipientPlayerId && typeof playProof.onUseEventId === 'string' &&
+                  typeof playProof.onCardPlayedEventId === 'string' && (abilityRuntime.processedEvents as string[]).includes(playProof.onUseEventId) &&
+                  (abilityRuntime.processedEvents as string[]).includes(playProof.onCardPlayedEventId) &&
+                  releaseEvents[0]!.playerId === item.recipientPlayerId &&
+                  releaseEvents[0]!.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
+                  releaseEvents[0]!.triggerEventId === playProof.onUseEventId && releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
+                  recycleProof.controllerId === item.recipientPlayerId && recycleProof.recipientPlayerId === playerId &&
+                  recycleProof.abilityId === 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard' &&
+                  recycleProof.playEventId === playProof.onCardPlayedEventId && recycleProof.releaseEventId === playProof.onUseEventId &&
+                  recycleEvents.length === 1 && recycleEvents[0]!.playerId === item.recipientPlayerId &&
                   recycleEvents[0]!.abilityId === 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard' &&
                   recycleEvents[0]!.recipientPlayerId === playerId && recycleEvents[0]!.fromZone === 'attack_area' &&
                   recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
-                  typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string';
+                  recycleEvents[0]!.playEventId === playProof.onCardPlayedEventId && recycleEvents[0]!.releaseEventId === playProof.onUseEventId &&
+                  recycleEvents[0]!.battlePhaseResolutionId === recycleProof.battlePhaseResolutionId &&
+                  recycleEvents[0]!.triggerEventId === recycleProof.triggerEventId &&
+                  typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string' &&
+                  (abilityRuntime.processedEvents as string[]).includes(recycleProof.triggerEventId as string);
               })();
             return !!created && created.definitionId === 'servant.abigail.skill.sc-abigail-4' &&
               created.generatedBy === 'servant.abigail.skill.sc-abigail-1' && item.recipientPlayerId !== playerId && (unchanged || recycled);

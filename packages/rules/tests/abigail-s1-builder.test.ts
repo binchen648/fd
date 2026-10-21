@@ -126,6 +126,32 @@ describe('Abigail S1 source-bound X ledger', () => {
     expect(JSON.stringify(state)).toBe(before);
   });
 
+  it('rejects an isolated forged S4 recycle receipt for an unplayed distributed card', () => {
+    const state = setup();
+    expect(play(state, 'abigail-s1').ok).toBe(true);
+    const firstAction = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === S1_ACTION)!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', firstAction as any).ok).toBe(true);
+    const outsideLife = state.cards.find((card) => card.definitionId === S4)!;
+    outsideLife.ownerPlayerId = 'p1';
+    outsideLife.controllerPlayerId = 'p1';
+    outsideLife.zone = 'discard';
+    outsideLife.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' };
+    state.abilityRuntime!.cardState[outsideLife.instanceId] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    state.abilityRuntime!.events.push({
+      type: 'abigail_s4_true_name_card_recycled', playerId: 'p2', sourceCardId: outsideLife.instanceId,
+      abilityId: 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard', recipientPlayerId: 'p1',
+      fromZone: 'attack_area', toZone: 'discard', movedCount: 1,
+      battlePhaseResolutionId: 'forged-battle-phase', triggerEventId: 'forged-trigger',
+      playEventId: 'forged-play', releaseEventId: 'forged-release',
+    });
+    rules.advanceAbilityPhase(state, 'action', 2);
+    state.round.prioritySeat = 1;
+    const secondAction = rules.getLegalActions(state, 'p1').find((entry) => entry.type === 'activate_ability' && entry.abilityId === S1_ACTION)!;
+    const before = JSON.stringify(state);
+    expect(rules.dispatchAbilityCommand(state, 'p1', secondAction as any).ok).toBe(false);
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
   it('rejects cross-record, repeated, and wrong-recipient distribution provenance', () => {
     const state = setup();
     expect(play(state, 'abigail-s1').ok).toBe(true);
@@ -222,18 +248,19 @@ describe('Abigail S1 source-bound X ledger', () => {
     const recycledBundle = twelveRecordSessionSnapshot();
     const recycled = recycledBundle.session;
     const recycledCardId = recycledBundle.distributedCardInstanceIds[0]!;
-    const recycledCard = recycled.getState().cards.find((card) => card.instanceId === recycledCardId)!;
+    const recycledState = (recycled as unknown as { state: GameState }).state;
+    const recycledCard = recycledState.cards.find((card) => card.instanceId === recycledCardId)!;
     recycledCard.ownerPlayerId = 'p1';
     recycledCard.controllerPlayerId = 'p1';
     recycledCard.zone = 'discard';
     recycledCard.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' };
-    recycled.getState().abilityRuntime!.cardState[recycledCardId] = { active: false, faceDown: false, playedRound: 1 };
-    recycled.getState().abilityRuntime!.events.push({
+    recycledState.abilityRuntime!.cardState[recycledCardId] = { active: false, faceDown: false, playedRound: 1 };
+    recycledState.abilityRuntime!.events.push({
       type: 'abigail_s4_true_name_card_recycled', playerId: 'p2', sourceCardId: recycledCardId,
       abilityId: 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard', recipientPlayerId: 'p1',
       fromZone: 'attack_area', toZone: 'discard', movedCount: 1,
     });
-    expect(restoreMatchSession(recycled.serializeSession()).getState().ruleOverrides?.abigailSanityLossByPlayer?.p1?.distributed).toHaveLength(12);
+    expect(() => restoreMatchSession(recycled.serializeSession())).toThrow('Invalid MatchSession state container');
 
     const sourceSwap = structuredClone(valid.snapshot);
     sourceSwap.state.cards.push({ instanceId: 'restore-victory-other-s1', definitionId: S1, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });

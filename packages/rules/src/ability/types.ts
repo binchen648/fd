@@ -196,6 +196,10 @@ export interface SafeEvent {
   rewardBranch?: 'mana' | 'victory_points';
   resultId?: string;
   triggerEventId?: string;
+  /** Server-owned canonical Abigail S4 play event identity. */
+  playEventId?: string;
+  /** Server-owned canonical Abigail S4 release event identity. */
+  releaseEventId?: string;
   fromState?: string;
   toState?: string;
   revision?: number;
@@ -229,6 +233,15 @@ export interface AbilityRuntime {
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
   transformedReturnSilenceSourceCardIds?: string[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
+  /** Server-owned provenance for the actual S4 play chain; never supplied by a client receipt. */
+  abigailS4PlayProvenance?: Record<string, {
+    controllerId: PlayerId; onUseEventId: string; onCardPlayedEventId: string; round: number;
+  }>;
+  /** Server-owned provenance for a cleanup transaction that actually recycled an S4 card. */
+  abigailS4RecycleProvenance?: Record<string, {
+    controllerId: PlayerId; recipientPlayerId: PlayerId; abilityId: string;
+    playEventId: string; releaseEventId: string; battlePhaseResolutionId: string; triggerEventId: string;
+  }>;
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
   hostRequests: { controllerId: PlayerId; sourceCardId: string; abilityId: string; allowedOperations: HostOperation[] }[];
