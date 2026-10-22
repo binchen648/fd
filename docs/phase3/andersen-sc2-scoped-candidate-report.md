@@ -42,4 +42,3 @@ The Candidate preserves the exact frozen SC2 printed text, full-text SHA-256, se
 - Runtime/inventory path boundary: **PASS** (Candidate change set is docs-only).
 - `git diff --check`: **PASS** after final report normalization.
 - Runtime/content/generated suites: **not run**; this Candidate is docs-only and the clean worktree has no `node_modules`. No new dynamic result is claimed.
-
