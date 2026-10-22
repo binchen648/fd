@@ -40,4 +40,3 @@ The exact frozen printed text, full-text SHA-256, residual-clause SHA-256, canon
 - `git diff --check`: PASS.
 - Dynamic checks were **not rerun in the isolated reviewer checkout** for this A-sync. The accounting relies on the formal/source/Candidate review chain and prior content review; no new dynamic result is claimed.
 - No push or merge was performed.
-
