@@ -2908,10 +2908,13 @@ export function isOptionalBattleResultExtraVpTriggerSemantic(a: AuthoringAbility
 export function isOptionalBattleResultVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isOptionalBattleResultVpTriggerCandidate(a) || !hasExactOptionalBattleResultVpActivation(a)) return false;
   if (a.conditions.length !== 1 || str(a.conditions[0]?.type) !== 'controller_played_highest_cost_noble_phantasm_in_battle_this_round') return false;
+  if (Object.keys(a.activation).some((key) => !['phase', 'trigger'].includes(key))) return false;
+  if (Object.keys(a.conditions[0]!).some((key) => key !== 'type')) return false;
   if (a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || a.effects.length !== 1) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 || a.effects.length !== 1) return false;
   const effect = a.effects[0]!;
-  return effect.type === 'adjust_victory_points' &&
+  return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key)) &&
+    effect.type === 'adjust_victory_points' &&
     (effect.player === undefined || effect.player === 'controller') &&
     effect.amount === 1 && Number.isSafeInteger(effect.amount);
 }

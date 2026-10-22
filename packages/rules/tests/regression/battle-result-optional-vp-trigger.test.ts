@@ -139,6 +139,14 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     const extraCondition = structuredClone(ability);
     extraCondition.conditions.push({ type: 'highest_cost_noble_phantasm_cost_at_least', value: 4 });
     expect(rules.isOptionalBattleResultVpTriggerSemantic(extraCondition)).toBe(false);
+    const extraActivation = structuredClone(ability); (extraActivation.activation as Record<string, unknown>).opens = 'legacy-route';
+    expect(rules.isOptionalBattleResultVpTriggerSemantic(extraActivation)).toBe(false);
+    const extraConditionField = structuredClone(ability); (extraConditionField.conditions[0] as Record<string, unknown>).value = 3;
+    expect(rules.isOptionalBattleResultVpTriggerSemantic(extraConditionField)).toBe(false);
+    const extraEffectField = structuredClone(ability); (extraEffectField.effects[0] as Record<string, unknown>).causation = 'legacy-route';
+    expect(rules.isOptionalBattleResultVpTriggerSemantic(extraEffectField)).toBe(false);
+    const hiddenVisibility = structuredClone(ability); (hiddenVisibility.visibility as Record<string, unknown>).scope = 'controller';
+    expect(rules.isOptionalBattleResultVpTriggerSemantic(hiddenVisibility)).toBe(false);
   });
 
   it('opens the controller-only optional response and resolves typed +1 VP exactly once', () => {
