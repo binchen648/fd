@@ -50,6 +50,10 @@ export function compilePlaytestContentPack(
   });
   const compiled = compileLoadedPlaytestPack(loaded, issues);
   compiled.library.rules = compileExecutableCardPack(compiled.library);
+  compiled.library.rules.sourceMap = {
+    ...(compiled.library.rules.sourceMap ?? {}),
+    ...compiled.library.metadata.sourceMap,
+  };
   const blockingIssues = issues.filter((issue) => issue.blocking);
   const outputPaths = {
     library: resolve(options.outputDirectory, `${loaded.id}.content-library.json`),
