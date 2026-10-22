@@ -62,7 +62,7 @@ merged.
 2. `npm run typecheck` — exit `0`.
 3. Initial focused command before dependency installation,
    `npm exec vitest run packages/rules/tests/regression/battle-loss-resource-trigger.test.ts` — exit `1`, startup could not resolve `vitest/config`.
-4. After `npm ci`, the same focused command — exit `0`: `1` file / `8` tests
+4. After `npm ci`, the same focused command — exit `0`: `1` file / `9` tests
    passed.
 5. Compatibility focused command `npm exec vitest run packages/rules/tests/regression/battle-loss-resource-trigger.test.ts packages/rules/tests/regression/battle-first-loss-delayed-activation-recert.test.ts packages/rules/tests/regression/battle-loss-state-transform.test.ts` — exit `0`: `3` files / `21` tests passed, including Olga first-loss recertification.
 6. `npx playwright test e2e/fd-shinji-battle-loss-resource.spec.ts -c playwright.config.ts` — exit `1`; the test reached Playwright startup but the
@@ -77,7 +77,7 @@ the authoritative E2E receipt above. No browser download was performed.
 ## Disposition
 
 `IMPLEMENTATION_COMPLETE_CANDIDATE` for the current-main B13 implementation
-scope, subject to independent Reviewer acceptance. This report makes no
+scope. Independent Reviewer acceptance has not yet been received. This report makes no
 migration-credit, skill-acceptance, Gate-C, merge, or release-readiness claim.
 The browser/server E2E remains unverified in this environment because the
 required browser executable is unavailable.
