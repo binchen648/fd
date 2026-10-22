@@ -2671,19 +2671,31 @@ function isSharedVictoryVpTriggerCandidate(a: AuthoringAbility): boolean {
 
 function hasSharedVictoryConditions(a: AuthoringAbility): boolean {
   if (a.conditions.length !== 2) return false;
-  const hasWon = a.conditions.some((condition) => str(condition.type) === 'controller_won_battle');
+  const hasWon = a.conditions.some((condition) =>
+    str(condition.type) === 'controller_won_battle' && Object.keys(condition).every((key) => key === 'type'));
   const hasNotSole = a.conditions.some((condition) =>
-    str(condition.type) === 'not' && str(node(condition.condition).type) === 'controller_sole_winner');
+    str(condition.type) === 'not' && Object.keys(condition).every((key) => ['type', 'condition'].includes(key)) &&
+    str(node(condition.condition).type) === 'controller_sole_winner' && Object.keys(node(condition.condition)).every((key) => key === 'type'));
   return hasWon && hasNotSole;
 }
 
 export function isSharedVictoryVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isSharedVictoryVpTriggerCandidate(a)) return false;
-  if (str(a.activation.phase) !== 'combat' || str(a.activation.opens) !== 'immediate' || str(a.activation.requiresSourceState) !== 'active') return false;
+  const allowedOperations = a.execution.allowedOperations ?? [];
+  const expectedAllowedOperations = ['adjust-mana', 'adjust-victory-points', 'move-card', 'create-status', 'skip-ability'];
+  if (a.execution.mode !== 'automatic' ||
+    (allowedOperations.length !== 0 && (allowedOperations.length !== expectedAllowedOperations.length ||
+      allowedOperations.some((operation, index) => operation !== expectedAllowedOperations[index])))) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.trigger) !== 'after_battle_result_determined' ||
+    str(a.activation.opens) !== 'immediate' || str(a.activation.requiresSourceState) !== 'active' ||
+    Object.keys(a.activation).some((key) => !['phase', 'trigger', 'opens', 'requiresSourceState'].includes(key))) return false;
   if (!hasSharedVictoryConditions(a) || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 ||
+    Object.keys(a.responseWindow).some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
   const effect = a.effects[0]!;
-  return effect.type === 'adjust_victory_points' &&
+  return effect.type === 'adjust_victory_points' && Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key)) &&
     (effect.player === undefined || effect.player === 'controller') &&
     effect.amount === 2 && Number.isSafeInteger(effect.amount);
 }

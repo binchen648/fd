@@ -108,6 +108,12 @@ describe('P3-B14 shared-victory VP trigger', () => {
     expect(rules.isSharedVictoryVpTriggerSemantic(wrongAmount)).toBe(false);
     const wrongState = structuredClone(ability); wrongState.activation.requiresSourceState = undefined;
     expect(rules.isSharedVictoryVpTriggerSemantic(wrongState)).toBe(false);
+    const extraActivation = structuredClone(ability); (extraActivation.activation as Record<string, unknown>).legacyRoute = true;
+    expect(rules.isSharedVictoryVpTriggerSemantic(extraActivation)).toBe(false);
+    const malformedCondition = structuredClone(ability); (malformedCondition.conditions[0] as Record<string, unknown>).legacyId = 'sc-artoriac-6';
+    expect(rules.isSharedVictoryVpTriggerSemantic(malformedCondition)).toBe(false);
+    const malformedEffect = structuredClone(ability); (malformedEffect.effects[0] as Record<string, unknown>).definitionId = 'servant.artoriac.skill.sc-artoriac-6';
+    expect(rules.isSharedVictoryVpTriggerSemantic(malformedEffect)).toBe(false);
   });
 
   it('awards typed +2 VP exactly once for a shared winner', () => {
