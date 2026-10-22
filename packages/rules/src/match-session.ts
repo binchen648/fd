@@ -545,7 +545,11 @@ function isRestoreAchillesPairReceipts(value: unknown): boolean {
 }
 function isRestoreAchillesPowerZeroMap(value: unknown): boolean {
   return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreRecord(entry) &&
-    isRestoreSafeInteger(entry.round, 1) && typeof entry.battlefieldId === 'string' && typeof entry.sourceCardId === 'string' &&
+    isRestoreSafeInteger(entry.round, 1) && typeof entry.battlefieldId === 'string' &&
+    typeof entry.battlePhaseResolutionId === 'string' && typeof entry.battleId === 'string' &&
+    typeof entry.resultId === 'string' && typeof entry.settlementId === 'string' &&
+    entry.battlePhaseResolutionId === `battle-phase:${entry.round}` && entry.resultId === `${entry.battleId}:result` &&
+    entry.settlementId === `${entry.resultId}:settlement` && typeof entry.sourceCardId === 'string' &&
     typeof entry.abilityId === 'string' && typeof entry.controllerId === 'string' && isRestoreStringArray(entry.participantIds) &&
     isRestoreStringArray(entry.targetPlayerIds) && isRestoreStringArray(entry.discardedCardIds));
 }
@@ -1133,8 +1137,11 @@ function isRestoreAbilityRuntimeReferences(
     playerIds.has(entry.controllerId as string) && playerIds.has(entry.opponentId as string) && locationIds.has(entry.battlefieldId as string) &&
     cardsByInstance.has(entry.sourceCardId as string) && restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) &&
     restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
-  if (value.achillesBattlePowerZeroByBattlefield !== undefined && !(Object.values(value.achillesBattlePowerZeroByBattlefield as Record<string, unknown>).every((entry) => {
-    if (!isRestoreRecord(entry) || !playerIds.has(entry.controllerId as string) || !locationIds.has(entry.battlefieldId as string) ||
+  if (value.achillesBattlePowerZeroByBattlefield !== undefined && !(Object.entries(value.achillesBattlePowerZeroByBattlefield as Record<string, unknown>).every(([key, entry]) => {
+    if (!isRestoreRecord(entry) || key !== entry.battleId || !playerIds.has(entry.controllerId as string) || !locationIds.has(entry.battlefieldId as string) ||
+        typeof entry.battlePhaseResolutionId !== 'string' || typeof entry.battleId !== 'string' || typeof entry.resultId !== 'string' ||
+        typeof entry.settlementId !== 'string' || entry.battlePhaseResolutionId !== `battle-phase:${entry.round}` ||
+        entry.resultId !== `${entry.battleId}:result` || entry.settlementId !== `${entry.resultId}:settlement` ||
         !restoreIdsBelongTo(entry.participantIds, playerIds) || !restoreIdsBelongTo(entry.targetPlayerIds, playerIds) ||
         !restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) ||
         !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string)) return false;

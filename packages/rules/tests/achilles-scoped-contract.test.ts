@@ -18,6 +18,15 @@ function add(s: ReturnType<typeof setup>, definitionId: string, zone: string, ow
   s.cards.push({ instanceId, definitionId, ownerPlayerId: owner, controllerPlayerId: owner, zone, visibility: { scope: zone === 'attack_area' ? 'public' : 'owner_only', ...(zone === 'attack_area' ? {} : { ownerPlayerId: owner }) } as any });
   return instanceId;
 }
+function addKnownNonAgility(s: ReturnType<typeof setup>, zone: string, owner: string) {
+  s.abilityRuntime!.pack.cards['known.non-agility'] ??= {
+    id: 'known.non-agility', name: 'Known non-agility', cardType: 'servant_attack', mode: 'automatic',
+    cardFace: { attributes: ['力量'], basePower: 1, cost: 0 }, abilities: [], activation: {},
+    execution: { mode: 'automatic' }, targets: [], effects: [], creates: [], cost: [], ruleModifiers: [], lifecycle: {},
+    responseWindow: {}, visibility: {}, conditions: [],
+  } as any;
+  return add(s, 'known.non-agility', zone, owner);
+}
 function activate(s: ReturnType<typeof setup>, sourceCardId: string, abilityId: string) {
   return rules.dispatchAbilityCommand(s, 'p1', { type: 'activate_ability', cardInstanceId: sourceCardId, abilityId });
 }
@@ -41,7 +50,7 @@ describe('Achilles accepted source-bound contract', () => {
     expect(s.abilityRuntime!.revision).toBe(revision);
   });
 
-  it('S1 random discard is server-owned, once per battle, and includes unselected cards in the classification', () => {
+  it('S1 random discard is server-owned, once per battle, and fails closed for blocked unselected-card classification', () => {
     const s = setup(); const source = add(s, skill(1), 'attack_area', 'p1');
     s.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: 1 };
     s.round.activePhase = 'battle'; s.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
@@ -50,7 +59,8 @@ describe('Achilles accepted source-bound contract', () => {
     expect(result.ok).toBe(true);
     expect([luck, ordinary].some((id) => s.cards.find((c) => c.instanceId === id)!.zone === 'discard')).toBe(true);
     expect(s.abilityRuntime!.events.some((event) => event.type === 'achilles_battle_power_zero')).toBe(true);
-    expect(Object.keys(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield ?? {})).toEqual(['1:miyama_town']);
+    expect(Object.keys(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield ?? {})).toEqual(['battle-phase:1:battle:miyama_town:1']);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:1']!.targetPlayerIds).toEqual([]);
     const second = activate(s, source, ability(1, 'gale-advance'));
     expect(second.ok).toBe(false);
     expect(s.cards.filter((c) => c.ownerPlayerId === 'p2' && c.zone === 'discard')).toHaveLength(1);
@@ -69,9 +79,36 @@ describe('Achilles accepted source-bound contract', () => {
     const attack = add(s, attackDefinition, 'attack_area', 'p2');
     s.abilityRuntime!.cardState[attack] = { active: true, faceDown: false, playedRound: 1 };
     s.round.activePhase = 'battle'; s.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
-    add(s, 'ordinary-card', 'hand', 'p2');
+    addKnownNonAgility(s, 'hand', 'p2');
     expect(activate(s, source, ability(1, 'gale-advance')).ok).toBe(true);
     expect(rules.deriveBattleParticipantsFromState(s, 'miyama_town').find((entry) => entry.playerId === 'p2')!.totalPower).toBe(0);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:1']!.targetPlayerIds).toEqual(['p2']);
+  });
+
+  it('S1 binds receipts to battle/result identity, clears on settlement, and allows a distinct same-round battle', () => {
+    const s = setup(); const source = add(s, skill(1), 'attack_area', 'p1');
+    s.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: 1 };
+    s.round.activePhase = 'battle'; s.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
+    addKnownNonAgility(s, 'hand', 'p2');
+    expect(activate(s, source, ability(1, 'gale-advance')).ok).toBe(true);
+    const first = s.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:1']!;
+    expect(first).toMatchObject({
+      battlePhaseResolutionId: 'battle-phase:1',
+      battleId: 'battle-phase:1:battle:miyama_town:1',
+      resultId: 'battle-phase:1:battle:miyama_town:1:result',
+      settlementId: 'battle-phase:1:battle:miyama_town:1:result:settlement',
+    });
+    Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
+
+    addKnownNonAgility(s, 'hand', 'p2');
+    expect(activate(s, source, ability(1, 'gale-advance')).ok).toBe(true);
+    expect(Object.keys(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield ?? {})).toEqual(['battle-phase:1:battle:miyama_town:2']);
+    const forged = structuredClone(s);
+    forged.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:2']!.resultId = 'forged-result';
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forged)).toBe(false);
+    Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
   });
 
   it('S2 accepts branch 1 and 3, rejects branch 2, and restores a previously revealed name at round end', () => {

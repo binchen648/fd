@@ -435,7 +435,7 @@
   ],
   "adapterNotes": [
     "Candidate is source-bound to the accepted decision and implements only the explicitly accepted Achilles subset.",
-    "S1 uses the post-scoring battle-result loser trigger and server-owned battle participant set; NPC, no-hand, and ambiguous unselected-card cases fail closed.",
+    "S1 uses the post-scoring battle-result loser trigger and server-owned battle participant set; NPC/no-hand and every multi-card or ambiguous unselected-card classification fail closed. Power zero is written only when the authoritative discard snapshot is a singleton with a source-known non-Luck/non-Agility discarded card.",
     "S2 implements only immediate random discard and pay-3 hide-until-round-end; the skill-card-forbid branch is explicitly blocked and has no rule modifier.",
     "S3 validates only an exact-one player opponent pair and records the bounded source scope; movement/deployment/duration, external effects, and persistent lock/immunity remain blocked."
   ],

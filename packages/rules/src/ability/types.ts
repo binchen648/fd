@@ -150,6 +150,16 @@ export interface PendingPresenceConcealmentDefeat {
   controllerId: PlayerId; sourceCardId: string; abilityId: string; triggerEventId: string;
   resultId: string; battlefieldId: string; participantIds: PlayerId[]; participantPowers: Record<PlayerId, number>; targetPlayerIds: PlayerId[];
 }
+/** Server-owned identity for one authoritative battle settlement. */
+export interface AchillesBattleIdentity {
+  battlePhaseResolutionId: string;
+  battleId: string;
+  resultId: string;
+  settlementId: string;
+  battlefieldId: string;
+  round: number;
+  ordinal: number;
+}
 export interface PendingDelayedActivation {
   controllerId: PlayerId;
   sourceCardId: string;
@@ -259,7 +269,8 @@ export interface AbilityRuntime {
   }>;
   /** Source-bound battle-local power-zero receipt for the accepted Achilles S1 subset. */
   achillesBattlePowerZeroByBattlefield?: Record<string, {
-    round: number; battlefieldId: string; sourceCardId: string; abilityId: string;
+    round: number; battlefieldId: string; battlePhaseResolutionId: string; battleId: string; resultId: string; settlementId: string;
+    sourceCardId: string; abilityId: string;
     controllerId: PlayerId; participantIds: PlayerId[]; targetPlayerIds: PlayerId[];
     discardedCardIds: string[];
   }>;

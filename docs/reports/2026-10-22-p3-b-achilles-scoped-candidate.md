@@ -18,8 +18,8 @@ Date: 2026-10-22
 - The reveal trigger accepts only the post-scoring `after_controller_loses_battle` event with battle-phase resolution ID, battle ID, result ID, battlefield ID, authoritative participant IDs, and loser membership.
 - The authoritative action-time participant set requires a declared current battlefield and active player participants. The implementation does not synthesize NPC participants or scan unrelated locations.
 - Each confirmed opponent is processed once with the server-owned deterministic runtime RNG. A missing hand blocks the transaction before mutation.
-- The natural “未弃置牌” check is evaluated against the complete pre-discard hand snapshot, including cards that were not selected for discard. Any unambiguously non-Luck/non-Agility card qualifies that opponent for zero aggregate battle power; ambiguous or unsupported card classification is not guessed.
-- Power zero is stored as a source-bound, round/battlefield-local receipt and consumed by the authoritative combat resolver. It does not install a persistent modifier or leak into another battle.
+- The natural “未弃置牌” branch remains blocked: multi-card hands never write a zero receipt because the unselected-card comparison is not contract-proven. Power zero is allowed only when the authoritative pre-discard hand is a singleton and that discarded card has an authored, unambiguous non-Luck/non-Agility classification; unknown definitions and ambiguous attributes fail closed.
+- Power zero is stored against the canonical battle-phase/battle/result/settlement identity and consumed by the authoritative combat resolver. The receipt is deleted at settlement, so a second same-round battle on the same battlefield receives a distinct identity and cannot reuse the prior receipt.
 
 ### S2 — 湛蓝天空
 
@@ -37,13 +37,13 @@ Date: 2026-10-22
 ## Restore/replay and adversarial coverage
 
 - Added persisted Achilles runtime fields for hidden-name restoration, exact-one pair receipts, and battle-local power-zero receipts.
-- Restore-boundary validation checks source identity, controller ownership, active lifecycle, player/location/card references, participant/target subset relationships, current-round lifetime, and discarded-card existence.
+- Restore-boundary validation checks source identity, controller ownership, active lifecycle, canonical battle/result/settlement identity, player/location/card references, participant/target subset relationships, current-round lifetime, and discarded-card existence. Forged result identity is rejected.
 - Canonical S2 pending decisions reject forged candidate lists and stale source/phase state.
 - Focused tests cover malformed loss events, idempotent replay, no-hand fail-closed behavior, deterministic one-discard behavior, unselected-card classification, battle settlement power zero, blocked S2 branch 2, round-end reveal restoration, forged restore state, exact-one S3 scope, and absence of persistent locks.
 
 ## Evidence
 
-- Focused Achilles/production regression run: `56 passed`.
+- Focused Achilles/production regression run: `57 passed` across 4 files, including same-round repeated-battle identity, settlement cleanup, forged result identity, and strict singleton-discard classification.
 - `npm run typecheck`: passed.
 - `npm run content:validate`: passed; `8 masters, 8 servants, 20 events, 0 blocking issues`.
 - `npm run verify:generated-content`: passed.
@@ -57,4 +57,4 @@ Date: 2026-10-22
 
 ## Explicit refusal boundary
 
-No NPC participant model, no no-hand fallback, no guessed card classification, no skill-card prohibition, no movement/deployment lock, no duration guess, no external-effect immunity, no persistent lock/immunity, no legacy `Math.random()`, and no old handler/fixture was used as authorization.
+No NPC participant model, no no-hand fallback, no unselected-card inference, no guessed card classification, no skill-card prohibition, no movement/deployment lock, no duration guess, no external-effect immunity, no persistent lock/immunity, no legacy `Math.random()`, and no old handler/fixture was used as authorization.

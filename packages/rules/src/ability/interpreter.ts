@@ -37,7 +37,7 @@ import type {
   BattleResult, BattleResultData, CalculationLine, CardPlayClassification, CardRuntimeState, DispatchResult, EffectContext, ExecutableCardDefinition,
   LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
-  PlayCardAction,
+  PlayCardAction, AchillesBattleIdentity,
 } from './types';
 
 class RuleRejection extends Error {
@@ -265,14 +265,46 @@ function achillesBattleLossEventIsAuthoritative(s: GameState, ctx: EffectContext
   return uniqueParticipants.size === event.battleParticipantIds.length &&
     event.battleParticipantIds.every((id) => s.players.some((candidate) => candidate.id === id));
 }
-function achillesCurrentBattleKey(s: GameState, battlefieldId: string): string {
-  return `${s.round.roundNumber}:${battlefieldId}`;
+/**
+ * Derives the only server-owned battle identity available to an action-window
+ * activation.  The ordinal is the global battle history ordinal used by the
+ * MatchSession post-scoring gateway, not merely round+battlefield.  A retained
+ * receipt wins while a settlement is pending so a response/retry cannot move
+ * the activation into another identity.
+ */
+export function getAchillesBattleIdentity(s: GameState, battlefieldId: string): AchillesBattleIdentity {
+  const retained = Object.values(s.abilityRuntime?.achillesBattlePowerZeroByBattlefield ?? {})
+    .find((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === battlefieldId &&
+      typeof entry.battleId === 'string' && typeof entry.resultId === 'string' && typeof entry.settlementId === 'string');
+  if (retained) {
+    return {
+      battlePhaseResolutionId: retained.battlePhaseResolutionId,
+      battleId: retained.battleId,
+      resultId: retained.resultId,
+      settlementId: retained.settlementId,
+      battlefieldId: retained.battlefieldId,
+      round: retained.round,
+      ordinal: Number(retained.battleId.split(':').at(-1)),
+    };
+  }
+  const priorResolved = s.log.filter((entry) => entry.type === 'battle_resolved').length;
+  const pendingResults = s.battleResults.length;
+  const ordinal = Math.max(priorResolved, pendingResults) + 1;
+  const battlePhaseResolutionId = `battle-phase:${s.round.roundNumber}`;
+  const battleId = `${battlePhaseResolutionId}:battle:${battlefieldId}:${ordinal}`;
+  const resultId = `${battleId}:result`;
+  return { battlePhaseResolutionId, battleId, resultId, settlementId: `${resultId}:settlement`, battlefieldId,
+    round: s.round.roundNumber, ordinal };
 }
-function achillesIsLuckOrAgility(s: GameState, cardId: string): boolean {
+function achillesCardClassification(s: GameState, cardId: string): 'luck_or_agility' | 'non_luck_or_agility' | 'unknown' {
   const instance = card(s, cardId);
+  const authored = definition(s, cardId);
+  if (!authored || !Array.isArray(authored.cardFace.attributes) ||
+      authored.cardFace.attributes.some((attribute) => typeof attribute !== 'string')) return 'unknown';
   const attributes = getEffectiveCardAttributes(s, cardId).map((attribute) => attribute.toLowerCase());
-  return instance.definitionId === 'basic.luck' || attributes.some((attribute) =>
-    ['luck', '幸运', 'agility', '敏捷'].includes(attribute));
+  if (instance.definitionId === 'basic.luck' || attributes.some((attribute) =>
+    ['luck', '幸运', 'agility', '敏捷'].includes(attribute))) return 'luck_or_agility';
+  return 'non_luck_or_agility';
 }
 function achillesNextRandomIndex(s: GameState, maxExclusive: number): number {
   if (!Number.isSafeInteger(maxExclusive) || maxExclusive <= 0) reject('resolution_failed', 'Achilles random choice requires a non-empty server-owned set');
@@ -280,7 +312,7 @@ function achillesNextRandomIndex(s: GameState, maxExclusive: number): number {
   let x = r.randomState; x ^= x << 13; x ^= x >>> 17; x ^= x << 5; r.randomState = x >>> 0;
   return Math.floor((r.randomState / 0x100000000) * maxExclusive);
 }
-function achillesRandomDiscard(s: GameState, ctx: EffectContext, targetPlayerIds: string[], battlefieldId?: string): string[] {
+function achillesRandomDiscard(s: GameState, ctx: EffectContext, targetPlayerIds: string[], identity?: AchillesBattleIdentity): string[] {
   const targets = [...new Set(targetPlayerIds)];
   if (!targets.length || targets.some((id) => id === ctx.controllerId || !s.players.some((candidate) => candidate.id === id && candidate.status === 'active'))) {
     reject('resolution_failed', 'Achilles discard requires a non-empty authoritative opponent set');
@@ -290,23 +322,23 @@ function achillesRandomDiscard(s: GameState, ctx: EffectContext, targetPlayerIds
     const hand = s.cards.filter((candidate) => candidate.ownerPlayerId === targetPlayerId && candidate.controllerPlayerId === targetPlayerId && candidate.zone === 'hand')
       .sort((left, right) => left.instanceId.localeCompare(right.instanceId));
     if (!hand.length) reject('resolution_failed', 'Achilles discard is blocked when an opponent has no hand card');
-    const snapshotIds = hand.map((candidate) => candidate.instanceId);
     const discarded = hand[achillesNextRandomIndex(s, hand.length)]!;
+    const discardedClassification = hand.length === 1 ? achillesCardClassification(s, discarded.instanceId) : 'unknown';
     moveCard(s, discarded.instanceId, 'discard');
     discarded.visibility = { scope: 'public' };
     discardedCardIds.push(discarded.instanceId);
-    const hasNonLuckOrAgility = snapshotIds.some((id) => !achillesIsLuckOrAgility(s, id));
-    if (hasNonLuckOrAgility) {
-      const key = battlefieldId ? achillesCurrentBattleKey(s, battlefieldId) : undefined;
-      if (key) {
-        const receipt = runtime(s).achillesBattlePowerZeroByBattlefield ??= {};
-        const entry = receipt[key];
-        if (entry && !entry.targetPlayerIds.includes(targetPlayerId)) entry.targetPlayerIds.push(targetPlayerId);
-      }
+    // The printed “unselected card” branch is explicitly blocked.  A power-zero
+    // receipt is therefore legal only when the complete pre-discard hand was a
+    // singleton and that one discarded card has an unambiguous authored class.
+    if (identity && discardedClassification === 'non_luck_or_agility') {
+      const receipt = runtime(s).achillesBattlePowerZeroByBattlefield ??= {};
+      const entry = receipt[identity.battleId];
+      if (entry && !entry.targetPlayerIds.includes(targetPlayerId)) entry.targetPlayerIds.push(targetPlayerId);
     }
     runtime(s).events.push({ type: 'achilles_random_discard', playerId: ctx.controllerId, targetPlayerId,
       sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: discarded.instanceId,
-      ...(battlefieldId ? { battlefieldId } : {}), roundNumber: s.round.roundNumber, fromZone: 'hand', toZone: 'discard', movedCount: 1 });
+      ...(identity ? { battlefieldId: identity.battlefieldId, battleId: identity.battleId, resultId: identity.resultId } : {}),
+      roundNumber: s.round.roundNumber, fromZone: 'hand', toZone: 'discard', movedCount: 1 });
   }
   return discardedCardIds;
 }
@@ -342,14 +374,17 @@ function executeAchillesS1Gale(s: GameState, ctx: EffectContext, a: AuthoringAbi
   if (!targetPlayerIds.length) reject('resolution_failed', 'Achilles S1 gale requires an authoritative opponent participant');
   const handByTarget = targetPlayerIds.map((id) => s.cards.filter((candidate) => candidate.ownerPlayerId === id && candidate.controllerPlayerId === id && candidate.zone === 'hand'));
   if (handByTarget.some((hand) => hand.length === 0)) reject('resolution_failed', 'Achilles S1 gale is blocked for a no-hand participant');
-  const key = achillesCurrentBattleKey(s, battlefieldId);
-  if (runtime(s).achillesBattlePowerZeroByBattlefield?.[key]) reject('resolution_failed', 'Achilles S1 gale is already settled for this battle');
+  const identity = getAchillesBattleIdentity(s, battlefieldId);
+  if (runtime(s).achillesBattlePowerZeroByBattlefield?.[identity.battleId]) reject('resolution_failed', 'Achilles S1 gale is already settled for this battle');
   const receipt = runtime(s).achillesBattlePowerZeroByBattlefield ??= {};
-  receipt[key] = { round: s.round.roundNumber, battlefieldId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+  receipt[identity.battleId] = { round: s.round.roundNumber, battlefieldId,
+    battlePhaseResolutionId: identity.battlePhaseResolutionId, battleId: identity.battleId, resultId: identity.resultId,
+    settlementId: identity.settlementId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
     controllerId: ctx.controllerId, participantIds: [...participantIds], targetPlayerIds: [], discardedCardIds: [] };
-  receipt[key]!.discardedCardIds = achillesRandomDiscard(s, ctx, targetPlayerIds, battlefieldId);
+  receipt[identity.battleId]!.discardedCardIds = achillesRandomDiscard(s, ctx, targetPlayerIds, identity);
   runtime(s).events.push({ type: 'achilles_battle_power_zero', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
-    abilityId: ctx.abilityId, battlefieldId, roundNumber: s.round.roundNumber, targetPlayerIds: [...receipt[key]!.targetPlayerIds] });
+    abilityId: ctx.abilityId, battlefieldId, battleId: identity.battleId, resultId: identity.resultId,
+    roundNumber: s.round.roundNumber, targetPlayerIds: [...receipt[identity.battleId]!.targetPlayerIds] });
 }
 function executeAchillesS2(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   if (!isAchillesS2(a) || !isAchillesSource(s, ctx.sourceCardId, ACHILLES_S2_SOURCE_ID) || !active(s, ctx.sourceCardId) || phase(s) !== 'action') {
@@ -887,7 +922,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
       !hasActiveZoukenFounder(s, card(s, sourceId).controllerPlayerId)) return false;
   if (isBattleLossResourceTriggerSemantic(a) && effectiveCommandSpells(s, card(s, sourceId).controllerPlayerId) <= 0 &&
       !hasActiveZoukenFounder(s, card(s, sourceId).controllerPlayerId)) return false;
-  if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
+  if (isAchillesS1Gale(a)) {
+    const battlefieldId = player(s, card(s, sourceId).controllerPlayerId).locationId;
+    if (battlefieldId && runtime(s).achillesBattlePowerZeroByBattlefield?.[getAchillesBattleIdentity(s, battlefieldId).battleId]) return false;
+  } else if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a)) &&
     !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
@@ -2719,11 +2757,13 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       return !!source && !!ability && isAchillesS3(ability) && source.controllerPlayerId === entry.controllerId &&
         locationIds.has(entry.battlefieldId) && playerIds.has(entry.opponentId) && entry.round >= 0 && entry.round <= s.round.roundNumber;
     })) return false;
-    if (!(Object.values(r.achillesBattlePowerZeroByBattlefield ?? {}).every((entry) => {
+    if (!(Object.entries(r.achillesBattlePowerZeroByBattlefield ?? {}).every(([key, entry]) => {
       const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
       const participants = entry.participantIds;
       return !!source && !!ability && isAchillesS1Gale(ability) && source.controllerPlayerId === entry.controllerId &&
+        key === entry.battleId && entry.battlePhaseResolutionId === `battle-phase:${entry.round}` &&
+        entry.resultId === `${entry.battleId}:result` && entry.settlementId === `${entry.resultId}:settlement` &&
         active(s, entry.sourceCardId) && entry.round === s.round.roundNumber && entry.battlefieldId === player(s, entry.controllerId).locationId &&
         locationIds.has(entry.battlefieldId) && hasPlayers(participants) && participants.includes(entry.controllerId) &&
         new Set(entry.targetPlayerIds).size === entry.targetPlayerIds.length && entry.targetPlayerIds.every((id) => participants.includes(id) && id !== entry.controllerId) &&
@@ -4447,7 +4487,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });
   for (const cost of a.cost.filter(c => c.type === 'move_source_card')) moveCard(s, ctx.sourceCardId, str(node(cost.to).zone));
   if (a.visibility.revealTiming === 'on_use_declared') reveal(s, p.id);
-  if (!isCommandSpellCard(s, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
+  if (!isAchillesS1Gale(a) && !isCommandSpellCard(s, ctx.sourceCardId) && classifyAbilityInteraction(a).kind === 'phase_activation') {
+    runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
+  }
   
   // Update usage count
   if (limitType === 'per_game' || limitType === 'per_round') {

@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, getAchillesBattleIdentity, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
 
@@ -341,8 +341,10 @@ export function deriveBattleParticipantsFromState(
   const participantIds = state.players
     .filter((player) => player.status === "active" && player.locationId === battlefieldId)
     .map((player) => player.id);
+  const battleIdentity = getAchillesBattleIdentity(state, battlefieldId);
   const achillesReceipt = Object.values(state.abilityRuntime?.achillesBattlePowerZeroByBattlefield ?? {})
     .find((entry) => entry.round === state.round.roundNumber && entry.battlefieldId === battlefieldId &&
+      entry.battleId === battleIdentity.battleId && entry.resultId === battleIdentity.resultId && entry.settlementId === battleIdentity.settlementId &&
       entry.participantIds.length === participantIds.length && entry.participantIds.every((id) => participantIds.includes(id)) &&
       state.cards.some((candidate) => candidate.instanceId === entry.sourceCardId && candidate.definitionId === "servant.achilles.skill.sc-achilles-1" &&
         candidate.controllerPlayerId === entry.controllerId && candidate.zone === "attack_area" &&
@@ -552,7 +554,8 @@ export function resolveBattlefield(
   state: GameState,
   input: CombatResolutionInput,
 ): ResolverResult {
-  const abilityEventId = `battle:${state.round.roundNumber}:${input.battlefieldId}`;
+  const battleIdentity = getAchillesBattleIdentity(state, input.battlefieldId);
+  const abilityEventId = battleIdentity.battleId;
   if (state.abilityRuntime?.processedEvents.includes(abilityEventId)) return { nextState: state, appliedLogEntries: [] };
   if (
     input.battlefieldId === "moon_holy_grail" &&
@@ -642,13 +645,18 @@ export function resolveBattlefield(
     if (nextState.abilityRuntime && !nextState.abilityRuntime.processedEvents.includes(abilityEventId)) {
       nextState.abilityRuntime.processedEvents.push(abilityEventId);
     }
+    const receipts = nextState.abilityRuntime?.achillesBattlePowerZeroByBattlefield;
+    const receipt = receipts?.[battleIdentity.battleId];
+    if (receipt?.resultId === battleIdentity.resultId && receipt.settlementId === battleIdentity.settlementId) {
+      delete receipts![battleIdentity.battleId];
+    }
     return { nextState, appliedLogEntries: [`return_silence:${input.battlefieldId}`] };
   }
   const ranked = [...participants]
     .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
     .sort((left, right) => right.effectivePower - left.effectivePower);
-  const resultId = `battle-result:${state.round.roundNumber}:${input.battlefieldId}`;
-  const powerEventId = `battle-power:${state.round.roundNumber}:${input.battlefieldId}`;
+  const resultId = battleIdentity.resultId;
+  const powerEventId = `${resultId}:power`;
   let settlementState = state;
 
   if (settlementState.abilityRuntime && !settlementState.abilityRuntime.processedEvents.includes(powerEventId)) {
@@ -764,6 +772,15 @@ export function resolveBattlefield(
     const runtime = nextState.abilityRuntime;
     if (runtime && !runtime.processedEvents.includes(abilityEventId)) {
       runtime.processedEvents.push(abilityEventId);
+    }
+    if (runtime) {
+      const receipts = runtime.achillesBattlePowerZeroByBattlefield;
+      if (receipts) {
+        for (const [key, entry] of Object.entries(receipts)) {
+          if (key === battleIdentity.battleId && entry.battleId === battleIdentity.battleId &&
+              entry.resultId === battleIdentity.resultId && entry.settlementId === battleIdentity.settlementId) delete receipts[key];
+        }
+      }
     }
   }
   return {
