@@ -2594,7 +2594,7 @@
     },
     {
       "id": "servant.abigail.skill.sc-abigail-1",
-      "name": "理智丧失",
+      "name": "于深渊化作光",
       "cardType": "servant_skill",
       "attribute": "special",
       "attributes": [
@@ -2602,7 +2602,7 @@
       ],
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "理智丧失。",
+      "printedText": "X为你本局游戏以理智丧失分发的【领域外生命】数。打出时：若X为12，你获得游戏胜利。理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
       "timing": [
         "action"
       ],
@@ -9803,7 +9803,7 @@
       },
       "servant.abigail.skill.sc-abigail-1": {
         "id": "servant.abigail.skill.sc-abigail-1",
-        "name": "理智丧失",
+        "name": "于深渊化作光",
         "cardType": "servant_skill",
         "cardFace": {
           "typeLabel": "特殊",
@@ -9818,7 +9818,72 @@
           "window": "controller_play_card_window"
         },
         "playRequirements": [],
-        "abilities": [],
+        "abilities": [
+          {
+            "id": "servant.abigail.skill.sc-abigail-1.distribute-outside-life",
+            "kind": "phase_action",
+            "printedClause": "理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "id": "abigail-s1-distribute-outside-life",
+                "type": "abigail_s1_distribute_outside_life"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "servant.abigail.skill.sc-abigail-1.win-at-x12",
+            "kind": "forced_trigger",
+            "printedClause": "打出时：若X为12，你获得游戏胜利。",
+            "activation": {
+              "phase": "action",
+              "trigger": "on_card_played",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "id": "abigail-s1-win-at-x12",
+                "type": "abigail_s1_win_if_x12"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
         "mode": "automatic",
         "ownerId": "servant.abigail",
         "playKind": "attack",
@@ -11934,11 +11999,11 @@
       "master.irisviel": "master.irisviel.command-spell",
       "master.zouken": "master.zouken.command-spell"
     },
-    "definitionHash": "b77396c0a42e02a8dddf3f4d511fc5819a5f241417375b8f908b98e526c045ba",
+    "definitionHash": "7392487a75739386ddd86f4fe64178dbb26826cd53592b68ac29489fe274b622",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "b77396c0a42e02a8dddf3f4d511fc5819a5f241417375b8f908b98e526c045ba"
+      "definitionHash": "7392487a75739386ddd86f4fe64178dbb26826cd53592b68ac29489fe274b622"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -12979,6 +13044,20 @@
         "archiveIndex": 15,
         "cardIndex": 0,
         "path": "archives[15].cards[0]"
+      },
+      "servant.abigail.skill.sc-abigail-1#servant.abigail.skill.sc-abigail-1.distribute-outside-life": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[15].cards[0].abilities[0]"
+      },
+      "servant.abigail.skill.sc-abigail-1#servant.abigail.skill.sc-abigail-1.win-at-x12": {
+        "archiveId": "servant.abigail",
+        "archiveIndex": 15,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[15].cards[0].abilities[1]"
       },
       "servant.abigail.skill.sc-abigail-2": {
         "archiveId": "servant.abigail",

@@ -189,6 +189,16 @@ export interface RuleOverrideState {
     sourceCardId: string; abilityId: string; controllerId: string; abigailPlayerId: string;
     targetPlayerIds: string[]; amount: number;
   }>;
+  /** Source-bound Abigail S1 ledger: only cards dealt by this exact action count toward X. */
+  abigailSanityLossByPlayer?: Record<string, {
+    sourceCardId: string; abilityId: string; controllerId: string;
+    distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>;
+  }>;
+  /** Source-bound proof for the exact X=12 instant-victory outcome. */
+  abigailSanityLossVictoryByPlayer?: Record<string, {
+    sourceCardId: string; abilityId: string; controllerId: string; x: number;
+    distributedCardInstanceIds: string[];
+  }>;
 }
 
 export interface GameState {
@@ -214,6 +224,8 @@ export interface GameState {
   contentRuntime?: ContentRuntimeState;
   scoringBreakdown?: PlayerScoringBreakdown[];
   ruleOverrides?: RuleOverrideState;
+  /** A source-specific immediate game winner; absent for ordinary matches. */
+  winnerPlayerIds?: string[];
   effectStack: EffectStackItem[];
   log: GameLogEntry[];
 }

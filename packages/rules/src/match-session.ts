@@ -470,7 +470,7 @@ function isRestoreResponseWindow(value: unknown): boolean {
 
 function isRestoreSafeEvent(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.type !== 'string') return false;
-  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','recipientPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
+  for (const key of ['playerId','sourceCardId','abilityId','visibility','sourceAbilityId','controllerId','sourcePlayerId','targetPlayerId','recipientPlayerId','battlePhaseResolutionId','battleId','battlefieldId','resultId','triggerEventId','playEventId','releaseEventId','fromState','toState','cardInstanceId','fromZone','toZone'] as const) {
     if (value[key] !== undefined && typeof value[key] !== 'string') return false;
   }
   if (value.unpreventable !== undefined && typeof value.unpreventable !== 'boolean') return false;
@@ -480,7 +480,87 @@ function isRestoreSafeEvent(value: unknown): boolean {
   for (const key of ['revision','movedCount','roundNumber'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
   if (value.targetPlayerIds !== undefined && !isRestoreStringArray(value.targetPlayerIds)) return false;
+  if (value.cardInstanceIds !== undefined && !isRestoreStringArray(value.cardInstanceIds)) return false;
   return true;
+}
+
+function isRestoreAbigailS4PlayProvenance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.cardInstanceId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.controllerId === 'string' && typeof value.onUseEventId === 'string' &&
+    typeof value.onCardPlayedEventId === 'string' && isRestoreSafeInteger(value.round, 1);
+}
+
+function isRestoreAbigailS4RecycleProvenance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.cardInstanceId === 'string' && typeof value.sourceCardId === 'string' &&
+    typeof value.controllerId === 'string' && typeof value.recipientPlayerId === 'string' &&
+    typeof value.abilityId === 'string' && typeof value.playEventId === 'string' && typeof value.releaseEventId === 'string' &&
+    typeof value.battlePhaseResolutionId === 'string' && typeof value.triggerEventId === 'string';
+}
+
+function isRestoreAbigailS4EventProvenance(value: unknown): boolean {
+  return isRestoreRecord(value) && typeof value.eventId === 'string' &&
+    (value.type === 'on_use_declared' || value.type === 'on_card_played') &&
+    typeof value.sourceCardId === 'string' && typeof value.controllerId === 'string' &&
+    typeof value.abilityId === 'string';
+}
+
+function isRestoreAbigailS4PlayProvenanceMap(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const entries = Object.entries(value);
+  if (!entries.every(([cardId, proof]) => isRestoreAbigailS4PlayProvenance(proof) &&
+      (proof as Record<string, unknown>).cardInstanceId === cardId && (proof as Record<string, unknown>).sourceCardId === cardId)) return false;
+  const proofs = entries.map(([, proof]) => proof as Record<string, unknown>);
+  return new Set(proofs.map((proof) => proof.onUseEventId)).size === proofs.length &&
+    new Set(proofs.map((proof) => proof.onCardPlayedEventId)).size === proofs.length;
+}
+
+function isRestoreAbigailS4RecycleProvenanceMap(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const entries = Object.entries(value);
+  if (!entries.every(([cardId, proof]) => isRestoreAbigailS4RecycleProvenance(proof) &&
+      (proof as Record<string, unknown>).cardInstanceId === cardId && (proof as Record<string, unknown>).sourceCardId === cardId)) return false;
+  const proofs = entries.map(([, proof]) => proof as Record<string, unknown>);
+  return new Set(proofs.map((proof) => proof.playEventId)).size === proofs.length &&
+    new Set(proofs.map((proof) => proof.releaseEventId)).size === proofs.length;
+}
+
+function isRestoreAbigailS4EventProvenanceMap(value: unknown): boolean {
+  if (!isRestoreRecord(value)) return false;
+  const entries = Object.entries(value);
+  if (!entries.every(([eventId, proof]) => isRestoreAbigailS4EventProvenance(proof) &&
+      (proof as Record<string, unknown>).eventId === eventId)) return false;
+  const proofs = entries.map(([, proof]) => proof as Record<string, unknown>);
+  return new Set(proofs.map((proof) => `${proof.sourceCardId}:${proof.type}`)).size === proofs.length;
+}
+
+function isRestoreAbigailS1DistributionProvenance(events: unknown[], controllerId: string, sourceCardId: string,
+  distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>): boolean {
+  const candidates = events.filter((event): event is Record<string, unknown> => isRestoreRecord(event) &&
+    event.type === 'abigail_s1_outside_life_distributed');
+  const seen = new Set<string>();
+  for (const event of candidates) {
+    if (event.playerId !== controllerId || event.sourceCardId !== sourceCardId ||
+        event.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' ||
+        !isRestoreStringArray(event.cardInstanceIds) || !isRestoreStringArray(event.targetPlayerIds) ||
+        event.cardInstanceIds.length !== event.targetPlayerIds.length ||
+        event.movedCount !== event.cardInstanceIds.length ||
+        new Set(event.cardInstanceIds).size !== event.cardInstanceIds.length ||
+        new Set(event.targetPlayerIds).size !== event.targetPlayerIds.length) return false;
+    const cardInstanceIds = event.cardInstanceIds as string[];
+    const targetPlayerIds = event.targetPlayerIds as string[];
+    cardInstanceIds.forEach((instanceId, index) => {
+      if (seen.has(instanceId)) return;
+      seen.add(instanceId);
+      const entry = distributed.find((candidate) => candidate.cardInstanceId === instanceId);
+      if (!entry || entry.recipientPlayerId !== targetPlayerIds[index]) seen.add(`__invalid:${instanceId}`);
+    });
+  }
+  return seen.size === distributed.length && distributed.every((entry) => {
+    const matching = candidates.filter((event) => (event.cardInstanceIds as string[] | undefined)?.includes(entry.cardInstanceId));
+    if (matching.length !== 1) return false;
+    const index = (matching[0]!.cardInstanceIds as string[]).indexOf(entry.cardInstanceId);
+    return (matching[0]!.targetPlayerIds as string[])[index] === entry.recipientPlayerId;
+  });
 }
 
 function isRestoreCalculation(value: unknown): boolean {
@@ -690,6 +770,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !isRestoreNonNegativeIntegerMap(value.battlefieldsPassedOrStayedThisRound) || !isRestoreRoundByPlayerNumberState(value.manaGainedThisRound) ||
       (value.zoukenS4RoundSettledBySource !== undefined && !isRestoreNonNegativeIntegerMap(value.zoukenS4RoundSettledBySource)) ||
       (value.zoukenS4BattleSettledBySource !== undefined && !isRestoreStringArrayMap(value.zoukenS4BattleSettledBySource)) ||
+      (value.abigailS4PlayProvenance !== undefined && !isRestoreAbigailS4PlayProvenanceMap(value.abigailS4PlayProvenance)) ||
+      (value.abigailS4EventProvenance !== undefined && !isRestoreAbigailS4EventProvenanceMap(value.abigailS4EventProvenance)) ||
+      (value.abigailS4RecycleProvenance !== undefined && !isRestoreAbigailS4RecycleProvenanceMap(value.abigailS4RecycleProvenance)) ||
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
@@ -858,6 +941,22 @@ function isRestoreRuleOverrides(value: unknown, playerIds: Set<string>, location
         entry.targetPlayerIds[0] === entry.controllerId &&
         (entry.controllerId === entry.abigailPlayerId || entry.targetPlayerIds[1] === entry.abigailPlayerId) &&
         isRestoreSafeInteger(entry.amount) && entry.amount === 6))) return false;
+  if (value.abigailSanityLossByPlayer !== undefined && (!isRestoreRecord(value.abigailSanityLossByPlayer) ||
+      !restoreRecordKeysBelongTo(value.abigailSanityLossByPlayer, playerIds) ||
+      !Object.values(value.abigailSanityLossByPlayer).every((entry) => isRestoreRecord(entry) &&
+        typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' &&
+        typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
+        isRestoreRecord(entry) && Array.isArray(entry.distributed) &&
+        entry.distributed.every((item) => isRestoreRecord(item) && typeof item.cardInstanceId === 'string' &&
+          typeof item.recipientPlayerId === 'string' && playerIds.has(item.recipientPlayerId))))) return false;
+  if (value.abigailSanityLossVictoryByPlayer !== undefined && (!isRestoreRecord(value.abigailSanityLossVictoryByPlayer) ||
+      !restoreRecordKeysBelongTo(value.abigailSanityLossVictoryByPlayer, playerIds) ||
+      !Object.values(value.abigailSanityLossVictoryByPlayer).every((entry) => isRestoreRecord(entry) &&
+        typeof entry.sourceCardId === 'string' && entry.abilityId === 'servant.abigail.skill.sc-abigail-1.win-at-x12' &&
+        typeof entry.controllerId === 'string' && playerIds.has(entry.controllerId) &&
+        isRestoreSafeInteger(entry.x) && entry.x === 12 && isRestoreStringArray(entry.distributedCardInstanceIds) &&
+        new Set(entry.distributedCardInstanceIds).size === entry.distributedCardInstanceIds.length &&
+        entry.distributedCardInstanceIds.length === 12))) return false;
   return true;
 }
 
@@ -1054,6 +1153,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const enabledLocationIds = locationConfig.enabledLocationIds as string[];
   if (new Set(enabledLocationIds).size !== enabledLocationIds.length || !enabledLocationIds.every((id) => locationIds.has(id))) return false;
   const enabledLocations = new Set(enabledLocationIds);
+  if (value.winnerPlayerIds !== undefined && !restoreIdsBelongTo(value.winnerPlayerIds, playerIds)) return false;
   if (!players.every((player) => player.locationId === undefined ||
       (typeof player.locationId === 'string' && locationIds.has(player.locationId) &&
         (enabledLocations.size === 0 || enabledLocations.has(player.locationId))))) return false;
@@ -1128,6 +1228,109 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
           source.generatedBy !== 'servant.abigail.skill.sc-abigail-1' || entry.abigailPlayerId !== abigailPlayerId ||
           !isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-4' ||
           !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true) return false;
+    }
+  }
+  const abigailLedger = restoredState.ruleOverrides?.abigailSanityLossByPlayer;
+  if (abigailLedger !== undefined) {
+    for (const [playerId, entry] of Object.entries(abigailLedger)) {
+      const source = cardsByInstance.get(entry.sourceCardId);
+      const sourceDefinition = source && definitions[source.definitionId as string];
+      const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[entry.sourceCardId] : undefined;
+      const distributedIds = entry.distributed.map((item) => item.cardInstanceId);
+      if (!source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId ||
+          (!isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-1') || entry.controllerId !== playerId ||
+          entry.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' ||
+          !isRestoreRecord(sourceState) || sourceState.faceDown === true ||
+          new Set(distributedIds).size !== distributedIds.length ||
+          !isRestoreAbigailS1DistributionProvenance(abilityRuntime.events as unknown[], playerId, entry.sourceCardId, entry.distributed) ||
+          !entry.distributed.every((item) => {
+            const created = cardsByInstance.get(item.cardInstanceId);
+            const unchanged = !!created && created.ownerPlayerId === item.recipientPlayerId && created.controllerPlayerId === item.recipientPlayerId &&
+              created.zone === 'hand' && isRestoreRecord(created.visibility) && created.visibility.scope === 'owner_only' &&
+              created.visibility.ownerPlayerId === item.recipientPlayerId;
+            const recycledState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[item.cardInstanceId] : undefined;
+            const recycled = !!created && created.ownerPlayerId === playerId && created.controllerPlayerId === playerId && created.zone === 'discard' &&
+              isRestoreRecord(created.visibility) && created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === playerId &&
+              isRestoreRecord(recycledState) && recycledState.active === false && Array.isArray(abilityRuntime.events) &&
+              (() => {
+                const playProofMap = isRestoreRecord(abilityRuntime.abigailS4PlayProvenance) ? abilityRuntime.abigailS4PlayProvenance : undefined;
+                const eventProofMap = isRestoreRecord(abilityRuntime.abigailS4EventProvenance) ? abilityRuntime.abigailS4EventProvenance : undefined;
+                const recycleProofMap = isRestoreRecord(abilityRuntime.abigailS4RecycleProvenance) ? abilityRuntime.abigailS4RecycleProvenance : undefined;
+                const playProof = playProofMap && isRestoreRecord(playProofMap[item.cardInstanceId]) ? playProofMap[item.cardInstanceId] as Record<string, unknown> : undefined;
+                const recycleProof = recycleProofMap && isRestoreRecord(recycleProofMap[item.cardInstanceId]) ? recycleProofMap[item.cardInstanceId] as Record<string, unknown> : undefined;
+                const onUseEventId = typeof playProof?.onUseEventId === 'string' ? playProof.onUseEventId : undefined;
+                const onCardPlayedEventId = typeof playProof?.onCardPlayedEventId === 'string' ? playProof.onCardPlayedEventId : undefined;
+                const onUseProof = onUseEventId && eventProofMap && isRestoreRecord(eventProofMap[onUseEventId]) ? eventProofMap[onUseEventId] as Record<string, unknown> : undefined;
+                const onCardPlayedProof = onCardPlayedEventId && eventProofMap && isRestoreRecord(eventProofMap[onCardPlayedEventId]) ? eventProofMap[onCardPlayedEventId] as Record<string, unknown> : undefined;
+                const playProofEntries = playProofMap ? Object.entries(playProofMap) : [];
+                const recycleProofEntries = recycleProofMap ? Object.entries(recycleProofMap) : [];
+                const releaseEvents = (abilityRuntime.events as unknown[]).filter((event) => isRestoreRecord(event) &&
+                  event.type === 'abigail_s4_true_name_released' && event.sourceCardId === item.cardInstanceId) as Array<Record<string, unknown>>;
+                const recycleEvents = (abilityRuntime.events as unknown[]).filter((event) => isRestoreRecord(event) &&
+                  event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === item.cardInstanceId) as Array<Record<string, unknown>>;
+                return !!playProof && !!recycleProof && releaseEvents.length === 1 &&
+                  playProof.cardInstanceId === item.cardInstanceId && playProof.sourceCardId === item.cardInstanceId &&
+                  playProof.controllerId === item.recipientPlayerId && typeof playProof.onUseEventId === 'string' &&
+                  typeof playProof.onCardPlayedEventId === 'string' && (abilityRuntime.processedEvents as string[]).includes(playProof.onUseEventId) &&
+                  (abilityRuntime.processedEvents as string[]).includes(playProof.onCardPlayedEventId) &&
+                  playProofEntries.every(([cardId, proof]) => cardId === item.cardInstanceId ||
+                    (isRestoreRecord(proof) && proof.onUseEventId !== playProof.onUseEventId && proof.onCardPlayedEventId !== playProof.onCardPlayedEventId)) &&
+                  releaseEvents[0]!.playerId === item.recipientPlayerId &&
+                  !!onUseProof && onUseProof.eventId === playProof.onUseEventId && onUseProof.type === 'on_use_declared' &&
+                  onUseProof.sourceCardId === item.cardInstanceId && onUseProof.controllerId === item.recipientPlayerId &&
+                  onUseProof.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
+                  !!onCardPlayedProof && onCardPlayedProof.eventId === playProof.onCardPlayedEventId && onCardPlayedProof.type === 'on_card_played' &&
+                  onCardPlayedProof.sourceCardId === item.cardInstanceId && onCardPlayedProof.controllerId === item.recipientPlayerId &&
+                  onCardPlayedProof.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
+                  releaseEvents[0]!.abilityId === 'servant.abigail.skill.sc-abigail-4.true-name-release' &&
+                  releaseEvents[0]!.triggerEventId === playProof.onUseEventId && releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
+                  recycleProof.cardInstanceId === item.cardInstanceId && recycleProof.sourceCardId === item.cardInstanceId &&
+                  recycleProof.controllerId === item.recipientPlayerId && recycleProof.recipientPlayerId === playerId &&
+                  recycleProof.abilityId === 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard' &&
+                  recycleProof.playEventId === playProof.onCardPlayedEventId && recycleProof.releaseEventId === playProof.onUseEventId &&
+                  recycleProofEntries.every(([cardId, proof]) => cardId === item.cardInstanceId ||
+                    (isRestoreRecord(proof) && proof.playEventId !== recycleProof.playEventId && proof.releaseEventId !== recycleProof.releaseEventId)) &&
+                  recycleEvents.length === 1 && recycleEvents[0]!.playerId === item.recipientPlayerId &&
+                  recycleEvents[0]!.abilityId === 'servant.abigail.skill.sc-abigail-4.recycle-to-abigail-discard' &&
+                  recycleEvents[0]!.recipientPlayerId === playerId && recycleEvents[0]!.fromZone === 'attack_area' &&
+                  recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
+                  recycleEvents[0]!.playEventId === playProof.onCardPlayedEventId && recycleEvents[0]!.releaseEventId === playProof.onUseEventId &&
+                  recycleEvents[0]!.battlePhaseResolutionId === recycleProof.battlePhaseResolutionId &&
+                  recycleEvents[0]!.triggerEventId === recycleProof.triggerEventId &&
+                  typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string' &&
+                  (abilityRuntime.processedEvents as string[]).includes(recycleProof.triggerEventId as string);
+              })();
+            return !!created && created.definitionId === 'servant.abigail.skill.sc-abigail-4' &&
+              created.generatedBy === 'servant.abigail.skill.sc-abigail-1' && item.recipientPlayerId !== playerId && (unchanged || recycled);
+          })) return false;
+    }
+  }
+  const abigailVictories = restoredState.ruleOverrides?.abigailSanityLossVictoryByPlayer;
+  const winnerPlayerIds = restoredState.winnerPlayerIds;
+  if ((winnerPlayerIds === undefined) !== (abigailVictories === undefined)) return false;
+  if (winnerPlayerIds !== undefined) {
+    const victoryEntries = Object.entries(abigailVictories ?? {});
+    if (winnerPlayerIds.length !== 1 || new Set(winnerPlayerIds).size !== 1 || victoryEntries.length !== 1 ||
+        victoryEntries[0]![0] !== winnerPlayerIds[0]) return false;
+  }
+  if (abigailVictories !== undefined) {
+    for (const [playerId, entry] of Object.entries(abigailVictories)) {
+      const source = cardsByInstance.get(entry.sourceCardId);
+      const sourceDefinition = source && definitions[source.definitionId as string];
+      const sourceState = isRestoreRecord(abilityRuntime.cardState) ? abilityRuntime.cardState[entry.sourceCardId] : undefined;
+      const ledger = restoredState.ruleOverrides?.abigailSanityLossByPlayer?.[playerId];
+      const ledgerIds = ledger?.distributed.map((item) => item.cardInstanceId);
+      const controller = restoredState.players.find((candidate) => candidate.id === playerId);
+      if (restoredState.round.activePhase !== 'action' || !controller || controller.servantCardId !== 'servant.abigail' ||
+          !source || source.ownerPlayerId !== playerId || source.controllerPlayerId !== playerId || source.zone !== 'attack_area' ||
+          !isRestoreRecord(source.visibility) || source.visibility.scope !== 'public' ||
+          (!isRestoreRecord(sourceDefinition) || sourceDefinition.id !== 'servant.abigail.skill.sc-abigail-1') || entry.controllerId !== playerId ||
+          entry.x !== 12 || !restoredState.winnerPlayerIds?.includes(playerId) ||
+          !ledger || ledger.sourceCardId !== entry.sourceCardId || ledger.controllerId !== entry.controllerId ||
+          ledger.abilityId !== 'servant.abigail.skill.sc-abigail-1.distribute-outside-life' || ledger.distributed.length !== 12 ||
+          !isRestoreRecord(sourceState) || sourceState.active !== true || sourceState.faceDown === true ||
+          entry.distributedCardInstanceIds.length !== ledgerIds!.length ||
+          entry.distributedCardInstanceIds.some((id, index) => id !== ledgerIds![index])) return false;
     }
   }
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
@@ -1749,6 +1952,9 @@ export class MatchSession {
       rejection: result.rejection,
     });
     this.consumeAppliedDirectives();
+    if (result.ok && (this.state.winnerPlayerIds?.length ?? 0) > 0) {
+      this.pause('match_complete');
+    }
     this.checkpoint(`${playerId}:${command.type}`);
     return result;
   }
@@ -1928,6 +2134,7 @@ export class MatchSession {
       if (!result.ok) return this.pause('backend_rejection');
       const windowPause = this.autoResolveNonInteractiveWindows();
       if (windowPause) return this.pause(windowPause);
+      if ((this.state.winnerPlayerIds?.length ?? 0) > 0) return this.pause('match_complete');
     }
     if (!hadAnyAction) this.record('ai_passed', `${playerId}:no legal action`);
     return undefined;
@@ -1952,6 +2159,7 @@ export class MatchSession {
   }
 
   runUntilHumanInputOrRoundEnd(): MatchPauseReason {
+    if ((this.state.winnerPlayerIds?.length ?? 0) > 0) return this.pause('match_complete');
     this.stopReason = undefined;
     for (let guard = 0; guard < 300; guard++) {
       const fingerprint = actionFingerprint(this.state);

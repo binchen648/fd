@@ -203,6 +203,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   if (s.abilityRuntime) reject('already_initialized', 'Ability runtime already exists');
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+    abigailS4PlayProvenance: {}, abigailS4EventProvenance: {}, abigailS4RecycleProvenance: {},
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -669,6 +670,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isZoukenS4AbilityCandidate(a) && (!isZoukenS4Source(s, sourceId) || !isZoukenS4Semantic(a))) return false;
   if (isAbigailS3aCandidate(a) && (!isAbigailS3aSource(s, sourceId) || !isAbigailS3aSemantic(a))) return false;
   if (isAbigailS3bCandidate(a) && (!isAbigailS3aSource(s, sourceId) || !isAbigailS3bSemantic(a))) return false;
+  if (isAbigailS1Candidate(a) && (!isAbigailS1Source(s, sourceId) || !isAbigailS1Semantic(a))) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -705,6 +707,11 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     const ctx = context(s, sourceId, a.id, event);
     if (!isAbigailS3aSource(s, sourceId) || !active(s, sourceId) || phase(s) !== 'action') return false;
   }
+  if (isAbigailS1DistributeSemantic(a) &&
+      (!isAbigailS1Source(s, sourceId) || !active(s, sourceId) || phase(s) !== 'action' ||
+       s.round.prioritySeat !== player(s, card(s, sourceId).controllerPlayerId).seat ||
+       player(s, card(s, sourceId).controllerPlayerId).locationId === undefined)) return false;
+  if (isAbigailS1WinSemantic(a) && !isAbigailS1Source(s, sourceId)) return false;
   if (isZoukenS3ActionSemantic(a)) {
     const controller = player(s, card(s, sourceId).controllerPlayerId);
     if (controller.mana < 2) return false;
@@ -813,12 +820,72 @@ const ABIGAIL_S4_CLEANUP_CLAUSE = '战斗阶段结束后，将此牌加入阿比
 const ABIGAIL_S4_RELEASE_EFFECT_ID = 'abigail-s4-true-name-release';
 const ABIGAIL_S4_CLEANUP_EFFECT_ID = 'abigail-s4-recycle-to-abigail-discard';
 const ABIGAIL_S4_POWER_AMOUNT = 6;
+const ABIGAIL_S1_SOURCE_ID = 'servant.abigail.skill.sc-abigail-1';
+const ABIGAIL_S1_DISTRIBUTE_ID = 'servant.abigail.skill.sc-abigail-1.distribute-outside-life';
+const ABIGAIL_S1_WIN_ID = 'servant.abigail.skill.sc-abigail-1.win-at-x12';
+const ABIGAIL_S1_DISTRIBUTE_CLAUSE = '理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。';
+const ABIGAIL_S1_WIN_CLAUSE = '打出时：若X为12，你获得游戏胜利。';
+const ABIGAIL_S1_EFFECT_ID = 'abigail-s1-distribute-outside-life';
+const ABIGAIL_S1_WIN_EFFECT_ID = 'abigail-s1-win-at-x12';
+const ABIGAIL_S1_THRESHOLD = 12;
 
 function isAbigailS3aSource(s: GameState, sourceCardId: string): boolean {
   const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
   return definition(s, sourceCardId)?.id === ABIGAIL_S3A_SOURCE_ID &&
     definition(s, sourceCardId)?.cardType === 'servant_skill' && !!source &&
     source.ownerPlayerId === source.controllerPlayerId;
+}
+
+function isAbigailS1Source(s: GameState, sourceCardId: string): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === sourceCardId);
+  const sourceDefinition = source && runtime(s).pack.cards[source.definitionId];
+  const owner = source && s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+  return !!source && !!sourceDefinition && sourceDefinition.id === ABIGAIL_S1_SOURCE_ID &&
+    sourceDefinition.cardType === 'servant_skill' && source.ownerPlayerId === source.controllerPlayerId &&
+    owner?.servantCardId === 'servant.abigail' && owner.status === 'active' &&
+    ['field', 'attack_area'].includes(source.zone);
+}
+
+function isExactAbigailS1Shell(a: AuthoringAbility, kind: string, activationKeys: string[]): boolean {
+  return a.kind === kind && a.execution.mode === 'automatic' && Array.isArray(a.execution.allowedOperations) &&
+    a.execution.allowedOperations.length === 0 && Object.keys(a.activation).every((key) => activationKeys.includes(key)) &&
+    a.conditions.length === 0 && a.targets.length === 0 && a.cost.length === 0 && a.creates.length === 0 &&
+    a.ruleModifiers.length === 0 && Object.keys(a.lifecycle).length === 0 && Object.keys(a.limit).length === 0 &&
+    Object.keys(a.visibility).length === 0 && (Object.keys(a.responseWindow).length === 0 ||
+      (exactNodeKeys(a.responseWindow, ['order', 'passBehavior']) && a.responseWindow.order === 'turn_order' &&
+       a.responseWindow.passBehavior === 'decline_this_window'));
+}
+
+export function isAbigailS1DistributeCandidate(a: AuthoringAbility): boolean { return a.id === ABIGAIL_S1_DISTRIBUTE_ID; }
+export function isAbigailS1WinCandidate(a: AuthoringAbility): boolean { return a.id === ABIGAIL_S1_WIN_ID; }
+export function isAbigailS1Candidate(a: AuthoringAbility): boolean {
+  return isAbigailS1DistributeCandidate(a) || isAbigailS1WinCandidate(a);
+}
+
+export function isAbigailS1DistributeSemantic(a: AuthoringAbility): boolean {
+  if (!isExactAbigailS1Shell(a, 'phase_action', ['phase', 'opens', 'requiresSourceState']) ||
+      a.id !== ABIGAIL_S1_DISTRIBUTE_ID || a.printedClause !== ABIGAIL_S1_DISTRIBUTE_CLAUSE ||
+      !exactNodeKeys(a.activation, ['phase', 'opens', 'requiresSourceState']) ||
+      a.activation.phase !== 'action' || a.activation.opens !== 'controller_action_window' ||
+      a.activation.requiresSourceState !== 'active' || a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'abigail_s1_distribute_outside_life' && effect.id === ABIGAIL_S1_EFFECT_ID &&
+    exactNodeKeys(effect, ['id', 'type']);
+}
+
+export function isAbigailS1WinSemantic(a: AuthoringAbility): boolean {
+  if (!isExactAbigailS1Shell(a, 'forced_trigger', ['phase', 'trigger', 'requiresSourceState']) ||
+      a.id !== ABIGAIL_S1_WIN_ID || a.printedClause !== ABIGAIL_S1_WIN_CLAUSE ||
+      !exactNodeKeys(a.activation, ['phase', 'trigger', 'requiresSourceState']) ||
+      a.activation.phase !== 'action' || a.activation.trigger !== 'on_card_played' ||
+      a.activation.requiresSourceState !== 'active' || a.effects.length !== 1) return false;
+  const effect = a.effects[0]!;
+  return effect.type === 'abigail_s1_win_if_x12' && effect.id === ABIGAIL_S1_WIN_EFFECT_ID &&
+    exactNodeKeys(effect, ['id', 'type']);
+}
+
+export function isAbigailS1Semantic(a: AuthoringAbility): boolean {
+  return isAbigailS1DistributeSemantic(a) || isAbigailS1WinSemantic(a);
 }
 
 export function isAbigailS3aCandidate(a: AuthoringAbility): boolean {
@@ -1054,6 +1121,173 @@ function executeAbigailS3bCleanup(s: GameState, ctx: EffectContext, a: Authoring
   Object.assign(s, work);
 }
 
+function abigailS1Ledger(s: GameState, controllerId: string): NonNullable<NonNullable<GameState['ruleOverrides']>['abigailSanityLossByPlayer']>[string] | undefined {
+  return s.ruleOverrides?.abigailSanityLossByPlayer?.[controllerId];
+}
+
+function isCanonicalAbigailS1RecycledCard(s: GameState, controllerId: string, recipientPlayerId: string, instanceId: string): boolean {
+  const created = s.cards.find((candidate) => candidate.instanceId === instanceId);
+  const state = runtime(s).cardState[instanceId];
+  const playProof = runtime(s).abigailS4PlayProvenance?.[instanceId];
+  const recycleProof = runtime(s).abigailS4RecycleProvenance?.[instanceId];
+  const playProofEntries = Object.entries(runtime(s).abigailS4PlayProvenance ?? {});
+  const recycleProofEntries = Object.entries(runtime(s).abigailS4RecycleProvenance ?? {});
+  const eventProvenance = runtime(s).abigailS4EventProvenance ?? {};
+  const onUseProof = playProof && eventProvenance[playProof.onUseEventId];
+  const onCardPlayedProof = playProof && eventProvenance[playProof.onCardPlayedEventId];
+  const releaseEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_released' && event.sourceCardId === instanceId);
+  const recycleEvents = runtime(s).events.filter((event) => event.type === 'abigail_s4_true_name_card_recycled' && event.sourceCardId === instanceId);
+  return !!created && created.ownerPlayerId === controllerId && created.controllerPlayerId === controllerId && created.zone === 'discard' &&
+    created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === controllerId && state?.active === false &&
+    runtime(s).pack.cards[created.definitionId]?.id === ABIGAIL_OUTSIDE_LIFE_ID && created.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
+    !!playProof && playProof.cardInstanceId === instanceId && playProof.sourceCardId === instanceId &&
+    playProof.controllerId === recipientPlayerId &&
+    playProofEntries.every(([cardId, proof]) => cardId === instanceId ||
+      (proof.onUseEventId !== playProof.onUseEventId && proof.onCardPlayedEventId !== playProof.onCardPlayedEventId)) &&
+    runtime(s).processedEvents.includes(playProof.onUseEventId) && runtime(s).processedEvents.includes(playProof.onCardPlayedEventId) &&
+    !!onUseProof && onUseProof.eventId === playProof.onUseEventId && onUseProof.type === 'on_use_declared' &&
+    onUseProof.sourceCardId === instanceId && onUseProof.controllerId === recipientPlayerId && onUseProof.abilityId === ABIGAIL_S4_RELEASE_ID &&
+    !!onCardPlayedProof && onCardPlayedProof.eventId === playProof.onCardPlayedEventId && onCardPlayedProof.type === 'on_card_played' &&
+    onCardPlayedProof.sourceCardId === instanceId && onCardPlayedProof.controllerId === recipientPlayerId && onCardPlayedProof.abilityId === ABIGAIL_S4_RELEASE_ID &&
+    releaseEvents.length === 1 && releaseEvents[0]!.playerId === recipientPlayerId &&
+    releaseEvents[0]!.abilityId === ABIGAIL_S4_RELEASE_ID && releaseEvents[0]!.triggerEventId === playProof.onUseEventId &&
+    releaseEvents[0]!.playEventId === playProof.onCardPlayedEventId &&
+    !!recycleProof && recycleProof.cardInstanceId === instanceId && recycleProof.sourceCardId === instanceId &&
+    recycleProof.controllerId === recipientPlayerId && recycleProof.recipientPlayerId === controllerId &&
+    recycleProof.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleProof.playEventId === playProof.onCardPlayedEventId &&
+    recycleProof.releaseEventId === playProof.onUseEventId &&
+    recycleProofEntries.every(([cardId, proof]) => cardId === instanceId ||
+      (proof.playEventId !== recycleProof.playEventId && proof.releaseEventId !== recycleProof.releaseEventId)) &&
+    recycleEvents.length === 1 && recycleEvents[0]!.playerId === recipientPlayerId && recipientPlayerId !== controllerId &&
+    recycleEvents[0]!.abilityId === ABIGAIL_S4_CLEANUP_ID && recycleEvents[0]!.recipientPlayerId === controllerId &&
+    recycleEvents[0]!.fromZone === 'attack_area' && recycleEvents[0]!.toZone === 'discard' && recycleEvents[0]!.movedCount === 1 &&
+    recycleEvents[0]!.playEventId === playProof.onCardPlayedEventId && recycleEvents[0]!.releaseEventId === playProof.onUseEventId &&
+    recycleEvents[0]!.battlePhaseResolutionId === recycleProof.battlePhaseResolutionId &&
+    recycleEvents[0]!.triggerEventId === recycleProof.triggerEventId &&
+    typeof recycleEvents[0]!.battlePhaseResolutionId === 'string' && typeof recycleEvents[0]!.triggerEventId === 'string' &&
+    runtime(s).processedEvents.includes(recycleProof.triggerEventId);
+}
+
+function isCanonicalAbigailS1DistributionProvenance(s: GameState, controllerId: string,
+  sourceCardId: string, distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>): boolean {
+  const events = runtime(s).events.filter((event) => event.type === 'abigail_s1_outside_life_distributed');
+  const seen = new Set<string>();
+  for (const event of events) {
+    if (event.playerId !== controllerId || event.sourceCardId !== sourceCardId || event.abilityId !== ABIGAIL_S1_DISTRIBUTE_ID ||
+        !Array.isArray(event.cardInstanceIds) || !Array.isArray(event.targetPlayerIds) ||
+        event.cardInstanceIds.length !== event.targetPlayerIds.length ||
+        event.movedCount !== event.cardInstanceIds.length || new Set(event.cardInstanceIds).size !== event.cardInstanceIds.length ||
+        new Set(event.targetPlayerIds).size !== event.targetPlayerIds.length) return false;
+    event.cardInstanceIds.forEach((instanceId, index) => {
+      if (seen.has(instanceId)) return;
+      seen.add(instanceId);
+      const entry = distributed.find((candidate) => candidate.cardInstanceId === instanceId);
+      if (!entry || entry.recipientPlayerId !== event.targetPlayerIds![index]) seen.add(`__invalid:${instanceId}`);
+    });
+  }
+  return seen.size === distributed.length && distributed.every((entry) => {
+    const matching = events.filter((event) => event.cardInstanceIds?.includes(entry.cardInstanceId));
+    return matching.length === 1 && matching[0]!.cardInstanceIds!.indexOf(entry.cardInstanceId) >= 0 &&
+      matching[0]!.targetPlayerIds![matching[0]!.cardInstanceIds!.indexOf(entry.cardInstanceId)] === entry.recipientPlayerId;
+  });
+}
+
+function isCanonicalAbigailS1Ledger(s: GameState, controllerId: string, ledger: NonNullable<NonNullable<GameState['ruleOverrides']>['abigailSanityLossByPlayer']>[string]): boolean {
+  const source = s.cards.find((candidate) => candidate.instanceId === ledger.sourceCardId);
+  const sourceDefinition = source && runtime(s).pack.cards[source.definitionId];
+  if (!source || !sourceDefinition || sourceDefinition.id !== ABIGAIL_S1_SOURCE_ID ||
+      source.ownerPlayerId !== controllerId || source.controllerPlayerId !== controllerId ||
+      ledger.controllerId !== controllerId || ledger.abilityId !== ABIGAIL_S1_DISTRIBUTE_ID ||
+      new Set(ledger.distributed.map((entry) => entry.cardInstanceId)).size !== ledger.distributed.length) return false;
+  return ledger.distributed.every((entry) => {
+    const created = s.cards.find((candidate) => candidate.instanceId === entry.cardInstanceId);
+    const recipient = s.players.find((candidate) => candidate.id === entry.recipientPlayerId);
+    const createdDefinition = created && runtime(s).pack.cards[created.definitionId];
+    return !!created && !!createdDefinition && !!recipient && recipient.id !== controllerId &&
+      createdDefinition.id === ABIGAIL_OUTSIDE_LIFE_ID && created.generatedBy === ABIGAIL_OUTSIDE_LIFE_GENERATED_BY &&
+      ((created.ownerPlayerId === entry.recipientPlayerId && created.controllerPlayerId === entry.recipientPlayerId && created.zone === 'hand' &&
+        created.visibility.scope === 'owner_only' && created.visibility.ownerPlayerId === entry.recipientPlayerId) ||
+        isCanonicalAbigailS1RecycledCard(s, controllerId, entry.recipientPlayerId, entry.cardInstanceId));
+  }) && isCanonicalAbigailS1DistributionProvenance(s, controllerId, ledger.sourceCardId, ledger.distributed);
+}
+
+function abigailS1SameLocationOpponents(s: GameState, controllerId: string): string[] {
+  const controller = player(s, controllerId);
+  if (!controller.locationId) return [];
+  return s.players.filter((candidate) => candidate.id !== controllerId && candidate.status === 'active' &&
+    candidate.locationId === controller.locationId).map((candidate) => candidate.id).sort();
+}
+
+function executeAbigailS1Distribution(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAbigailS1DistributeSemantic(a) || !isAbigailS1Source(s, ctx.sourceCardId) ||
+      !active(s, ctx.sourceCardId) || phase(s) !== 'action' || player(s, ctx.controllerId).locationId === undefined) {
+    reject('resolution_failed', 'Abigail S1 distribution source or action lifecycle is stale');
+  }
+  const controller = player(s, ctx.controllerId);
+  if (!getEnabledLocations(s.map, s.locationConfig).some((location) => location.id === controller.locationId)) {
+    reject('resolution_failed', 'Abigail S1 distribution requires a canonical location');
+  }
+  if (s.round.prioritySeat !== controller.seat) reject('resolution_failed', 'Abigail S1 distribution is not the controller action window');
+  const recipients = abigailS1SameLocationOpponents(s, ctx.controllerId);
+  const work = structuredClone(s);
+  work.ruleOverrides ??= {};
+  work.ruleOverrides.abigailSanityLossByPlayer ??= {};
+  const previous = work.ruleOverrides.abigailSanityLossByPlayer[ctx.controllerId];
+  if (previous && (previous.sourceCardId !== ctx.sourceCardId || previous.controllerId !== ctx.controllerId ||
+      previous.abilityId !== ABIGAIL_S1_DISTRIBUTE_ID || !isCanonicalAbigailS1Ledger(work, ctx.controllerId, previous))) {
+    reject('resolution_failed', 'Abigail S1 ledger source binding changed');
+  }
+  const distributed = previous?.distributed ? [...previous.distributed] : [];
+  const created: string[] = [];
+  for (const recipientId of recipients) {
+    const instanceId = nextId(work, 'abigail-s1-outside-life');
+    work.cards.push({ instanceId, definitionId: ABIGAIL_OUTSIDE_LIFE_ID, ownerPlayerId: recipientId, controllerPlayerId: recipientId,
+      zone: 'hand', visibility: { scope: 'owner_only', ownerPlayerId: recipientId }, generatedBy: ABIGAIL_OUTSIDE_LIFE_GENERATED_BY });
+    distributed.push({ cardInstanceId: instanceId, recipientPlayerId: recipientId });
+    created.push(instanceId);
+  }
+  work.ruleOverrides.abigailSanityLossByPlayer[ctx.controllerId] = {
+    sourceCardId: ctx.sourceCardId, abilityId: ABIGAIL_S1_DISTRIBUTE_ID, controllerId: ctx.controllerId, distributed,
+  };
+  runtime(work).events.push({ type: 'abigail_s1_outside_life_distributed', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, targetPlayerIds: recipients, cardInstanceIds: created, movedCount: created.length });
+  Object.assign(s, work);
+}
+
+function executeAbigailS1WinIfX12(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAbigailS1WinSemantic(a) || !ctx.event || ctx.event.type !== 'on_card_played' ||
+      ctx.event.sourceCardId !== ctx.sourceCardId || ctx.event.playerId !== ctx.controllerId ||
+      !isAbigailS1Source(s, ctx.sourceCardId)) {
+    reject('resolution_failed', 'Abigail S1 win trigger source or event binding is stale');
+  }
+  const ledger = abigailS1Ledger(s, ctx.controllerId);
+  if (!ledger) return;
+  if (ledger.sourceCardId !== ctx.sourceCardId || ledger.controllerId !== ctx.controllerId ||
+      ledger.abilityId !== ABIGAIL_S1_DISTRIBUTE_ID || !isCanonicalAbigailS1Ledger(s, ctx.controllerId, ledger)) {
+    reject('resolution_failed', 'Abigail S1 win trigger has no canonical ledger');
+  }
+  const x = ledger.distributed.length;
+  if (!Number.isSafeInteger(x) || x !== ABIGAIL_S1_THRESHOLD) return;
+  const work = structuredClone(s);
+  work.winnerPlayerIds = [ctx.controllerId];
+  work.ruleOverrides ??= {};
+  work.ruleOverrides.abigailSanityLossVictoryByPlayer ??= {};
+  const existing = work.ruleOverrides.abigailSanityLossVictoryByPlayer[ctx.controllerId];
+  const distributedCardInstanceIds = ledger.distributed.map((entry) => entry.cardInstanceId);
+  if (existing && (existing.sourceCardId !== ctx.sourceCardId || existing.controllerId !== ctx.controllerId || existing.x !== ABIGAIL_S1_THRESHOLD ||
+      existing.abilityId !== ABIGAIL_S1_WIN_ID || existing.distributedCardInstanceIds.length !== distributedCardInstanceIds.length ||
+      existing.distributedCardInstanceIds.some((id, index) => id !== distributedCardInstanceIds[index]))) {
+    reject('resolution_failed', 'Abigail S1 victory envelope changed');
+  }
+  work.ruleOverrides.abigailSanityLossVictoryByPlayer[ctx.controllerId] = {
+    sourceCardId: ctx.sourceCardId, abilityId: ABIGAIL_S1_WIN_ID, controllerId: ctx.controllerId, x,
+    distributedCardInstanceIds,
+  };
+  runtime(work).events.push({ type: 'abigail_s1_game_victory', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, amount: x, targetPlayerIds: [ctx.controllerId] });
+  Object.assign(s, work);
+}
+
 function executeAbigailS4Release(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
   if (!isAbigailS4ReleaseSemantic(a) || !isAbigailS4Source(s, ctx.sourceCardId) || card(s, ctx.sourceCardId).controllerPlayerId !== ctx.controllerId ||
       phase(s) !== 'action' || !ctx.event || ctx.event.type !== 'on_use_declared' || ctx.event.sourceCardId !== ctx.sourceCardId) {
@@ -1084,9 +1318,12 @@ function executeAbigailS4Release(s: GameState, ctx: EffectContext, a: AuthoringA
     amount: ABIGAIL_S4_POWER_AMOUNT,
   };
   reveal(s, abigailPlayerId);
+  const playProof = runtime(s).abigailS4PlayProvenance?.[source.instanceId];
   runtime(s).events.push({
     type: 'abigail_s4_true_name_released', playerId: ctx.controllerId, sourceCardId: source.instanceId,
     abilityId: ctx.abilityId, targetPlayerIds, amount: ABIGAIL_S4_POWER_AMOUNT,
+    triggerEventId: ctx.event.id,
+    ...(playProof ? { playEventId: playProof.onCardPlayedEventId } : {}),
   });
 }
 
@@ -1118,10 +1355,25 @@ function executeAbigailS4Cleanup(s: GameState, ctx: EffectContext, a: AuthoringA
   targetState.faceDown = false;
   delete work.ruleOverrides!.abigailTrueNamePowerBySource![target.instanceId];
   if (!Object.keys(work.ruleOverrides!.abigailTrueNamePowerBySource!).length) delete work.ruleOverrides!.abigailTrueNamePowerBySource;
+  const playProof = runtime(work).abigailS4PlayProvenance?.[target.instanceId];
+  const releaseEvent = runtime(work).events.find((candidate) => candidate.type === 'abigail_s4_true_name_released' &&
+    candidate.sourceCardId === target.instanceId && candidate.playerId === ctx.controllerId && candidate.abilityId === ABIGAIL_S4_RELEASE_ID);
+  if (!playProof || !releaseEvent || releaseEvent.triggerEventId !== playProof.onUseEventId ||
+      releaseEvent.playEventId !== playProof.onCardPlayedEventId) {
+    reject('resolution_failed', 'Abigail s4 cleanup requires the canonical S4 play and release chain');
+  }
+  runtime(work).abigailS4RecycleProvenance ??= {};
+  runtime(work).abigailS4RecycleProvenance![target.instanceId] = {
+    cardInstanceId: target.instanceId, sourceCardId: target.instanceId,
+    controllerId: ctx.controllerId, recipientPlayerId: abigailPlayerId, abilityId: ctx.abilityId,
+    playEventId: playProof.onCardPlayedEventId, releaseEventId: playProof.onUseEventId,
+    battlePhaseResolutionId: event.battlePhaseResolutionId, triggerEventId: event.id,
+  };
   runtime(work).events.push({
     type: 'abigail_s4_true_name_card_recycled', playerId: ctx.controllerId, sourceCardId: target.instanceId,
     abilityId: ctx.abilityId, recipientPlayerId: abigailPlayerId, fromZone: 'attack_area', toZone: 'discard',
     battlePhaseResolutionId: event.battlePhaseResolutionId, triggerEventId: event.id, movedCount: 1,
+    playEventId: playProof.onCardPlayedEventId, releaseEventId: playProof.onUseEventId,
   });
   Object.assign(s, work);
 }
@@ -3650,6 +3902,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     executeAbigailS3bAction(s, ctx, a);
     return;
   }
+  if (isAbigailS1DistributeSemantic(a)) {
+    executeAbigailS1Distribution(s, ctx, a);
+    return;
+  }
+  if (isAbigailS1WinSemantic(a)) {
+    executeAbigailS1WinIfX12(s, ctx, a);
+    return;
+  }
   if (isAbigailS3bCleanupSemantic(a)) {
     executeAbigailS3bCleanup(s, ctx, a);
     return;
@@ -3817,6 +4077,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isAbigailS3bCandidate(a) && (!isAbigailS3aSource(s, ctx.sourceCardId) || !isAbigailS3bSemantic(a))) {
     reject('resolution_failed', 'Unsupported Abigail S3b source-bound semantic shape');
+  }
+  if (isAbigailS1Candidate(a) && (!isAbigailS1Source(s, ctx.sourceCardId) || !isAbigailS1Semantic(a))) {
+    reject('resolution_failed', 'Unsupported Abigail S1 source-bound semantic shape');
   }
   if (isAbigailS4Candidate(a) && (!isAbigailS4Source(s, ctx.sourceCardId) || !isAbigailS4Semantic(a))) {
     reject('resolution_failed', 'Unsupported Abigail S4 source-bound semantic shape');
@@ -4378,8 +4641,26 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
   }
   for (const c of choices.filter(c => !c.faceDown)) {
-    processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
-    processEvent(s, { id: nextId(s, 'play'), type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
+    const onUseEventId = nextId(s, 'declare');
+    const onCardPlayedEventId = nextId(s, 'play');
+    if (definition(s, c.cardInstanceId)?.id === ABIGAIL_OUTSIDE_LIFE_ID) {
+      runtime(s).abigailS4PlayProvenance ??= {};
+      runtime(s).abigailS4PlayProvenance![c.cardInstanceId] = {
+        cardInstanceId: c.cardInstanceId, sourceCardId: c.cardInstanceId, controllerId: playerId,
+        onUseEventId, onCardPlayedEventId, round: s.round.roundNumber,
+      };
+      runtime(s).abigailS4EventProvenance ??= {};
+      runtime(s).abigailS4EventProvenance![onUseEventId] = {
+        eventId: onUseEventId, type: 'on_use_declared', sourceCardId: c.cardInstanceId,
+        controllerId: playerId, abilityId: ABIGAIL_S4_RELEASE_ID,
+      };
+      runtime(s).abigailS4EventProvenance![onCardPlayedEventId] = {
+        eventId: onCardPlayedEventId, type: 'on_card_played', sourceCardId: c.cardInstanceId,
+        controllerId: playerId, abilityId: ABIGAIL_S4_RELEASE_ID,
+      };
+    }
+    processEvent(s, { id: onUseEventId, type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
+    processEvent(s, { id: onCardPlayedEventId, type: 'on_card_played', playerId, sourceCardId: c.cardInstanceId, playedCards });
   }
 }
 /** Trusted server hook after the enclosing action validates its normal/effect play quota. Not an AbilityCommand. */

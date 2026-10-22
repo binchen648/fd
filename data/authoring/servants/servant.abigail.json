@@ -24,10 +24,40 @@
   ],
   "cards": [
     {
-      "id": "servant.abigail.skill.sc-abigail-1", "name": "理智丧失", "cardType": "servant_skill",
-      "owner": { "type": "servant", "id": "servant.abigail" }, "printedText": "理智丧失。",
+      "id": "servant.abigail.skill.sc-abigail-1", "name": "于深渊化作光", "cardType": "servant_skill",
+      "owner": { "type": "servant", "id": "servant.abigail" }, "printedText": "X为你本局游戏以理智丧失分发的【领域外生命】数。打出时：若X为12，你获得游戏胜利。理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
       "cardFace": { "typeLabel": "特殊", "attributes": ["特殊"], "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" }, "abilities": []
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "abilities": [
+        {
+          "id": "servant.abigail.skill.sc-abigail-1.distribute-outside-life", "kind": "phase_action",
+          "printedClause": "理智丧失-行动阶段：令所有与你位于同一地点的对手将游戏外的一张【领域外生命】加入手牌。",
+          "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
+          "conditions": [], "targets": [], "effects": [{ "id": "abigail-s1-distribute-outside-life", "type": "abigail_s1_distribute_outside_life" }],
+          "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        },
+        {
+          "id": "servant.abigail.skill.sc-abigail-1.win-at-x12", "kind": "forced_trigger",
+          "printedClause": "打出时：若X为12，你获得游戏胜利。",
+          "activation": { "phase": "action", "trigger": "on_card_played", "requiresSourceState": "active" },
+          "conditions": [], "targets": [], "effects": [{ "id": "abigail-s1-win-at-x12", "type": "abigail_s1_win_if_x12" }],
+          "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "execution": { "mode": "automatic", "allowedOperations": [] }
+        }
+      ],
+      "phase3Evidence": {
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.abigail/阿比盖尔·威廉姆斯", "sha256": "3A049A05FC5B7A1C8CA864EA3152239C2E353E15CA509C623487A91B73179D1F" },
+          { "kind": "legacy-generated-content", "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[0].text", "sha256": "8DE23E47529D59E1E05BB8FBD74E1FAAADF21687CBCCDD859B5A8ACFB85E277C" },
+          { "kind": "development-source", "document": "Fate_Domination-开发版/batch_berserker_extra.js", "locator": "BATCH_SERVANTS_BE.abigail.skill.sc_abigail_1", "sha256": "6BF26E40FF08FF632AC5DCEE88A9CDA4684E60CA71C39ADADBB239D1F3723FDC" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "servants[178].skills[0].text#full", "sha256": "69d643135ce8c1e86dcf14c314c3fcca02793f96664ce58d6fae554e37fd30c8" }
+        ],
+        "implementationBoundary": "sc-abigail-1 X ledger, exact twelve-card victory gate, and same-location Outside-Life distribution are source-bound; other Abigail skills remain outside this change."
+      },
+      "verification": { "printedTextStatus": "source_candidate_cross_checked", "canonicalIdStatus": "coordinator_confirmed", "implementationStatus": "complete" }
     },
     {
       "id": "servant.abigail.skill.sc-abigail-2", "name": "深渊凝视", "cardType": "servant_skill",

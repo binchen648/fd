@@ -24,8 +24,14 @@ function setup() {
 function addSource(state: ReturnType<typeof setup>, controllerId = 'p2', marker = generatedBy) {
   const instanceId = `abigail-s4-${state.cards.length}`;
   state.cards.push({ instanceId, definitionId: sourceDefinition, ownerPlayerId: 'p1', controllerPlayerId: controllerId,
-    zone: 'attack_area', visibility: { scope: 'public' }, generatedBy: marker });
-  state.abilityRuntime!.cardState[instanceId] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+    zone: marker === generatedBy ? 'hand' : 'attack_area', visibility: marker === generatedBy ? { scope: 'owner_only', ownerPlayerId: 'p1' } : { scope: 'public' }, generatedBy: marker });
+  state.abilityRuntime!.cardState[instanceId] = { active: marker === generatedBy ? false : true, faceDown: false, playedRound: state.round.roundNumber };
+  if (marker === generatedBy) {
+    const previousPriority = state.round.prioritySeat;
+    state.round.prioritySeat = state.players.find((player) => player.id === controllerId)!.seat;
+    expect(rules.dispatchAbilityCommand(state, controllerId, { type: 'play_card', cardInstanceId: instanceId }).ok).toBe(true);
+    state.round.prioritySeat = previousPriority;
+  }
   return instanceId;
 }
 
