@@ -248,6 +248,21 @@ export interface AbilityRuntime {
     cardInstanceId: string; sourceCardId: string; controllerId: PlayerId; recipientPlayerId: PlayerId; abilityId: string;
     playEventId: string; releaseEventId: string; battlePhaseResolutionId: string; triggerEventId: string;
   }>;
+  /** Source-bound, round-scoped hide state for the accepted Achilles S2 branch 3. */
+  achillesHiddenServantsByPlayer?: Record<PlayerId, {
+    round: number; wasRevealed: boolean; sourceCardId: string; abilityId: string;
+  }>;
+  /** Source-bound exact-one pair receipts for the non-persistent accepted Achilles S3 subset. */
+  achillesScopedPairReceipts?: Array<{
+    round: number; sourceCardId: string; abilityId: string; controllerId: PlayerId;
+    battlefieldId: string; opponentId: PlayerId;
+  }>;
+  /** Source-bound battle-local power-zero receipt for the accepted Achilles S1 subset. */
+  achillesBattlePowerZeroByBattlefield?: Record<string, {
+    round: number; battlefieldId: string; sourceCardId: string; abilityId: string;
+    controllerId: PlayerId; participantIds: PlayerId[]; targetPlayerIds: PlayerId[];
+    discardedCardIds: string[];
+  }>;
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
   preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
   hostRequests: { controllerId: PlayerId; sourceCardId: string; abilityId: string; allowedOperations: HostOperation[] }[];

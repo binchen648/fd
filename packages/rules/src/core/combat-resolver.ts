@@ -338,6 +338,15 @@ export function deriveBattleParticipantsFromState(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
 ): CombatParticipantInput[] {
+  const participantIds = state.players
+    .filter((player) => player.status === "active" && player.locationId === battlefieldId)
+    .map((player) => player.id);
+  const achillesReceipt = Object.values(state.abilityRuntime?.achillesBattlePowerZeroByBattlefield ?? {})
+    .find((entry) => entry.round === state.round.roundNumber && entry.battlefieldId === battlefieldId &&
+      entry.participantIds.length === participantIds.length && entry.participantIds.every((id) => participantIds.includes(id)) &&
+      state.cards.some((candidate) => candidate.instanceId === entry.sourceCardId && candidate.definitionId === "servant.achilles.skill.sc-achilles-1" &&
+        candidate.controllerPlayerId === entry.controllerId && candidate.zone === "attack_area" &&
+        state.abilityRuntime?.cardState[candidate.instanceId]?.active === true && state.players.some((player) => player.id === entry.controllerId && player.locationId === battlefieldId)));
   return state.players
     .filter((player) => player.status === "active" && player.locationId === battlefieldId)
     .map((player) => {
@@ -421,7 +430,8 @@ export function deriveBattleParticipantsFromState(
       }
       const participant = {
         playerId: player.id,
-        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
+        totalPower: achillesReceipt?.targetPlayerIds.includes(player.id) ? 0 :
+          definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,

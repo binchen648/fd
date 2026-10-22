@@ -533,6 +533,23 @@ function isRestoreAbigailS4EventProvenanceMap(value: unknown): boolean {
   return new Set(proofs.map((proof) => `${proof.sourceCardId}:${proof.type}`)).size === proofs.length;
 }
 
+function isRestoreAchillesHiddenServantMap(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreRecord(entry) &&
+    isRestoreSafeInteger(entry.round, 1) && typeof entry.wasRevealed === 'boolean' &&
+    typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string');
+}
+function isRestoreAchillesPairReceipts(value: unknown): boolean {
+  return Array.isArray(value) && value.every((entry) => isRestoreRecord(entry) && isRestoreSafeInteger(entry.round, 1) &&
+    typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' && typeof entry.controllerId === 'string' &&
+    typeof entry.battlefieldId === 'string' && typeof entry.opponentId === 'string');
+}
+function isRestoreAchillesPowerZeroMap(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreRecord(entry) &&
+    isRestoreSafeInteger(entry.round, 1) && typeof entry.battlefieldId === 'string' && typeof entry.sourceCardId === 'string' &&
+    typeof entry.abilityId === 'string' && typeof entry.controllerId === 'string' && isRestoreStringArray(entry.participantIds) &&
+    isRestoreStringArray(entry.targetPlayerIds) && isRestoreStringArray(entry.discardedCardIds));
+}
+
 function isRestoreAbigailS1DistributionProvenance(events: unknown[], controllerId: string, sourceCardId: string,
   distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>): boolean {
   const candidates = events.filter((event): event is Record<string, unknown> => isRestoreRecord(event) &&
@@ -773,6 +790,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.abigailS4PlayProvenance !== undefined && !isRestoreAbigailS4PlayProvenanceMap(value.abigailS4PlayProvenance)) ||
       (value.abigailS4EventProvenance !== undefined && !isRestoreAbigailS4EventProvenanceMap(value.abigailS4EventProvenance)) ||
       (value.abigailS4RecycleProvenance !== undefined && !isRestoreAbigailS4RecycleProvenanceMap(value.abigailS4RecycleProvenance)) ||
+      (value.achillesHiddenServantsByPlayer !== undefined && !isRestoreAchillesHiddenServantMap(value.achillesHiddenServantsByPlayer)) ||
+      (value.achillesScopedPairReceipts !== undefined && !isRestoreAchillesPairReceipts(value.achillesScopedPairReceipts)) ||
+      (value.achillesBattlePowerZeroByBattlefield !== undefined && !isRestoreAchillesPowerZeroMap(value.achillesBattlePowerZeroByBattlefield)) ||
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
@@ -1104,6 +1124,25 @@ function isRestoreAbilityRuntimeReferences(
       !isRestoreAbilityEventReferences(value.pendingBattleTerminalEvent, playerIds, locationIds))) return false;
   if (value.transformedReturnSilenceSourceCardIds !== undefined &&
       !(value.transformedReturnSilenceSourceCardIds as string[]).every((id) => cardsByInstance.has(id))) return false;
+  if (value.achillesHiddenServantsByPlayer !== undefined && !Object.entries(value.achillesHiddenServantsByPlayer as Record<string, unknown>).every(([playerId, entry]) => {
+    return playerIds.has(playerId) && isRestoreRecord(entry) && cardsByInstance.has(entry.sourceCardId as string) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, playerId) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string);
+  })) return false;
+  if (value.achillesScopedPairReceipts !== undefined && !(value.achillesScopedPairReceipts as Array<Record<string, unknown>>).every((entry) =>
+    playerIds.has(entry.controllerId as string) && playerIds.has(entry.opponentId as string) && locationIds.has(entry.battlefieldId as string) &&
+    cardsByInstance.has(entry.sourceCardId as string) && restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) &&
+    restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
+  if (value.achillesBattlePowerZeroByBattlefield !== undefined && !(Object.values(value.achillesBattlePowerZeroByBattlefield as Record<string, unknown>).every((entry) => {
+    if (!isRestoreRecord(entry) || !playerIds.has(entry.controllerId as string) || !locationIds.has(entry.battlefieldId as string) ||
+        !restoreIdsBelongTo(entry.participantIds, playerIds) || !restoreIdsBelongTo(entry.targetPlayerIds, playerIds) ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) ||
+        !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string)) return false;
+    const participantIds = entry.participantIds as string[]; const targetIds = entry.targetPlayerIds as string[];
+    return participantIds.includes(entry.controllerId as string) && new Set(participantIds).size === participantIds.length &&
+      new Set(targetIds).size === targetIds.length && targetIds.every((id) => participantIds.includes(id) && id !== entry.controllerId) &&
+      (entry.discardedCardIds as string[]).every((id) => cardsByInstance.has(id));
+  }))) return false;
   if (value.trustedBattleResultSnapshots !== undefined && !Object.values(value.trustedBattleResultSnapshots as Record<string, unknown>).every((entry) =>
       isRestoreRecord(entry) && locationIds.has(entry.battlefieldId as string) &&
       restoreIdsBelongTo(entry.battleParticipantIds, playerIds) && restoreIdsBelongTo(entry.winners, playerIds) &&

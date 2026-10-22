@@ -592,6 +592,7 @@ describe('complex servant skill regressions', () => {
     const opponentHand = add(state, 'fixture.opponent-secret', 'hand', 'p2');
     state.players[0]!.locationId = 'miyama_town';
     state.players[1]!.locationId = 'miyama_town';
+    state.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
 
     expect(play(state, heel).ok).toBe(true);
     rules.advanceAbilityPhase(state, 'battle');
@@ -608,6 +609,8 @@ describe('complex servant skill regressions', () => {
     const raw = archive('data/authoring/servants/servant.achilles.json');
     const state = setup(raw, { servantId: raw.id });
     const blueSky = add(state, 'servant.achilles.skill.sc-achilles-2', 'skill');
+    state.players[0]!.locationId = 'miyama_town';
+    state.players[1]!.locationId = 'miyama_town';
 
     expect(play(state, blueSky).ok).toBe(true);
     expect(activate(state, blueSky, 'sc-achilles-2.blue-sky').ok).toBe(true);
@@ -638,14 +641,19 @@ describe('complex servant skill regressions', () => {
       id: 'achilles-loss',
       type: 'after_controller_loses_battle',
       playerId: 'p1',
+      battlePhaseResolutionId: 'battle-phase:1',
+      battleId: 'battle-phase:1:battle:miyama_town:1',
+      resultId: 'battle-phase:1:battle:miyama_town:1:result',
+      battlefieldId: 'miyama_town',
+      battleParticipantIds: ['p1', 'p2'],
       battleResult: { winners: ['p2'], loserIds: ['p1'] },
     });
     expect(state.abilityRuntime!.revealedServants).toContain('p1');
 
     expect(play(state, duel).ok).toBe(true);
     expect(activate(state, duel, 'sc-achilles-3.hero-duel').ok).toBe(true);
-    expect(state.abilityRuntime!.ongoingEffects.some((effect) =>
-      effect.ruleModifiers.some((modifier) => modifier.definition.rule === 'enter_or_leave_current_battlefield'))).toBe(true);
+    expect(state.abilityRuntime!.achillesScopedPairReceipts).toEqual([expect.objectContaining({ controllerId: 'p1', opponentId: 'p2' })]);
+    expect(state.abilityRuntime!.ongoingEffects).toHaveLength(0);
 
     const battle = rules.resolveBattlefield(state, {
       battlefieldId: 'miyama_town',
@@ -654,7 +662,7 @@ describe('complex servant skill regressions', () => {
         { playerId: 'p2', totalPower: 2, attackTags: ['特殊'], terrainSlotIndex: 0 },
       ],
     }).nextState.battleResults.at(-1)!;
-    expect(battle.participantBreakdowns.flatMap((participant) => participant.modifiers).some((modifier) => modifier.source === 'location')).toBe(false);
+    expect(battle.participantBreakdowns.flatMap((participant) => participant.modifiers).some((modifier) => modifier.source === 'location')).toBe(true);
   });
 
   it('keeps Artoria Alter fixed payment, created power modifier, and low-mana play override executable', () => {

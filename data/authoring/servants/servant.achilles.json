@@ -6,6 +6,32 @@
   "class": "Rider",
   "canonicalIdSource": "main_repo",
   "authoringStatus": "draft_structured_from_chm_skill_pack",
+  "scopedContract": {
+    "decisionId": "1c5dacd7d1d8368eefe1ca901e5c35e70740fa86",
+    "reviewerAcceptedCommit": "91485a1e89ea53b3926a227ea0832e02f0f19cda",
+    "baseCommit": "5fb0147a9b89f0d181b872a95059f853dbed8eec",
+    "status": "candidate",
+    "sourceBound": true,
+    "sourceClauseHashes": {
+      "s1": "a908c6e9dda34d2a9e939055576b266e05cf134e182eb6d3a3a6a83cc4d10402",
+      "s1-gale": "9ccec6e22e460628cdb8b6baa8c7301ff12aada6e225dc1625504294b1d8e247",
+      "s2": "37e7aeaa9fae4758cdd84f9141b4ae90fab3854083ef5b6eb3fea8f09102abe2",
+      "s2-branch-1": "72f4bc34d100c9eedc02d51c818e9aefa995af7382f0193883a31819e8099957",
+      "s2-branch-2": "4c22f403ae476bd935adf0ab4e361d4e3367618dfeba1a098bb929a273bca138",
+      "s2-branch-3": "b6992b7119b433466d35bd7c5ae0f14f136448cc6fbaaf81aa594e31fa693d15",
+      "s3": "c3cf72179056049fc0496d3aa0a3476212ab7f8f79bdc6c93d1e3ab39c1b43cb"
+    },
+    "blocked": [
+      "npc-participants",
+      "no-hand-targets",
+      "ambiguous-unselected-card-classification",
+      "forbid-skill-cards-branch",
+      "npc-movement-deployment-duration",
+      "external-effect-immunity",
+      "persistent-movement-lock",
+      "persistent-immunity"
+    ]
+  },
   "sourcePolicy": {
     "priority": [
       "original_card_image",
@@ -302,28 +328,7 @@
               ]
             }
           ],
-          "ruleModifiers": [
-            {
-              "id": "forbid_same_battlefield_opponents_skill_cards",
-              "printedClause": "与你位于同一战场的对手无法使用技能牌。",
-              "type": "restriction",
-              "operation": "forbid",
-              "rule": "use_skill_card",
-              "scope": {
-                "subject": "opponents_at_same_battlefield"
-              },
-              "conditions": [
-                {
-                  "type": "choice_is",
-                  "choiceId": "chosen_option",
-                  "value": "forbid_skills"
-                }
-              ],
-              "lifecycle": {
-                "duration": "this_round"
-              }
-            }
-          ],
+          "ruleModifiers": [],
           "execution": {
             "mode": "automatic"
           }
@@ -397,42 +402,7 @@
             }
           ],
           "effects": [],
-          "ruleModifiers": [
-            {
-              "id": "lock_current_battlefield",
-              "printedClause": "所有人无法进入或离开此战场",
-              "type": "restriction",
-              "operation": "forbid",
-              "rule": "enter_or_leave_current_battlefield",
-              "scope": {
-                "subject": "all_players",
-                "location": "controller_current_battlefield"
-              },
-              "lifecycle": {
-                "duration": "this_round"
-              }
-            },
-            {
-              "id": "ignore_terrain_and_external_servant_or_npc_effects",
-              "printedClause": "你与此对手无法被地利和所有不属于你们的从者或NPC的牌或效果影响。",
-              "type": "immunity",
-              "operation": "ignore",
-              "rule": "terrain_and_external_servant_or_npc_effects",
-              "scope": {
-                "subject": [
-                  "controller",
-                  "single_opponent"
-                ]
-              },
-              "priority": {
-                "tier": "card_text",
-                "specificity": "specific"
-              },
-              "lifecycle": {
-                "duration": "this_round"
-              }
-            }
-          ],
+          "ruleModifiers": [],
           "execution": {
             "mode": "automatic"
           }
@@ -464,10 +434,10 @@
     }
   ],
   "adapterNotes": [
-    "阿喀琉斯的技能涉及随机弃牌、战场锁定、地利免疫等复杂机制，当前解释器不支持。",
-    "勇者的不凋花的战败触发真名解放需要新的触发类型。",
-    "包围苍天的小世界的三选一分支需要 choice 类型目标支持。",
-    "驰骋天际星之枪尖的英雄对决需要战场锁定和效果免疫机制。"
+    "Candidate is source-bound to the accepted decision and implements only the explicitly accepted Achilles subset.",
+    "S1 uses the post-scoring battle-result loser trigger and server-owned battle participant set; NPC, no-hand, and ambiguous unselected-card cases fail closed.",
+    "S2 implements only immediate random discard and pay-3 hide-until-round-end; the skill-card-forbid branch is explicitly blocked and has no rule modifier.",
+    "S3 validates only an exact-one player opponent pair and records the bounded source scope; movement/deployment/duration, external effects, and persistent lock/immunity remain blocked."
   ],
   "userConfirmedInterpretations": [],
   "resolvedQuestions": [

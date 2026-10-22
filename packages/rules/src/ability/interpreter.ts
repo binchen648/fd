@@ -196,6 +196,206 @@ function isBattlefield(s: GameState, locationId: string | undefined): boolean {
 function sameBattlefield(s: GameState, a: string | undefined, b: string | undefined): boolean {
   return !!a && a === b && isBattlefield(s, a);
 }
+const ACHILLES_S1_SOURCE_ID = 'servant.achilles.skill.sc-achilles-1';
+const ACHILLES_S1_HEEL_ID = 'sc-achilles-1.achilles-heel';
+const ACHILLES_S1_GALE_ID = 'sc-achilles-1.gale-advance';
+const ACHILLES_S2_SOURCE_ID = 'servant.achilles.skill.sc-achilles-2';
+const ACHILLES_S2_ID = 'sc-achilles-2.blue-sky';
+const ACHILLES_S3_SOURCE_ID = 'servant.achilles.skill.sc-achilles-3';
+const ACHILLES_S3_ID = 'sc-achilles-3.hero-duel';
+const ACHILLES_S2_OPTIONS = ['discard_hand', 'forbid_skills', 'hide_true_name'] as const;
+
+function isAchillesSource(s: GameState, sourceCardId: string, sourceId: string): boolean {
+  return definition(s, sourceCardId)?.id === sourceId;
+}
+function isAchillesS1Heel(a: AuthoringAbility): boolean {
+  const effect = a.effects[0];
+  return a.id === ACHILLES_S1_HEEL_ID && a.kind === 'forced_trigger' && a.execution.mode === 'automatic' &&
+    a.activation.trigger === 'after_controller_loses_battle' && a.effects.length === 1 &&
+    effect?.type === 'reveal_information' && effect.scope === 'servant_package' && a.ruleModifiers.length === 0;
+}
+function isAchillesS1Gale(a: AuthoringAbility): boolean {
+  return a.id === ACHILLES_S1_GALE_ID && a.kind === 'phase_action' && a.execution.mode === 'automatic' &&
+    a.activation.phase === 'combat' && a.activation.opens === 'controller_combat_action_window' &&
+    a.activation.requiresSourceState === 'active' && a.effects.length === 2 &&
+    a.effects[0]?.type === 'opponents_random_discard' && Number(a.effects[0].count) === 1 &&
+    a.effects[1]?.type === 'set_opponent_power_to_zero' && a.effects[1].condition === 'not_luck_or_agility' &&
+    a.ruleModifiers.length === 0;
+}
+function isAchillesS2(a: AuthoringAbility): boolean {
+  const target = a.targets[0];
+  const options = Array.isArray(target?.options) ? (target.options as Array<{ id?: unknown }>).map((entry) => str(entry.id)) : [];
+  const branch = a.effects[0];
+  const count = target ? node(target.count) : {};
+  return a.id === ACHILLES_S2_ID && a.kind === 'phase_action' && a.execution.mode === 'automatic' &&
+    a.activation.phase === 'action' && a.activation.opens === 'controller_action_window' &&
+    a.activation.requiresSourceState === 'active' && a.targets.length === 1 && target?.type === 'choice' &&
+    target.id === 'chosen_option' && count.min === 1 && count.max === 1 &&
+    options.length === ACHILLES_S2_OPTIONS.length && ACHILLES_S2_OPTIONS.every((id, index) => options[index] === id) &&
+    a.ruleModifiers.length === 0 && a.lifecycle.duration === undefined && a.effects.length === 1 &&
+    branch?.type === 'branch' && nodes(branch.branches).length === 3;
+}
+function isAchillesS3(a: AuthoringAbility): boolean {
+  return a.id === ACHILLES_S3_ID && a.kind === 'phase_action' && a.execution.mode === 'automatic' &&
+    a.activation.phase === 'action' && a.activation.opens === 'controller_action_window' &&
+    a.activation.requiresSourceState === 'active' && a.effects.length === 0 && a.creates.length === 0 &&
+    a.ruleModifiers.length === 0 && a.lifecycle.duration === undefined && a.conditions.length === 1 &&
+    a.conditions[0]?.type === 'controller_at_battlefield_with_exactly_one_opponent';
+}
+function achillesSameBattlefieldOpponentIds(s: GameState, controllerId: string): string[] {
+  const locationId = player(s, controllerId).locationId;
+  if (!isBattlefield(s, locationId)) return [];
+  return s.players.filter((candidate) => candidate.status === 'active' && candidate.id !== controllerId && candidate.locationId === locationId)
+    .sort((left, right) => left.seat - right.seat).map((candidate) => candidate.id);
+}
+/** The only accepted S1 action-time participant source: a declared current battle plus active player participants. */
+function achillesAuthoritativeCombatParticipantIds(s: GameState, controllerId: string): string[] {
+  const locationId = player(s, controllerId).locationId;
+  if (!isBattlefield(s, locationId) || !(s.battleDeclarations ?? []).some((entry) => entry.battlefieldId === locationId)) return [];
+  return s.players.filter((candidate) => candidate.status === 'active' && candidate.locationId === locationId)
+    .sort((left, right) => left.seat - right.seat).map((candidate) => candidate.id);
+}
+function achillesBattleLossEventIsAuthoritative(s: GameState, ctx: EffectContext): boolean {
+  const event = ctx.event;
+  if (!event || event.type !== 'after_controller_loses_battle' || event.playerId !== ctx.controllerId ||
+      !event.battlePhaseResolutionId || !event.battleId || !event.resultId || !event.battlefieldId ||
+      !Array.isArray(event.battleParticipantIds) || !event.battleParticipantIds.includes(ctx.controllerId) ||
+      !event.battleResult?.loserIds.includes(ctx.controllerId)) return false;
+  const uniqueParticipants = new Set(event.battleParticipantIds);
+  return uniqueParticipants.size === event.battleParticipantIds.length &&
+    event.battleParticipantIds.every((id) => s.players.some((candidate) => candidate.id === id));
+}
+function achillesCurrentBattleKey(s: GameState, battlefieldId: string): string {
+  return `${s.round.roundNumber}:${battlefieldId}`;
+}
+function achillesIsLuckOrAgility(s: GameState, cardId: string): boolean {
+  const instance = card(s, cardId);
+  const attributes = getEffectiveCardAttributes(s, cardId).map((attribute) => attribute.toLowerCase());
+  return instance.definitionId === 'basic.luck' || attributes.some((attribute) =>
+    ['luck', '幸运', 'agility', '敏捷'].includes(attribute));
+}
+function achillesNextRandomIndex(s: GameState, maxExclusive: number): number {
+  if (!Number.isSafeInteger(maxExclusive) || maxExclusive <= 0) reject('resolution_failed', 'Achilles random choice requires a non-empty server-owned set');
+  const r = runtime(s);
+  let x = r.randomState; x ^= x << 13; x ^= x >>> 17; x ^= x << 5; r.randomState = x >>> 0;
+  return Math.floor((r.randomState / 0x100000000) * maxExclusive);
+}
+function achillesRandomDiscard(s: GameState, ctx: EffectContext, targetPlayerIds: string[], battlefieldId?: string): string[] {
+  const targets = [...new Set(targetPlayerIds)];
+  if (!targets.length || targets.some((id) => id === ctx.controllerId || !s.players.some((candidate) => candidate.id === id && candidate.status === 'active'))) {
+    reject('resolution_failed', 'Achilles discard requires a non-empty authoritative opponent set');
+  }
+  const discardedCardIds: string[] = [];
+  for (const targetPlayerId of targets) {
+    const hand = s.cards.filter((candidate) => candidate.ownerPlayerId === targetPlayerId && candidate.controllerPlayerId === targetPlayerId && candidate.zone === 'hand')
+      .sort((left, right) => left.instanceId.localeCompare(right.instanceId));
+    if (!hand.length) reject('resolution_failed', 'Achilles discard is blocked when an opponent has no hand card');
+    const snapshotIds = hand.map((candidate) => candidate.instanceId);
+    const discarded = hand[achillesNextRandomIndex(s, hand.length)]!;
+    moveCard(s, discarded.instanceId, 'discard');
+    discarded.visibility = { scope: 'public' };
+    discardedCardIds.push(discarded.instanceId);
+    const hasNonLuckOrAgility = snapshotIds.some((id) => !achillesIsLuckOrAgility(s, id));
+    if (hasNonLuckOrAgility) {
+      const key = battlefieldId ? achillesCurrentBattleKey(s, battlefieldId) : undefined;
+      if (key) {
+        const receipt = runtime(s).achillesBattlePowerZeroByBattlefield ??= {};
+        const entry = receipt[key];
+        if (entry && !entry.targetPlayerIds.includes(targetPlayerId)) entry.targetPlayerIds.push(targetPlayerId);
+      }
+    }
+    runtime(s).events.push({ type: 'achilles_random_discard', playerId: ctx.controllerId, targetPlayerId,
+      sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, cardInstanceId: discarded.instanceId,
+      ...(battlefieldId ? { battlefieldId } : {}), roundNumber: s.round.roundNumber, fromZone: 'hand', toZone: 'discard', movedCount: 1 });
+  }
+  return discardedCardIds;
+}
+function restoreAchillesHiddenNamesAtRoundEnd(s: GameState): void {
+  const hidden = runtime(s).achillesHiddenServantsByPlayer;
+  if (!hidden) return;
+  for (const [playerId, entry] of Object.entries(hidden)) {
+    if (entry.round !== s.round.roundNumber) continue;
+    if (entry.wasRevealed && !runtime(s).revealedServants.includes(playerId)) runtime(s).revealedServants.push(playerId);
+    delete hidden[playerId];
+  }
+}
+function achillesS3OpponentId(s: GameState, controllerId: string): string | undefined {
+  const ids = achillesSameBattlefieldOpponentIds(s, controllerId);
+  return ids.length === 1 ? ids[0] : undefined;
+}
+function findAchillesS2Pending(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision | undefined {
+  if (!isAchillesS2(a) || Object.prototype.hasOwnProperty.call(ctx.selections, 'chosen_option')) return undefined;
+  const target = a.targets[0]!;
+  const candidates = (target.options as Array<{ id?: unknown }>).map((option) => str(option.id));
+  return { id: nextId(s, 'decision'), controllerId: ctx.controllerId, target, candidates, min: 1, max: 1,
+    context: structuredClone(ctx), remainingEffects: a.effects };
+}
+function executeAchillesS1Gale(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAchillesS1Gale(a) || !isAchillesSource(s, ctx.sourceCardId, ACHILLES_S1_SOURCE_ID) ||
+      !active(s, ctx.sourceCardId) || phase(s) !== 'combat' || player(s, ctx.controllerId).locationId === undefined ||
+      runtime(s).revealedServants.includes(ctx.controllerId)) {
+    reject('resolution_failed', 'Achilles S1 gale source or reveal state is stale');
+  }
+  const battlefieldId = player(s, ctx.controllerId).locationId!;
+  const participantIds = achillesAuthoritativeCombatParticipantIds(s, ctx.controllerId);
+  const targetPlayerIds = participantIds.filter((id) => id !== ctx.controllerId);
+  if (!targetPlayerIds.length) reject('resolution_failed', 'Achilles S1 gale requires an authoritative opponent participant');
+  const handByTarget = targetPlayerIds.map((id) => s.cards.filter((candidate) => candidate.ownerPlayerId === id && candidate.controllerPlayerId === id && candidate.zone === 'hand'));
+  if (handByTarget.some((hand) => hand.length === 0)) reject('resolution_failed', 'Achilles S1 gale is blocked for a no-hand participant');
+  const key = achillesCurrentBattleKey(s, battlefieldId);
+  if (runtime(s).achillesBattlePowerZeroByBattlefield?.[key]) reject('resolution_failed', 'Achilles S1 gale is already settled for this battle');
+  const receipt = runtime(s).achillesBattlePowerZeroByBattlefield ??= {};
+  receipt[key] = { round: s.round.roundNumber, battlefieldId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    controllerId: ctx.controllerId, participantIds: [...participantIds], targetPlayerIds: [], discardedCardIds: [] };
+  receipt[key]!.discardedCardIds = achillesRandomDiscard(s, ctx, targetPlayerIds, battlefieldId);
+  runtime(s).events.push({ type: 'achilles_battle_power_zero', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, battlefieldId, roundNumber: s.round.roundNumber, targetPlayerIds: [...receipt[key]!.targetPlayerIds] });
+}
+function executeAchillesS2(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAchillesS2(a) || !isAchillesSource(s, ctx.sourceCardId, ACHILLES_S2_SOURCE_ID) || !active(s, ctx.sourceCardId) || phase(s) !== 'action') {
+    reject('resolution_failed', 'Achilles S2 source or action lifecycle is stale');
+  }
+  const selected = ctx.selections.chosen_option;
+  if (!Array.isArray(selected) || selected.length !== 1 || !ACHILLES_S2_OPTIONS.includes(selected[0] as typeof ACHILLES_S2_OPTIONS[number])) {
+    reject('resolution_failed', 'Achilles S2 requires exactly one canonical branch choice');
+  }
+  const option = selected[0]!;
+  if (option === 'forbid_skills') reject('resolution_failed', 'Achilles S2 skill-card-forbid branch is contract-blocked');
+  const opponentIds = achillesSameBattlefieldOpponentIds(s, ctx.controllerId);
+  if (!opponentIds.length) reject('resolution_failed', 'Achilles S2 requires a same-battlefield opponent');
+  if (option === 'discard_hand') {
+    if (opponentIds.some((id) => s.cards.every((candidate) => candidate.ownerPlayerId !== id || candidate.zone !== 'hand'))) {
+      reject('resolution_failed', 'Achilles S2 discard is blocked for a no-hand opponent');
+    }
+    achillesRandomDiscard(s, ctx, opponentIds);
+    return;
+  }
+  const controller = player(s, ctx.controllerId);
+  if (controller.mana < 3) reject('insufficient_mana', 'Achilles S2 hide branch requires 3 mana');
+  const hidden = runtime(s).achillesHiddenServantsByPlayer ??= {};
+  if (hidden[ctx.controllerId]) reject('resolution_failed', 'Achilles S2 hide branch is already active this round');
+  controller.mana -= 3;
+  hidden[ctx.controllerId] = { round: s.round.roundNumber, wasRevealed: runtime(s).revealedServants.includes(ctx.controllerId), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId };
+  runtime(s).revealedServants = runtime(s).revealedServants.filter((id) => id !== ctx.controllerId);
+  runtime(s).events.push({ type: 'achilles_true_name_hidden', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, roundNumber: s.round.roundNumber });
+}
+function executeAchillesS3(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isAchillesS3(a) || !isAchillesSource(s, ctx.sourceCardId, ACHILLES_S3_SOURCE_ID) || !active(s, ctx.sourceCardId) || phase(s) !== 'action') {
+    reject('resolution_failed', 'Achilles S3 source or action lifecycle is stale');
+  }
+  const battlefieldId = player(s, ctx.controllerId).locationId;
+  const opponentId = achillesS3OpponentId(s, ctx.controllerId);
+  if (!battlefieldId || !opponentId) reject('resolution_failed', 'Achilles S3 requires exactly one active player opponent');
+  const receipts = runtime(s).achillesScopedPairReceipts ??= [];
+  if (receipts.some((entry) => entry.round === s.round.roundNumber && entry.sourceCardId === ctx.sourceCardId && entry.abilityId === ctx.abilityId)) {
+    reject('resolution_failed', 'Achilles S3 pair scope is already settled this round');
+  }
+  receipts.push({ round: s.round.roundNumber, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+    controllerId: ctx.controllerId, battlefieldId, opponentId });
+  runtime(s).events.push({ type: 'achilles_exact_one_pair_scope_bound', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, battlefieldId, targetPlayerId: opponentId, roundNumber: s.round.roundNumber });
+}
 function context(s: GameState, sourceCardId: string, abilityId: string, event?: AbilityEvent): EffectContext {
   return { sourceCardId, abilityId, controllerId: card(s, sourceCardId).controllerPlayerId, variables: {}, selections: {}, ...(event ? { event } : {}) };
 }
@@ -204,6 +404,7 @@ export function initializeAbilityRuntime(s: GameState, pack: AbilityDefinitionPa
   s.abilityRuntime = { pack: structuredClone(pack), revision: 0, sequence: 0, randomState: (options.seed ?? 1) >>> 0 || 1,
     cardState: {}, ongoingEffects: [], lifecycleTransitions: [], responseWindows: [], pendingDelayedActivations: [], pendingPresenceConcealmentDefeats: [], pendingPostBattleEvents: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
     abigailS4PlayProvenance: {}, abigailS4EventProvenance: {}, abigailS4RecycleProvenance: {},
+    achillesHiddenServantsByPlayer: {}, achillesScopedPairReceipts: [], achillesBattlePowerZeroByBattlefield: {},
     events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [], roomMode: options.roomMode ?? 'standard',
     abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
     movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {},
@@ -671,6 +872,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAbigailS3aCandidate(a) && (!isAbigailS3aSource(s, sourceId) || !isAbigailS3aSemantic(a))) return false;
   if (isAbigailS3bCandidate(a) && (!isAbigailS3aSource(s, sourceId) || !isAbigailS3bSemantic(a))) return false;
   if (isAbigailS1Candidate(a) && (!isAbigailS1Source(s, sourceId) || !isAbigailS1Semantic(a))) return false;
+  if (isAchillesS1Heel(a) && (!isAchillesSource(s, sourceId, ACHILLES_S1_SOURCE_ID) || !achillesBattleLossEventIsAuthoritative(s, context(s, sourceId, a.id, event)))) return false;
+  if (isAchillesS1Gale(a) && (!isAchillesSource(s, sourceId, ACHILLES_S1_SOURCE_ID) || !achillesAuthoritativeCombatParticipantIds(s, card(s, sourceId).controllerPlayerId).some((id) => id !== card(s, sourceId).controllerPlayerId))) return false;
+  if (isAchillesS2(a) && (!isAchillesSource(s, sourceId, ACHILLES_S2_SOURCE_ID) || achillesSameBattlefieldOpponentIds(s, card(s, sourceId).controllerPlayerId).length === 0)) return false;
+  if (isAchillesS3(a) && (!isAchillesSource(s, sourceId, ACHILLES_S3_SOURCE_ID) || !achillesS3OpponentId(s, card(s, sourceId).controllerPlayerId))) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -2458,6 +2663,15 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
         exactRestoreValue(decision.target, ability.targets[0]) && exactRestoreValue(decision.candidates, expectedCandidates) &&
         exactRestoreValue(decision.remainingEffects, ability.effects);
     }
+    if (isAchillesS2(ability)) {
+      if (!isAchillesSource(s, decision.context.sourceCardId, ACHILLES_S2_SOURCE_ID) || !active(s, decision.context.sourceCardId) ||
+          phase(s) !== 'action' || s.round.prioritySeat !== player(s, decision.context.controllerId).seat) return false;
+      const target = ability.targets[0]!;
+      const expectedCandidates = (target.options as Array<{ id?: unknown }>).map((option) => str(option.id));
+      return decision.min === 1 && decision.max === 1 && exactRestoreValue(decision.target, target) &&
+        exactRestoreValue(decision.candidates, expectedCandidates) && exactRestoreValue(decision.remainingEffects, ability.effects) &&
+        Object.keys(decision.context.selections).length === 0;
+    }
     const targetIds = new Set(ability.targets.map((target) => str(target.id)).filter(Boolean));
     if (Object.entries(decision.context.selections).some(([targetId, selectedIds]) => !targetIds.has(targetId) || !Array.isArray(selectedIds) || new Set(selectedIds).size !== selectedIds.length)) return false;
     const canonicalEffects = [...ability.effects, ...ability.creates];
@@ -2493,6 +2707,28 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       return !!source && source.ownerPlayerId === entry.initiatingControllerId && !!ability && isAcceptedOpponentCloseToOneAbility(ability, 'compiled') && locationIds.has(entry.battlefieldId) && playerIds.has(entry.decisionPlayerId) && hasPlayers(entry.remainingDecisionPlayerIds);
     })) return false;
     if ((r.transformedReturnSilenceSourceCardIds ?? []).some((id) => !s.cards.some((card) => card.instanceId === id))) return false;
+    if (!(Object.values(r.achillesHiddenServantsByPlayer ?? {}).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, undefined);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      return !!source && playerIds.has(source.controllerPlayerId) && !!ability && isAchillesS2(ability) && entry.round === s.round.roundNumber &&
+        active(s, entry.sourceCardId) && typeof entry.wasRevealed === 'boolean';
+    }))) return false;
+    if (!(r.achillesScopedPairReceipts ?? []).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      return !!source && !!ability && isAchillesS3(ability) && source.controllerPlayerId === entry.controllerId &&
+        locationIds.has(entry.battlefieldId) && playerIds.has(entry.opponentId) && entry.round >= 0 && entry.round <= s.round.roundNumber;
+    })) return false;
+    if (!(Object.values(r.achillesBattlePowerZeroByBattlefield ?? {}).every((entry) => {
+      const source = restoredPhysicalSource(s, entry.sourceCardId, entry.controllerId);
+      const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
+      const participants = entry.participantIds;
+      return !!source && !!ability && isAchillesS1Gale(ability) && source.controllerPlayerId === entry.controllerId &&
+        active(s, entry.sourceCardId) && entry.round === s.round.roundNumber && entry.battlefieldId === player(s, entry.controllerId).locationId &&
+        locationIds.has(entry.battlefieldId) && hasPlayers(participants) && participants.includes(entry.controllerId) &&
+        new Set(entry.targetPlayerIds).size === entry.targetPlayerIds.length && entry.targetPlayerIds.every((id) => participants.includes(id) && id !== entry.controllerId) &&
+        entry.discardedCardIds.every((id) => s.cards.some((candidate) => candidate.instanceId === id && candidate.zone === 'discard'));
+    }))) return false;
     return true;
   } catch { return false; }
 }
@@ -3831,6 +4067,13 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+  if (isAchillesS1Gale(a)) { executeAchillesS1Gale(s, ctx, a); return; }
+  if (isAchillesS2(a)) {
+    const pending = findAchillesS2Pending(s, ctx, a);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    executeAchillesS2(s, ctx, a); return;
+  }
+  if (isAchillesS3(a)) { executeAchillesS3(s, ctx, a); return; }
   if (isAcceptedOpponentCloseToOneAbility(a, 'compiled')) { stageOpponentCloseToOne(s, ctx, a); return; }
   if (isOpponentCloseToOneCandidate(a)) reject('resolution_failed', 'Unsupported opponent close-to-one interaction semantic shape');
   if (isBattleEndMobilePlayersRewardSemantic(a)) {
@@ -4042,6 +4285,20 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
 export function executeAbility(s: GameState, ctx: EffectContext): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   if (a.execution.mode !== 'automatic') reject(a.execution.mode, 'Ability requires an adapter or host ruling');
+  if (isAchillesS1Heel(a)) {
+    if (!isAchillesSource(s, ctx.sourceCardId, ACHILLES_S1_SOURCE_ID) || !achillesBattleLossEventIsAuthoritative(s, ctx)) {
+      reject('invalid_event', 'Achilles S1 reveal requires the authoritative post-scoring battle-loss event');
+    }
+  }
+  if (isAchillesS1Gale(a) && (!isAchillesSource(s, ctx.sourceCardId, ACHILLES_S1_SOURCE_ID) || !achillesAuthoritativeCombatParticipantIds(s, ctx.controllerId).some((id) => id !== ctx.controllerId))) {
+    reject('resolution_failed', 'Achilles S1 gale requires the authoritative current battle participant set');
+  }
+  if (isAchillesS2(a) && !isAchillesSource(s, ctx.sourceCardId, ACHILLES_S2_SOURCE_ID)) {
+    reject('resolution_failed', 'Achilles S2 source binding is invalid');
+  }
+  if (isAchillesS3(a) && (!isAchillesSource(s, ctx.sourceCardId, ACHILLES_S3_SOURCE_ID) || !achillesS3OpponentId(s, ctx.controllerId))) {
+    reject('resolution_failed', 'Achilles S3 requires the exact-one player pair');
+  }
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) {
     reject('resolution_failed', 'Unsupported fixed controller advance-draw semantic shape');
   }
@@ -4243,7 +4500,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
-  if (event.type === 'round_end') consumeDelayedActivations(s, event);
+  if (event.type === 'round_end') {
+    restoreAchillesHiddenNamesAtRoundEnd(s);
+    consumeDelayedActivations(s, event);
+  }
   const triggered = collectTriggeredAbilities(s, event);
   for (const t of triggered) {
     const a = abilityDefinition(s, t.cardInstanceId, t.abilityId);
@@ -4327,6 +4587,9 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
+    for (const [key, entry] of Object.entries(runtime(copy).achillesBattlePowerZeroByBattlefield ?? {})) {
+      if (entry.round !== round) delete runtime(copy).achillesBattlePowerZeroByBattlefield![key];
+    }
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
