@@ -107,6 +107,16 @@ describe('Achilles accepted source-bound contract', () => {
     const forged = structuredClone(s);
     forged.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:2']!.resultId = 'forged-result';
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forged)).toBe(false);
+    const selfConsistentForgery = structuredClone(s);
+    const forgedReceipt = selfConsistentForgery.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:2']!;
+    delete selfConsistentForgery.abilityRuntime!.achillesBattlePowerZeroByBattlefield!['battle-phase:1:battle:miyama_town:2'];
+    forgedReceipt.battlePhaseResolutionId = 'battle-phase:1';
+    forgedReceipt.battleId = 'battle-phase:1:battle:miyama_town:999';
+    forgedReceipt.resultId = 'battle-phase:1:battle:miyama_town:999:result';
+    forgedReceipt.settlementId = 'battle-phase:1:battle:miyama_town:999:result:settlement';
+    selfConsistentForgery.abilityRuntime!.achillesBattlePowerZeroByBattlefield![forgedReceipt.battleId] = forgedReceipt;
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(selfConsistentForgery)).toBe(false);
+    expect(rules.resolveBattlefield(selfConsistentForgery, { battlefieldId: 'miyama_town' }).nextState).toBe(selfConsistentForgery);
     Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState);
     expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
   });

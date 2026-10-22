@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, getAchillesBattleIdentity, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, getAchillesBattleIdentity, isAchillesBattleReceiptStateCanonical, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
 
@@ -555,6 +555,9 @@ export function resolveBattlefield(
   input: CombatResolutionInput,
 ): ResolverResult {
   const battleIdentity = getAchillesBattleIdentity(state, input.battlefieldId);
+  if (!isAchillesBattleReceiptStateCanonical(state, battleIdentity)) {
+    return { nextState: state, appliedLogEntries: [] };
+  }
   const abilityEventId = battleIdentity.battleId;
   if (state.abilityRuntime?.processedEvents.includes(abilityEventId)) return { nextState: state, appliedLogEntries: [] };
   if (
@@ -625,7 +628,9 @@ export function resolveBattlefield(
       log: state.log.concat({
         type: "battle_resolved",
         message: `return_silence:${input.battlefieldId}`,
-        payload: { winnerPlayerIds: [returnSilenceController], tied: false, winnerPlayerId: returnSilenceController, loserIds, sourceCardId },
+        payload: { winnerPlayerIds: [returnSilenceController], tied: false, winnerPlayerId: returnSilenceController, loserIds, sourceCardId,
+          battlePhaseResolutionId: battleIdentity.battlePhaseResolutionId, battleId: battleIdentity.battleId,
+          resultId: battleIdentity.resultId, settlementId: battleIdentity.settlementId, battlefieldId: input.battlefieldId },
       }),
     };
     const source = nextState.cards.find((card) => card.instanceId === sourceCardId);
@@ -723,6 +728,10 @@ export function resolveBattlefield(
           baseVpPerWinner: battleResult.baseVpPerWinner,
           eventVpPool: battleResult.eventVpPool,
           competitionVpPool: battleResult.competitionVpPool,
+          battlePhaseResolutionId: battleIdentity.battlePhaseResolutionId,
+          battleId: battleIdentity.battleId,
+          resultId: battleIdentity.resultId,
+          settlementId: battleIdentity.settlementId,
         },
       } satisfies GameState["log"][number])
     : ({
@@ -734,7 +743,17 @@ export function resolveBattlefield(
       ...settlementState,
       eventPlacements: nextPlacements,
       battleResults: nextBattleResults,
-      log: settlementState.log.concat(logEntry),
+      log: settlementState.log.concat(logEntry, ...(battleResult ? [{
+        type: 'battle_settled',
+        message: battleIdentity.settlementId,
+        payload: {
+          battlePhaseResolutionId: battleIdentity.battlePhaseResolutionId,
+          battleId: battleIdentity.battleId,
+          resultId: battleIdentity.resultId,
+          settlementId: battleIdentity.settlementId,
+          battlefieldId: input.battlefieldId,
+        },
+      }] : [])),
   };
   if (nextState.abilityRuntime && matchingPendingPresence.length) {
     const consumed = new Set(matchingPendingPresence.map((entry) =>

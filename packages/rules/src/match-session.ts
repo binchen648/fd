@@ -4,6 +4,8 @@ import {
   initializeAbilityRuntime,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
+  getAchillesBattleIdentity,
+  isAchillesBattleReceiptStateCanonical,
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
@@ -1231,6 +1233,14 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
   if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
       isRestoreRecord(entry) && typeof entry.battlefieldId === 'string' && locationIds.has(entry.battlefieldId)))) return false;
+  for (const entry of Object.values((abilityRuntime.achillesBattlePowerZeroByBattlefield ?? {}) as Record<string, Record<string, unknown>>)) {
+    const battlefieldId = entry.battlefieldId;
+    if (typeof battlefieldId !== 'string') return false;
+    const identity = getAchillesBattleIdentity(value as unknown as GameState, battlefieldId);
+    if (!isAchillesBattleReceiptStateCanonical(value as unknown as GameState, identity) ||
+        entry.battleId !== identity.battleId || entry.resultId !== identity.resultId || entry.settlementId !== identity.settlementId ||
+        !(value.battleDeclarations as Array<Record<string, unknown>> | undefined)?.some((declaration) => declaration.battlefieldId === battlefieldId)) return false;
+  }
   if (value.battleSkillEffects !== undefined && (!Array.isArray(value.battleSkillEffects) || !value.battleSkillEffects.every((entry) =>
       isRestoreRecord(entry) && typeof entry.sourceCardDefinitionId === 'string' && Object.prototype.hasOwnProperty.call(definitions, entry.sourceCardDefinitionId) &&
       typeof entry.ownerPlayerId === 'string' && playerIds.has(entry.ownerPlayerId) && typeof entry.skillId === 'string' &&

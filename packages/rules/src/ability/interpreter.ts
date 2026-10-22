@@ -268,25 +268,11 @@ function achillesBattleLossEventIsAuthoritative(s: GameState, ctx: EffectContext
 /**
  * Derives the only server-owned battle identity available to an action-window
  * activation.  The ordinal is the global battle history ordinal used by the
- * MatchSession post-scoring gateway, not merely round+battlefield.  A retained
- * receipt wins while a settlement is pending so a response/retry cannot move
- * the activation into another identity.
+ * MatchSession post-scoring gateway, not merely round+battlefield.  This helper
+ * intentionally never reads a retained Achilles receipt: persisted envelopes
+ * are claims, not authority, and must not drive replay or settlement identity.
  */
 export function getAchillesBattleIdentity(s: GameState, battlefieldId: string): AchillesBattleIdentity {
-  const retained = Object.values(s.abilityRuntime?.achillesBattlePowerZeroByBattlefield ?? {})
-    .find((entry) => entry.round === s.round.roundNumber && entry.battlefieldId === battlefieldId &&
-      typeof entry.battleId === 'string' && typeof entry.resultId === 'string' && typeof entry.settlementId === 'string');
-  if (retained) {
-    return {
-      battlePhaseResolutionId: retained.battlePhaseResolutionId,
-      battleId: retained.battleId,
-      resultId: retained.resultId,
-      settlementId: retained.settlementId,
-      battlefieldId: retained.battlefieldId,
-      round: retained.round,
-      ordinal: Number(retained.battleId.split(':').at(-1)),
-    };
-  }
   const priorResolved = s.log.filter((entry) => entry.type === 'battle_resolved').length;
   const pendingResults = s.battleResults.length;
   const ordinal = Math.max(priorResolved, pendingResults) + 1;
@@ -295,6 +281,27 @@ export function getAchillesBattleIdentity(s: GameState, battlefieldId: string): 
   const resultId = `${battleId}:result`;
   return { battlePhaseResolutionId, battleId, resultId, settlementId: `${resultId}:settlement`, battlefieldId,
     round: s.round.roundNumber, ordinal };
+}
+function achillesReceiptMatchesAuthoritativeState(
+  s: GameState,
+  key: string,
+  entry: NonNullable<AbilityRuntime['achillesBattlePowerZeroByBattlefield']>[string],
+): boolean {
+  const canonical = getAchillesBattleIdentity(s, entry.battlefieldId);
+  if (key !== canonical.battleId || entry.round !== canonical.round || entry.battlePhaseResolutionId !== canonical.battlePhaseResolutionId ||
+      entry.battleId !== canonical.battleId || entry.resultId !== canonical.resultId || entry.settlementId !== canonical.settlementId) return false;
+  const declared = (s.battleDeclarations ?? []).some((declaration) => declaration.battlefieldId === entry.battlefieldId);
+  const resolved = s.log.some((log) => log.type === 'battle_resolved' && log.payload?.battleId === canonical.battleId &&
+    log.payload.resultId === canonical.resultId && log.payload.settlementId === canonical.settlementId);
+  const settled = s.log.some((log) => log.type === 'battle_settled' && log.payload?.battleId === canonical.battleId &&
+    log.payload.resultId === canonical.resultId && log.payload.settlementId === canonical.settlementId);
+  return declared || resolved || settled;
+}
+export function isAchillesBattleReceiptStateCanonical(s: GameState, identity: AchillesBattleIdentity): boolean {
+  return Object.entries(s.abilityRuntime?.achillesBattlePowerZeroByBattlefield ?? {})
+    .filter(([, entry]) => entry.round === identity.round && entry.battlefieldId === identity.battlefieldId)
+    .every(([key, entry]) => key === identity.battleId && entry.battlePhaseResolutionId === identity.battlePhaseResolutionId &&
+      entry.battleId === identity.battleId && entry.resultId === identity.resultId && entry.settlementId === identity.settlementId);
 }
 function achillesCardClassification(s: GameState, cardId: string): 'luck_or_agility' | 'non_luck_or_agility' | 'unknown' {
   const instance = card(s, cardId);
@@ -375,6 +382,7 @@ function executeAchillesS1Gale(s: GameState, ctx: EffectContext, a: AuthoringAbi
   const handByTarget = targetPlayerIds.map((id) => s.cards.filter((candidate) => candidate.ownerPlayerId === id && candidate.controllerPlayerId === id && candidate.zone === 'hand'));
   if (handByTarget.some((hand) => hand.length === 0)) reject('resolution_failed', 'Achilles S1 gale is blocked for a no-hand participant');
   const identity = getAchillesBattleIdentity(s, battlefieldId);
+  if (!isAchillesBattleReceiptStateCanonical(s, identity)) reject('resolution_failed', 'Achilles S1 gale receipt identity is not authoritative');
   if (runtime(s).achillesBattlePowerZeroByBattlefield?.[identity.battleId]) reject('resolution_failed', 'Achilles S1 gale is already settled for this battle');
   const receipt = runtime(s).achillesBattlePowerZeroByBattlefield ??= {};
   receipt[identity.battleId] = { round: s.round.roundNumber, battlefieldId,
@@ -2762,8 +2770,7 @@ export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState):
       const ability = restoredAbility(s, entry.sourceCardId, entry.abilityId);
       const participants = entry.participantIds;
       return !!source && !!ability && isAchillesS1Gale(ability) && source.controllerPlayerId === entry.controllerId &&
-        key === entry.battleId && entry.battlePhaseResolutionId === `battle-phase:${entry.round}` &&
-        entry.resultId === `${entry.battleId}:result` && entry.settlementId === `${entry.resultId}:settlement` &&
+        achillesReceiptMatchesAuthoritativeState(s, key, entry) &&
         active(s, entry.sourceCardId) && entry.round === s.round.roundNumber && entry.battlefieldId === player(s, entry.controllerId).locationId &&
         locationIds.has(entry.battlefieldId) && hasPlayers(participants) && participants.includes(entry.controllerId) &&
         new Set(entry.targetPlayerIds).size === entry.targetPlayerIds.length && entry.targetPlayerIds.every((id) => participants.includes(id) && id !== entry.controllerId) &&
