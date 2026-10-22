@@ -65,19 +65,22 @@ merged.
 4. After `npm ci`, the same focused command — exit `0`: `1` file / `9` tests
    passed.
 5. Compatibility focused command `npm exec vitest run packages/rules/tests/regression/battle-loss-resource-trigger.test.ts packages/rules/tests/regression/battle-first-loss-delayed-activation-recert.test.ts packages/rules/tests/regression/battle-loss-state-transform.test.ts` — exit `0`: `3` files / `21` tests passed, including Olga first-loss recertification.
-6. `npx playwright test e2e/fd-shinji-battle-loss-resource.spec.ts -c playwright.config.ts` — exit `1`; the test reached Playwright startup but the
-   required Chromium executable was absent at
-   `C:\Users\24429\AppData\Local\ms-playwright\chromium_headless_shell-1234\...`.
-   This is not reported as Gate C or E2E pass.
+6. With Chromium installed by `npx playwright install chromium` under the
+   requested proxy (`npx playwright install chromium` — exit `0`),
+   `npx playwright test e2e/fd-shinji-battle-loss-resource.spec.ts -c playwright.config.ts`
+   reached the browser and repository webServer but exited `1`: the initial
+   `/rooms/:roomId/restore` response was non-2xx, so the test stopped before
+   the two-battlefield, reconnect, and stale-command assertions. No Gate-C or
+   E2E pass is claimed.
 
-The attempted `npm exec playwright ...` form also exited `1` with npm `EUSAGE`;
-it was corrected to `npx playwright ...`, whose real browser-missing failure is
-the authoritative E2E receipt above. No browser download was performed.
+The earlier `npm exec playwright ...` form exited `1` with npm `EUSAGE`; it was
+corrected to `npx playwright ...`. The corrected run's restore failure is the
+authoritative E2E receipt above.
 
 ## Disposition
 
 `IMPLEMENTATION_COMPLETE_CANDIDATE` for the current-main B13 implementation
 scope. Independent Reviewer acceptance has not yet been received. This report makes no
 migration-credit, skill-acceptance, Gate-C, merge, or release-readiness claim.
-The browser/server E2E remains unverified in this environment because the
-required browser executable is unavailable.
+The browser/server E2E remains unverified because room restore failed before
+the scenario assertions.
