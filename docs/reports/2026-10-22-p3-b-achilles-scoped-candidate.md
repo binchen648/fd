@@ -19,7 +19,7 @@ Date: 2026-10-22
 - The authoritative action-time participant set requires a declared current battlefield and active player participants. The implementation does not synthesize NPC participants or scan unrelated locations.
 - Each confirmed opponent is processed once with the server-owned deterministic runtime RNG. A missing hand blocks the transaction before mutation.
 - The natural “未弃置牌” branch remains blocked: multi-card hands never write a zero receipt because the unselected-card comparison is not contract-proven. Power zero is allowed only when the authoritative pre-discard hand is a singleton and that discarded card has an authored, unambiguous non-Luck/non-Agility classification; unknown definitions and ambiguous attributes fail closed.
-- Power zero is stored against the canonical battle-phase/battle/result/settlement identity and consumed by the authoritative combat resolver. The identity is derived from server-owned battle history/current declaration; retained receipts are never used to select it. The receipt is deleted at settlement, so a second same-round battle on the same battlefield receives a distinct identity and cannot reuse the prior receipt.
+- Power zero is stored against the canonical battle-phase/battle/result/settlement identity and consumed by the authoritative combat resolver. The identity is derived from the server-owned current `battleResults` history and current declaration; only actual result records in `battleResults` advance its ordinal. Logs and empty-battle diagnostics never count, and retained receipts are never used to select identity. The receipt is deleted at settlement, so a second same-round battle on the same battlefield receives a distinct identity and cannot reuse the prior receipt.
 
 ### S2 — 湛蓝天空
 
@@ -43,7 +43,7 @@ Date: 2026-10-22
 
 ## Evidence
 
-- Focused Achilles/production regression run: `57 passed` across 4 files, including same-round repeated-battle identity, settlement cleanup, forged result and self-consistent `:999` identity, resolver fail-closed behavior, and strict singleton-discard classification.
+- Focused Achilles/production regression run: `58 passed` across 4 files, including empty-battle non-contamination, same-round repeated-battle identity, settlement cleanup, forged result and self-consistent `:999` identity, resolver fail-closed behavior, and strict singleton-discard classification.
 - `npm run typecheck`: passed.
 - `npm run content:validate`: passed; `8 masters, 8 servants, 20 events, 0 blocking issues`.
 - `npm run verify:generated-content`: passed.

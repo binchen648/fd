@@ -273,9 +273,11 @@ function achillesBattleLossEventIsAuthoritative(s: GameState, ctx: EffectContext
  * are claims, not authority, and must not drive replay or settlement identity.
  */
 export function getAchillesBattleIdentity(s: GameState, battlefieldId: string): AchillesBattleIdentity {
-  const priorResolved = s.log.filter((entry) => entry.type === 'battle_resolved').length;
-  const pendingResults = s.battleResults.length;
-  const ordinal = Math.max(priorResolved, pendingResults) + 1;
+  // Empty/non-contested battle attempts may emit a diagnostic `battle_resolved`
+  // log without producing a result.  Logs are not an identity source: the
+  // ordinal advances only from authoritative result records retained in the
+  // current battle-results history.
+  const ordinal = s.battleResults.length + 1;
   const battlePhaseResolutionId = `battle-phase:${s.round.roundNumber}`;
   const battleId = `${battlePhaseResolutionId}:battle:${battlefieldId}:${ordinal}`;
   const resultId = `${battleId}:result`;

@@ -121,6 +121,21 @@ describe('Achilles accepted source-bound contract', () => {
     expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
   });
 
+  it('S1 ignores an empty battlefield diagnostic when allocating the next real battle identity', () => {
+    const s = setup(); const source = add(s, skill(1), 'attack_area', 'p1');
+    s.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: 1 };
+    s.round.activePhase = 'battle'; s.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
+    Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'recon' }).nextState);
+    expect(s.battleResults).toHaveLength(0);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
+    addKnownNonAgility(s, 'hand', 'p2');
+    expect(activate(s, source, ability(1, 'gale-advance')).ok).toBe(true);
+    expect(Object.keys(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield ?? {})).toEqual(['battle-phase:1:battle:miyama_town:1']);
+    Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState);
+    expect(s.battleResults).toHaveLength(1);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
+  });
+
   it('S2 accepts branch 1 and 3, rejects branch 2, and restores a previously revealed name at round end', () => {
     const s = setup(); const source = add(s, skill(2), 'attack_area', 'p1');
     s.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: 1 };
