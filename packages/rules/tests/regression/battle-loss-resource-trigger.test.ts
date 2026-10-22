@@ -108,6 +108,19 @@ describe('P3-B13 battle loss resource trigger', () => {
     expect(result.nextState.abilityRuntime!.processedEvents.some((id) => id.includes(':lose:p1'))).toBe(false);
   });
 
+  it('rejects duplicate scoring receipts before opening the post-scoring barrier', () => {
+    const session = twoBattlefieldSession();
+    const result = resolveBattlefield(session.state, { battlefieldId: 'miyama_town', revealHiddenEvents: true });
+    const battle = result.nextState.battleResults.at(-1)!;
+    const scoringReceipt = { type: 'battle_scored' as const, message: 'scored:miyama_town', payload: { battlefieldId: 'miyama_town' } };
+
+    expect(() => (session as unknown as {
+      queuePostScoringBattleEvents: (battles: typeof session.state.battleResults, logs: typeof session.state.log) => void;
+    }).queuePostScoringBattleEvents([battle], [scoringReceipt, scoringReceipt])).toThrow(
+      'Post-scoring battle barrier requires one scoring receipt per resolved battlefield',
+    );
+  });
+
   it('opens the post-scoring barrier only after both battlefield scoring results exist, then settles Shinji through typed Resource', () => {
     const session = twoBattlefieldSession();
     resolveBattlePhase(session);

@@ -2477,8 +2477,11 @@ export class MatchSession {
       .map((entry) => String(entry.payload?.battlefieldId ?? ''))
       .filter(Boolean);
     const expectedBattlefieldIds = battles.map((battle) => battle.battlefieldId);
-    if (expectedBattlefieldIds.some((battlefieldId) => !scoredBattlefieldIds.includes(battlefieldId))) {
-      throw new Error('Post-scoring battle barrier requires every resolved battlefield scoring receipt');
+    if (new Set(expectedBattlefieldIds).size !== expectedBattlefieldIds.length ||
+      new Set(scoredBattlefieldIds).size !== scoredBattlefieldIds.length ||
+      scoredBattlefieldIds.length !== expectedBattlefieldIds.length ||
+      expectedBattlefieldIds.some((battlefieldId) => !scoredBattlefieldIds.includes(battlefieldId))) {
+      throw new Error('Post-scoring battle barrier requires one scoring receipt per resolved battlefield');
     }
 
     const historyBeforePhase = structuredClone(this.battleHistory);
