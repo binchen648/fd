@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "candidateType": "SERVANT_SCOPED_LITERAL_SOURCE_CANDIDATE",
+  "candidateStatus": "CANDIDATE_SCOPED_LITERAL_ONLY",
+  "repository": "https://github.com/binchen648/fd",
+  "baseCommit": "03f11c7a0f5641f9601d05f480d9b67765ca0ae0",
+  "ownerId": "servant.andersen",
+  "ownerLevelUnlocked": false,
+  "ownerCredit": 0,
+  "automaticImplementation": false,
+  "reviewPrerequisites": {
+    "formalDecisionVerdict": "CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET",
+    "formalDecisionCommit": "caca0de044ee35953344e4d4ce9c2526f1a5ae1c",
+    "candidateReviewerRequired": true,
+    "candidateReviewerCommit": "f4c05864b210bb0fd0527d950829a79f0faef5"
+  },
+  "scope": {
+    "canonicalId": true,
+    "legacyId": true,
+    "exactPrintedText": true,
+    "fullTextSha256": true,
+    "acceptedResidualClauseSha256": true,
+    "sourceRefs": true,
+    "literalConstraintsOnly": true,
+    "runtimeMutation": false,
+    "executableMutation": false,
+    "playableMutation": false,
+    "packMutation": false,
+    "generatedMutation": false,
+    "rosterMutation": false,
+    "frozenInventoryMutation": false,
+    "ownerUnlock": false,
+    "restoreReadiness": false
+  },
+  "skill": {
+    "canonicalId": "servant.andersen.skill.sc-andersen-2",
+    "legacyId": "sc_andersen_2",
+    "name": "为你撰写的故事",
+    "printedText": "【真名解放】\nX为你的战果除以5（向上取整）。\n残留：你只能从效果获得战果。你的基础特殊牌名为幸运且拥有“战斗阶段：你无视【败北】效果。”",
+    "fullTextSha256": "6c4ec3bdc39933ea11b73566d6993fea1c5d752f06c2f6c7131e9a3f32bb8f81",
+    "acceptedResidualClause": "残留：你只能从效果获得战果。你的基础特殊牌名为幸运且拥有“战斗阶段：你无视【败北】效果。”",
+    "acceptedResidualClauseSha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4",
+    "sourceRefs": [
+      {"kind": "chm", "document": "FD全卡图鉴V2.0.chm", "locator": "从者/魔术师/英文版/汉斯·克里斯蒂安·安徒生.htm"},
+      {"kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.andersen/汉斯·克里斯蒂安·安徒生"},
+      {"kind": "legacy-authoring-clause", "document": "src/content/authoring/cards.json", "locator": "skillCards[68].abilities[0].printedClause", "sha256": "8ca9c8143d72538f449be401909f1f0dc39879d446c0b817283d353e47b0eca4"}
+    ],
+    "acceptedLiteralConstraints": [
+      {
+        "id": "effect-only-victory-points",
+        "assertion": "Andersen's victory points may be gained only from effects.",
+        "boundary": "prohibition only; no origin taxonomy, cancellation, rollback, or settlement procedure"
+      },
+      {
+        "id": "base-special-card-name-and-defeat-text",
+        "assertion": "The base special card is named 幸运 and contains 战斗阶段：你无视【败北】效果.",
+        "boundary": "literal name/text only; no rename, replace, copy, generate, ownership, or construction semantics"
+      },
+      {
+        "id": "x-identity-formula",
+        "assertion": "X = ceil(你的战果 / 5).",
+        "boundary": "identity-level printed text only; no use, timing, snapshot, target, payment, or executable binding"
+      }
+    ],
+    "referenceHandler": "core.structured-skill",
+    "referenceHandlerAuthority": "provenance-only"
+  },
+  "excludedSemantics": [
+    "special-card transformation/construction/copy/replacement/ownership/generation",
+    "activation or lifecycle timing",
+    "attachment, expiration, cleanup, or continuous duration",
+    "effect-origin victory-point classification/enforcement/rollback/settlement",
+    "ignore-defeat battle settlement ordering or modifier interaction",
+    "operative X use, target, snapshot, or payment",
+    "mapping annotations as executable semantics",
+    "reference handler as runtime mandate"
+  ],
+  "retainedBlocks": [
+    {"canonicalId": "servant.andersen.skill.sc-andersen-1", "status": ["SOURCE_EVIDENCE_REQUIRED", "SEMANTIC_SOURCE_REQUIRED", "EXPLICIT_BLOCK"]},
+    {"canonicalId": "servant.andersen.skill.sc-andersen-3", "status": ["SOURCE_EVIDENCE_REQUIRED", "SEMANTIC_SOURCE_REQUIRED", "EXPLICIT_BLOCK"]}
+  ],
+  "frozenInventoryState": {
+    "canonicalId": "servant.andersen.skill.sc-andersen-2",
+    "semanticStatus": "SOURCE_GROUNDED",
+    "classificationRoute": "SPECIAL_HANDLER_CANDIDATE",
+    "mappingStatus": "CONTRACT_MAPPED",
+    "blockedBy": ["STRUCTURED_TRANSFORM_REQUIRES_REVIEW"],
+    "currentRoute": "none",
+    "inheritedAcceptanceContracts": [],
+    "partialAcceptanceContracts": [],
+    "action": "preserve; do not rewrite"
+  },
+  "warnings": {
+    "ownerBlocked": true,
+    "ownerCreditZero": true,
+    "noRuntimeMutation": true,
+    "noInventoryMutation": true,
+    "noRestoreReadiness": true,
+    "referenceRepositoryOutOfScope": "Frozen provenance names https://github.com/fengling20011118-dotcom/fate-domination.git; warning only, not implementation authority."
+  }
+}
