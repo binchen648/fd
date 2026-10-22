@@ -7,10 +7,10 @@
 - Owner: `servant.andersen`
 - Candidate scope: `servant.andersen.skill.sc-andersen-2` literal subset only
 - Formal source-bound decision: `caca0de044ee35953344e4d4ce9c2526f1a5ae1c`
-- Independent Candidate Reviewer prerequisite: `f4c05864b210bb0fd0527d950829a79f0faef5`
+- Independent Candidate Reviewer: `9ac8698164b33053b27bafe0ed33c5a0f55c3f72` (`MIGRATION_ACCEPTED`, SC2 literal subset)
 - Owner credit: `0`
 - Owner unlock: `false`
-- Candidate status: docs-only scoped record; pending independent Candidate Reviewer
+- Candidate status: docs-only scoped record; pending second independent Candidate Reviewer
 
 ## Included scope
 

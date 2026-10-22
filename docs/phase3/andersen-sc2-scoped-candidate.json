@@ -12,7 +12,7 @@
     "formalDecisionVerdict": "CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET",
     "formalDecisionCommit": "caca0de044ee35953344e4d4ce9c2526f1a5ae1c",
     "candidateReviewerRequired": true,
-    "candidateReviewerCommit": "f4c05864b210bb0fd0527d950829a79f0faef5"
+    "candidateReviewerCommit": "9ac8698164b33053b27bafe0ed33c5a0f55c3f72"
   },
   "scope": {
     "canonicalId": true,
