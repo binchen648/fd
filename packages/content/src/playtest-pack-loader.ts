@@ -210,7 +210,7 @@ export interface MetadataArchive {
     decisionId: string;
     reviewerAcceptedCommit: string;
     baseCommit: string;
-    status: 'CONTRACT_ACCEPTED_FOR_METADATA_ONLY';
+    status: 'CONTRACT_ACCEPTED_FOR_METADATA_ONLY' | 'CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET';
     sourceBound: true;
     metadataOnly: true;
     sourceClauseHashes: Record<string, string>;

@@ -27,6 +27,16 @@
         "s2": "7cf0bf703fad6229c071b8598c684111a5e16965050226fe1825e3451ba08258",
         "s3": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
       }
+    },
+    "servant.altera": {
+      "decisionId": "altera-s3-scoped-contract-2026-10-22",
+      "reviewerAcceptedCommit": "35c9c275294ef2a3730dcbf48957a785416c5033",
+      "sourceBound": true,
+      "sourceClauseHashes": {
+        "noble-bloom": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
+        "noble-bloom-extra-vp": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
+        "magic-resistance": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
+      }
     }
   },
   "dictionaries": {
@@ -47,7 +57,8 @@
     ,"data/authoring/servants/servant.abigail.json"
   ],
   "metadataArchiveFiles": [
-    "data/authoring/metadata/servant.albion.json"
+    "data/authoring/metadata/servant.albion.json",
+    "data/authoring/metadata/servant.altera.json"
   ],
   "authoringMasterFiles": [
     "data/authoring/masters/master.kayneth.json",

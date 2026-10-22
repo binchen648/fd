@@ -24,12 +24,11 @@ describe('Albion metadata-only Candidate', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
     const compiled = compileLoadedPlaytestPack(loaded);
 
-    expect(loaded.metadataArchives).toHaveLength(1);
-    expect(loaded.metadataArchives[0]!.id).toBe('servant.albion');
+    expect(loaded.metadataArchives.map((archive) => archive.id)).toEqual(['servant.albion', 'servant.altera']);
     expect(loaded.servants.some((servant) => servant.id === 'servant.albion')).toBe(false);
     expect(loaded.cards.some((card) => card.id.startsWith('servant.albion.'))).toBe(false);
     expect(compiled.library.rules.archives.some((archive) => archive.id === 'servant.albion')).toBe(false);
-    expect(compiled.library.metadata.archives[0]!.scopedContract).toMatchObject({
+    expect(compiled.library.metadata.archives.find((archive) => archive.id === 'servant.albion')!.scopedContract).toMatchObject({
       reviewerAcceptedCommit: reviewerCommit,
       status: 'CONTRACT_ACCEPTED_FOR_METADATA_ONLY',
       metadataOnly: true,
@@ -75,7 +74,12 @@ describe('Albion metadata-only Candidate', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
     const compiled = compileLoadedPlaytestPack(loaded);
 
-    expect(Object.keys(compiled.library.metadata.sourceMap)).toEqual(cardIds);
+    expect(Object.keys(compiled.library.metadata.sourceMap)).toEqual([
+      ...cardIds,
+      'servant.altera.skill.sc-altera-1',
+      'servant.altera.skill.sc-altera-2',
+      'servant.altera.skill.sc-altera-3',
+    ]);
     for (const cardId of cardIds) {
       expect(compiled.library.metadata.sourceMap[cardId]).toMatchObject({
         archiveId: 'servant.albion',
@@ -86,14 +90,17 @@ describe('Albion metadata-only Candidate', () => {
         automaticExecution: false,
       });
     }
-    expect(compiled.evidenceReport.metadataArchives).toEqual([{
-      archiveId: 'servant.albion',
-      capabilityStatus: 'HOST_ADJUDICATED',
-      cardIds: [...cardIds],
-      sourceBound: true,
-      metadataOnly: true,
-      sourceAuthority: 'frozen_inventory_only',
-    }]);
+    expect(compiled.evidenceReport.metadataArchives).toEqual([
+      {
+        archiveId: 'servant.albion',
+        capabilityStatus: 'HOST_ADJUDICATED',
+        cardIds: [...cardIds],
+        sourceBound: true,
+        metadataOnly: true,
+        sourceAuthority: 'frozen_inventory_only',
+      },
+      expect.objectContaining({ archiveId: 'servant.altera' }),
+    ]);
   });
 
   it('keeps checked-in generated metadata separate from executable card definitions', () => {
@@ -101,8 +108,13 @@ describe('Albion metadata-only Candidate', () => {
       metadata: { archives: Array<{ id: string }>; sourceMap: Record<string, unknown> };
       rules: { cards: Record<string, unknown>; sourceMap?: Record<string, unknown> };
     };
-    expect(generated.metadata.archives.map((archive) => archive.id)).toEqual(['servant.albion']);
-    expect(Object.keys(generated.metadata.sourceMap)).toEqual(cardIds);
+    expect(generated.metadata.archives.map((archive) => archive.id)).toEqual(['servant.albion', 'servant.altera']);
+    expect(Object.keys(generated.metadata.sourceMap)).toEqual([
+      ...cardIds,
+      'servant.altera.skill.sc-altera-1',
+      'servant.altera.skill.sc-altera-2',
+      'servant.altera.skill.sc-altera-3',
+    ]);
     expect(Object.keys(generated.rules.sourceMap ?? {})).toEqual(expect.arrayContaining([...cardIds]));
     expect(Object.keys(generated.rules.cards).some((cardId) => cardId.startsWith('servant.albion.'))).toBe(false);
     expect(JSON.stringify(generated.metadata)).not.toMatch(/"(?:abilities|effects|targets|activation|ruleModifiers)"/);

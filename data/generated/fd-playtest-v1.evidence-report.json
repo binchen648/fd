@@ -2211,6 +2211,18 @@
       "sourceBound": true,
       "metadataOnly": true,
       "sourceAuthority": "frozen_inventory_only"
+    },
+    {
+      "archiveId": "servant.altera",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "cardIds": [
+        "servant.altera.skill.sc-altera-1",
+        "servant.altera.skill.sc-altera-2",
+        "servant.altera.skill.sc-altera-3"
+      ],
+      "sourceBound": true,
+      "metadataOnly": true,
+      "sourceAuthority": "frozen_inventory_only"
     }
   ]
 }

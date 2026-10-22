@@ -13192,6 +13192,49 @@
         ],
         "sourceAuthority": "frozen_inventory_only",
         "automaticExecution": false
+      },
+      "servant.altera.skill.sc-altera-1": {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-1",
+        "canonicalId": "servant.altera.skill.sc-altera-1",
+        "legacyId": "sc_altera_1",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.altera.skill.sc-altera-2": {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-2",
+        "canonicalId": "servant.altera.skill.sc-altera-2",
+        "legacyId": "sc_altera_2",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "2cedf0f973ec6e558aa12bcefa93ed2ac07a617abc1638a2890af6a3528b531c",
+          "a3bf9a44f08c88cf66b474f7688f351e7c4892dcd5e383327ade631309d50639",
+          "dadc5af1b3d8b46d57e16cd03ceacba7d00fce0b8e43e065993b1ebde50bf0bf"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.altera.skill.sc-altera-3": {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-3",
+        "canonicalId": "servant.altera.skill.sc-altera-3",
+        "legacyId": "sc_altera_3",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
+          "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
+          "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
       }
     }
   },
@@ -13377,6 +13420,183 @@
             ]
           }
         ]
+      },
+      {
+        "schemaVersion": "fd-card-metadata-v1",
+        "archiveType": "servant_metadata_archive",
+        "id": "servant.altera",
+        "name": "阿蒂拉",
+        "ownerType": "servant",
+        "scopedContract": {
+          "decisionId": "altera-s3-scoped-contract-2026-10-22",
+          "reviewerAcceptedCommit": "35c9c275294ef2a3730dcbf48957a785416c5033",
+          "baseCommit": "e1f995bba356433519b6c823cbeffe53d48cffb0",
+          "status": "CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET",
+          "sourceBound": true,
+          "metadataOnly": true,
+          "sourceClauseHashes": {
+            "noble-bloom": "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
+            "noble-bloom-extra-vp": "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
+            "magic-resistance": "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
+          }
+        },
+        "ownerStatus": "BLOCKED",
+        "capability": {
+          "status": "HOST_ADJUDICATED",
+          "hostRulingReason": "Only the three previously accepted identity-free S3 shapes are contract-mapped; S1 and S2 remain SOURCE_EVIDENCE_REQUIRED/SEMANTIC_SOURCE_REQUIRED/EXPLICIT_BLOCK, so Altera is not owner-complete or playable."
+        },
+        "sourceEvidence": {
+          "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+          "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+          "sourceAuthority": "frozen_inventory_only",
+          "references": [
+            {
+              "kind": "frozen_inventory",
+              "path": "data/phase3/full-roster-ability-inventory.json",
+              "sha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4"
+            },
+            {
+              "kind": "canonical_source_locator",
+              "path": "src/content/generated/legacy-content.json",
+              "status": "ABSENT_IN_EXACT_BASE",
+              "authority": "frozen_locator_only"
+            },
+            {
+              "kind": "f1_source",
+              "document": "FD全卡图鉴V2.0.chm",
+              "locator": "从者/剑士/英文版/阿蒂拉.htm",
+              "commit": "59f145434695d29bdd17e4cb3adc887e84182377"
+            },
+            {
+              "kind": "f1_source",
+              "document": "Fate_Domination-开发版",
+              "locator": "servant.altera/阿蒂拉",
+              "commit": "59f145434695d29bdd17e4cb3adc887e84182377"
+            },
+            {
+              "kind": "reference_static_metadata",
+              "document": "Fate_Domination-开发版",
+              "locator": "servant.altera/阿蒂拉",
+              "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+              "authority": "static_metadata_only"
+            }
+          ]
+        },
+        "cards": [
+          {
+            "id": "servant.altera.skill.sc-altera-1",
+            "legacyId": "sc_altera_1",
+            "name": "军神之剑·泪之星",
+            "printedText": "轨道打击-此牌无法被打出。于此牌被放置的回合后，当你于此地点战斗时，于战斗阶段将此牌加入攻击并真名解放，然后于战斗阶段结束后，将此牌移除游戏并为其所在的地点抽取【文明废墟】事件牌代替原本的事件牌直至游戏结束。",
+            "clauseSha256": [
+              "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
+            ],
+            "status": "SOURCE_EVIDENCE_REQUIRED",
+            "mappingStatus": "EXPLICIT_BLOCK",
+            "blockedBy": [
+              "SEMANTIC_SOURCE_REQUIRED"
+            ],
+            "capability": {
+              "status": "HOST_ADJUDICATED",
+              "hostRulingReason": "S1 remains source- and semantics-blocked; no trigger, card-zone, event-deck, lifecycle, or restore behavior is inherited."
+            },
+            "sourceMap": {
+              "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+              "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+              "clauseSha256": [
+                "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
+              ],
+              "sourceAuthority": "frozen_inventory_only",
+              "automaticExecution": false
+            },
+            "automaticExecution": false,
+            "unresolvedMechanics": [
+              "SEMANTIC_SOURCE_REQUIRED",
+              "trigger",
+              "card-zone mutation",
+              "event-deck replacement",
+              "combat-end lifecycle",
+              "restore"
+            ]
+          },
+          {
+            "id": "servant.altera.skill.sc-altera-2",
+            "legacyId": "sc_altera_2",
+            "name": "军神之剑",
+            "printedText": "被动/行动阶段：阿蒂拉的技能牌减少等于你所在战场正面战果最高的事件牌的战果数的魔力消耗。\n行动阶段：你的攻击无法因其他能力被关闭或减少威力。\n战斗阶段：将【军神之剑·泪之星】放置于你所在的地点。",
+            "clauseSha256": [
+              "2cedf0f973ec6e558aa12bcefa93ed2ac07a617abc1638a2890af6a3528b531c",
+              "a3bf9a44f08c88cf66b474f7688f351e7c4892dcd5e383327ade631309d50639",
+              "dadc5af1b3d8b46d57e16cd03ceacba7d00fce0b8e43e065993b1ebde50bf0bf"
+            ],
+            "status": "SOURCE_EVIDENCE_REQUIRED",
+            "mappingStatus": "EXPLICIT_BLOCK",
+            "blockedBy": [
+              "SEMANTIC_SOURCE_REQUIRED"
+            ],
+            "capability": {
+              "status": "HOST_ADJUDICATED",
+              "hostRulingReason": "S2 remains source- and semantics-blocked; no cost, immunity, placement, timing/order, source binding, persistent state, or restore behavior is inherited."
+            },
+            "sourceMap": {
+              "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+              "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+              "clauseSha256": [
+                "2cedf0f973ec6e558aa12bcefa93ed2ac07a617abc1638a2890af6a3528b531c",
+                "a3bf9a44f08c88cf66b474f7688f351e7c4892dcd5e383327ade631309d50639",
+                "dadc5af1b3d8b46d57e16cd03ceacba7d00fce0b8e43e065993b1ebde50bf0bf"
+              ],
+              "sourceAuthority": "frozen_inventory_only",
+              "automaticExecution": false
+            },
+            "automaticExecution": false,
+            "unresolvedMechanics": [
+              "SEMANTIC_SOURCE_REQUIRED",
+              "event-card cost",
+              "attack immunity",
+              "S1 placement",
+              "timing/order",
+              "source binding",
+              "persistent state",
+              "restore"
+            ]
+          },
+          {
+            "id": "servant.altera.skill.sc-altera-3",
+            "legacyId": "sc_altera_3",
+            "name": "对魔力（saber class）",
+            "printedText": "宝具绽放-被动/战斗阶段：若你于本回合打出了你战斗中魔力消耗最高的宝具攻击，获得1点战果。\n若其消耗≥4，你额外获得1点战果。\n魔术抗性-战斗阶段：将与你位于同一战场的交战对手控制的魔术属性攻击威力设置为0。",
+            "clauseSha256": [
+              "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
+              "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
+              "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
+            ],
+            "status": "PARTIAL_SOURCE_BOUND",
+            "mappingStatus": "CONTRACT_MAPPED",
+            "blockedBy": [
+              "OWNER_BLOCKED_S1_S2"
+            ],
+            "capability": {
+              "status": "HOST_ADJUDICATED",
+              "hostRulingReason": "S3 is contract-mapped only through the three accepted identity-free FM03 shapes; this metadata record does not grant owner-complete or playable status."
+            },
+            "sourceMap": {
+              "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+              "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+              "clauseSha256": [
+                "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
+                "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
+                "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
+              ],
+              "sourceAuthority": "frozen_inventory_only",
+              "automaticExecution": false
+            },
+            "automaticExecution": false,
+            "unresolvedMechanics": [
+              "owner-complete migration remains blocked by S1 and S2"
+            ]
+          }
+        ]
       }
     ],
     "sourceMap": {
@@ -13416,6 +13636,49 @@
         "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
         "clauseSha256": [
           "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.altera.skill.sc-altera-1": {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-1",
+        "canonicalId": "servant.altera.skill.sc-altera-1",
+        "legacyId": "sc_altera_1",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "1bcc870988df713b11d7e5b248c8df0cc9386ad383dc5202c091fd212c5b8548"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.altera.skill.sc-altera-2": {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-2",
+        "canonicalId": "servant.altera.skill.sc-altera-2",
+        "legacyId": "sc_altera_2",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "2cedf0f973ec6e558aa12bcefa93ed2ac07a617abc1638a2890af6a3528b531c",
+          "a3bf9a44f08c88cf66b474f7688f351e7c4892dcd5e383327ade631309d50639",
+          "dadc5af1b3d8b46d57e16cd03ceacba7d00fce0b8e43e065993b1ebde50bf0bf"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.altera.skill.sc-altera-3": {
+        "archiveId": "servant.altera",
+        "cardId": "servant.altera.skill.sc-altera-3",
+        "canonicalId": "servant.altera.skill.sc-altera-3",
+        "legacyId": "sc_altera_3",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
+          "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
+          "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
         ],
         "sourceAuthority": "frozen_inventory_only",
         "automaticExecution": false
