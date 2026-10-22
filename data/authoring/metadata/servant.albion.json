@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "fd-card-metadata-v1",
+  "archiveType": "servant_metadata_archive",
+  "id": "servant.albion",
+  "name": "阿尔比恩之骸",
+  "ownerType": "servant",
+  "scopedContract": {
+    "decisionId": "albion-formal-minimum-metadata-2026-10-22",
+    "reviewerAcceptedCommit": "52490d1120eddb81077d8b6d524edeb9df31a305",
+    "baseCommit": "19ac14d5c3c69e0dbbcb2da2fddb8319a7391f03",
+    "status": "CONTRACT_ACCEPTED_FOR_METADATA_ONLY",
+    "sourceBound": true,
+    "metadataOnly": true,
+    "sourceClauseHashes": {
+      "s1-enter-scouting": "76ce5c6080e5fa7b1cd6642ff87133617f91a07a00020721f56df4366ceba1ab",
+      "s1-combat-end-mana-loss": "679fed0d35a87156418c6a298693e00215da2b793ca03b03712f43c5b316915f",
+      "s2": "7cf0bf703fad6229c071b8598c684111a5e16965050226fe1825e3451ba08258",
+      "s3": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+    }
+  },
+  "capability": {
+    "status": "HOST_ADJUDICATED",
+    "hostRulingReason": "Albion is preserved for display and explicit host adjudication only; no automatic runtime execution or state mutation is authorized."
+  },
+  "sourceEvidence": {
+    "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+    "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+    "sourceAuthority": "frozen_inventory_only",
+    "references": [
+      {
+        "kind": "frozen_inventory",
+        "path": "data/phase3/full-roster-ability-inventory.json",
+        "sha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4"
+      },
+      {
+        "kind": "canonical_source_locator",
+        "path": "src/content/authoring/cards.json",
+        "status": "ABSENT_IN_EXACT_BASE",
+        "authority": "not_verified"
+      },
+      {
+        "kind": "canonical_source_locator",
+        "path": "src/content/generated/legacy-content.json",
+        "status": "ABSENT_IN_EXACT_BASE",
+        "authority": "not_verified"
+      },
+      {
+        "kind": "external_corroboration_only",
+        "path": "../Fate_Domination-开发版/batch_lancer_rider.js",
+        "sha256": "4123B4E5F01A099EB7E0BB04A3AAF5366BDCD6AA6F4EB02D6DD498B6B65A7F0F",
+        "status": "NO_GIT_PROVENANCE",
+        "authority": "not_source_authority"
+      },
+      {
+        "kind": "external_image_corroboration_only",
+        "path": "../Fate_Domination-开发版/images/servants/阿尔比恩之骸.png",
+        "sha256": "37BB48048CBB1D07CC984F362A0C657EBBA3FF2F3EC4510FC9798EE8A9032371",
+        "status": "NO_GIT_PROVENANCE",
+        "authority": "not_source_authority"
+      }
+    ]
+  },
+  "cards": [
+    {
+      "id": "servant.albion.skill.sc-albion-1",
+      "legacyId": "sc_albion_1",
+      "name": "未能回归于星的龙",
+      "printedText": "星陨-被动：当你进入侦查时，你可以将此牌加入攻击。若如此做，你获得4点魔力与2点战果并移动至除侦查外的任意地点且你于战斗阶段结束后失去8点魔力。",
+      "clauseSha256": [
+        "76ce5c6080e5fa7b1cd6642ff87133617f91a07a00020721f56df4366ceba1ab",
+        "679fed0d35a87156418c6a298693e00215da2b793ca03b03712f43c5b316915f"
+      ],
+      "status": "PARTIAL_SOURCE_BOUND",
+      "mappingStatus": "CONTRACT_MAPPED",
+      "blockedBy": [
+        "runtime-trigger-provenance",
+        "movement-choice-and-rollback",
+        "resource-ordering-and-lower-bound",
+        "combat-end-scheduling",
+        "card-zone-mutation"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "S1 text and clause hashes are preserved; trigger, movement, resource, ordering and card-zone mechanics remain unresolved."
+      },
+      "sourceMap": {
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "76ce5c6080e5fa7b1cd6642ff87133617f91a07a00020721f56df4366ceba1ab",
+          "679fed0d35a87156418c6a298693e00215da2b793ca03b03712f43c5b316915f"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "automaticExecution": false,
+      "unresolvedMechanics": ["trigger provenance", "optional add-to-attack", "non-scouting movement", "4 mana and 2 victory points", "combat-end 8 mana loss"]
+    },
+    {
+      "id": "servant.albion.skill.sc-albion-2",
+      "legacyId": "sc_albion_2",
+      "name": "炎之灾厄",
+      "printedText": "<每局游戏限一次>\n被动：当你于每回合第一次进行移动后，此攻击获得等于你移动距离的威力直至游戏结束。",
+      "clauseSha256": [
+        "7cf0bf703fad6229c071b8598c684111a5e16965050226fe1825e3451ba08258"
+      ],
+      "status": "PARTIAL_SOURCE_BOUND",
+      "mappingStatus": "CONTRACT_MAPPED",
+      "blockedBy": [
+        "movement-event-qualification",
+        "distance-accounting",
+        "once-per-game-ledger",
+        "persistent-power-modifier-lifecycle",
+        "restore-and-replay"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "S2 text and clause hash are preserved; movement, distance, ledger, modifier ownership and lifecycle remain unresolved."
+      },
+      "sourceMap": {
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "7cf0bf703fad6229c071b8598c684111a5e16965050226fe1825e3451ba08258"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "automaticExecution": false,
+      "unresolvedMechanics": ["first move per round", "movement distance", "power bonus", "until game end", "once per game"]
+    },
+    {
+      "id": "servant.albion.skill.sc-albion-3",
+      "legacyId": "sc_albion_3",
+      "name": "无人知晓的无垢搏动",
+      "printedText": "龙之心-若你赢得了一场战斗，且你的交战对手控制与你控制的攻击具有相同属性且威力高于该攻击的攻击，战斗阶段结束且计算战斗获得的战果后，你失去3点战果。",
+      "clauseSha256": [
+        "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+      ],
+      "status": "SOURCE_EVIDENCE_REQUIRED",
+      "mappingStatus": "EXPLICIT_BLOCK",
+      "blockedBy": ["SEMANTIC_SOURCE_REQUIRED"],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "S3 has no accepted semantic source packet; printed text is retained without normalized runtime meaning."
+      },
+      "sourceMap": {
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "automaticExecution": false,
+      "unresolvedMechanics": ["battle-result binding", "opponent cardinality", "same-attribute comparison", "higher-power comparison", "post-scoring 3 victory-point loss", "restore and idempotency"]
+    }
+  ]
+}

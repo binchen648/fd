@@ -16,6 +16,17 @@
         "s2-branch-3": "b6992b7119b433466d35bd7c5ae0f14f136448cc6fbaaf81aa594e31fa693d15",
         "s3": "c3cf72179056049fc0496d3aa0a3476212ab7f8f79bdc6c93d1e3ab39c1b43cb"
       }
+    },
+    "servant.albion": {
+      "decisionId": "albion-formal-minimum-metadata-2026-10-22",
+      "reviewerAcceptedCommit": "52490d1120eddb81077d8b6d524edeb9df31a305",
+      "sourceBound": true,
+      "sourceClauseHashes": {
+        "s1-enter-scouting": "76ce5c6080e5fa7b1cd6642ff87133617f91a07a00020721f56df4366ceba1ab",
+        "s1-combat-end-mana-loss": "679fed0d35a87156418c6a298693e00215da2b793ca03b03712f43c5b316915f",
+        "s2": "7cf0bf703fad6229c071b8598c684111a5e16965050226fe1825e3451ba08258",
+        "s3": "4bd77425bde34cec725d4b43f8a1987b7cd0ecf74c5a175cf64a16d588e89677"
+      }
     }
   },
   "dictionaries": {
@@ -34,6 +45,9 @@
     "data/authoring/servants/servant.tomoe.json",
     "data/authoring/servants/servant.kintoki.json"
     ,"data/authoring/servants/servant.abigail.json"
+  ],
+  "metadataArchiveFiles": [
+    "data/authoring/metadata/servant.albion.json"
   ],
   "authoringMasterFiles": [
     "data/authoring/masters/master.kayneth.json",

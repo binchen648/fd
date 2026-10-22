@@ -38,6 +38,7 @@ export interface PlaytestPackManifest {
   authoringServantFiles?: string[];
   authoringMasterFiles?: string[];
   authoringMasterSupportFiles?: string[];
+  metadataArchiveFiles?: string[];
   eventSetFiles: string[];
   eventCardFiles: string[];
   scopedContracts?: Record<string, {
@@ -55,6 +56,7 @@ export interface LoadedPlaytestContentPack extends ContentPack {
   };
   eventCards: NamedCardDefinition[];
   authoringArchives: AuthoringArchive[];
+  metadataArchives: MetadataArchive[];
 }
 
 export interface PackValidationIssue {
@@ -88,6 +90,10 @@ export interface CompiledPlaytestContentLibrary {
     decks?: Record<string, string[]>;
     fallbackCommandSpells?: Record<string, string>;
     sourceMap?: Record<string, unknown>;
+  };
+  metadata: {
+    archives: MetadataArchive[];
+    sourceMap: Record<string, MetadataSourceMapEntry>;
   };
 }
 
@@ -129,6 +135,14 @@ export interface EvidenceReport {
   };
   entities: EvidenceEntityRow[];
   issues: PackValidationIssue[];
+  metadataArchives: Array<{
+    archiveId: string;
+    capabilityStatus: 'HOST_ADJUDICATED';
+    cardIds: string[];
+    sourceBound: true;
+    metadataOnly: true;
+    sourceAuthority: 'frozen_inventory_only';
+  }>;
 }
 
 export interface CompiledPlaytestPack {
@@ -174,6 +188,63 @@ export interface AuthoringArchive {
   [key: string]: unknown;
 }
 
+export interface MetadataSourceMapEntry {
+  archiveId: string;
+  cardId: string;
+  canonicalId: string;
+  legacyId: string;
+  inventoryPath: string;
+  inventorySha256: string;
+  clauseSha256: string[];
+  sourceAuthority: 'frozen_inventory_only';
+  automaticExecution: false;
+}
+
+export interface MetadataArchive {
+  schemaVersion: 'fd-card-metadata-v1';
+  archiveType: 'servant_metadata_archive';
+  id: string;
+  name: string;
+  ownerType: 'servant';
+  scopedContract: {
+    decisionId: string;
+    reviewerAcceptedCommit: string;
+    baseCommit: string;
+    status: 'CONTRACT_ACCEPTED_FOR_METADATA_ONLY';
+    sourceBound: true;
+    metadataOnly: true;
+    sourceClauseHashes: Record<string, string>;
+  };
+  capability: {
+    status: 'HOST_ADJUDICATED';
+    hostRulingReason: string;
+  };
+  sourceEvidence: {
+    inventoryPath: string;
+    inventorySha256: string;
+    sourceAuthority: 'frozen_inventory_only';
+    references: Array<Record<string, unknown>>;
+  };
+  cards: Array<{
+    id: string;
+    legacyId: string;
+    name: string;
+    printedText: string;
+    clauseSha256: string[];
+    status: 'PARTIAL_SOURCE_BOUND' | 'SOURCE_EVIDENCE_REQUIRED';
+    mappingStatus: 'CONTRACT_MAPPED' | 'EXPLICIT_BLOCK';
+    blockedBy: string[];
+    capability: {
+      status: 'HOST_ADJUDICATED';
+      hostRulingReason: string;
+    };
+    sourceMap: Omit<MetadataSourceMapEntry, 'archiveId' | 'cardId' | 'canonicalId' | 'legacyId'>;
+    automaticExecution: false;
+    unresolvedMechanics: string[];
+  }>;
+  [key: string]: unknown;
+}
+
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 
 function isMasterSupportArchive(archive: AuthoringArchive): boolean {
@@ -209,6 +280,37 @@ function assertMasterSupportArchive(archive: AuthoringArchive): void {
 function assertNormalAuthoringArchive(archive: AuthoringArchive): void {
   if (isMasterSupportArchive(archive)) {
     throw new Error(`Master support archive must be registered through authoringMasterSupportFiles: ${archive.id}`);
+  }
+}
+
+function assertMetadataArchive(archive: MetadataArchive): void {
+  if (archive.schemaVersion !== 'fd-card-metadata-v1' || archive.archiveType !== 'servant_metadata_archive') {
+    throw new Error(`Metadata archive has an unsupported discriminator: ${archive.id || '<missing-id>'}`);
+  }
+  if (!archive.id.startsWith('servant.') || archive.ownerType !== 'servant') {
+    throw new Error(`Metadata archive must identify a servant owner: ${archive.id}`);
+  }
+  if (archive.capability?.status !== 'HOST_ADJUDICATED' || archive.scopedContract?.metadataOnly !== true) {
+    throw new Error(`Metadata archive must remain HOST_ADJUDICATED and metadata-only: ${archive.id}`);
+  }
+  if (archive.sourceEvidence?.sourceAuthority !== 'frozen_inventory_only' || archive.scopedContract?.sourceBound !== true) {
+    throw new Error(`Metadata archive must be bounded by frozen inventory provenance: ${archive.id}`);
+  }
+  if (!Array.isArray(archive.cards) || archive.cards.length !== 3) {
+    throw new Error(`Metadata archive must contain exactly three static skill records: ${archive.id}`);
+  }
+  const ids = new Set<string>();
+  for (const card of archive.cards) {
+    if (ids.has(card.id) || !card.id.startsWith(`${archive.id}.skill.`)) {
+      throw new Error(`Metadata archive has invalid or duplicate skill identity: ${archive.id}:${card.id}`);
+    }
+    ids.add(card.id);
+    if (card.automaticExecution !== false || card.capability?.status !== 'HOST_ADJUDICATED') {
+      throw new Error(`Metadata skill must explicitly disable automatic execution: ${card.id}`);
+    }
+    if ('abilities' in card || 'effects' in card || 'targets' in card || 'activation' in card) {
+      throw new Error(`Metadata skill cannot carry runtime rule nodes: ${card.id}`);
+    }
   }
 }
 
@@ -503,9 +605,12 @@ export function loadPlaytestContentPack(
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
   const authoringMasterSupportArchives = (manifest.authoringMasterSupportFiles ?? [])
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
+  const metadataArchives = (manifest.metadataArchiveFiles ?? [])
+    .map((path) => readWorkspaceJson<MetadataArchive>(options.workspaceRoot, path));
   authoringServantArchives.forEach(assertNormalAuthoringArchive);
   authoringMasterArchives.forEach(assertNormalAuthoringArchive);
   authoringMasterSupportArchives.forEach(assertMasterSupportArchive);
+  metadataArchives.forEach(assertMetadataArchive);
   const authoringServants = authoringServantArchives
     .map((archive) => convertAuthoringServant(archive, options.workspaceRoot));
   const authoringMasters = authoringMasterArchives
@@ -526,6 +631,7 @@ export function loadPlaytestContentPack(
     version: manifest.version,
     manifest,
     authoringArchives: [...authoringMasterArchives, ...authoringServantArchives, ...authoringMasterSupportArchives],
+    metadataArchives,
     dictionaries: {
       basicAttacks: readWorkspaceJson<BasicAttackDictionary>(
         options.workspaceRoot,
@@ -772,6 +878,20 @@ function countEventSlots(pack: LoadedPlaytestContentPack): number {
   return pack.eventSets.reduce((total, eventSet) => total + eventSet.cardIds.length, 0);
 }
 
+function metadataSourceMap(archives: MetadataArchive[]): Record<string, MetadataSourceMapEntry> {
+  return Object.fromEntries(archives.flatMap((archive) => archive.cards.map((card) => [card.id, {
+    archiveId: archive.id,
+    cardId: card.id,
+    canonicalId: card.id,
+    legacyId: card.legacyId,
+    inventoryPath: archive.sourceEvidence.inventoryPath,
+    inventorySha256: archive.sourceEvidence.inventorySha256,
+    clauseSha256: [...card.clauseSha256],
+    sourceAuthority: archive.sourceEvidence.sourceAuthority,
+    automaticExecution: card.automaticExecution,
+  }] as const)));
+}
+
 export function buildEvidenceReport(
   pack: LoadedPlaytestContentPack,
   issues: PackValidationIssue[],
@@ -789,6 +909,14 @@ export function buildEvidenceReport(
     issues: structuredClone(issues).sort((left, right) =>
       `${left.entityId ?? ''}:${left.code}`.localeCompare(`${right.entityId ?? ''}:${right.code}`),
     ),
+    metadataArchives: pack.metadataArchives.map((archive) => ({
+      archiveId: archive.id,
+      capabilityStatus: archive.capability.status,
+      cardIds: archive.cards.map((card) => card.id),
+      sourceBound: archive.scopedContract.sourceBound,
+      metadataOnly: archive.scopedContract.metadataOnly,
+      sourceAuthority: archive.sourceEvidence.sourceAuthority,
+    })),
   };
 }
 
@@ -810,6 +938,10 @@ export function compileLoadedPlaytestPack(
         schemaVersion: 'fd-card-rule-content-v1',
         definitionHash: definitionHash(ruleArchives),
         archives: ruleArchives,
+      },
+      metadata: {
+        archives: structuredClone(pack.metadataArchives),
+        sourceMap: metadataSourceMap(pack.metadataArchives),
       },
     },
     fixture: buildFixture(pack),

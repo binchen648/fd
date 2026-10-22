@@ -2198,5 +2198,19 @@
       "field": "source.imagePath",
       "blocking": false
     }
+  ],
+  "metadataArchives": [
+    {
+      "archiveId": "servant.albion",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "cardIds": [
+        "servant.albion.skill.sc-albion-1",
+        "servant.albion.skill.sc-albion-2",
+        "servant.albion.skill.sc-albion-3"
+      ],
+      "sourceBound": true,
+      "metadataOnly": true,
+      "sourceAuthority": "frozen_inventory_only"
+    }
   ]
 }
