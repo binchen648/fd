@@ -2655,11 +2655,21 @@ function isBattleLossServantRevealCandidate(a: AuthoringAbility): boolean {
 
 export function isBattleLossServantRevealSemantic(a: AuthoringAbility): boolean {
   if (!isBattleLossServantRevealCandidate(a)) return false;
-  if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  const allowedOperations = a.execution.allowedOperations ?? [];
+  const expectedAllowedOperations = ['adjust-mana', 'adjust-victory-points', 'move-card', 'create-status', 'skip-ability'];
+  if (a.execution.mode !== 'automatic' ||
+    (allowedOperations.length !== 0 && (allowedOperations.length !== expectedAllowedOperations.length ||
+      allowedOperations.some((operation, index) => operation !== expectedAllowedOperations[index])))) return false;
+  if (str(a.activation.trigger) !== 'after_controller_loses_battle' ||
+    Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 ||
+    Object.keys(a.responseWindow).some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
   const effect = a.effects[0]!;
-  return str(effect.scope) === 'servant_package' && str(effect.subject) === 'controller.servant';
+  return str(effect.scope) === 'servant_package' && str(effect.subject) === 'controller.servant' &&
+    Object.keys(effect).every((key) => ['type', 'scope', 'subject'].includes(key));
 }
 
 function isSharedVictoryVpTriggerCandidate(a: AuthoringAbility): boolean {

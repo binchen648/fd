@@ -117,6 +117,10 @@ describe('P3-B16 battle-loss servant reveal', () => {
     expect(classify!(wrongSubject)).toBe(false);
     const extra = structuredClone(ability); extra.conditions.push({ type: 'controller_won_battle' });
     expect(classify!(extra)).toBe(false);
+    const extraActivation = structuredClone(ability); (extraActivation.activation as Record<string, unknown>).legacyRoute = true;
+    expect(classify!(extraActivation)).toBe(false);
+    const extraEffect = structuredClone(ability); (extraEffect.effects[0] as Record<string, unknown>).abilityId = ABILITY_ID;
+    expect(classify!(extraEffect)).toBe(false);
   });
 
   it('routes the loss reveal through typed dataflow with stable reveal evidence and dedupes replay', () => {
