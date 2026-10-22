@@ -40,4 +40,3 @@ Reference `core.territory-creation` is provenance only. Historical Reference `ba
 - Base ancestry is exact `5e2b9317238f10de7f7a838f8b57df2773687a7a`.
 - `git diff --check`: PASS.
 - Runtime/content/generated suites: not rerun; this Candidate is docs-only and deliberately does not alter executable or generated surfaces. Existing FM05/R33/FB2-02/R34 evidence remains the acceptance basis.
-
