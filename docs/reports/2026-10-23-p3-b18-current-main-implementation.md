@@ -15,7 +15,10 @@ extra activation/condition/effect fields and non-empty visibility metadata; no
 legacy `resolveEffect` or ability-ID route was added.
 
 The B18 E2E fixture now prepares and seals the room in the server process, dispatches
-the post-scoring result there, and exposes dynamic room credentials. This preserves
+the post-scoring result there, and exposes dynamic room credentials. A B18-only
+Playwright config drives Chromium directly against that fixture WebSocket, avoiding
+the repository-wide client web-server JSON-module startup defect while keeping the
+real browser, reconnect, and stale-command path. This preserves
 the same optional response window through reload/reconnect and rejects stale replay
 without a second VP event. No server authority check, shared persistence, coverage,
 inventory, governance, or sibling skill was changed.
@@ -27,12 +30,15 @@ inventory, governance, or sibling skill was changed.
 - `npm exec vitest run packages/rules/tests/regression/battle-result-optional-vp-trigger.test.ts`: 1 file, 6/6 tests, exit 0.
 - B13-B17 compatibility focused run (7 files): 42/42 tests, exit 0. Included B14 shared-victory, B15 terminal source-card, B16 reveal, B17 first-loss, and B13 loss-resource suites.
 - In-process B18 fixture smoke start: emitted dynamic `httpBase`, `wsBase`, room, client, and reconnect credential successfully.
-- `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c playwright.config.ts`: exit 1 before test collection. The repository web-server startup failed with Node JSON-module errors (`starter-pack.json` requires an import attribute), followed by `No tests found`; therefore Chromium Gate C is **not claimed**.
+- `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c playwright.config.ts`: historical exit 1 before test collection. The repository web-server startup failed with Node JSON-module errors (`starter-pack.json` requires an import attribute), followed by `No tests found`.
+- `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c e2e/playwright-b18.config.ts`: exit 0, Chromium 1/1. The real browser fixture covered response-window accept (+1 VP), reload/reconnect before and after resolution, stale replay, and exactly one VP event. Decline, shared-result participation/condition negatives, and duplicate/re-entry behavior are covered by the focused 6/6 regression suite; no duplicate VP event was observed in the browser replay path. This is the B18 Gate C receipt.
 - `git diff --check`: clean.
 
 The focused and compatibility receipts cover accept, decline, duplicate/replay,
 condition-negative, shared scoring barrier, and B13-B17 compatibility behavior.
-The Chromium receipt is an environment failure, not a pass claim.
+The first Chromium attempt is retained as an environment failure; the B18-specific
+configuration then supplied a passing Gate C receipt without changing production
+auth/runtime or relaxing authority checks.
 
 ## Disposition
 
