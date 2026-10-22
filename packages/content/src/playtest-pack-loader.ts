@@ -40,6 +40,12 @@ export interface PlaytestPackManifest {
   authoringMasterSupportFiles?: string[];
   eventSetFiles: string[];
   eventCardFiles: string[];
+  scopedContracts?: Record<string, {
+    decisionId: string;
+    reviewerAcceptedCommit: string;
+    sourceBound: true;
+    sourceClauseHashes?: Record<string, string>;
+  }>;
 }
 
 export interface LoadedPlaytestContentPack extends ContentPack {
@@ -106,6 +112,10 @@ export interface EvidenceEntityRow {
   imageIndex: number;
   reviewedAgainstImage: boolean;
   issueCodes: string[];
+  contractDecisionId?: string;
+  contractReviewerAcceptedCommit?: string;
+  sourceBound?: boolean;
+  sourceClauseHashes?: Record<string, string>;
 }
 
 export interface EvidenceReport {
@@ -727,7 +737,10 @@ function evidenceRows(
   const toRow = (
     entity: { id: string; name: string; capability: { status: CapabilityStatus }; source: SourceEvidence },
     entityKind: string,
-  ): EvidenceEntityRow => ({
+  ): EvidenceEntityRow => {
+    const archive = pack.authoringArchives.find((candidate) => candidate.id === entity.id || candidate.cards.some((card) => card.id === entity.id));
+    const contract = archive?.scopedContract as { decisionId?: unknown; reviewerAcceptedCommit?: unknown; sourceBound?: unknown; sourceClauseHashes?: unknown } | undefined;
+    return {
     entityId: entity.id,
     displayName: entity.name,
     entityKind,
@@ -740,7 +753,12 @@ function evidenceRows(
       .filter((issue) => issue.entityId === entity.id)
       .map((issue) => issue.code)
       .sort(),
-  });
+    ...(typeof contract?.decisionId === 'string' ? { contractDecisionId: contract.decisionId } : {}),
+    ...(typeof contract?.reviewerAcceptedCommit === 'string' ? { contractReviewerAcceptedCommit: contract.reviewerAcceptedCommit } : {}),
+    ...(contract?.sourceBound === true ? { sourceBound: true } : {}),
+    ...(contract?.sourceClauseHashes && typeof contract.sourceClauseHashes === 'object' ? { sourceClauseHashes: structuredClone(contract.sourceClauseHashes as Record<string, string>) } : {}),
+    };
+  };
 
   return [
     ...pack.masters.map((entity) => toRow(entity, 'master')),

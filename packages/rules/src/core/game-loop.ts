@@ -288,8 +288,9 @@ function queuePostScoringBattleResultEvents(
   const battleIds: string[] = [];
   const battleParticipantIds: string[] = [];
 
+  const historyBeforePhaseLength = Math.max(0, (state.battleHistory?.length ?? 0) - results.length);
   for (const [index, result] of results.entries()) {
-    const battleId = `${battlePhaseResolutionId}:battle:${result.battlefieldId}:${index + 1}`;
+    const battleId = `${battlePhaseResolutionId}:battle:${result.battlefieldId}:${historyBeforePhaseLength + index + 1}`;
     const resultId = `${battleId}:result`;
     battleIds.push(battleId);
     resultIds.push(resultId);

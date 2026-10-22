@@ -26,6 +26,10 @@ export interface ExecutableSourceMapEntry {
   cardIndex: number;
   abilityIndex?: number;
   path: string;
+  contractDecisionId?: string;
+  contractReviewerAcceptedCommit?: string;
+  sourceBound?: boolean;
+  sourceClauseHashes?: Record<string, string>;
 }
 
 export interface ExecutableCardPack {
@@ -600,14 +604,19 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
       if (!card) throw new Error(`Missing compiled card definition: ${rawCard.id}`);
       validateSemanticSurvival(rawCard, card, `archives[${archiveIndex}].cards[${cardIndex}]`);
       cards[card.id] = executableDefinition(card, archive.id);
-      sourceMap[card.id] = { archiveId: archive.id, archiveIndex, cardIndex, path: `archives[${archiveIndex}].cards[${cardIndex}]` };
+      const contract = archive.scopedContract as { decisionId?: unknown; reviewerAcceptedCommit?: unknown; sourceBound?: unknown; sourceClauseHashes?: unknown } | undefined;
+      const contractMetadata = typeof contract?.decisionId === 'string' && typeof contract.reviewerAcceptedCommit === 'string' && contract.sourceBound === true
+        ? { contractDecisionId: contract.decisionId, contractReviewerAcceptedCommit: contract.reviewerAcceptedCommit, sourceBound: true as const,
+            ...(contract.sourceClauseHashes && typeof contract.sourceClauseHashes === 'object' ? { sourceClauseHashes: structuredClone(contract.sourceClauseHashes as Record<string, string>) } : {}) }
+        : {};
+      sourceMap[card.id] = { archiveId: archive.id, archiveIndex, cardIndex, path: `archives[${archiveIndex}].cards[${cardIndex}]`, ...contractMetadata };
       card.abilities.forEach((ability, abilityIndex) => {
         sourceMap[`${card.id}#${ability.id}`] = {
           archiveId: archive.id,
           archiveIndex,
           cardIndex,
           abilityIndex,
-          path: `archives[${archiveIndex}].cards[${cardIndex}].abilities[${abilityIndex}]`,
+          path: `archives[${archiveIndex}].cards[${cardIndex}].abilities[${abilityIndex}]`, ...contractMetadata,
         };
       });
     });

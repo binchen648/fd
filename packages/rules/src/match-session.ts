@@ -4,6 +4,8 @@ import {
   initializeAbilityRuntime,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
+  getAchillesBattleIdentity,
+  isAchillesBattleReceiptStateCanonical,
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
@@ -533,6 +535,27 @@ function isRestoreAbigailS4EventProvenanceMap(value: unknown): boolean {
   return new Set(proofs.map((proof) => `${proof.sourceCardId}:${proof.type}`)).size === proofs.length;
 }
 
+function isRestoreAchillesHiddenServantMap(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreRecord(entry) &&
+    isRestoreSafeInteger(entry.round, 1) && typeof entry.wasRevealed === 'boolean' &&
+    typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string');
+}
+function isRestoreAchillesPairReceipts(value: unknown): boolean {
+  return Array.isArray(value) && value.every((entry) => isRestoreRecord(entry) && isRestoreSafeInteger(entry.round, 1) &&
+    typeof entry.sourceCardId === 'string' && typeof entry.abilityId === 'string' && typeof entry.controllerId === 'string' &&
+    typeof entry.battlefieldId === 'string' && typeof entry.opponentId === 'string');
+}
+function isRestoreAchillesPowerZeroMap(value: unknown): boolean {
+  return isRestoreRecord(value) && Object.values(value).every((entry) => isRestoreRecord(entry) &&
+    isRestoreSafeInteger(entry.round, 1) && typeof entry.battlefieldId === 'string' &&
+    typeof entry.battlePhaseResolutionId === 'string' && typeof entry.battleId === 'string' &&
+    typeof entry.resultId === 'string' && typeof entry.settlementId === 'string' &&
+    entry.battlePhaseResolutionId === `battle-phase:${entry.round}` && entry.resultId === `${entry.battleId}:result` &&
+    entry.settlementId === `${entry.resultId}:settlement` && typeof entry.sourceCardId === 'string' &&
+    typeof entry.abilityId === 'string' && typeof entry.controllerId === 'string' && isRestoreStringArray(entry.participantIds) &&
+    isRestoreStringArray(entry.targetPlayerIds) && isRestoreStringArray(entry.discardedCardIds));
+}
+
 function isRestoreAbigailS1DistributionProvenance(events: unknown[], controllerId: string, sourceCardId: string,
   distributed: Array<{ cardInstanceId: string; recipientPlayerId: string }>): boolean {
   const candidates = events.filter((event): event is Record<string, unknown> => isRestoreRecord(event) &&
@@ -773,6 +796,9 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       (value.abigailS4PlayProvenance !== undefined && !isRestoreAbigailS4PlayProvenanceMap(value.abigailS4PlayProvenance)) ||
       (value.abigailS4EventProvenance !== undefined && !isRestoreAbigailS4EventProvenanceMap(value.abigailS4EventProvenance)) ||
       (value.abigailS4RecycleProvenance !== undefined && !isRestoreAbigailS4RecycleProvenanceMap(value.abigailS4RecycleProvenance)) ||
+      (value.achillesHiddenServantsByPlayer !== undefined && !isRestoreAchillesHiddenServantMap(value.achillesHiddenServantsByPlayer)) ||
+      (value.achillesScopedPairReceipts !== undefined && !isRestoreAchillesPairReceipts(value.achillesScopedPairReceipts)) ||
+      (value.achillesBattlePowerZeroByBattlefield !== undefined && !isRestoreAchillesPowerZeroMap(value.achillesBattlePowerZeroByBattlefield)) ||
       (value.playRulesVersion !== 'legacy-v0' && value.playRulesVersion !== 'explicit-v1') ||
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
@@ -1104,6 +1130,28 @@ function isRestoreAbilityRuntimeReferences(
       !isRestoreAbilityEventReferences(value.pendingBattleTerminalEvent, playerIds, locationIds))) return false;
   if (value.transformedReturnSilenceSourceCardIds !== undefined &&
       !(value.transformedReturnSilenceSourceCardIds as string[]).every((id) => cardsByInstance.has(id))) return false;
+  if (value.achillesHiddenServantsByPlayer !== undefined && !Object.entries(value.achillesHiddenServantsByPlayer as Record<string, unknown>).every(([playerId, entry]) => {
+    return playerIds.has(playerId) && isRestoreRecord(entry) && cardsByInstance.has(entry.sourceCardId as string) &&
+      restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, playerId) &&
+      restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string);
+  })) return false;
+  if (value.achillesScopedPairReceipts !== undefined && !(value.achillesScopedPairReceipts as Array<Record<string, unknown>>).every((entry) =>
+    playerIds.has(entry.controllerId as string) && playerIds.has(entry.opponentId as string) && locationIds.has(entry.battlefieldId as string) &&
+    cardsByInstance.has(entry.sourceCardId as string) && restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) &&
+    restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string))) return false;
+  if (value.achillesBattlePowerZeroByBattlefield !== undefined && !(Object.entries(value.achillesBattlePowerZeroByBattlefield as Record<string, unknown>).every(([key, entry]) => {
+    if (!isRestoreRecord(entry) || key !== entry.battleId || !playerIds.has(entry.controllerId as string) || !locationIds.has(entry.battlefieldId as string) ||
+        typeof entry.battlePhaseResolutionId !== 'string' || typeof entry.battleId !== 'string' || typeof entry.resultId !== 'string' ||
+        typeof entry.settlementId !== 'string' || entry.battlePhaseResolutionId !== `battle-phase:${entry.round}` ||
+        entry.resultId !== `${entry.battleId}:result` || entry.settlementId !== `${entry.resultId}:settlement` ||
+        !restoreIdsBelongTo(entry.participantIds, playerIds) || !restoreIdsBelongTo(entry.targetPlayerIds, playerIds) ||
+        !restoreSourceControllerMatches(cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.controllerId as string) ||
+        !restoreSourceHasAbility(pack, cardsByInstance, eventPlacements, entry.sourceCardId as string, entry.abilityId as string)) return false;
+    const participantIds = entry.participantIds as string[]; const targetIds = entry.targetPlayerIds as string[];
+    return participantIds.includes(entry.controllerId as string) && new Set(participantIds).size === participantIds.length &&
+      new Set(targetIds).size === targetIds.length && targetIds.every((id) => participantIds.includes(id) && id !== entry.controllerId) &&
+      (entry.discardedCardIds as string[]).every((id) => cardsByInstance.has(id));
+  }))) return false;
   if (value.trustedBattleResultSnapshots !== undefined && !Object.values(value.trustedBattleResultSnapshots as Record<string, unknown>).every((entry) =>
       isRestoreRecord(entry) && locationIds.has(entry.battlefieldId as string) &&
       restoreIdsBelongTo(entry.battleParticipantIds, playerIds) && restoreIdsBelongTo(entry.winners, playerIds) &&
@@ -1113,7 +1161,11 @@ function isRestoreAbilityRuntimeReferences(
   return value.pendingDecision === undefined || playerIds.has((value.pendingDecision as Record<string, unknown>).controllerId as string);
 }
 
-function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKind = 'production_executable'): value is GameState {
+function isRestoreGameState(
+  value: unknown,
+  packKind: MatchSessionRestorePackKind = 'production_executable',
+  authoritativeBattleHistory?: GameState['battleResults'],
+): value is GameState {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) || value.players.length < 1 ||
       !value.players.every(isRestorePlayerState) || !isRestoreRecord(value.round) || !isRestoreMapDefinition(value.map) ||
       !isRestoreLocationConfig(value.locationConfig) || !Array.isArray(value.cards) || !value.cards.every(isRestoreCardInstance) ||
@@ -1185,11 +1237,24 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
   if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
       isRestoreRecord(entry) && typeof entry.battlefieldId === 'string' && locationIds.has(entry.battlefieldId)))) return false;
+  const canonicalState = authoritativeBattleHistory !== undefined
+    ? { ...(value as unknown as Record<string, unknown>), battleHistory: authoritativeBattleHistory } as unknown as GameState
+    : value as unknown as GameState;
+  for (const entry of Object.values((abilityRuntime.achillesBattlePowerZeroByBattlefield ?? {}) as Record<string, Record<string, unknown>>)) {
+    const battlefieldId = entry.battlefieldId;
+    if (typeof battlefieldId !== 'string') return false;
+    const identity = getAchillesBattleIdentity(canonicalState, battlefieldId);
+    if (!isAchillesBattleReceiptStateCanonical(canonicalState, identity) ||
+        entry.battleId !== identity.battleId || entry.resultId !== identity.resultId || entry.settlementId !== identity.settlementId ||
+        !(value.battleDeclarations as Array<Record<string, unknown>> | undefined)?.some((declaration) => declaration.battlefieldId === battlefieldId)) return false;
+  }
   if (value.battleSkillEffects !== undefined && (!Array.isArray(value.battleSkillEffects) || !value.battleSkillEffects.every((entry) =>
       isRestoreRecord(entry) && typeof entry.sourceCardDefinitionId === 'string' && Object.prototype.hasOwnProperty.call(definitions, entry.sourceCardDefinitionId) &&
       typeof entry.ownerPlayerId === 'string' && playerIds.has(entry.ownerPlayerId) && typeof entry.skillId === 'string' &&
       (entry.combatModifiers === undefined || (Array.isArray(entry.combatModifiers) && entry.combatModifiers.every(isRestoreRecord)))))) return false;
-  if (!value.battleResults.every((entry) => isRestoreBattleResult(entry, locationIds, playerIds))) return false;
+  if (!value.battleResults.every((entry) => isRestoreBattleResult(entry, locationIds, playerIds)) ||
+      (value.battleHistory !== undefined && (!Array.isArray(value.battleHistory) ||
+        !(value.battleHistory as unknown[]).every((entry) => isRestoreBattleResult(entry, locationIds, playerIds))))) return false;
   if (value.contentRuntime !== undefined && !isRestoreContentRuntime(value.contentRuntime, locationIds, eventIds)) return false;
   if (value.scoringBreakdown !== undefined && !isRestoreScoringBreakdown(value.scoringBreakdown, playerIds)) return false;
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
@@ -1552,7 +1617,7 @@ function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay
 
 function isRestoreReplaySnapshot(value: unknown, packKind: MatchSessionRestorePackKind): value is MatchReplayStateSnapshot {
   if (!isRestoreRecord(value) || typeof value.checkpointId !== 'string' || !/^checkpoint:\d+$/.test(value.checkpointId) ||
-      !isRestoreGameState(value.state, packKind) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
+      !isRestoreGameState(value.state, packKind, value.battleHistory as GameState['battleResults']) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
       !Array.isArray(value.battleHistory) || !value.battleHistory.every((entry) => isRestoreBattleResult(entry)) ||
       !Number.isSafeInteger(value.consumedDirectiveCount) || (value.consumedDirectiveCount as number) < 0) return false;
   if (value.stopReason !== undefined && (typeof value.stopReason !== 'string' || !validPauseReasons.has(value.stopReason))) return false;
@@ -1901,6 +1966,7 @@ export class MatchSession {
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
     const built = this.buildInitialState();
     this.state = built.state;
+    this.state.battleHistory ??= [];
     this.pairings = built.pairings;
     this.rawCards = built.rawCards;
     this.record('session_start', '7-player authoring match session started', { seed: this.seed, pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
@@ -2376,6 +2442,7 @@ export class MatchSession {
       checkpointDigest,
     )) return false;
     this.state = candidateState;
+    this.state.battleHistory = candidateBattleHistory;
     this.logs = candidateLogs;
     this.battleHistory = candidateBattleHistory;
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
@@ -3077,7 +3144,8 @@ export function restoreMatchSession(
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
   const restorePackKind = config.restorePackKind ?? 'production_executable';
-  if (!isRestoreGameState(snapshot.state, restorePackKind)) throw new Error('Invalid MatchSession state container');
+  if (!isRestoreGameState(snapshot.state, restorePackKind,
+    Array.isArray(snapshot.battleHistory) ? snapshot.battleHistory : undefined)) throw new Error('Invalid MatchSession state container');
   if (!hasCoherentReplayRestoreEnvelope(snapshot.replay, snapshot.replaySnapshots, restorePackKind)) {
     throw new Error('Invalid FB2-49 replay snapshot container');
   }
@@ -3155,6 +3223,7 @@ export function restoreMatchSession(
     restorePackKind,
   }, false);
   session.state = candidateState;
+  session.state.battleHistory = structuredClone(snapshot.battleHistory);
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);
   session.replaySnapshots = structuredClone(snapshot.replaySnapshots ?? []);

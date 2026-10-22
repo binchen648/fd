@@ -221,6 +221,8 @@ export interface GameState {
   battleDeclarations?: BattleDeclarationState[];
   battleSkillEffects?: ExternalSkillEffect[];
   battleResults: BattleResultState[];
+  /** Authoritative cumulative battle results retained across scoring/round cleanup. */
+  battleHistory?: BattleResultState[];
   contentRuntime?: ContentRuntimeState;
   scoringBreakdown?: PlayerScoringBreakdown[];
   ruleOverrides?: RuleOverrideState;

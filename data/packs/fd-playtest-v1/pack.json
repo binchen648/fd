@@ -2,6 +2,22 @@
   "id": "fd-playtest-v1",
   "name": "FD 首批可玩内容包",
   "version": 1,
+  "scopedContracts": {
+    "servant.achilles": {
+      "decisionId": "1c5dacd7d1d8368eefe1ca901e5c35e70740fa86",
+      "reviewerAcceptedCommit": "91485a1e89ea53b3926a227ea0832e02f0f19cda",
+      "sourceBound": true,
+      "sourceClauseHashes": {
+        "s1": "a908c6e9dda34d2a9e939055576b266e05cf134e182eb6d3a3a6a83cc4d10402",
+        "s1-gale": "9ccec6e22e460628cdb8b6baa8c7301ff12aada6e225dc1625504294b1d8e247",
+        "s2": "37e7aeaa9fae4758cdd84f9141b4ae90fab3854083ef5b6eb3fea8f09102abe2",
+        "s2-branch-1": "72f4bc34d100c9eedc02d51c818e9aefa995af7382f0193883a31819e8099957",
+        "s2-branch-2": "4c22f403ae476bd935adf0ab4e361d4e3367618dfeba1a098bb929a273bca138",
+        "s2-branch-3": "b6992b7119b433466d35bd7c5ae0f14f136448cc6fbaaf81aa594e31fa693d15",
+        "s3": "c3cf72179056049fc0496d3aa0a3476212ab7f8f79bdc6c93d1e3ab39c1b43cb"
+      }
+    }
+  },
   "dictionaries": {
     "basicAttacks": "data/packs/fd-playtest-v1/dictionaries/basic-attacks.json"
   },

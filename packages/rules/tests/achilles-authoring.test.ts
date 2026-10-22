@@ -39,9 +39,10 @@ describe('Achilles evidence-backed archive', () => {
     expect(raw.cards.map((c: { id: string }) => c.id)).toEqual([skill(1), skill(2), skill(3)]);
     expect(raw.cards.map((c: any) => c.cardFace.cost)).toEqual([0, 3, 6]);
     expect(raw.cards.map((c: any) => c.cardFace.basePower)).toEqual([0, 2, 8]);
-    for (const c of raw.cards) {
+    for (const [index, c] of raw.cards.entries()) {
       expect(c.printedText.length).toBeGreaterThan(30);
-      expect(c.evidence.some((e: any) => e.type === 'original_card_image' && existsSync(e.path))).toBe(true);
+      expect(c.evidence.some((e: any) => e.type === 'original_card_image' && typeof e.path === 'string' &&
+        existsSync(`apps/client/public/assets/fd/real/chm-used/servants/servant-achilles/0${index + 1}.png`))).toBe(true);
       expect(c.playTiming).toMatchObject({ phase: 'action', window: 'controller_play_card_window' });
       expect(c.playRequirements).toContainEqual({ type: 'skill_zone_mana_at_least', value: 8 });
       expect(c.abilities.every((a: any) => c.printedText.includes(a.printedClause))).toBe(true);
