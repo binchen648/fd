@@ -38,7 +38,9 @@ No PR was created or merged.
   Olga compatibility coverage.
 - The fresh browser scenario covers both battlefields, barrier-before-result,
   command seals `3 -> 2` exactly once, reload/reconnect preservation, and
-  stale-command rejection without revision/seal mutation.
+  stale-command rejection without revision/seal mutation. It now also asserts
+  exact preservation of `battlePhaseResolutionId`, `battleId`, `resultId`, and
+  `battlefieldId` after reload/reconnect and after stale-command rejection.
 
 ## Execution receipts
 
@@ -48,6 +50,7 @@ No PR was created or merged.
 4. Chromium was already installed by the earlier proxy-authorized
    `npx playwright install chromium` — exit `0`.
 5. `npx playwright test e2e/fd-shinji-battle-loss-resource.spec.ts -c playwright.config.ts` — exit `0`: Chromium ran `1` test and passed. The prior cross-process restore `400` (`Invalid or missing deferred runtime state authority`) is resolved by this in-process fixture and is not treated as a current failure.
+6. Identity-hardening rerun after the Reviewer finding: `npm run typecheck` — exit `0`; B13 focused — exit `0`, `9/9`; compatibility — exit `0`, `21/21`; Chromium E2E — exit `0`, `1/1`; `git diff --check` — exit `0`.
 
 ## Disposition
 

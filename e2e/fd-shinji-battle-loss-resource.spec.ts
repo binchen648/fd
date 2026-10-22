@@ -73,6 +73,7 @@ test('settles Shinji battle-loss resource only after the two-battlefield scoring
   expect(shinjiResultIndex).toBeGreaterThan(barrierIndex);
   expect(settled.logs[barrierIndex]?.payload).toMatchObject({ battlePhaseResolutionId: 'battle-phase:1', scoredBattlefieldIds: expect.arrayContaining(['miyama_town', 'shinto']) });
   expect(settled.logs[shinjiResultIndex]?.payload).toMatchObject({ battlePhaseResolutionId: 'battle-phase:1', battlefieldId: 'miyama_town', battleId: expect.stringContaining('battle-phase:1:battle:miyama_town'), resultId: expect.stringContaining(':result') });
+  const settledIdentity = battleIdentity(settled);
 
   const projectionCountBeforeReload = projections.length;
   await page.reload();
@@ -80,6 +81,7 @@ test('settles Shinji battle-loss resource only after the two-battlefield scoring
   await expect.poll(() => projections.length).toBeGreaterThan(projectionCountBeforeReload);
   await expect.poll(() => latestMatch(projections)?.view.revision).toBe(settledRevision);
   expect(commandSealsOf(projections, shinjiPlayerId)).toBe(2);
+  expect(battleIdentity(latestMatch(projections)!)).toEqual(settledIdentity);
 
   const errorCount = serverErrors.length;
   await page.evaluate(({ base, targetRoomId, clientId, token, message }) => {
@@ -90,6 +92,7 @@ test('settles Shinji battle-loss resource only after the two-battlefield scoring
   expect(serverErrors.at(-1)).toMatchObject({ type: 'server:error', code: 'command_failed', message: expect.stringContaining('Stale command revision') });
   await expect.poll(() => latestMatch(projections)?.view.revision).toBe(settledRevision);
   expect(commandSealsOf(projections, shinjiPlayerId)).toBe(2);
+  expect(battleIdentity(latestMatch(projections)!)).toEqual(settledIdentity);
 });
 
 async function openRemoteRoom(page: Page, response: RoomHttpResponse): Promise<void> {
@@ -103,3 +106,13 @@ function parseJson(payload: string | Buffer): Record<string, unknown> | undefine
 
 function latestMatch(projections: MatchRoomProjection[]) { return projections.at(-1)?.match ?? undefined; }
 function commandSealsOf(projections: MatchRoomProjection[], playerId: string): number | undefined { return latestMatch(projections)?.view.players.find((player) => player.id === playerId)?.commandSpells; }
+
+function battleIdentity(match: NonNullable<ReturnType<typeof latestMatch>>): Record<string, unknown> {
+  const result = match.logs.find((entry) => entry.type === 'battle_result_event_dispatched' && entry.payload?.battlefieldId === 'miyama_town');
+  return {
+    battlePhaseResolutionId: result?.payload?.battlePhaseResolutionId,
+    battleId: result?.payload?.battleId,
+    resultId: result?.payload?.resultId,
+    battlefieldId: result?.payload?.battlefieldId,
+  };
+}
