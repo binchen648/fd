@@ -107,6 +107,12 @@ describe('P3-B15 phase-terminal source-card Card Zone runtime', () => {
     expect(rules.isBattleEndSourceReturnSemantic(wrongDestination)).toBe(false);
     const extra = structuredClone(ability); extra.conditions.push({ type: 'controller_won_battle' });
     expect(rules.isBattleEndSourceReturnSemantic(extra)).toBe(false);
+    const extraActivation = structuredClone(ability); (extraActivation.activation as Record<string, unknown>).legacyRoute = true;
+    expect(rules.isBattleEndSourceReturnSemantic(extraActivation)).toBe(false);
+    const extraEffect = structuredClone(ability); (extraEffect.effects[0] as Record<string, unknown>).definitionId = CARD_ID;
+    expect(rules.isBattleEndSourceReturnSemantic(extraEffect)).toBe(false);
+    const missingOwner = structuredClone(ability); delete (missingOwner.effects[0]!.to as Record<string, unknown>).owner;
+    expect(rules.isBattleEndSourceReturnSemantic(missingOwner)).toBe(false);
   });
 
   it('moves the source to owner skill through typed Card Zone and dedupes the stable terminal event', () => {

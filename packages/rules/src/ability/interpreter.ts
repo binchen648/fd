@@ -3154,15 +3154,25 @@ function battleEndSourceReturnTriggerEligible(s: GameState, sourceId: string): b
 
 export function isBattleEndSourceReturnSemantic(a: AuthoringAbility): boolean {
   if (!isBattleEndSourceReturnCandidate(a)) return false;
-  if (str(a.activation.phase) !== 'combat' || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  const allowedOperations = a.execution.allowedOperations ?? [];
+  const expectedAllowedOperations = ['adjust-mana', 'adjust-victory-points', 'move-card', 'create-status', 'skip-ability'];
+  if (a.execution.mode !== 'automatic' ||
+    (allowedOperations.length !== 0 && (allowedOperations.length !== expectedAllowedOperations.length ||
+      allowedOperations.some((operation, index) => operation !== expectedAllowedOperations[index])))) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.trigger) !== 'after_battle_ended' ||
+    Object.keys(a.activation).some((key) => !['phase', 'trigger'].includes(key))) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 ||
+    Object.keys(a.responseWindow).some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
   const effect = a.effects[0]!;
   const destination = node(effect.to);
-  return effect.type === 'move_card' &&
+  return effect.type === 'move_card' && Object.keys(effect).every((key) => ['type', 'target', 'to'].includes(key)) &&
     str(effect.target) === 'this_card' &&
     str(destination.zone) === 'skill' &&
-    (destination.owner === undefined || destination.owner === 'controller');
+    destination.owner === 'controller' &&
+    Object.keys(destination).every((key) => ['zone', 'owner'].includes(key));
 }
 
 export function isAnyLocationExceptWorkshopMovementCandidate(a: AuthoringAbility): boolean {
