@@ -13235,6 +13235,45 @@
         ],
         "sourceAuthority": "frozen_inventory_only",
         "automaticExecution": false
+      },
+      "servant.amakusa.skill.sc-amakusa-1": {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-1",
+        "canonicalId": "servant.amakusa.skill.sc-amakusa-1",
+        "legacyId": "sc_amakusa_1",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.amakusa.skill.sc-amakusa-2": {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-2",
+        "canonicalId": "servant.amakusa.skill.sc-amakusa-2",
+        "legacyId": "sc_amakusa_2",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "411ddb188143b434b3ec6c53fd24d4602ea09064430cd8443355dfa53e4a66f5"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.amakusa.skill.sc-amakusa-3": {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-3",
+        "canonicalId": "servant.amakusa.skill.sc-amakusa-3",
+        "legacyId": "sc_amakusa_3",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
       }
     }
   },
@@ -13597,6 +13636,184 @@
             ]
           }
         ]
+      },
+      {
+        "schemaVersion": "fd-card-metadata-v1",
+        "archiveType": "servant_metadata_archive",
+        "id": "servant.amakusa",
+        "name": "天草四郎时贞",
+        "ownerType": "servant",
+        "scopedContract": {
+          "decisionId": "amakusa-s1-metadata-only-2026-10-22",
+          "reviewerAcceptedCommit": "053bcb8537d1861cd5c81721c4760529ca87f145",
+          "baseCommit": "0e0e0977caf96b179912250bcd486dccadfbff14",
+          "status": "CONTRACT_ACCEPTED_FOR_METADATA_ONLY",
+          "sourceBound": true,
+          "metadataOnly": true,
+          "sourceClauseHashes": {
+            "sc-amakusa-1": "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+          }
+        },
+        "ownerStatus": "BLOCKED",
+        "capability": {
+          "status": "HOST_ADJUDICATED",
+          "hostRulingReason": "Only sc-amakusa-1 has an independently reviewed source-bound metadata record; sc-amakusa-2 and sc-amakusa-3 remain SOURCE_EVIDENCE_REQUIRED/SEMANTIC_SOURCE_REQUIRED/EXPLICIT_BLOCK, so Amakusa is not owner-complete or playable."
+        },
+        "sourceEvidence": {
+          "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+          "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+          "sourceAuthority": "frozen_inventory_only",
+          "references": [
+            {
+              "kind": "frozen_inventory",
+              "path": "data/phase3/full-roster-ability-inventory.json",
+              "sha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4"
+            },
+            {
+              "kind": "source_packet",
+              "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+              "path": "src/content/authoring/cards.json",
+              "sourceFileSha256": "bdaf76fc082d2c9152918dcda2a8700aa155c4b65cb596c7e9b28be8f264b803",
+              "cardId": "servant.amakusa.skill.sc-amakusa-1",
+              "abilityId": "twin-arm-zero-event-burst",
+              "clauseSha256": "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af",
+              "authority": "source_packet_provenance_only"
+            },
+            {
+              "kind": "independent_review",
+              "commit": "053bcb8537d1861cd5c81721c4760529ca87f145",
+              "scope": "sc-amakusa-1 metadata-only"
+            },
+            {
+              "kind": "provenance_warning",
+              "inventoryInputDigest": "5a38c668211b196a74e65dffba096b8ba650b495f90d5f11d733e98aecad1211",
+              "historicalRawFileSha256": "bdaf76fc082d2c9152918dcda2a8700aa155c4b65cb596c7e9b28be8f264b803",
+              "status": "MISMATCH_RETAINED",
+              "warning": "Frozen inventory inputDigest differs from the independently computed raw historical Git-file digest; this Candidate preserves the warning and does not resolve or rewrite frozen provenance."
+            }
+          ]
+        },
+        "cards": [
+          {
+            "id": "servant.amakusa.skill.sc-amakusa-1",
+            "legacyId": "sc_amakusa_1",
+            "name": "双腕·零次集束",
+            "printedText": "【真名解放】<每局游戏限一次>X=以此牌效果移除的事件牌的印刷战果数总和的2倍。\n打出时：将所有正面向上的事件牌移除游戏。",
+            "clauseSha256": [
+              "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+            ],
+            "status": "PARTIAL_SOURCE_BOUND",
+            "mappingStatus": "CONTRACT_MAPPED",
+            "blockedBy": [
+              "OWNER_BLOCKED_S2_S3"
+            ],
+            "capability": {
+              "status": "HOST_ADJUDICATED",
+              "hostRulingReason": "S1 is accepted only as source-bound non-executable metadata. No event-deck, card-zone, power, reveal, usage-limit, lifecycle, or restore semantics are authorized."
+            },
+            "sourceMap": {
+              "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+              "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+              "clauseSha256": [
+                "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+              ],
+              "sourceAuthority": "frozen_inventory_only",
+              "automaticExecution": false,
+              "sourcePacketCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+              "sourcePacketPath": "src/content/authoring/cards.json",
+              "sourceFileSha256": "bdaf76fc082d2c9152918dcda2a8700aa155c4b65cb596c7e9b28be8f264b803",
+              "inventoryInputDigest": "5a38c668211b196a74e65dffba096b8ba650b495f90d5f11d733e98aecad1211",
+              "provenanceWarning": "inventoryInputDigest differs from historical raw sourceFileSha256; mismatch retained"
+            },
+            "automaticExecution": false,
+            "metadataOnly": true,
+            "unresolvedMechanics": [
+              "SEMANTIC_RUNTIME_NOT_ACCEPTED",
+              "event selection and victory-point aggregation",
+              "source-card power and duration",
+              "true-name reveal timing",
+              "game usage-limit enforcement",
+              "event removal lifecycle",
+              "restore and replay"
+            ]
+          },
+          {
+            "id": "servant.amakusa.skill.sc-amakusa-2",
+            "legacyId": "sc_amakusa_2",
+            "name": "奇术师",
+            "printedText": "战斗阶段：花费3点魔力，抽取一位对手牌堆顶的一张牌并将之加入你的攻击。【奇术师】获得该牌的属性，且你可以使用该牌的【行动阶段】能力，战斗后将那张牌返回原主的弃牌堆。每回合你可使用两次此能力。",
+            "clauseSha256": [
+              "411ddb188143b434b3ec6c53fd24d4602ea09064430cd8443355dfa53e4a66f5"
+            ],
+            "status": "SOURCE_EVIDENCE_REQUIRED",
+            "mappingStatus": "EXPLICIT_BLOCK",
+            "blockedBy": [
+              "SEMANTIC_SOURCE_REQUIRED"
+            ],
+            "capability": {
+              "status": "HOST_ADJUDICATED",
+              "hostRulingReason": "S2 remains source- and semantics-blocked; no combat, card-zone, attribute, copied-ability, resource, usage-limit, lifecycle, or restore behavior is inherited."
+            },
+            "sourceMap": {
+              "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+              "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+              "clauseSha256": [
+                "411ddb188143b434b3ec6c53fd24d4602ea09064430cd8443355dfa53e4a66f5"
+              ],
+              "sourceAuthority": "frozen_inventory_only",
+              "automaticExecution": false
+            },
+            "automaticExecution": false,
+            "metadataOnly": true,
+            "unresolvedMechanics": [
+              "SEMANTIC_SOURCE_REQUIRED",
+              "combat timing and mana payment",
+              "top-card selection and attack insertion",
+              "attribute inheritance and copied action ability",
+              "return-to-owner discard",
+              "two-use ledger",
+              "restore and replay"
+            ]
+          },
+          {
+            "id": "servant.amakusa.skill.sc-amakusa-3",
+            "legacyId": "sc_amakusa_3",
+            "name": "裁决者",
+            "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+            "clauseSha256": [
+              "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+            ],
+            "status": "SOURCE_EVIDENCE_REQUIRED",
+            "mappingStatus": "EXPLICIT_BLOCK",
+            "blockedBy": [
+              "SEMANTIC_SOURCE_REQUIRED"
+            ],
+            "capability": {
+              "status": "HOST_ADJUDICATED",
+              "hostRulingReason": "S3 remains source- and semantics-blocked; no copy/steal exclusion, target selection, binding, command-seal, limit, lifecycle, visibility, or restore behavior is inherited."
+            },
+            "sourceMap": {
+              "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+              "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+              "clauseSha256": [
+                "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
+              ],
+              "sourceAuthority": "frozen_inventory_only",
+              "automaticExecution": false
+            },
+            "automaticExecution": false,
+            "metadataOnly": true,
+            "unresolvedMechanics": [
+              "SEMANTIC_SOURCE_REQUIRED",
+              "no-copy/no-steal scope",
+              "three-use ledger",
+              "minimum-binding-count target selection",
+              "two-player binding and command-seal ownership",
+              "visibility and lifecycle",
+              "restore and replay"
+            ]
+          }
+        ]
       }
     ],
     "sourceMap": {
@@ -13679,6 +13896,45 @@
           "1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2",
           "f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85",
           "bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.amakusa.skill.sc-amakusa-1": {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-1",
+        "canonicalId": "servant.amakusa.skill.sc-amakusa-1",
+        "legacyId": "sc_amakusa_1",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "40ca176f770bc55f453580c51729752eebcab51af6377ac7ca893764bb7027af"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.amakusa.skill.sc-amakusa-2": {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-2",
+        "canonicalId": "servant.amakusa.skill.sc-amakusa-2",
+        "legacyId": "sc_amakusa_2",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "411ddb188143b434b3ec6c53fd24d4602ea09064430cd8443355dfa53e4a66f5"
+        ],
+        "sourceAuthority": "frozen_inventory_only",
+        "automaticExecution": false
+      },
+      "servant.amakusa.skill.sc-amakusa-3": {
+        "archiveId": "servant.amakusa",
+        "cardId": "servant.amakusa.skill.sc-amakusa-3",
+        "canonicalId": "servant.amakusa.skill.sc-amakusa-3",
+        "legacyId": "sc_amakusa_3",
+        "inventoryPath": "data/phase3/full-roster-ability-inventory.json",
+        "inventorySha256": "FF0424802F9989FB134C336A87CFDAC0961E44250B01D1B6968D562006662BC4",
+        "clauseSha256": [
+          "8340a2b1e14bdf601bebf9f0a5a1dbb67c326c0bafbc596d689110ea3cc51137"
         ],
         "sourceAuthority": "frozen_inventory_only",
         "automaticExecution": false

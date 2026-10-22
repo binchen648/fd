@@ -24,7 +24,7 @@ describe('Altera S3 scoped Candidate metadata', () => {
     const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
     const compiled = compileLoadedPlaytestPack(loaded);
 
-    expect(loaded.metadataArchives.map((archive) => archive.id)).toEqual(['servant.albion', 'servant.altera']);
+    expect(loaded.metadataArchives.map((archive) => archive.id)).toEqual(['servant.albion', 'servant.altera', 'servant.amakusa']);
     expect(loaded.servants.some((servant) => servant.id === 'servant.altera')).toBe(false);
     expect(loaded.cards.some((card) => card.id.startsWith('servant.altera.'))).toBe(false);
     expect(compiled.library.rules.archives.some((archive) => archive.id === 'servant.altera')).toBe(false);
@@ -80,6 +80,9 @@ describe('Altera S3 scoped Candidate metadata', () => {
       'servant.albion.skill.sc-albion-2',
       'servant.albion.skill.sc-albion-3',
       ...cardIds,
+      'servant.amakusa.skill.sc-amakusa-1',
+      'servant.amakusa.skill.sc-amakusa-2',
+      'servant.amakusa.skill.sc-amakusa-3',
     ]);
     for (const cardId of cardIds) {
       expect(sourceMap[cardId]).toMatchObject({
@@ -101,6 +104,7 @@ describe('Altera S3 scoped Candidate metadata', () => {
         metadataOnly: true,
         sourceAuthority: 'frozen_inventory_only',
       },
+      expect.objectContaining({ archiveId: 'servant.amakusa' }),
     ]);
   });
 
@@ -109,12 +113,15 @@ describe('Altera S3 scoped Candidate metadata', () => {
       metadata: { archives: Array<{ id: string }>; sourceMap: Record<string, unknown> };
       rules: { cards: Record<string, unknown>; sourceMap?: Record<string, unknown> };
     };
-    expect(generated.metadata.archives.map((archive) => archive.id)).toEqual(['servant.albion', 'servant.altera']);
+    expect(generated.metadata.archives.map((archive) => archive.id)).toEqual(['servant.albion', 'servant.altera', 'servant.amakusa']);
     expect(Object.keys(generated.metadata.sourceMap)).toEqual([
       'servant.albion.skill.sc-albion-1',
       'servant.albion.skill.sc-albion-2',
       'servant.albion.skill.sc-albion-3',
       ...cardIds,
+      'servant.amakusa.skill.sc-amakusa-1',
+      'servant.amakusa.skill.sc-amakusa-2',
+      'servant.amakusa.skill.sc-amakusa-3',
     ]);
     expect(Object.keys(generated.rules.cards).some((cardId) => cardId.startsWith('servant.altera.'))).toBe(false);
     expect(JSON.stringify(generated.metadata)).not.toMatch(/"(?:abilities|effects|targets|activation|ruleModifiers)"/);
