@@ -19,10 +19,11 @@ or existing task-index data is changed.
 ## Current-main inventory reconciliation
 
 The locked current-main inventory is **943 static + 1 dynamic = 944 total**.
-Its current reconciliation is:
+Its `data/phase3/full-roster-ability-inventory.json` `semanticSummary`
+reconciliation is:
 
 - `72 SOURCE_GROUNDED`
-- `871 BLOCKED`
+- `872 BLOCKED`
 
 This is an evidence/state classification, not skill acceptance or migration
 credit. It does not establish executable Gate C coverage for any blocked item.
