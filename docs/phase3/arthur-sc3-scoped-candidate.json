@@ -12,7 +12,8 @@
     "formalDecisionVerdict": "CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET",
     "formalDecisionCommit": "642d73609efb1884fc2781b7268f02fe78872b6d",
     "candidateReviewerRequired": true,
-    "candidateReviewerCommit": "362357c0a754c8719f285393171f212926758bd4"
+    "candidateReviewerCommit": null,
+    "candidateReviewerStatus": "PENDING_INDEPENDENT_CANDIDATE_REVIEW"
   },
   "scope": {
     "canonicalId": true,
@@ -105,7 +106,7 @@
     "noRestoreReadiness": true,
     "noRuntimeMutation": true,
     "noInventoryMutation": true,
-    "noCandidateOrPr": true,
+    "noCandidateOrPr": false,
     "referenceRepositoryOutOfScope": "Frozen inventory/rule decisions reference https://github.com/fengling20011118-dotcom/fate-domination.git; warning only, not implementation authority."
   }
 }

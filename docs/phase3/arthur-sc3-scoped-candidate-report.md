@@ -7,7 +7,8 @@
 - Owner: `servant.arthur`
 - Candidate scope: `servant.arthur.skill.sc-arthur-3` prior-contract evidence only
 - Formal decision: `642d73609efb1884fc2781b7268f02fe78872b6d`
-- Independent Candidate Reviewer: `362357c0a754c8719f285393171f212926758bd4` (`CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET`)
+- Formal decision reviewer: `362357c0a754c8719f285393171f212926758bd4` (`CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET`; decision review only, not Candidate review)
+- Independent Candidate Reviewer: pending; a fresh GPT-6 Sol Candidate review is required for this successor
 - Owner credit: `0`
 - Owner unlock: `false`
 - Candidate status: docs/metadata-only scoped record; no runtime/current-route/playable/restore claim
@@ -33,7 +34,7 @@ F1 `59f145434695d29bdd17e4cb3adc887e84182377`, R12/B18 `c86eca28dc4c915f60a30eaf
 - `servant.arthur.skill.sc-arthur-1` and `servant.arthur.skill.sc-arthur-2` remain `SOURCE_EVIDENCE_REQUIRED` / `SEMANTIC_SOURCE_REQUIRED` / `EXPLICIT_BLOCK`.
 - No current route, playable registration, pack/generated mutation, runtime/executable mutation, roster mutation, restore/replay/reconnect readiness, owner unlock, or owner credit is recorded.
 - Reference handlers and historical contract labels remain provenance/contract boundaries only; no Arthur-specific handler or guessed semantics are added.
-- No Candidate PR is created or pushed from this worktree; independent Candidate Reviewer acceptance is recorded as prerequisite evidence only.
+- This Candidate record already exists as a docs/metadata-only artifact; no additional Candidate PR is created or pushed from this successor worktree. Fresh independent Candidate Reviewer acceptance remains required.
 
 ## Checks
 
