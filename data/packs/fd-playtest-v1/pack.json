@@ -58,7 +58,8 @@
   ],
   "metadataArchiveFiles": [
     "data/authoring/metadata/servant.albion.json",
-    "data/authoring/metadata/servant.altera.json"
+    "data/authoring/metadata/servant.altera.json",
+    "data/authoring/metadata/servant.amakusa.json"
   ],
   "authoringMasterFiles": [
     "data/authoring/masters/master.kayneth.json",

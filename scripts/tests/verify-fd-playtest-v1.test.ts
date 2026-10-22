@@ -25,10 +25,10 @@ describe('FD playtest v1 end-to-end verifier', () => {
     });
 
     expect(result.summary).toEqual({
-      masters: 7,
-      servants: 7,
+      masters: 8,
+      servants: 8,
       events: 20,
-      servantStartingDeckCards: 84,
+      servantStartingDeckCards: 96,
       seats: 7,
       blockingIssues: 0,
       privateViewLeaks: 0,

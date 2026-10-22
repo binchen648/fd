@@ -2223,6 +2223,18 @@
       "sourceBound": true,
       "metadataOnly": true,
       "sourceAuthority": "frozen_inventory_only"
+    },
+    {
+      "archiveId": "servant.amakusa",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "cardIds": [
+        "servant.amakusa.skill.sc-amakusa-1",
+        "servant.amakusa.skill.sc-amakusa-2",
+        "servant.amakusa.skill.sc-amakusa-3"
+      ],
+      "sourceBound": true,
+      "metadataOnly": true,
+      "sourceAuthority": "frozen_inventory_only"
     }
   ]
 }
