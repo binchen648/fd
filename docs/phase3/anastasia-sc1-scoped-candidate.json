@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "candidateType": "SERVANT_SCOPED_CONTRACT_CANDIDATE",
+  "candidateStatus": "CANDIDATE_SCOPED_RECORDED",
+  "repository": "https://github.com/binchen648/fd",
+  "baseCommit": "5e2b9317238f10de7f7a838f8b57df2773687a7a",
+  "ownerId": "servant.anastasia",
+  "ownerCredit": 0,
+  "ownerLevelUnlocked": false,
+  "automaticImplementation": false,
+  "reviewPrerequisite": {
+    "decision": "CONTRACT_ACCEPTED_FOR_SCOPED_SUBSET",
+    "commit": "91773f5a5c7cfb0a1237c7c0b9a6c8df010449ce",
+    "formalDecisionBase": "5e2b9317238f10de7f7a838f8b57df2773687a7a",
+    "formalDecisionDocsCommit": "e38fd3f"
+  },
+  "scope": {
+    "canonicalId": true,
+    "legacyId": true,
+    "exactPrintedText": true,
+    "fullTextSha256": true,
+    "clauseSha256": true,
+    "sourceRefs": true,
+    "fm05TerritoryCreationTwoClausesOnly": true,
+    "roundFormulaR33Fb2_11": true,
+    "deploymentRewardR19Fb2_02": true,
+    "fm05TenCardMigrationR34": true,
+    "runtimeMutation": false,
+    "executableMutation": false,
+    "playableMutation": false,
+    "packMutation": false,
+    "generatedMutation": false,
+    "rosterMutation": false,
+    "frozenInventoryMutation": false,
+    "ownerUnlock": false,
+    "restoreReadiness": false
+  },
+  "skills": [
+    {
+      "canonicalId": "servant.anastasia.skill.sc-anastasia-1",
+      "legacyId": "sc_anastasia_1",
+      "name": "阵地建造（Caster Class）",
+      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "fullTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58",
+      "clauseSha256": [
+        "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847",
+        "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
+      ],
+      "sourceRefs": [
+        {"kind": "chm", "document": "FD全卡图鉴V2.0.chm", "locator": "从者/魔术师/英文版/阿纳斯塔西娅.htm"},
+        {"kind": "development-image", "document": "Fate_Domination-开发版", "locator": "servant.anastasia/阿纳斯塔西娅"},
+        {"kind": "generated-legacy-text", "document": "src/content/generated/legacy-content.json", "locator": "servants[110].skills[0].text#line=1", "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"},
+        {"kind": "generated-legacy-text", "document": "src/content/generated/legacy-content.json", "locator": "servants[110].skills[0].text#line=2", "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"}
+      ],
+      "acceptedContract": {
+        "family": "FM05 Territory Creation",
+        "roundFormula": "add(16, multiply(-2, game.round_number))",
+        "roundFormulaAuthority": "R33/FB2-11 authoritative game.round_number",
+        "deploymentTrigger": "after_player_deployed_to_battlefield",
+        "deploymentLocation": "magic_workshop",
+        "deploymentControllerScope": true,
+        "deploymentEffects": [
+          {"type": "adjust_mana", "amount": 1},
+          {"type": "adjust_victory_points", "amount": 2}
+        ],
+        "migrationAcceptance": "R34/FM05 exact ten-card batch"
+      },
+      "referenceHandler": "core.territory-creation",
+      "referenceHandlerAuthority": "provenance-only"
+    }
+  ],
+  "excluded": [
+    {
+      "canonicalId": "servant.anastasia.skill.sc-anastasia-2",
+      "status": ["SOURCE_EVIDENCE_REQUIRED", "SEMANTIC_SOURCE_REQUIRED", "EXPLICIT_BLOCK"]
+    },
+    {
+      "canonicalId": "servant.anastasia.skill.sc-anastasia-3",
+      "status": ["SOURCE_EVIDENCE_REQUIRED", "SEMANTIC_SOURCE_REQUIRED", "EXPLICIT_BLOCK"]
+    }
+  ],
+  "frozenInventoryConflict": {
+    "path": "data/phase3/full-roster-ability-inventory.json",
+    "preserve": ["currentRoute=none", "inheritedAcceptanceContracts=[]", "partialAcceptanceContracts=[]", "mappingStatus=EXPLICIT_BLOCK", "reference.hasAuthoringCard=false"],
+    "resolution": "defer-to-explicit-accounting-synchronization",
+    "doNotRewrite": true
+  },
+  "warnings": {
+    "candidateIsDocsOnly": "This candidate records the accepted scoped contract; it does not add runtime or executable behavior.",
+    "noOwnerUnlock": "SC1 acceptance does not unlock servant.anastasia as an owner.",
+    "noRestoreClaim": "No Anastasia-specific restore/replay/reconnect readiness is claimed.",
+    "referenceRepositoryOutOfScope": "Frozen provenance names https://github.com/fengling20011118-dotcom/fate-domination.git; retained as warning only and not used as implementation authority."
+  }
+}
