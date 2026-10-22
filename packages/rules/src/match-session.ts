@@ -1161,7 +1161,11 @@ function isRestoreAbilityRuntimeReferences(
   return value.pendingDecision === undefined || playerIds.has((value.pendingDecision as Record<string, unknown>).controllerId as string);
 }
 
-function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKind = 'production_executable'): value is GameState {
+function isRestoreGameState(
+  value: unknown,
+  packKind: MatchSessionRestorePackKind = 'production_executable',
+  authoritativeBattleHistory?: GameState['battleResults'],
+): value is GameState {
   if (!isRestoreRecord(value) || typeof value.id !== 'string' || !Array.isArray(value.players) || value.players.length < 1 ||
       !value.players.every(isRestorePlayerState) || !isRestoreRecord(value.round) || !isRestoreMapDefinition(value.map) ||
       !isRestoreLocationConfig(value.locationConfig) || !Array.isArray(value.cards) || !value.cards.every(isRestoreCardInstance) ||
@@ -1233,11 +1237,14 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
   if (value.battleDeclarations !== undefined && (!Array.isArray(value.battleDeclarations) || !value.battleDeclarations.every((entry) =>
       isRestoreRecord(entry) && typeof entry.battlefieldId === 'string' && locationIds.has(entry.battlefieldId)))) return false;
+  const canonicalState = authoritativeBattleHistory !== undefined
+    ? { ...(value as unknown as Record<string, unknown>), battleHistory: authoritativeBattleHistory } as unknown as GameState
+    : value as unknown as GameState;
   for (const entry of Object.values((abilityRuntime.achillesBattlePowerZeroByBattlefield ?? {}) as Record<string, Record<string, unknown>>)) {
     const battlefieldId = entry.battlefieldId;
     if (typeof battlefieldId !== 'string') return false;
-    const identity = getAchillesBattleIdentity(value as unknown as GameState, battlefieldId);
-    if (!isAchillesBattleReceiptStateCanonical(value as unknown as GameState, identity) ||
+    const identity = getAchillesBattleIdentity(canonicalState, battlefieldId);
+    if (!isAchillesBattleReceiptStateCanonical(canonicalState, identity) ||
         entry.battleId !== identity.battleId || entry.resultId !== identity.resultId || entry.settlementId !== identity.settlementId ||
         !(value.battleDeclarations as Array<Record<string, unknown>> | undefined)?.some((declaration) => declaration.battlefieldId === battlefieldId)) return false;
   }
@@ -1245,7 +1252,9 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       isRestoreRecord(entry) && typeof entry.sourceCardDefinitionId === 'string' && Object.prototype.hasOwnProperty.call(definitions, entry.sourceCardDefinitionId) &&
       typeof entry.ownerPlayerId === 'string' && playerIds.has(entry.ownerPlayerId) && typeof entry.skillId === 'string' &&
       (entry.combatModifiers === undefined || (Array.isArray(entry.combatModifiers) && entry.combatModifiers.every(isRestoreRecord)))))) return false;
-  if (!value.battleResults.every((entry) => isRestoreBattleResult(entry, locationIds, playerIds))) return false;
+  if (!value.battleResults.every((entry) => isRestoreBattleResult(entry, locationIds, playerIds)) ||
+      (value.battleHistory !== undefined && (!Array.isArray(value.battleHistory) ||
+        !(value.battleHistory as unknown[]).every((entry) => isRestoreBattleResult(entry, locationIds, playerIds))))) return false;
   if (value.contentRuntime !== undefined && !isRestoreContentRuntime(value.contentRuntime, locationIds, eventIds)) return false;
   if (value.scoringBreakdown !== undefined && !isRestoreScoringBreakdown(value.scoringBreakdown, playerIds)) return false;
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
@@ -1608,7 +1617,7 @@ function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay
 
 function isRestoreReplaySnapshot(value: unknown, packKind: MatchSessionRestorePackKind): value is MatchReplayStateSnapshot {
   if (!isRestoreRecord(value) || typeof value.checkpointId !== 'string' || !/^checkpoint:\d+$/.test(value.checkpointId) ||
-      !isRestoreGameState(value.state, packKind) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
+      !isRestoreGameState(value.state, packKind, value.battleHistory as GameState['battleResults']) || !Array.isArray(value.logs) || !value.logs.every(isRestoreLogEntry) ||
       !Array.isArray(value.battleHistory) || !value.battleHistory.every((entry) => isRestoreBattleResult(entry)) ||
       !Number.isSafeInteger(value.consumedDirectiveCount) || (value.consumedDirectiveCount as number) < 0) return false;
   if (value.stopReason !== undefined && (typeof value.stopReason !== 'string' || !validPauseReasons.has(value.stopReason))) return false;
@@ -1957,6 +1966,7 @@ export class MatchSession {
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
     const built = this.buildInitialState();
     this.state = built.state;
+    this.state.battleHistory ??= [];
     this.pairings = built.pairings;
     this.rawCards = built.rawCards;
     this.record('session_start', '7-player authoring match session started', { seed: this.seed, pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
@@ -2432,6 +2442,7 @@ export class MatchSession {
       checkpointDigest,
     )) return false;
     this.state = candidateState;
+    this.state.battleHistory = candidateBattleHistory;
     this.logs = candidateLogs;
     this.battleHistory = candidateBattleHistory;
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
@@ -3133,7 +3144,8 @@ export function restoreMatchSession(
 ): MatchSession {
   if (snapshot.version !== 1) throw new Error(`Unsupported MatchSession snapshot version: ${snapshot.version}`);
   const restorePackKind = config.restorePackKind ?? 'production_executable';
-  if (!isRestoreGameState(snapshot.state, restorePackKind)) throw new Error('Invalid MatchSession state container');
+  if (!isRestoreGameState(snapshot.state, restorePackKind,
+    Array.isArray(snapshot.battleHistory) ? snapshot.battleHistory : undefined)) throw new Error('Invalid MatchSession state container');
   if (!hasCoherentReplayRestoreEnvelope(snapshot.replay, snapshot.replaySnapshots, restorePackKind)) {
     throw new Error('Invalid FB2-49 replay snapshot container');
   }
@@ -3211,6 +3223,7 @@ export function restoreMatchSession(
     restorePackKind,
   }, false);
   session.state = candidateState;
+  session.state.battleHistory = structuredClone(snapshot.battleHistory);
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);
   session.replaySnapshots = structuredClone(snapshot.replaySnapshots ?? []);

@@ -281,6 +281,7 @@ export function applyBattleScoring(state: GameState): ResolverResult {
     ...state,
     players: orderedPlayers,
     battleResults: [],
+    battleHistory: (state.battleHistory ?? []).concat(structuredClone(state.battleResults)),
     scoringBreakdown: orderedScoringBreakdown,
     log: state.log.concat(scoredBattleLogs, eliminationBatchLog),
   };

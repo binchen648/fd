@@ -91,6 +91,7 @@ export function createSeededGameState(options?: SeededStateOptions): GameState {
     cards,
     eventPlacements: [],
     battleResults: [],
+    battleHistory: [],
     effectStack: [],
     log: [],
   };

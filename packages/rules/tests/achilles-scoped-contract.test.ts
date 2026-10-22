@@ -136,6 +136,41 @@ describe('Achilles accepted source-bound contract', () => {
     expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
   });
 
+  it('S1 uses cumulative authoritative battle history after a prior round', () => {
+    const s = setup();
+    s.round.activePhase = 'battle'; s.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
+    Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState);
+    expect(s.battleResults).toHaveLength(1);
+    Object.assign(s, rules.applyBattleScoring(s).nextState);
+    expect(s.battleResults).toHaveLength(0);
+    expect(s.battleHistory).toHaveLength(1);
+
+    s.round.roundNumber = 2;
+    s.round.activePhase = 'battle'; s.battleDeclarations = [{ battlefieldId: 'miyama_town' }];
+    const source = add(s, skill(1), 'attack_area', 'p1');
+    s.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: 2 };
+    addKnownNonAgility(s, 'hand', 'p2');
+    expect(activate(s, source, ability(1, 'gale-advance')).ok).toBe(true);
+    const key = 'battle-phase:2:battle:miyama_town:2';
+    expect(Object.keys(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield ?? {})).toEqual([key]);
+    const forged = structuredClone(s);
+    const receipt = forged.abilityRuntime!.achillesBattlePowerZeroByBattlefield![key]!;
+    delete forged.abilityRuntime!.achillesBattlePowerZeroByBattlefield![key];
+    receipt.battleId = 'battle-phase:2:battle:miyama_town:999';
+    receipt.resultId = `${receipt.battleId}:result`;
+    receipt.settlementId = `${receipt.resultId}:settlement`;
+    forged.abilityRuntime!.achillesBattlePowerZeroByBattlefield![receipt.battleId] = receipt;
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forged)).toBe(false);
+    const forgedRevision = forged.abilityRuntime!.revision;
+    const forgedEvents = structuredClone(forged.abilityRuntime!.events);
+    expect(rules.resolveBattlefield(forged, { battlefieldId: 'miyama_town' }).nextState).toBe(forged);
+    expect(forged.abilityRuntime!.revision).toBe(forgedRevision);
+    expect(forged.abilityRuntime!.events).toEqual(forgedEvents);
+    Object.assign(s, rules.resolveBattlefield(s, { battlefieldId: 'miyama_town' }).nextState);
+    expect(s.battleResults).toHaveLength(1);
+    expect(s.abilityRuntime!.achillesBattlePowerZeroByBattlefield).toEqual({});
+  });
+
   it('S2 accepts branch 1 and 3, rejects branch 2, and restores a previously revealed name at round end', () => {
     const s = setup(); const source = add(s, skill(2), 'attack_area', 'p1');
     s.abilityRuntime!.cardState[source] = { active: true, faceDown: false, playedRound: 1 };

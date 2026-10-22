@@ -276,8 +276,10 @@ export function getAchillesBattleIdentity(s: GameState, battlefieldId: string): 
   // Empty/non-contested battle attempts may emit a diagnostic `battle_resolved`
   // log without producing a result.  Logs are not an identity source: the
   // ordinal advances only from authoritative result records retained in the
-  // current battle-results history.
-  const ordinal = s.battleResults.length + 1;
+  // cumulative battle history plus the current unresolved results.  Scoring
+  // clears `battleResults`, so the cumulative history is the cross-round
+  // source; logs and retained receipts are never identity authority.
+  const ordinal = (s.battleHistory?.length ?? 0) + s.battleResults.length + 1;
   const battlePhaseResolutionId = `battle-phase:${s.round.roundNumber}`;
   const battleId = `${battlePhaseResolutionId}:battle:${battlefieldId}:${ordinal}`;
   const resultId = `${battleId}:result`;
