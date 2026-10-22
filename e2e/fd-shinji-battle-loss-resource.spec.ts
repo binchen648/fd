@@ -90,16 +90,24 @@ test('settles Shinji battle-loss resource only after the two-battlefield scoring
 });
 
 async function restoreBattleRoom(request: APIRequestContext, roomId: string): Promise<RoomHttpResponse> {
-  const snapshot = buildBattleSnapshot(roomId);
-  const response = await request.post(`${httpBase}/rooms/${encodeURIComponent(roomId)}/restore`, { data: { snapshot } });
-  expect(response.ok()).toBe(true);
-  return response.json() as Promise<RoomHttpResponse>;
+  const created = await request.post(`${httpBase}/rooms`, {
+    data: { roomId, hostClientId, hostName: '房主', seed: 20260904 },
+  });
+  expect(created.status()).toBe(201);
+  const credentials = await created.json() as Pick<RoomHttpResponse, 'clientId' | 'reconnectToken'>;
+  const snapshot = buildBattleSnapshot(roomId, credentials.clientId, credentials.reconnectToken);
+  const response = await request.post(`${httpBase}/rooms/${encodeURIComponent(roomId)}/restore`, {
+    data: { snapshot, clientId: credentials.clientId, reconnectToken: credentials.reconnectToken },
+  });
+  const responseBody = await response.text();
+  expect(response.ok(), `restore status=${response.status()} body=${responseBody}`).toBe(true);
+  return JSON.parse(responseBody) as RoomHttpResponse;
 }
 
-function buildBattleSnapshot(roomId: string): MatchRoomSnapshot {
+function buildBattleSnapshot(roomId: string, credentialClientId: string, reconnectToken: string): MatchRoomSnapshot {
   const script = `
     import { createMatchRoom } from '@fd/rules';
-    const room = createMatchRoom({ roomId: ${JSON.stringify(roomId)}, hostClientId: ${JSON.stringify(hostClientId)}, hostName: '房主', seed: 20260904 });
+    const room = createMatchRoom({ roomId: ${JSON.stringify(roomId)}, hostClientId: ${JSON.stringify(credentialClientId)}, hostName: '房主', seed: 20260904 });
     room.selectSeat(${JSON.stringify(hostClientId)}, 6);
     room.startMatch(${JSON.stringify(hostClientId)});
     const session = room.session;
@@ -158,7 +166,12 @@ function buildBattleSnapshot(roomId: string): MatchRoomSnapshot {
     clown.visibility = { scope: 'owner_only', ownerPlayerId: 'p1' };
     state.abilityRuntime.cardState[clown.instanceId] = { active: false, faceDown: false, playedRound: 0 };
 
-    process.stdout.write(JSON.stringify(room.serializeRoom()));
+    const snapshot = room.serializeRoom();
+    snapshot.hostClientId = ${JSON.stringify(credentialClientId)};
+    const host = snapshot.clients.find((client) => client.id === ${JSON.stringify(credentialClientId)});
+    if (!host) throw new Error('missing authenticated snapshot host');
+    host.reconnectToken = ${JSON.stringify(reconnectToken)};
+    process.stdout.write(JSON.stringify(snapshot));
   `;
   return JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', '--eval', script], {
     cwd: process.cwd(),

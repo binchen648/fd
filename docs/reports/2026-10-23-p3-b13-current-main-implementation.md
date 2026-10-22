@@ -36,6 +36,9 @@ Builder delta in this Candidate:
   scoring receipts before opening the post-scoring barrier.
 - `packages/rules/tests/regression/battle-loss-resource-trigger.test.ts`: add a
   focused duplicate-receipt negative proof.
+- `e2e/fd-shinji-battle-loss-resource.spec.ts`: create the target host room
+  first, bind the generated snapshot host credential to that room's
+  `clientId`/`reconnectToken`, and send both credentials in the restore request.
 
 No coverage/classifier, inventory, generated registry, task-index, Gate/credit,
 other consumer, or authoring identity was changed. No PR was created or
@@ -69,7 +72,10 @@ merged.
    requested proxy (`npx playwright install chromium` — exit `0`),
    `npx playwright test e2e/fd-shinji-battle-loss-resource.spec.ts -c playwright.config.ts`
    reached the browser and repository webServer but exited `1`: the initial
-   `/rooms/:roomId/restore` response was non-2xx, so the test stopped before
+   `/rooms/:roomId/restore` response was HTTP `400` with body
+   `{\"code\":\"bad_request\",\"message\":\"Invalid or missing deferred runtime state authority\"}`.
+   The host-room credential mismatch is repaired; the remaining failure is the
+   cross-process deferred-runtime authority seal, so the test stopped before
    the two-battlefield, reconnect, and stale-command assertions. No Gate-C or
    E2E pass is claimed.
 
@@ -82,5 +88,5 @@ authoritative E2E receipt above.
 `IMPLEMENTATION_COMPLETE_CANDIDATE` for the current-main B13 implementation
 scope. Independent Reviewer acceptance has not yet been received. This report makes no
 migration-credit, skill-acceptance, Gate-C, merge, or release-readiness claim.
-The browser/server E2E remains unverified because room restore failed before
-the scenario assertions.
+The browser/server E2E remains unverified because room restore failed on the
+deferred-runtime authority seal before the scenario assertions.
