@@ -1102,6 +1102,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
       if (event.type === 'after_battle_result_determined' &&
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
+      if (event.type === 'after_battle_result_determined' && isOptionalBattleResultVpTriggerCandidate(a) &&
+        !isOptionalBattleResultVpTriggerSemantic(a) && !isOptionalBattleResultExtraVpTriggerSemantic(a) &&
+        !a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round')) continue;
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndMobilePlayersRewardSemantic(a) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
@@ -2877,7 +2880,7 @@ function isOptionalBattleResultVpTriggerCandidate(a: AuthoringAbility): boolean 
   return a.kind === 'optional_trigger' &&
     str(a.activation.phase) === 'combat' &&
     str(a.activation.trigger) === 'after_battle_result_determined' &&
-    a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round');
+    hasExactOptionalBattleResultVpActivation(a);
 }
 
 function hasExactOptionalBattleResultVpActivation(a: AuthoringAbility): boolean {

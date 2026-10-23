@@ -27,14 +27,14 @@ inventory, governance, or sibling skill was changed.
 
 - `npm ci`: exit 0 (baseline dependency install; audit warnings were reported by npm).
 - `npm run typecheck`: exit 0.
-- `npm exec vitest run packages/rules/tests/regression/battle-result-optional-vp-trigger.test.ts`: 1 file, 7/7 tests, exit 0, including wrong-effect same-family fail-closed coverage.
-- B13-B17 compatibility focused run (7 files): 43/43 tests, exit 0. Included B14 shared-victory, B15 terminal source-card, B16 reveal, B17 first-loss, and B13 loss-resource suites.
+- `npm exec vitest run packages/rules/tests/regression/battle-result-optional-vp-trigger.test.ts`: 1 file, 8/8 tests, exit 0, including wrong-effect and unapproved-condition same-family fail-closed coverage.
+- B13-B17 compatibility focused run (7 files): 44/44 tests, exit 0. Included B14 shared-victory, B15 terminal source-card, B16 reveal, B17 first-loss, and B13 loss-resource suites.
 - In-process B18 fixture smoke start: emitted dynamic `httpBase`, `wsBase`, room, client, and reconnect credential successfully.
 - `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c playwright.config.ts`: historical exit 1 before test collection. The repository web-server startup failed with Node JSON-module errors (`starter-pack.json` requires an import attribute), followed by `No tests found`.
 - `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c e2e/playwright-b18.config.ts`: exit 0, Chromium 1/1. The real browser fixture covered response-window accept (+1 VP), reload/reconnect before and after resolution, stale replay, and exactly one VP event. Decline, shared-result participation/condition negatives, and duplicate/re-entry behavior are covered by the focused 7/7 regression suite; no duplicate VP event was observed in the browser replay path. This is the B18 Gate C receipt.
 - `git diff --check`: clean.
 
-The focused 7/7 and compatibility 43/43 receipts cover accept, decline, wrong-effect and
+The focused 8/8 and compatibility 44/44 receipts cover accept, decline, wrong-effect and
 malformed-shape fail-closed behavior, duplicate/replay,
 condition-negative, shared scoring barrier, and B13-B17 compatibility behavior.
 The first Chromium attempt is retained as an environment failure; the B18-specific

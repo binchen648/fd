@@ -238,6 +238,18 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted' || event.type === 'mana_adjusted')).toBe(false);
   });
 
+  it('does not open a window for an unapproved same-family condition', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    ability.conditions = [{ type: 'highest_cost_noble_phantasm_cost_at_least', value: 3 }];
+    const state = setup(3, malformed);
+    rules.processAbilityEvent(state, resultEvent('b18-wrong-condition'));
+    expect(responseAction(state)).toBeUndefined();
+    expect(state.players[0]!.vp).toBe(4);
+    expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
+  });
+
   it('opens the production optional response only after both battlefield scoring receipts cross the phase-wide barrier', () => {
     const session = twoBattlefieldOptionalSession();
     let receiptsAtBarrier = -1;
