@@ -25,16 +25,16 @@ inventory, governance, or sibling skill was changed.
 
 ## Verification receipts
 
-- `npm ci`: exit 0 (baseline dependency install; audit warnings were reported by npm).
+- `npm ci`: exit 0 after retrying a transient Windows EPERM lock (baseline dependency install; audit warnings were reported by npm).
 - `npm run typecheck`: exit 0.
-- `npm exec vitest run packages/rules/tests/regression/battle-result-optional-vp-trigger.test.ts`: 1 file, 11/11 tests, exit 0, including wrong-effect, unapproved-condition, wrong-window, and wrong-trigger same-family fail-closed coverage.
-- B13-B17 compatibility focused run (7 files): 47/47 tests, exit 0. Included B14 shared-victory, B15 terminal source-card, B16 reveal, B17 first-loss, and B13 loss-resource suites.
+- `npm exec vitest run packages/rules/tests/regression/battle-result-optional-vp-trigger.test.ts`: 1 file, 13/13 tests, exit 0, including wrong-effect, unapproved-condition, wrong-window, wrong-trigger, missing-phase, and threshold-one same-family fail-closed coverage.
+- B13-B17 compatibility focused run (7 files): 49/49 tests, exit 0. Included B14 shared-victory, B15 terminal source-card, B16 reveal, B17 first-loss, and B13 loss-resource suites.
 - In-process B18 fixture smoke start: emitted dynamic `httpBase`, `wsBase`, room, client, and reconnect credential successfully.
 - `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c playwright.config.ts`: historical exit 1 before test collection. The repository web-server startup failed with Node JSON-module errors (`starter-pack.json` requires an import attribute), followed by `No tests found`.
 - `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c e2e/playwright-b18.config.ts`: exit 0, Chromium 1/1. The real browser fixture covered response-window accept (+1 VP), reload/reconnect before and after resolution, stale replay, and exactly one VP event. Decline, shared-result participation/condition negatives, and duplicate/re-entry behavior are covered by the focused 7/7 regression suite; no duplicate VP event was observed in the browser replay path. This is the B18 Gate C receipt.
 - `git diff --check`: clean.
 
-The focused 11/11 and compatibility 47/47 receipts cover accept, decline, wrong-effect,
+The focused 13/13 and compatibility 49/49 receipts cover accept, decline, wrong-effect,
 wrong-window and
 malformed-shape fail-closed behavior, duplicate/replay,
 condition-negative, shared scoring barrier, and B13-B17 compatibility behavior.

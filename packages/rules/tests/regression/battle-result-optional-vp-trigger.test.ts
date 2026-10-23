@@ -261,6 +261,18 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
   });
 
+  it('does not open a window when the same-family activation phase is missing', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    delete ability.activation.phase;
+    const state = setup(3, malformed);
+    rules.processAbilityEvent(state, resultEvent('b18-missing-phase'));
+    expect(responseAction(state)).toBeUndefined();
+    expect(state.players[0]!.vp).toBe(4);
+    expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
+  });
+
   it('does not open a window for an extra unapproved same-family condition', () => {
     const malformed = structuredClone(raw);
     const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
@@ -268,6 +280,18 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     ability.conditions.push({ type: 'unapproved_near_miss_condition' });
     const state = setup(3, malformed);
     rules.processAbilityEvent(state, resultEvent('b18-extra-condition'));
+    expect(responseAction(state)).toBeUndefined();
+    expect(state.players[0]!.vp).toBe(4);
+    expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
+  });
+
+  it('does not open a window for an extra threshold condition below the approved sibling threshold', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    ability.conditions.push({ type: 'highest_cost_noble_phantasm_cost_at_least', value: 1 });
+    const state = setup(3, malformed);
+    rules.processAbilityEvent(state, resultEvent('b18-threshold-one'));
     expect(responseAction(state)).toBeUndefined();
     expect(state.players[0]!.vp).toBe(4);
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
