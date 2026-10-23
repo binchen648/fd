@@ -14,8 +14,9 @@ condition plus `highest_cost_noble_phantasm_cost_at_least(value=4)`, and one typ
 controller `adjust_victory_points(+1)` effect. B18 base and B19 extra remain two
 independent responses; cost below 4 or absent exposes no extra response.
 
-The extra-VP classifier now rejects extra activation keys, condition fields, effect
-fields, and non-empty visibility metadata before any typed or legacy resolution path.
+The extra-VP classifier now rejects extra activation keys, condition fields (including
+an extra field on the highest-cost condition), effect fields, and non-empty visibility
+metadata before any typed or legacy resolution path.
 
 The B19 implementation work is test/fixture/report scoped because the current
 Base already contains the generic structural B19 interpreter path. No B18 behavior,
