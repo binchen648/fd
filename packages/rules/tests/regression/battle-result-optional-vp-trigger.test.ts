@@ -201,39 +201,26 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     expect(state.players[0]!.vp).toBe(4);
   });
 
-  it('fails closed atomically for a malformed same-family amount instead of using the legacy effect path', () => {
+  it('does not open a window for a malformed same-family amount', () => {
     const malformed = structuredClone(raw);
     const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
     const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
     ability.effects[0].amount = 2;
     const state = setup(3, malformed);
     rules.processAbilityEvent(state, resultEvent('b18-malformed'));
-    const action = responseAction(state);
-    expect(action).toBeTruthy();
-    rules.projectAbilityState(state, 'p1');
-    const before = JSON.stringify(state);
-    const result = rules.dispatchAbilityCommand(state, 'p1', action!);
-    expect(result.ok).toBe(false);
-    expect(result.rejection).toMatchObject({ code: 'resolution_failed', message: 'Unsupported optional battle-result VP semantic shape' });
-    expect(JSON.stringify(state)).toBe(before);
+    expect(responseAction(state)).toBeUndefined();
     expect(state.players[0]!.vp).toBe(4);
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
   });
 
-  it('fails closed atomically for a wrong-effect same-family near-miss instead of using legacy resolveEffect', () => {
+  it('does not open a window for a wrong-effect same-family near-miss', () => {
     const malformed = structuredClone(raw);
     const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
     const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
     ability.effects[0] = { type: 'adjust_mana', player: 'controller', amount: 1 };
     const state = setup(3, malformed);
     rules.processAbilityEvent(state, resultEvent('b18-wrong-effect'));
-    const action = responseAction(state);
-    expect(action).toBeTruthy();
-    const before = JSON.stringify(state);
-    const result = rules.dispatchAbilityCommand(state, 'p1', action!);
-    expect(result.ok).toBe(false);
-    expect(result.rejection).toMatchObject({ code: 'resolution_failed', message: 'Unsupported optional battle-result VP semantic shape' });
-    expect(JSON.stringify(state)).toBe(before);
+    expect(responseAction(state)).toBeUndefined();
     expect(state.players[0]!.vp).toBe(4);
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted' || event.type === 'mana_adjusted')).toBe(false);
   });
@@ -245,6 +232,18 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     ability.conditions = [{ type: 'highest_cost_noble_phantasm_cost_at_least', value: 3 }];
     const state = setup(3, malformed);
     rules.processAbilityEvent(state, resultEvent('b18-wrong-condition'));
+    expect(responseAction(state)).toBeUndefined();
+    expect(state.players[0]!.vp).toBe(4);
+    expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
+  });
+
+  it('does not open a window for a wrong same-family response window', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    ability.responseWindow = { opens: 'post_battle_optional_trigger_window' };
+    const state = setup(3, malformed);
+    rules.processAbilityEvent(state, resultEvent('b18-wrong-window'));
     expect(responseAction(state)).toBeUndefined();
     expect(state.players[0]!.vp).toBe(4);
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
