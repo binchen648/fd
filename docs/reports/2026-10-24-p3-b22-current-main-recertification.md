@@ -2,7 +2,7 @@
 
 Status: `IMPLEMENTATION_COMPLETE_CANDIDATE` (not Reviewer accepted)
 
-Base: `88087e13a4d228b270a8922e741cbe7788d47e15` (B21 A-sync)  
+Base: `88087e13a4d228b270a8922e741cbe7788d47e15` (B21 A-sync)
 Candidate branch: `codex/b-p3-b22-current-main-20261023`
 
 ## Scope and current-main finding

@@ -1339,9 +1339,16 @@ describe('complex master and session regressions', () => {
       abilityId: 'seeker.meditation',
     });
     const gatouManaBeforeTerminal = state.players[0]!.mana;
+    state.players[0]!.locationId = 'miyama_town';
+    const gatouBattlefield = state.players[0]!.locationId!;
+    const gatouPhaseId = `battle-phase:${state.round.roundNumber}`;
     rules.processAbilityEvent(state, {
-      id: 'gatou-battle-ended', type: 'after_battle_ended', battlePhaseResolutionId: 'battle-phase:1',
-      battleParticipantIds: ['p1', 'p2'], battleOutcomes: [{ battlefieldId: state.players[0]!.locationId!, winnerPlayerIds: ['p2'] }],
+      id: `${gatouPhaseId}:after_battle_ended`, type: 'after_battle_ended', battlePhaseResolutionId: gatouPhaseId,
+      battleIds: [`${gatouPhaseId}:battle:${gatouBattlefield}:1`],
+      resultIds: [`${gatouPhaseId}:battle:${gatouBattlefield}:1:result`],
+      scoringReceiptIds: [`${gatouPhaseId}:score:${gatouBattlefield}`],
+      battleParticipantIds: ['p1', 'p2'],
+      battleOutcomes: [{ battlefieldId: gatouBattlefield, participantPlayerIds: ['p1', 'p2'], winnerPlayerIds: ['p2'] }],
     });
     expect(state.players[0]!.mana).toBe(gatouManaBeforeTerminal);
     expect(state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
