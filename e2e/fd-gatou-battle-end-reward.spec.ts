@@ -67,8 +67,21 @@ test('settles Gatou mobile-player reward at the phase terminal and survives reco
 });
 
 async function restoreBattleRoom(request: APIRequestContext, roomId: string): Promise<RoomHttpResponse> {
-  const response = await request.post(`${httpBase}/rooms/${encodeURIComponent(roomId)}/restore`, { data: { snapshot: buildBattleSnapshot(roomId) } });
-  expect(response.ok()).toBe(true);
+  const created = await request.post(`${httpBase}/rooms`, {
+    data: { roomId, hostClientId, hostName: '房主', seed: 20260922 },
+  });
+  if (!created.ok()) throw new Error(`B22 room creation failed: ${created.status()} ${await created.text()}`);
+  const createdRoom = await created.json() as RoomHttpResponse;
+  const snapshot = buildBattleSnapshot(roomId);
+  const host = snapshot.clients.find((client) => client.id === snapshot.hostClientId);
+  if (!host) throw new Error('B22 E2E fixture host credential is missing');
+  const createdHost = snapshot.clients.find((client) => client.id === createdRoom.clientId);
+  if (!createdHost || createdRoom.clientId !== hostClientId) throw new Error('B22 created host credential is missing');
+  host.reconnectToken = createdRoom.reconnectToken;
+  const response = await request.post(`${httpBase}/rooms/${encodeURIComponent(roomId)}/restore`, {
+    data: { snapshot, clientId: host.id, reconnectToken: host.reconnectToken },
+  });
+  if (!response.ok()) throw new Error(`B22 restore failed: ${response.status()} ${await response.text()}`);
   return response.json() as Promise<RoomHttpResponse>;
 }
 
