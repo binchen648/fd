@@ -185,6 +185,18 @@ describe('P3-B20 unique win -> exile source + create/shuffle reward family', () 
     const nonParticipant = setup(); addFamily(nonParticipant);
     rules.processAbilityEvent(nonParticipant, winEvent('b20-non-participant', ['p1'], ['p2', 'p3']));
     expect(responses(nonParticipant)).toHaveLength(0);
+
+    const missingParticipants = setup(); addFamily(missingParticipants);
+    rules.processAbilityEvent(missingParticipants, { id: 'b20-missing-participants', type: 'after_controller_wins_battle', playerId: 'p1', battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(responses(missingParticipants)).toHaveLength(0);
+
+    const missingWinners = setup(); addFamily(missingWinners);
+    rules.processAbilityEvent(missingWinners, { id: 'b20-missing-winners', type: 'after_controller_wins_battle', playerId: 'p1', battleParticipantIds: ['p1', 'p2'], battleResult: { loserIds: ['p2'] } });
+    expect(responses(missingWinners)).toHaveLength(0);
+
+    const playerIdOnly = setup(); addFamily(playerIdOnly);
+    rules.processAbilityEvent(playerIdOnly, { id: 'b20-player-only', type: 'after_controller_wins_battle', playerId: 'p1' });
+    expect(responses(playerIdOnly)).toHaveLength(0);
   });
 
   it('fails closed atomically for a malformed same-family create shape instead of using legacy executeAbility', () => {

@@ -1103,8 +1103,8 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_controller_wins_battle' && isUniqueWinCreateCardTriggerCandidate(a) &&
-        ((Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) ||
-          (Array.isArray(event.battleResult?.winners) && !event.battleResult.winners.includes(c.controllerPlayerId)))) continue;
+        (!Array.isArray(event.battleParticipantIds) || !event.battleParticipantIds.includes(c.controllerPlayerId) ||
+          !Array.isArray(event.battleResult?.winners) || !event.battleResult.winners.includes(c.controllerPlayerId))) continue;
       if (isOptionalBattleResultVpTriggerCandidate(a) &&
         !isOptionalBattleResultVpTriggerSemantic(a) && !isOptionalBattleResultExtraVpTriggerSemantic(a) &&
         !isOptionalBattleResultExtraVpFamilyShape(a)) continue;
@@ -4145,13 +4145,17 @@ function processEvent(s: GameState, event: AbilityEvent): void {
     const battleResult = createBattleResult(event.battleResult);
     const winners = battleResult.winners;
     const losers = battleResult.loserIds.filter(id => !winners.includes(id));
+    const participantIds = Array.isArray(event.battleParticipantIds)
+      ? event.battleParticipantIds
+      : [...winners, ...losers];
+    const scopedBattleEvent = { ...event, battleParticipantIds: participantIds };
 
     // FB2-47: actual defeat is a distinct server fact and must settle before battle-loss triggers.
     // The trusted root event already excludes loss-effect-suppressed participants from loserIds.
-    for (const id of losers) processEvent(s, { ...event, id: `${event.id}:defeat:${id}`, type: CONTROLLER_DEFEATED_TRIGGER, playerId: id });
-    for (const id of winners) processEvent(s, { ...event, id: `${event.id}:win:${id}`, type: 'after_controller_wins_battle', playerId: id });
-    for (const id of winners) processEvent(s, { ...event, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
-    for (const id of losers) processEvent(s, { ...event, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
+    for (const id of losers) processEvent(s, { ...scopedBattleEvent, id: `${event.id}:defeat:${id}`, type: CONTROLLER_DEFEATED_TRIGGER, playerId: id });
+    for (const id of winners) processEvent(s, { ...scopedBattleEvent, id: `${event.id}:win:${id}`, type: 'after_controller_wins_battle', playerId: id });
+    for (const id of winners) processEvent(s, { ...scopedBattleEvent, id: `${event.id}:victory:${id}`, type: 'after_controller_gains_victory', playerId: id });
+    for (const id of losers) processEvent(s, { ...scopedBattleEvent, id: `${event.id}:lose:${id}`, type: 'after_controller_loses_battle', playerId: id });
   }
   checkFormulaTriggers(s);
 }
