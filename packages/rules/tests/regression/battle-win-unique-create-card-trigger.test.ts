@@ -106,6 +106,21 @@ describe('P3-B20 unique win -> exile source + create/shuffle reward family', () 
     expect(rules.isUniqueWinCreateCardTriggerSemantic(missingShuffle)).toBe(false);
     const wrongPolicy = structuredClone(ability); wrongPolicy.limit.conflictPolicy = 'all_effects_may_activate';
     expect(rules.isUniqueWinCreateCardTriggerSemantic(wrongPolicy)).toBe(false);
+    const activationExtra = structuredClone(ability); (activationExtra.activation as Record<string, unknown>).unexpected = true;
+    expect(rules.isUniqueWinCreateCardTriggerSemantic(activationExtra)).toBe(false);
+    const conditionExtra = structuredClone(ability); (conditionExtra.conditions[0] as Record<string, unknown>).unexpected = true;
+    expect(rules.isUniqueWinCreateCardTriggerSemantic(conditionExtra)).toBe(false);
+    const createExtra = structuredClone(ability); (createExtra.creates[0] as Record<string, unknown>).unexpected = true;
+    expect(rules.isUniqueWinCreateCardTriggerSemantic(createExtra)).toBe(false);
+    const responseExtra = structuredClone(ability); (responseExtra.responseWindow as Record<string, unknown>).unexpected = true;
+    expect(rules.isUniqueWinCreateCardTriggerSemantic(responseExtra)).toBe(false);
+  });
+
+  it('accepts all three canonical Artoria Caster consumers without identity routing', () => {
+    const loaded = rules.loadAuthoringJson(raw);
+    const abilities = Object.values(loaded.cards).flatMap((card) => card.abilities ?? []).filter((ability) => FAMILY_IDS.includes(ability.id));
+    expect(abilities).toHaveLength(3);
+    expect(abilities.every((ability) => rules.isUniqueWinCreateCardTriggerSemantic(ability))).toBe(true);
   });
 
   it('offers one three-choice unique window and settles exactly one chosen source/reward through the semantic route', () => {
@@ -153,6 +168,7 @@ describe('P3-B20 unique win -> exile source + create/shuffle reward family', () 
       id: 'b20-later-win', type: 'after_controller_wins_battle', playerId: 'p1',
       battlePhaseResolutionId: 'battle-phase:2', battleId: 'battle-phase:2:battle:shinto:1',
       resultId: 'b20-later-win', battleParticipantIds: ['p1', 'p2'], battlefieldId: 'shinto',
+      battleResult: { winners: ['p1'], loserIds: ['p2'] },
     });
     expect(responses(state)).toHaveLength(3);
   });
@@ -165,6 +181,10 @@ describe('P3-B20 unique win -> exile source + create/shuffle reward family', () 
     const loss = setup(); addFamily(loss);
     rules.processAbilityEvent(loss, winEvent('b20-loss', ['p2'], ['p1', 'p2']));
     expect(responses(loss)).toHaveLength(0);
+
+    const nonParticipant = setup(); addFamily(nonParticipant);
+    rules.processAbilityEvent(nonParticipant, winEvent('b20-non-participant', ['p1'], ['p2', 'p3']));
+    expect(responses(nonParticipant)).toHaveLength(0);
   });
 
   it('fails closed atomically for a malformed same-family create shape instead of using legacy executeAbility', () => {

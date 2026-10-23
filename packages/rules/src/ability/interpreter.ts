@@ -1102,6 +1102,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
       if (event.type === 'after_battle_result_determined' &&
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
+      if (event.type === 'after_controller_wins_battle' && isUniqueWinCreateCardTriggerCandidate(a) &&
+        ((Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) ||
+          (Array.isArray(event.battleResult?.winners) && !event.battleResult.winners.includes(c.controllerPlayerId)))) continue;
       if (isOptionalBattleResultVpTriggerCandidate(a) &&
         !isOptionalBattleResultVpTriggerSemantic(a) && !isOptionalBattleResultExtraVpTriggerSemantic(a) &&
         !isOptionalBattleResultExtraVpFamilyShape(a)) continue;
@@ -2944,8 +2947,12 @@ function isUniqueWinCreateCardTriggerCandidate(a: AuthoringAbility): boolean {
 
 export function isUniqueWinCreateCardTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isUniqueWinCreateCardTriggerCandidate(a)) return false;
+  const onlyKeys = (value: unknown, allowed: readonly string[]) =>
+    Object.keys(node(value)).every((key) => allowed.includes(key));
+  if (!onlyKeys(a.activation, ['trigger', 'opens'])) return false;
   if (str(a.activation.opens) !== 'post_battle_optional_trigger_window') return false;
   const response = node(a.responseWindow);
+  if (!onlyKeys(response, ['opens', 'eligiblePlayers', 'order', 'passBehavior', 'passDefault', 'nonEligibleView'])) return false;
   const eligible = Array.isArray(response.eligiblePlayers) ? response.eligiblePlayers : [];
   if (str(response.opens) !== 'post_battle_optional_trigger_window' ||
     eligible.length !== 1 || eligible[0] !== 'controller' ||
@@ -2954,6 +2961,7 @@ export function isUniqueWinCreateCardTriggerSemantic(a: AuthoringAbility): boole
     (response.passDefault !== undefined && response.passDefault !== 'decline_this_window')) return false;
 
   const limit = node(a.limit);
+  if (!onlyKeys(limit, ['type', 'scope', 'groupId', 'window', 'conflictPolicy'])) return false;
   if (limit.type !== 'unique' || limit.scope !== 'unique_keyword_group' ||
     !str(limit.groupId) || limit.window !== 'trigger_window' ||
     limit.conflictPolicy !== 'only_one_effect_may_activate_per_window') return false;
@@ -2961,15 +2969,19 @@ export function isUniqueWinCreateCardTriggerSemantic(a: AuthoringAbility): boole
   if (nodes(a.conditions).length !== 1 || nodes(a.targets).length !== 0 || nodes(a.effects).length !== 0 ||
     nodes(a.cost).length !== 1 || nodes(a.creates).length !== 1 || nodes(a.ruleModifiers).length !== 0 || Object.keys(node(a.lifecycle)).length !== 0) return false;
   const conditionNode = a.conditions[0]!;
+  if (!onlyKeys(conditionNode, ['type', 'zone', 'owner'])) return false;
   if (conditionNode.type !== 'source_card_in_zone' || conditionNode.zone !== 'hand' || conditionNode.owner !== 'controller') return false;
 
   const cost = a.cost[0]!;
   const from = node(cost.from); const to = node(cost.to);
+  if (!onlyKeys(cost, ['type', 'from', 'to']) || !onlyKeys(from, ['zone', 'owner']) || !onlyKeys(to, ['zone', 'owner'])) return false;
   if (cost.type !== 'move_source_card' || from.zone !== 'hand' || from.owner !== 'controller' ||
     to.zone !== 'removed_from_game' || to.owner !== 'controller') return false;
 
   const create = a.creates[0]!;
   const destination = node(create.to); const then = nodes(create.then);
+  if (!onlyKeys(create, ['type', 'cardId', 'to', 'then']) || !onlyKeys(destination, ['zone', 'owner']) ||
+    (then.length === 1 && !onlyKeys(then[0], ['type', 'owner']))) return false;
   return create.type === 'create_card' && !!str(create.cardId) &&
     destination.zone === 'deck' && destination.owner === 'controller' &&
     then.length === 1 && then[0]?.type === 'shuffle_deck' && then[0]?.owner === 'controller';
