@@ -229,7 +229,7 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     const malformed = structuredClone(raw);
     const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
     const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
-    ability.conditions = [{ type: 'highest_cost_noble_phantasm_cost_at_least', value: 3 }];
+    ability.conditions = [{ type: 'unapproved_near_miss_condition' }];
     const state = setup(3, malformed);
     rules.processAbilityEvent(state, resultEvent('b18-wrong-condition'));
     expect(responseAction(state)).toBeUndefined();
@@ -244,6 +244,30 @@ describe('P3-B18 optional post-result +1 VP trigger', () => {
     ability.responseWindow = { opens: 'post_battle_optional_trigger_window' };
     const state = setup(3, malformed);
     rules.processAbilityEvent(state, resultEvent('b18-wrong-window'));
+    expect(responseAction(state)).toBeUndefined();
+    expect(state.players[0]!.vp).toBe(4);
+    expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
+  });
+
+  it('does not open a window for a wrong same-family trigger', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    ability.activation.trigger = 'after_controller_wins_battle';
+    const state = setup(3, malformed);
+    rules.processAbilityEvent(state, { ...resultEvent('b18-wrong-trigger'), type: 'after_controller_wins_battle' });
+    expect(responseAction(state)).toBeUndefined();
+    expect(state.players[0]!.vp).toBe(4);
+    expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);
+  });
+
+  it('does not open a window for an extra unapproved same-family condition', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === 'servant.artoria-alt.skill.sc-artoria-alt-3');
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    ability.conditions.push({ type: 'unapproved_near_miss_condition' });
+    const state = setup(3, malformed);
+    rules.processAbilityEvent(state, resultEvent('b18-extra-condition'));
     expect(responseAction(state)).toBeUndefined();
     expect(state.players[0]!.vp).toBe(4);
     expect(state.abilityRuntime!.events.some((event) => event.type === 'victory_points_adjusted')).toBe(false);

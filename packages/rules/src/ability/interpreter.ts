@@ -1102,8 +1102,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
       if (event.type === 'after_battle_result_determined' &&
         (isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a)) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
-      if (event.type === 'after_battle_result_determined' && isOptionalBattleResultVpTriggerCandidate(a) &&
-        a.conditions.length <= 1 && !isOptionalBattleResultVpTriggerSemantic(a) && !isOptionalBattleResultExtraVpTriggerSemantic(a)) continue;
+      if (isOptionalBattleResultVpTriggerCandidate(a) &&
+        !isOptionalBattleResultVpTriggerSemantic(a) && !isOptionalBattleResultExtraVpTriggerSemantic(a) &&
+        !a.conditions.some((condition) => str(condition.type) === 'highest_cost_noble_phantasm_cost_at_least')) continue;
       if (event.type === 'after_battle_ended' && isBattleEndSourceReturnCandidate(a) && !battleEndSourceReturnTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'after_battle_ended' && isBattleEndMobilePlayersRewardSemantic(a) &&
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
@@ -2877,8 +2878,9 @@ export function isPresenceConcealmentAssassinationSemantic(a: AuthoringAbility):
 
 function isOptionalBattleResultVpTriggerCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'optional_trigger' &&
-    str(a.activation.phase) === 'combat' &&
-    str(a.activation.trigger) === 'after_battle_result_determined';
+    Object.prototype.hasOwnProperty.call(a.activation, 'phase') &&
+    Object.prototype.hasOwnProperty.call(a.activation, 'trigger') &&
+    !!a.responseWindow && typeof a.responseWindow === 'object';
 }
 
 function hasExactOptionalBattleResultVpActivation(a: AuthoringAbility): boolean {
@@ -2893,6 +2895,7 @@ function hasExactOptionalBattleResultVpActivation(a: AuthoringAbility): boolean 
 
 export function isOptionalBattleResultExtraVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isOptionalBattleResultVpTriggerCandidate(a) || !hasExactOptionalBattleResultVpActivation(a)) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.trigger) !== 'after_battle_result_determined') return false;
   if (a.conditions.length !== 2 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
   if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || a.effects.length !== 1) return false;
   const hasHighest = a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round');
@@ -2907,6 +2910,7 @@ export function isOptionalBattleResultExtraVpTriggerSemantic(a: AuthoringAbility
 
 export function isOptionalBattleResultVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isOptionalBattleResultVpTriggerCandidate(a) || !hasExactOptionalBattleResultVpActivation(a)) return false;
+  if (str(a.activation.phase) !== 'combat' || str(a.activation.trigger) !== 'after_battle_result_determined') return false;
   if (a.conditions.length !== 1 || str(a.conditions[0]?.type) !== 'controller_played_highest_cost_noble_phantasm_in_battle_this_round') return false;
   if (Object.keys(a.activation).some((key) => !['phase', 'trigger'].includes(key))) return false;
   if (Object.keys(a.conditions[0]!).some((key) => key !== 'type')) return false;
