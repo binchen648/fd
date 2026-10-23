@@ -2910,12 +2910,12 @@ export function isOptionalBattleResultExtraVpTriggerSemantic(a: AuthoringAbility
     Object.keys(thresholdCondition).some((key) => !['type', 'value'].includes(key))) return false;
   if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 || a.effects.length !== 1) return false;
   const hasHighest = highestCondition !== undefined;
-  const hasThreshold = Number(thresholdCondition.value) === 4;
+  const hasThreshold = typeof thresholdCondition.value === 'number' && thresholdCondition.value === 4;
   const effect = a.effects[0]!;
   return hasHighest && hasThreshold &&
     Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key)) &&
     effect.type === 'adjust_victory_points' &&
-    (effect.player === undefined || effect.player === 'controller') &&
+    effect.player === 'controller' &&
     effect.amount === 1 && Number.isSafeInteger(effect.amount);
 }
 

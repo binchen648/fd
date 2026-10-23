@@ -93,6 +93,10 @@ describe('P3-B19 optional post-result extra +1 VP trigger', () => {
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraConditionField)).toBe(false);
     const highestConditionField = structuredClone(ability); (highestConditionField.conditions[0] as Record<string, unknown>).value = 999;
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(highestConditionField)).toBe(false);
+    const stringThreshold = structuredClone(ability); (stringThreshold.conditions[1] as Record<string, unknown>).value = '4';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(stringThreshold)).toBe(false);
+    const missingPlayer = structuredClone(ability); delete (missingPlayer.effects[0] as Record<string, unknown>).player;
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(missingPlayer)).toBe(false);
     const extraEffectField = structuredClone(ability); (extraEffectField.effects[0] as Record<string, unknown>).causation = 'legacy-route';
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraEffectField)).toBe(false);
     const hiddenVisibility = structuredClone(ability); (hiddenVisibility.visibility as Record<string, unknown>).scope = 'controller';
