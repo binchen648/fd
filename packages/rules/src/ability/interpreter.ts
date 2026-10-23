@@ -3006,9 +3006,14 @@ function isBattleEndMobilePlayersRewardCandidate(a: AuthoringAbility): boolean {
 
 export function isBattleEndMobilePlayersRewardSemantic(a: AuthoringAbility): boolean {
   if (!isBattleEndMobilePlayersRewardCandidate(a)) return false;
-  if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  if (Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
   if (a.conditions.length || a.targets.length || a.cost.length || a.creates.length || a.ruleModifiers.length) return false;
-  if (Object.keys(a.lifecycle).length || str(a.responseWindow.opens) || Object.keys(a.limit).length) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (Object.keys(a.lifecycle).length || str(a.responseWindow.opens) || Object.keys(a.limit).length ||
+    responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.visibility).length) return false;
   const effect = a.effects[0]!;
   if (effect.type !== 'record_master_directive' || str(effect.directive) !== 'gatou_battle_end_mobile_players_reward') return false;
   return Object.keys(effect).every((key) => ['type', 'directive', 'id', 'printedClause'].includes(key));
@@ -3028,7 +3033,8 @@ function currentRoundMovementLogs(s: GameState): Array<{ playerId: string; to: s
     if (entry.type !== 'movement') continue;
     const payload = entry.payload ?? {};
     const payloadRound = typeof payload.roundNumber === 'number' ? payload.roundNumber : undefined;
-    if (payloadRound !== undefined && payloadRound !== s.round.roundNumber) continue;
+    if (payloadRound !== s.round.roundNumber) continue;
+    if (payload.movementKind !== 'normal' && payload.movementKind !== 'effect') continue;
     const playerId = typeof payload.playerId === 'string' ? payload.playerId : '';
     const to = typeof payload.to === 'string' ? payload.to : '';
     if (playerId && to) results.push({ playerId, to });
@@ -3036,15 +3042,73 @@ function currentRoundMovementLogs(s: GameState): Array<{ playerId: string; to: s
   return results;
 }
 
+function isDenseStringArray(value: unknown): value is string[] {
+  if (!Array.isArray(value)) return false;
+  for (let index = 0; index < value.length; index += 1) {
+    if (!Object.prototype.hasOwnProperty.call(value, index) || typeof value[index] !== 'string' || value[index].length === 0) return false;
+  }
+  return true;
+}
+
+function validBattleEndMobilePlayersTerminal(s: GameState, event: AbilityEvent, controllerId: string): boolean {
+  const phaseId = `battle-phase:${s.round.roundNumber}`;
+  if (event.type !== 'after_battle_ended' || event.id !== `${phaseId}:after_battle_ended` ||
+    event.battlePhaseResolutionId !== phaseId || !isDenseStringArray(event.battleIds) ||
+    !isDenseStringArray(event.resultIds) || !isDenseStringArray(event.scoringReceiptIds) ||
+    !Array.isArray(event.battleOutcomes) || event.battleOutcomes.length === 0 ||
+    event.battleIds.length !== event.battleOutcomes.length || event.resultIds.length !== event.battleOutcomes.length ||
+    event.scoringReceiptIds.length !== event.battleOutcomes.length ||
+    new Set(event.battleIds).size !== event.battleIds.length || new Set(event.resultIds).size !== event.resultIds.length ||
+    new Set(event.scoringReceiptIds).size !== event.scoringReceiptIds.length || !isDenseStringArray(event.battleParticipantIds)) return false;
+  const outcomes = event.battleOutcomes!;
+  const participantIds = event.battleParticipantIds!;
+  const knownPlayers = new Set(s.players.map((player) => player.id));
+  const knownBattlefields = new Set<string>(getEnabledLocations(s.map, s.locationConfig)
+    .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'))
+    .map((location) => location.id));
+  const represented: string[] = [];
+  let previousOrdinal = 0;
+  for (let index = 0; index < outcomes.length; index += 1) {
+    const outcome = outcomes[index]!;
+    const participants = outcome.participantPlayerIds;
+    const winners = outcome.winnerPlayerIds;
+    const battlefield = outcome.battlefieldId;
+    const battlePrefix = `${phaseId}:battle:${battlefield}:`;
+    const ordinalText = event.battleIds[index]!.slice(battlePrefix.length);
+    const ordinal = /^\d+$/.test(ordinalText) ? Number(ordinalText) : 0;
+    if (!knownBattlefields.has(battlefield) || !event.battleIds[index]!.startsWith(battlePrefix) ||
+      !Number.isSafeInteger(ordinal) || ordinal !== previousOrdinal + 1 ||
+      event.resultIds[index] !== `${event.battleIds[index]}:result` ||
+      event.scoringReceiptIds[index] !== `${phaseId}:score:${battlefield}` ||
+      !isDenseStringArray(participants) || participants.length === 0 || new Set(participants).size !== participants.length ||
+      participants.some((playerId) => !knownPlayers.has(playerId)) || !isDenseStringArray(winners) ||
+      winners.length === 0 || new Set(winners).size !== winners.length || winners.some((playerId) => !participants.includes(playerId))) return false;
+    previousOrdinal = ordinal;
+    represented.push(...participants);
+  }
+  const participantSet = [...new Set(represented)];
+  if (participantIds.length !== participantSet.length ||
+    new Set(participantIds).size !== participantIds.length ||
+    participantIds.some((playerId) => !participantSet.includes(playerId)) ||
+    participantSet.some((playerId) => !participantIds.includes(playerId)) ||
+    !participantIds.includes(controllerId)) return false;
+  const location = player(s, controllerId).locationId;
+  const outcome = event.battleOutcomes!.find((candidate) => candidate.battlefieldId === location);
+  return !!location && !!outcome && outcome.participantPlayerIds?.includes(controllerId) === true;
+}
+
 function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): void {
   const event = ctx.event;
-  if (!event || event.type !== 'after_battle_ended' || !event.battlePhaseResolutionId || !Array.isArray(event.battleOutcomes)) {
+  if (!event || !validBattleEndMobilePlayersTerminal(s, event, ctx.controllerId)) {
     reject('resolution_failed', 'Battle-end mobile-player reward requires frozen terminal battle provenance');
   }
   if (!event.battleParticipantIds?.includes(ctx.controllerId)) {
     reject('resolution_failed', 'Battle-end mobile-player reward controller must be a frozen battle participant');
   }
   const controller = player(s, ctx.controllerId);
+  const terminalEventId = event.id;
+  const battlePhaseResolutionId = event.battlePhaseResolutionId!;
+  const outcomes = event.battleOutcomes!;
   const locationId = controller.locationId;
   if (!locationId) reject('resolution_failed', 'Battle-end mobile-player reward controller has no current location');
 
@@ -3054,7 +3118,7 @@ function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): v
   const qualifyingPlayerIds = s.players
     .filter((candidate) => candidate.id !== ctx.controllerId && candidate.locationId === locationId && movedIntoLocation.has(candidate.id))
     .map((candidate) => candidate.id);
-  const outcome = event.battleOutcomes.find((candidate) => candidate.battlefieldId === locationId);
+  const outcome = outcomes.find((candidate) => candidate.battlefieldId === locationId);
   const won = outcome?.winnerPlayerIds.includes(ctx.controllerId) === true;
   const rewardBranch = won ? 'victory_points' as const : 'mana' as const;
   const requestedDelta = qualifyingPlayerIds.length;
@@ -3092,9 +3156,11 @@ function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): v
     before,
     after,
     qualifyingPlayerIds,
-    battlePhaseResolutionId: event.battlePhaseResolutionId,
+    battlePhaseResolutionId,
     battlefieldId: locationId,
     rewardBranch,
+    terminalEventId,
+    triggerEventId: terminalEventId,
   });
 }
 

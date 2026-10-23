@@ -58,7 +58,7 @@ function terminalEvent(id = 'battle-phase:1:after_battle_ended', winnersAtMiyama
     resultIds: ['battle-phase:1:battle:miyama_town:1:result'],
     scoringReceiptIds: ['battle-phase:1:score:miyama_town'],
     battleParticipantIds: participants,
-    battleOutcomes: [{ battlefieldId: 'miyama_town', winnerPlayerIds: winnersAtMiyama }],
+    battleOutcomes: [{ battlefieldId: 'miyama_town', participantPlayerIds: participants, winnerPlayerIds: winnersAtMiyama }],
   };
 }
 
@@ -86,6 +86,18 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
     const extraCondition = structuredClone(ability);
     extraCondition.conditions.push({ type: 'controller_won_battle' });
     expect(rules.isBattleEndMobilePlayersRewardSemantic(extraCondition)).toBe(false);
+
+    const activationExtra = structuredClone(ability);
+    (activationExtra.activation as Record<string, unknown>).noise = true;
+    expect(rules.isBattleEndMobilePlayersRewardSemantic(activationExtra)).toBe(false);
+
+    const responseExtra = structuredClone(ability);
+    (responseExtra.responseWindow as Record<string, unknown>).priority = 'bogus';
+    expect(rules.isBattleEndMobilePlayersRewardSemantic(responseExtra)).toBe(false);
+
+    const visibilityExtra = structuredClone(ability);
+    visibilityExtra.visibility = { scope: 'public' };
+    expect(rules.isBattleEndMobilePlayersRewardSemantic(visibilityExtra)).toBe(false);
   });
 
   it('awards mana once per qualifying other player and dedupes movement records', () => {
@@ -101,6 +113,8 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
     expect(state.players[0]!.mana).toBe(6);
     expect(rewardEvents(state)).toContainEqual(expect.objectContaining({
       type: 'battle_end_mobile_players_reward_settled',
+      terminalEventId: 'battle-phase:1:after_battle_ended',
+      triggerEventId: 'battle-phase:1:after_battle_ended',
       playerId: 'p1',
       resource: 'mana',
       requestedDelta: 2,
@@ -129,7 +143,7 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
     // p2 is still colocated but its only movement record is stale; p4 is colocated by placement only.
     state.players[3]!.locationId = 'miyama_town';
 
-    rules.processAbilityEvent(state, terminalEvent('b22-provenance', ['p2'], ['p1', 'p2', 'p3', 'p4']));
+    rules.processAbilityEvent(state, terminalEvent('battle-phase:1:after_battle_ended', ['p2'], ['p1', 'p2', 'p3', 'p4']));
 
     expect(state.players[0]!.mana).toBe(4);
     expect(rewardEvents(state)).toContainEqual(expect.objectContaining({
@@ -143,7 +157,7 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
     movement(state, 'p2', 'shinto', 'miyama_town');
     movement(state, 'p3', 'shinto', 'miyama_town');
 
-    rules.processAbilityEvent(state, terminalEvent('b22-win', ['p1', 'p2']));
+    rules.processAbilityEvent(state, terminalEvent('battle-phase:1:after_battle_ended', ['p1', 'p2']));
 
     expect(state.players[0]!.mana).toBe(4);
     expect(state.players[0]!.vp).toBe(4);
@@ -161,7 +175,7 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
     movement(state, 'p2', 'shinto', 'miyama_town');
     movement(state, 'p3', 'shinto', 'miyama_town');
 
-    rules.processAbilityEvent(state, terminalEvent('b22-cap'));
+    rules.processAbilityEvent(state, terminalEvent());
 
     expect(state.players[0]!.mana).toBe(12);
     expect(rewardEvents(state)).toContainEqual(expect.objectContaining({
@@ -172,7 +186,7 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
   it('does not trigger for an unrelated active controller outside the frozen participant set', () => {
     const state = setup();
     movement(state, 'p2', 'shinto', 'miyama_town');
-    rules.processAbilityEvent(state, terminalEvent('b22-unrelated', ['p2'], ['p2', 'p3']));
+    rules.processAbilityEvent(state, terminalEvent('battle-phase:1:after_battle_ended', ['p2'], ['p2', 'p3']));
     expect(state.players[0]!.mana).toBe(4);
     expect(rewardEvents(state)).toHaveLength(0);
   });
@@ -227,8 +241,23 @@ describe('P3-B22 Gatou phase-terminal mobile-player reward', () => {
 
     const before = JSON.stringify(state);
     expect(() => rules.executeAbility(state, {
-      controllerId: 'p1', sourceCardId: SOURCE_ID, abilityId: ABILITY_ID, variables: {}, selections: {}, event: terminalEvent('b22-malformed'),
+      controllerId: 'p1', sourceCardId: SOURCE_ID, abilityId: ABILITY_ID, variables: {}, selections: {}, event: terminalEvent(),
     })).toThrow();
     expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('requires complete terminal provenance and current-round movement receipts', () => {
+    const missingTerminalReceipt = setup();
+    const incomplete = terminalEvent('battle-phase:1:after_battle_ended');
+    delete (incomplete as { scoringReceiptIds?: string[] }).scoringReceiptIds;
+    const before = JSON.stringify(missingTerminalReceipt);
+    expect(() => rules.processAbilityEvent(missingTerminalReceipt, incomplete)).toThrow();
+    expect(JSON.stringify(missingTerminalReceipt)).toBe(before);
+
+    const missingRound = setup();
+    missingRound.log.push({ type: 'movement', message: 'player:p2:normal_move:shinto->miyama_town', payload: { playerId: 'p2', from: 'shinto', to: 'miyama_town', movementKind: 'normal' } });
+    rules.processAbilityEvent(missingRound, terminalEvent());
+    expect(missingRound.players[0]!.mana).toBe(4);
+    expect(rewardEvents(missingRound)).toContainEqual(expect.objectContaining({ requestedDelta: 0, delta: 0 }));
   });
 });

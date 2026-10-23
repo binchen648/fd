@@ -244,6 +244,7 @@ export interface SafeEvent {
   battleId?: string;
   battlefieldId?: string;
   rewardBranch?: 'mana' | 'victory_points';
+  terminalEventId?: string;
   resultId?: string;
   triggerEventId?: string;
   fromState?: string;
