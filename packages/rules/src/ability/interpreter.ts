@@ -1115,6 +1115,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         event.playerId !== c.controllerPlayerId) continue;
       if (event.type === 'after_controller_loses_battle' && isBattleLossStateTransformCandidate(a) &&
         !battleLossStateTransformTriggerEligible(s, c.instanceId)) continue;
+      if (event.type === 'after_controller_loses_battle' && isBattleLossUnpreventableVpTriggerCandidate(a) &&
+        (!Array.isArray(event.battleParticipantIds) || !event.battleParticipantIds.includes(c.controllerPlayerId) ||
+          !Array.isArray(event.battleResult?.loserIds) || !event.battleResult.loserIds.includes(c.controllerPlayerId))) continue;
       if (event.type === 'on_card_played' && isSourcePlayBasicAttackDrawTriggerCandidate(a) &&
         !sourcePlayBasicAttackDrawEventScopeMatches(event, c.instanceId, c.controllerPlayerId)) continue;
       if (!matches || !canActivate(s, c.instanceId, a, event) || !triggerEventScopeMatches(a, event)) continue;
@@ -2634,9 +2637,12 @@ function isBattleLossUnpreventableVpTriggerCandidate(a: AuthoringAbility): boole
 
 export function isBattleLossUnpreventableVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isBattleLossUnpreventableVpTriggerCandidate(a)) return false;
+  if (!Object.keys(a.activation).every((key) => key === 'trigger')) return false;
   if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.responseWindow).some((key) => !['order', 'passBehavior'].includes(key)) ||
+    a.responseWindow.order !== 'turn_order' || a.responseWindow.passBehavior !== 'decline_this_window' ||
+    Object.keys(a.visibility).length !== 0 || Object.keys(a.limit).length !== 0) return false;
 
   const effect = a.effects[0]!;
   const effectKeys = Object.keys(effect);

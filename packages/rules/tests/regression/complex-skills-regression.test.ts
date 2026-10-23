@@ -639,6 +639,7 @@ describe('complex servant skill regressions', () => {
       id: 'achilles-loss',
       type: 'after_controller_loses_battle',
       playerId: 'p1',
+      battleParticipantIds: ['p1', 'p2'],
       battleResult: { winners: ['p2'], loserIds: ['p1'] },
     });
     expect(state.abilityRuntime!.revealedServants).toContain('p1');
@@ -1016,6 +1017,7 @@ describe('complex servant skill regressions', () => {
       id: 'tomoe-loss',
       type: 'after_controller_loses_battle',
       playerId: 'p1',
+      battleParticipantIds: ['p1', 'p2'],
       battleResult: { winners: ['p2'], loserIds: ['p1'] },
     });
     expect(state.players[0]!.vp).toBe(0);

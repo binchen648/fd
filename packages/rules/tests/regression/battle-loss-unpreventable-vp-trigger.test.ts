@@ -127,6 +127,22 @@ describe('P3-B21 unpreventable battle-loss VP trigger', () => {
     const extraModifier = structuredClone(ability);
     extraModifier.ruleModifiers.push(structuredClone(extraModifier.ruleModifiers[0]!));
     expect(rules.isBattleLossUnpreventableVpTriggerSemantic(extraModifier)).toBe(false);
+
+    const activationExtra = structuredClone(ability);
+    (activationExtra.activation as Record<string, unknown>).unexpected = true;
+    expect(rules.isBattleLossUnpreventableVpTriggerSemantic(activationExtra)).toBe(false);
+    const responseExtra = structuredClone(ability);
+    (responseExtra.responseWindow as Record<string, unknown>).opens = 'response_window';
+    expect(rules.isBattleLossUnpreventableVpTriggerSemantic(responseExtra)).toBe(false);
+    const responseOrder = structuredClone(ability);
+    responseOrder.responseWindow.order = 'reverse_turn_order';
+    expect(rules.isBattleLossUnpreventableVpTriggerSemantic(responseOrder)).toBe(false);
+    const responsePass = structuredClone(ability);
+    responsePass.responseWindow.passBehavior = 'pass';
+    expect(rules.isBattleLossUnpreventableVpTriggerSemantic(responsePass)).toBe(false);
+    const visibilityExtra = structuredClone(ability);
+    (visibilityExtra.visibility as Record<string, unknown>).scope = 'public';
+    expect(rules.isBattleLossUnpreventableVpTriggerSemantic(visibilityExtra)).toBe(false);
   });
 
   it('bypasses ordinary prevention and emits typed unpreventable VP evidence exactly once', () => {
@@ -204,6 +220,26 @@ describe('P3-B21 unpreventable battle-loss VP trigger', () => {
     const win = setup(raw, 7);
     rules.processAbilityEvent(win, lossEvent('b21-win', ['p1'], ['p1', 'p2']));
     expect(win.players[0]!.vp).toBe(7);
+  });
+
+  it('fails closed when losing-participant/result provenance is incomplete', () => {
+    const missingParticipants = setup(raw, 7);
+    rules.processAbilityEvent(missingParticipants, {
+      id: 'b21-missing-participants', type: 'after_controller_loses_battle', playerId: 'p1',
+      battleResult: { winners: ['p2'], loserIds: ['p1'] },
+    });
+    expect(missingParticipants.players[0]!.vp).toBe(7);
+
+    const missingLosers = setup(raw, 7);
+    rules.processAbilityEvent(missingLosers, {
+      id: 'b21-missing-losers', type: 'after_controller_loses_battle', playerId: 'p1',
+      battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p2'], loserIds: [] },
+    });
+    expect(missingLosers.players[0]!.vp).toBe(7);
+
+    const playerOnly = setup(raw, 7);
+    rules.processAbilityEvent(playerOnly, { id: 'b21-player-only', type: 'after_controller_loses_battle', playerId: 'p1' });
+    expect(playerOnly.players[0]!.vp).toBe(7);
   });
 
   it('fails closed atomically for a malformed same-family prevention exception instead of legacy fallback', () => {
