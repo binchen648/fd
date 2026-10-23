@@ -81,6 +81,12 @@ describe('P3-B19 optional post-result extra +1 VP trigger', () => {
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extra)).toBe(false);
     const trigger = structuredClone(ability); trigger.activation.trigger = 'after_controller_wins_battle';
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(trigger)).toBe(false);
+    const window = structuredClone(ability); window.responseWindow.opens = 'post_battle_optional_trigger_window';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(window)).toBe(false);
+    const player = structuredClone(ability); player.effects[0]!.player = 'target';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(player)).toBe(false);
+    const extraEffect = structuredClone(ability); extraEffect.effects.push({ type: 'adjust_victory_points', player: 'controller', amount: 1 });
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraEffect)).toBe(false);
   });
 
   it('keeps base and extra VP as two independent optional +1 responses for cost 4+', () => {
