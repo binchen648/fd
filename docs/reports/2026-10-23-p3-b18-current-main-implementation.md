@@ -1,7 +1,7 @@
 # P3-B18 current-main implementation
 
-Date: 2026-10-23  
-Base: `a07091cd02903f55b42b627ec386019e63c3ae95`  
+Date: 2026-10-23
+Base: `a07091cd02903f55b42b627ec386019e63c3ae95`
 Branch: `codex/b-p3-b18-current-main-20261023`
 
 ## Scope
@@ -31,7 +31,7 @@ inventory, governance, or sibling skill was changed.
 - B13-B17 compatibility focused run (7 files): 43/43 tests, exit 0. Included B14 shared-victory, B15 terminal source-card, B16 reveal, B17 first-loss, and B13 loss-resource suites.
 - In-process B18 fixture smoke start: emitted dynamic `httpBase`, `wsBase`, room, client, and reconnect credential successfully.
 - `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c playwright.config.ts`: historical exit 1 before test collection. The repository web-server startup failed with Node JSON-module errors (`starter-pack.json` requires an import attribute), followed by `No tests found`.
-- `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c e2e/playwright-b18.config.ts`: exit 0, Chromium 1/1. The real browser fixture covered response-window accept (+1 VP), reload/reconnect before and after resolution, stale replay, and exactly one VP event. Decline, shared-result participation/condition negatives, and duplicate/re-entry behavior are covered by the focused 6/6 regression suite; no duplicate VP event was observed in the browser replay path. This is the B18 Gate C receipt.
+- `npx playwright test e2e/fd-artoria-alt-noble-bloom-vp.spec.ts -c e2e/playwright-b18.config.ts`: exit 0, Chromium 1/1. The real browser fixture covered response-window accept (+1 VP), reload/reconnect before and after resolution, stale replay, and exactly one VP event. Decline, shared-result participation/condition negatives, and duplicate/re-entry behavior are covered by the focused 7/7 regression suite; no duplicate VP event was observed in the browser replay path. This is the B18 Gate C receipt.
 - `git diff --check`: clean.
 
 The focused 7/7 and compatibility 43/43 receipts cover accept, decline, wrong-effect and
