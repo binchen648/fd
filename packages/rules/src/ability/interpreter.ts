@@ -2901,13 +2901,16 @@ function hasExactOptionalBattleResultVpActivation(a: AuthoringAbility): boolean 
 export function isOptionalBattleResultExtraVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isOptionalBattleResultVpTriggerCandidate(a) || !hasExactOptionalBattleResultVpActivation(a)) return false;
   if (str(a.activation.phase) !== 'combat' || str(a.activation.trigger) !== 'after_battle_result_determined') return false;
+  if (Object.keys(a.activation).some((key) => !['phase', 'trigger'].includes(key))) return false;
   if (a.conditions.length !== 2 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || a.effects.length !== 1) return false;
+  if (a.conditions.some((condition) => Object.keys(condition).some((key) => key !== 'type' && key !== 'value'))) return false;
+  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 || a.effects.length !== 1) return false;
   const hasHighest = a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round');
   const hasThreshold = a.conditions.some((condition) =>
     str(condition.type) === 'highest_cost_noble_phantasm_cost_at_least' && Number(condition.value) === 4);
   const effect = a.effects[0]!;
   return hasHighest && hasThreshold &&
+    Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key)) &&
     effect.type === 'adjust_victory_points' &&
     (effect.player === undefined || effect.player === 'controller') &&
     effect.amount === 1 && Number.isSafeInteger(effect.amount);

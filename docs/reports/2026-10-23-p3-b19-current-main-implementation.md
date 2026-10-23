@@ -14,6 +14,9 @@ condition plus `highest_cost_noble_phantasm_cost_at_least(value=4)`, and one typ
 controller `adjust_victory_points(+1)` effect. B18 base and B19 extra remain two
 independent responses; cost below 4 or absent exposes no extra response.
 
+The extra-VP classifier now rejects extra activation keys, condition fields, effect
+fields, and non-empty visibility metadata before any typed or legacy resolution path.
+
 The B19 implementation work is test/fixture/report scoped because the current
 Base already contains the generic structural B19 interpreter path. No B18 behavior,
 authoring, generated content, inventory, governance, broad optional queue, or
@@ -25,6 +28,7 @@ resolution-dataflow code was changed. No identity route or legacy fallback was a
 - `npm run typecheck`: exit 0.
 - B19 focused: `battle-result-optional-extra-vp-trigger.test.ts`, 5/5, exit 0.
   Covers exact identity-free classification, threshold/condition/effect/window/trigger
+  near-misses plus extra activation/condition/effect fields and visibility metadata,
   negatives, independent base+extra +1 resolution, decline, below-threshold, unrelated
   battlefield, and malformed same-family fail-closed behavior.
 - B13-B18 compatibility: 7 files / 49 tests, exit 0. Includes B18 base, B19

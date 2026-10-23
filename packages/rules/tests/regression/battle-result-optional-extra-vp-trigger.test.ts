@@ -87,6 +87,14 @@ describe('P3-B19 optional post-result extra +1 VP trigger', () => {
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(player)).toBe(false);
     const extraEffect = structuredClone(ability); extraEffect.effects.push({ type: 'adjust_victory_points', player: 'controller', amount: 1 });
     expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraEffect)).toBe(false);
+    const extraActivation = structuredClone(ability); (extraActivation.activation as Record<string, unknown>).opens = 'legacy-route';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraActivation)).toBe(false);
+    const extraConditionField = structuredClone(ability); (extraConditionField.conditions[1] as Record<string, unknown>).source = 'legacy-route';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraConditionField)).toBe(false);
+    const extraEffectField = structuredClone(ability); (extraEffectField.effects[0] as Record<string, unknown>).causation = 'legacy-route';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(extraEffectField)).toBe(false);
+    const hiddenVisibility = structuredClone(ability); (hiddenVisibility.visibility as Record<string, unknown>).scope = 'controller';
+    expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(hiddenVisibility)).toBe(false);
   });
 
   it('keeps base and extra VP as two independent optional +1 responses for cost 4+', () => {
