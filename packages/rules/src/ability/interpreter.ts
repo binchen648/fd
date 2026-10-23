@@ -2641,7 +2641,8 @@ export function isBattleLossUnpreventableVpTriggerSemantic(a: AuthoringAbility):
   if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0) return false;
   if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.responseWindow).some((key) => !['order', 'passBehavior'].includes(key)) ||
-    a.responseWindow.order !== 'turn_order' || a.responseWindow.passBehavior !== 'decline_this_window' ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
     Object.keys(a.visibility).length !== 0 || Object.keys(a.limit).length !== 0) return false;
 
   const effect = a.effects[0]!;

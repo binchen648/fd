@@ -538,11 +538,17 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
+      const preservesEmptyForcedBattleLossResponse = str(a.kind) === 'forced_trigger' &&
+        str(activation.trigger) === 'after_controller_loses_battle' &&
+        nodes(a.effects).length === 1 && str(nodes(a.effects)[0]?.type) === 'adjust_victory_points' &&
+        Number(nodes(a.effects)[0]?.amount) === -5 && nodes(a.ruleModifiers).length === 1 &&
+        str(nodes(a.ruleModifiers)[0]?.operation) === 'ignore' && str(nodes(a.ruleModifiers)[0]?.rule) === 'effect_prevention' &&
+        Object.keys(response).length === 0;
       const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,
         conditions: nodes(a.conditions), targets: nodes(a.targets), effects: nodes(a.effects),
         cost: Array.isArray(a.cost) ? nodes(a.cost) : a.cost ? [node(a.cost)] : [],
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
-        responseWindow: { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
+        responseWindow: preservesEmptyForcedBattleLossResponse ? {} : { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
