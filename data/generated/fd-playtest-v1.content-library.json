@@ -8021,10 +8021,7 @@
             ],
             "creates": [],
             "lifecycle": {},
-            "responseWindow": {
-              "order": "turn_order",
-              "passBehavior": "decline_this_window"
-            },
+            "responseWindow": {},
             "limit": {},
             "visibility": {},
             "execution": {
@@ -10968,11 +10965,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+    "definitionHash": "c1e6f581adca6f57d6454fb97a8ebbec5c9aef48caa80b509317c346f87e85bc",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce"
+      "definitionHash": "c1e6f581adca6f57d6454fb97a8ebbec5c9aef48caa80b509317c346f87e85bc"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
