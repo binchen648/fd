@@ -2877,8 +2877,7 @@ function isOptionalBattleResultVpTriggerCandidate(a: AuthoringAbility): boolean 
   return a.kind === 'optional_trigger' &&
     str(a.activation.phase) === 'combat' &&
     str(a.activation.trigger) === 'after_battle_result_determined' &&
-    a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round') &&
-    a.effects.some((effect) => str(effect.type) === 'adjust_victory_points');
+    a.conditions.some((condition) => str(condition.type) === 'controller_played_highest_cost_noble_phantasm_in_battle_this_round');
 }
 
 function hasExactOptionalBattleResultVpActivation(a: AuthoringAbility): boolean {
