@@ -34,7 +34,8 @@ function activate(s: ReturnType<typeof setup>, id: string, variables = {}) {
 function battle(s: ReturnType<typeof setup>, winners: string[]) {
   rules.advanceAbilityPhase(s, 'battle');
   rules.processAbilityEvent(s, { id: `battle-${s.round.roundNumber}`, type: 'after_battle_result_determined',
-    battleResult: { winners, loserIds: s.players.map(p => p.id).filter(p => !winners.includes(p)) } });
+    battleParticipantIds: ['p1', 'p2'],
+    battleResult: { winners, loserIds: ['p2'] } });
 }
 
 describe('authoring interpreter public server entry', () => {
@@ -169,7 +170,8 @@ describe('Artoria Caster authoring vertical slice', () => {
     const a = actions(s).find(a => a.type === 'decline_this_window')!;
     expect(rules.dispatchAbilityCommand(s, 'p1', { type: 'pass', windowId: a.windowId }).ok).toBe(true);
     expect(actions(s).filter(a => a.type === 'resolve_response')).toHaveLength(0);
-    rules.processAbilityEvent(s, { id: 'battle-next', type: 'after_controller_wins_battle', playerId: 'p1' });
+    rules.processAbilityEvent(s, { id: 'battle-next', type: 'after_controller_wins_battle', playerId: 'p1',
+      battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
     expect(actions(s).filter(a => a.type === 'resolve_response')).toHaveLength(1);
   });
   it('14. recon condition and directed paths come from server and reject unreachable destinations', () => {

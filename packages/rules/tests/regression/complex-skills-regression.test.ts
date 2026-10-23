@@ -478,6 +478,7 @@ describe('complex servant skill regressions', () => {
       id: 'complex-regression-win',
       type: 'after_controller_wins_battle',
       playerId: 'p1',
+      battleParticipantIds: ['p1', 'p2'],
       battleResult: { winners: ['p1'], loserIds: ['p2'] },
     });
 
