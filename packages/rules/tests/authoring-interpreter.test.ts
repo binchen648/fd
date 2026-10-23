@@ -35,7 +35,7 @@ function battle(s: ReturnType<typeof setup>, winners: string[]) {
   rules.advanceAbilityPhase(s, 'battle');
   rules.processAbilityEvent(s, { id: `battle-${s.round.roundNumber}`, type: 'after_battle_result_determined',
     battleParticipantIds: ['p1', 'p2'],
-    battleResult: { winners, loserIds: ['p2'] } });
+    battleResult: { winners, loserIds: s.players.map(p => p.id).filter(p => !winners.includes(p)) } });
 }
 
 describe('authoring interpreter public server entry', () => {
