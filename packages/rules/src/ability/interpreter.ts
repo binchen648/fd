@@ -3171,6 +3171,14 @@ function isBattleLossStateTransformCandidate(a: AuthoringAbility): boolean {
     str(a.effects[0]?.type) === 'transform_to_return_silence_on_loss';
 }
 
+function isBattleLossStateTransformFamilyShape(a: AuthoringAbility): boolean {
+  if (a.kind !== 'forced_trigger') return false;
+  const hasLossTrigger = str(a.activation.trigger) === 'after_controller_loses_battle';
+  const hasTransformEffect = a.effects.some((effect) => str(effect.type) === 'transform_to_return_silence_on_loss');
+  const hasReturnSilenceEffect = a.effects.some((effect) => str(effect.type) === 'return_silence_battle_start');
+  return hasTransformEffect || (hasLossTrigger && hasReturnSilenceEffect);
+}
+
 export function isBattleLossStateTransformSemantic(a: AuthoringAbility): boolean {
   if (!isBattleLossStateTransformCandidate(a)) return false;
   if (Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
@@ -4031,7 +4039,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     resolveAlterEgoTransformResponse(s, ctx, a);
     return;
   }
-  if (isBattleLossStateTransformCandidate(a)) {
+  if (isBattleLossStateTransformFamilyShape(a)) {
     if (!isBattleLossStateTransformSemantic(a)) reject('resolution_failed', 'Unsupported battle-loss state-transform semantic shape');
     settleBattleLossStateTransform(s, ctx);
     return;

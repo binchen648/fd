@@ -88,6 +88,20 @@ describe('P3-B23 Olga source-bound battle-loss state transform', () => {
     const extraCondition = structuredClone(ability);
     extraCondition.conditions.push({ type: 'controller_won_battle' });
     expect(rules.isBattleLossStateTransformSemantic(extraCondition)).toBe(false);
+
+    const responseWindow = structuredClone(ability);
+    responseWindow.responseWindow = { order: 'bogus' };
+    expect(rules.isBattleLossStateTransformSemantic(responseWindow)).toBe(false);
+
+    const malformedEffect = structuredClone(ability);
+    malformedEffect.effects[0]!.type = 'return_silence_battle_start';
+    const malformed = setup({ archive: { ...raw, cards: raw.cards.map((card: any) => card.id === SOURCE_DEFINITION_ID
+      ? { ...card, abilities: card.abilities.map((candidate: any) => candidate.id === ABILITY_ID
+        ? malformedEffect : candidate) } : card) } });
+    expect(() => rules.executeAbility(malformed, {
+      controllerId: 'p1', sourceCardId: SOURCE_ID, abilityId: ABILITY_ID,
+      variables: {}, selections: {}, event: lossEvent('b23-wrong-effect'),
+    })).toThrow();
   });
 
   it('does not transform an inactive skill-zone source on the loss that precedes B17 delayed activation', () => {
