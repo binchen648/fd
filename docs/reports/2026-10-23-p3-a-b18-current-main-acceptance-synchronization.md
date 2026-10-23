@@ -3,7 +3,7 @@
 Role: Codex A
 Status: `SYNCHRONIZED`
 Date: 2026-10-23
-Task: `P3-B18` / `P3-R12`  
+Task: `P3-B18` / `P3-R12`
 Classification: accepted identity-free runtime capability; zero migration credit
 
 ## Exact accepted evidence
