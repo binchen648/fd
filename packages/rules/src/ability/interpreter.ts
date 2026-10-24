@@ -3360,11 +3360,15 @@ function isPlaySourceCardWithCostResponseRouteCandidate(a: AuthoringAbility): bo
   return isPlaySourceCardWithCostResponseStructuralCandidate(a) && str(a.effects[0]?.face) === 'face_up';
 }
 
-function isPlaySourceCardWithCostResponseStructuralCandidate(a: AuthoringAbility): boolean {
+function isPlaySourceCardWithCostResponseCostFamilyShape(a: AuthoringAbility): boolean {
   if (a.kind !== 'response' || str(a.activation.trigger) !== 'controller_combat_action_window') return false;
   if (str(a.responseWindow.opens) !== 'controller_combat_action_window') return false;
   if (a.targets.length || a.creates.length || a.effects.length !== 1) return false;
-  return hasFixedManaCost(a.cost, 2) && str(a.effects[0]?.type) === 'play_source_card';
+  return str(a.effects[0]?.type) === 'play_source_card';
+}
+
+function isPlaySourceCardWithCostResponseStructuralCandidate(a: AuthoringAbility): boolean {
+  return isPlaySourceCardWithCostResponseCostFamilyShape(a) && hasFixedManaCost(a.cost, 2);
 }
 
 
@@ -4073,7 +4077,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
       throw error;
     }
   }
-  if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isFixedControllerManaCostComponent(a)) {
+  if (isPlaySourceCardWithCostResponseCostFamilyShape(a) && !isFixedControllerManaCostComponent(a)) {
     reject('resolution_failed', 'Unsupported fixed controller mana cost shape.');
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
