@@ -120,6 +120,22 @@ describe('P3-FB2-09 any-location-except-workshop movement', () => {
     wrongPlayer.effects[0]!.player = 'target';
     expect(rules.isAnyLocationExceptWorkshopMovementCandidate(wrongPlayer)).toBe(true);
     expect(rules.isAnyLocationExceptWorkshopMovementSemantic(wrongPlayer)).toBe(false);
+
+    const activationExtra = structuredClone(accepted);
+    (activationExtra.activation as Record<string, unknown>).eventPlayer = 'opponent';
+    expect(rules.isAnyLocationExceptWorkshopMovementSemantic(activationExtra)).toBe(false);
+
+    const constraintExtra = structuredClone(accepted);
+    (constraintExtra.targets[0]!.constraints[0] as Record<string, unknown>).subject = 'all_players';
+    expect(rules.isAnyLocationExceptWorkshopMovementSemantic(constraintExtra)).toBe(false);
+
+    const targetExtra = structuredClone(accepted);
+    (targetExtra.targets[0]!.count as Record<string, unknown>).exact = 1;
+    expect(rules.isAnyLocationExceptWorkshopMovementSemantic(targetExtra)).toBe(false);
+
+    const effectExtra = structuredClone(accepted);
+    (effectExtra.effects[0] as Record<string, unknown>).operation = 'teleport';
+    expect(rules.isAnyLocationExceptWorkshopMovementSemantic(effectExtra)).toBe(false);
   });
 
   it('offers every enabled legal destination except current location and Magic Workshop', () => {

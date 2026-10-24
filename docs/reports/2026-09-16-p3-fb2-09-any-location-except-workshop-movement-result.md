@@ -85,7 +85,9 @@ not Reviewer acceptance, migration credit, or an A-sync.
 - Current-main audit result: existing typed `move_player` primitive and strict
   any-enabled-location-except-workshop route satisfy authoritative movement hook,
   occupancy/enabled/locked/source-active checks, counters/log/event provenance,
-  and malformed fail-closed behavior; no production change was required.
+  and malformed fail-closed behavior. This Candidate additionally hardens exact
+  activation/target/count/constraint/effect key sets while preserving the existing
+  Ereshkigal target scope metadata; extra semantic metadata now fails closed.
 - Focused compatibility: 3 files / 20 tests passed.
 - Rules regression: 69 files / 487 tests passed.
 - Typecheck: `npm run typecheck` passed.

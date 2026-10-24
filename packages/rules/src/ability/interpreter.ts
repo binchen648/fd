@@ -3301,16 +3301,29 @@ export function isAnyLocationExceptWorkshopMovementCandidate(a: AuthoringAbility
 
 export function isAnyLocationExceptWorkshopMovementSemantic(a: AuthoringAbility): boolean {
   if (!isAnyLocationExceptWorkshopMovementCandidate(a)) return false;
+  if (!Object.keys(a.activation).every((key) => ['phase', 'opens', 'requiresSourceState'].includes(key))) return false;
   if (a.activation.requiresSourceState !== 'active' || a.conditions.length !== 0 || a.cost.length !== 0 ||
     a.creates.length !== 0 || a.ruleModifiers.length !== 0 || Object.keys(a.lifecycle).length !== 0 ||
     str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0 ||
     a.effects.length !== 1) return false;
   const target = a.targets[0]!;
   const count = node(target.count);
+  const targetScope = target.scope === undefined || target.scope === null ? undefined : node(target.scope);
   const constraints = nodes(target.constraints);
   const effect = a.effects[0]!;
   const anyEnabled = constraints.filter((constraint) => constraint.type === 'any_enabled_location');
   const notWorkshop = constraints.filter((constraint) => constraint.type === 'not_location_kind' && constraint.locationKind === 'workshop');
+  if (!Object.keys(target).every((key) => ['id', 'type', 'count', 'scope', 'constraints'].includes(key)) ||
+    (targetScope !== undefined && (Object.keys(targetScope).length !== 1 || targetScope.board !== 'current')) ||
+    !Object.keys(count).every((key) => ['min', 'max'].includes(key)) ||
+    !constraints.every((constraint) => {
+      if (constraint.type === 'any_enabled_location') return Object.keys(constraint).length === 1;
+      if (constraint.type === 'not_location_kind' && constraint.locationKind === 'workshop') {
+        return Object.keys(constraint).every((key) => ['type', 'locationKind'].includes(key)) && Object.keys(constraint).length === 2;
+      }
+      return false;
+    }) ||
+    !Object.keys(effect).every((key) => ['type', 'player', 'to'].includes(key))) return false;
   return Number(count.min) === 1 && Number(count.max) === 1 &&
     constraints.length === 2 && anyEnabled.length === 1 && notWorkshop.length === 1 &&
     nodes(target.conditions).length === 0 &&
