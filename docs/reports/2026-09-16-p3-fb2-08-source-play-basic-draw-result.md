@@ -67,3 +67,27 @@ A direct full run of `drake-authoring.test.ts` also produced 24/25 PASS; its onl
 FB2-08 does not accept broad Trigger Gateway, generic `on_card_played`, optional response triggers, event-attribute CLOSE semantics, Okita repeat-play, broad Condition Evaluation, broad PLAY, MatchSession/client/projection changes, F1 authoring migration, or F4 dispatch.
 
 Independent R25 must pin the exact candidate SHA and independently re-run the proof before A may count the 14 frozen identities as migration-ready.
+
+## Current-main FB2-08 recertification (2026-10-25)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `b11bee4067358200a5e65ae584ebfa1c94a3e86d` (FB2-07 A-sync).
+- Branch: `codex/b2-p3-fb2-08-current-main-20261025`.
+- Current-main audit result: existing strict source-play/basic-attack/draw route
+  satisfies the forced on-card-play envelope, active source, face-up controller
+  basic companion, trusted batch provenance, typed draw evidence, idempotency, and
+  malformed fail-closed boundary; no production change was required.
+- Focused compatibility: 4 files / 21 tests passed, including FB2-08 trigger,
+  TO13 interaction, CLOSE, and PLAY compatibility.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical hashes.
+- `git diff --check`: passed.
+
+No broad Trigger Gateway, generic PLAY/TO13, client/projection, authoring
+migration, or shared protocol change is claimed. Initial content build emitted the
+known environment-only contracts TS6305 diagnostic; repository typecheck and all
+tests completed successfully afterward.
