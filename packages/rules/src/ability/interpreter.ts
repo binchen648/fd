@@ -3431,15 +3431,18 @@ function isAddToAttackRouteCandidate(a: AuthoringAbility): boolean {
     hasNotControllerAtBattlefieldCondition(a);
 }
 
-function isAddToAttackStructuralCandidate(a: AuthoringAbility): boolean {
+function isAddToAttackCostFamilyShape(a: AuthoringAbility): boolean {
   if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'advance' || str(a.activation.opens) !== 'controller_action_window') return false;
-  if (a.targets.length !== 1 || a.cost.length !== 1 || a.creates.length || a.effects.length !== 1) return false;
+  if (a.targets.length !== 1 || a.creates.length || a.effects.length !== 1) return false;
   const [effect] = a.effects;
   return str(effect?.type) === 'attach_card_to_player_attack' &&
     typeof effect?.cardId === 'string' &&
     typeof effect?.target === 'string' &&
-    hasFixedManaCost(a.cost, 2) &&
     hasSingleNonControllerPlayerTarget(a.targets, str(effect.target));
+}
+
+function isAddToAttackStructuralCandidate(a: AuthoringAbility): boolean {
+  return isAddToAttackCostFamilyShape(a) && a.cost.length === 1 && hasFixedManaCost(a.cost, 2);
 }
 
 function isAddToAttackSemantic(a: AuthoringAbility): boolean {
@@ -4077,7 +4080,8 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
       throw error;
     }
   }
-  if (isPlaySourceCardWithCostResponseCostFamilyShape(a) && !isFixedControllerManaCostComponent(a)) {
+  if ((isPlaySourceCardWithCostResponseCostFamilyShape(a) || isAddToAttackCostFamilyShape(a)) &&
+    !isFixedControllerManaCostComponent(a)) {
     reject('resolution_failed', 'Unsupported fixed controller mana cost shape.');
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);

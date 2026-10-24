@@ -232,4 +232,18 @@ describe('P3-FB2-01 fixed controller mana cost component', () => {
       .toThrow('Unsupported fixed controller mana cost shape.');
     expect(JSON.stringify(session.state)).toBe(before);
   });
+
+  it('rejects malformed Maiya fixed-cost nodes before generic payment or pending-target mutation', () => {
+    const { session, playerId, military } = prepareMaiya();
+    const ability = session.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!.abilities
+      .find((candidate) => candidate.id === 'military.attach-support-shot')!;
+    ability.cost = [{ type: 'pay_mana', amount: 0, printedClause: 'unknown' }];
+    const before = JSON.stringify(session.state);
+
+    expect(() => executeAbility(session.state, {
+      controllerId: playerId, sourceCardId: military, abilityId: 'military.attach-support-shot',
+      variables: {}, selections: {},
+    })).toThrow('Unsupported fixed controller mana cost shape.');
+    expect(JSON.stringify(session.state)).toBe(before);
+  });
 });
