@@ -224,6 +224,21 @@ describe('P3-FB2-02 deployment resource reward', () => {
     expect(JSON.stringify(state)).toBe(before);
   });
 
+  it('fails forced non-resource deployment siblings closed before legacy fallback', () => {
+    for (const effects of [
+      [{ type: 'adjust_command_seals', amount: 1 }],
+      [{ type: 'move_player', to: 'shinto' }],
+    ]) {
+      const { state } = setupReward([{ type: 'adjust_mana', amount: 1 }]);
+      state.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((candidate) => candidate.id === rewardAbilityId)!.effects = effects as never;
+      const before = JSON.stringify(state);
+      expect(() => deployEvent(state, `deploy-forced-malformed-${effects[0]!.type}`)).toThrow(
+        'Unsupported deployment resource reward semantic shape',
+      );
+      expect(JSON.stringify(state)).toBe(before);
+    }
+  });
+
   it('does not narrow Ereshkigal existing any-player deployment trigger', () => {
     const pack = rules.loadAuthoringJson(ereshRaw);
     const state = createSeededGameState({ activeSeats: [1, 2] });

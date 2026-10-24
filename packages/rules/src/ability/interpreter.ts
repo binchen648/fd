@@ -2543,9 +2543,10 @@ function sourcePlayBasicAttackDrawEventScopeMatches(event: AbilityEvent, sourceC
 }
 
 function isDeploymentResourceRewardFamilyCandidate(a: AuthoringAbility): boolean {
-  return str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
-    !!str(a.activation.eventLocationId) &&
-    a.effects.some((effect) => fixedControllerResourcePrimitiveTypes.has(str(effect.type)));
+  const deploymentAtLocation = str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
+    !!str(a.activation.eventLocationId);
+  return deploymentAtLocation && (a.kind === 'forced_trigger' ||
+    a.effects.some((effect) => fixedControllerResourcePrimitiveTypes.has(str(effect.type))));
 }
 
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
