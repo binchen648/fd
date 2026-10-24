@@ -3494,6 +3494,7 @@ function containsEffectLevelOptionalCost(value: unknown): boolean {
 export function isFixedControllerManaCostComponent(a: AuthoringAbility): boolean {
   if (a.cost.length !== 1 || str(a.cost[0]?.type) !== 'pay_mana') return false;
   const cost = a.cost[0]!;
+  if (Object.keys(cost).some((key) => !['type', 'amount', 'player'].includes(key))) return false;
   if (cost.player !== undefined && cost.player !== 'controller') return false;
   if (containsEffectLevelOptionalCost([...a.effects, ...a.creates])) return false;
   const amount = cost.amount;

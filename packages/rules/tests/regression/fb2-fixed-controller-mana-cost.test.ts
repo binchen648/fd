@@ -95,6 +95,8 @@ describe('P3-FB2-01 fixed controller mana cost component', () => {
     expression.cost = [{ type: 'pay_mana', amount: { op: 'const', value: 2 } }];
     const thirdParty = structuredClone(ability);
     thirdParty.cost = [{ type: 'pay_mana', amount: 2, player: 'target_player' }];
+    const extraCostKey = structuredClone(ability);
+    extraCostKey.cost = [{ type: 'pay_mana', amount: 2, printedClause: 'pay two' }];
     const extraCost = structuredClone(ability);
     extraCost.cost = [{ type: 'pay_mana', amount: 2 }, { type: 'move_source_card', from: { zone: 'hand' }, to: { zone: 'removed_from_game' } }];
     const nonMana = structuredClone(ability);
@@ -102,7 +104,7 @@ describe('P3-FB2-01 fixed controller mana cost component', () => {
     const optionalEffectCost = structuredClone(ability);
     optionalEffectCost.effects = [{ type: 'move_card', target: 'second', to: { zone: 'skill' }, optionalCost: { type: 'pay_mana', amount: 7 } }];
 
-    for (const rejected of [zero, negative, fractional, variable, expression, thirdParty, extraCost, nonMana, optionalEffectCost]) {
+    for (const rejected of [zero, negative, fractional, variable, expression, thirdParty, extraCostKey, extraCost, nonMana, optionalEffectCost]) {
       expect(isFixedControllerManaCostComponent(rejected)).toBe(false);
     }
   });
