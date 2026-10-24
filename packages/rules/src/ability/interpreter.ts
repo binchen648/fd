@@ -2550,9 +2550,14 @@ function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
 
 export function isDeploymentResourceRewardSemantic(a: AuthoringAbility): boolean {
   if (!isDeploymentResourceRewardCandidate(a)) return false;
+  if (Object.keys(a.activation).some((key) => !['trigger', 'eventLocationId'].includes(key))) return false;
   if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
   if (a.effects.length < 1 || a.effects.length > 2) return false;
   return a.effects.every((effect) =>
     isFixedControllerResourceAdjustmentComponent(effect) && Number(effect.amount) > 0);

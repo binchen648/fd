@@ -110,6 +110,18 @@ describe('P3-FB2-02 deployment resource reward', () => {
     const target = structuredClone(pair);
     target.targets.push({ id: 'target', type: 'choose_player' });
     expect(rules.isDeploymentResourceRewardSemantic(target)).toBe(false);
+
+    const activationExtra = structuredClone(pair);
+    (activationExtra.activation as Record<string, unknown>).eventController = 'event_player';
+    expect(rules.isDeploymentResourceRewardSemantic(activationExtra)).toBe(false);
+
+    const responseMetadata = structuredClone(pair);
+    responseMetadata.responseWindow = { order: 'turn_order', priority: 'bogus' };
+    expect(rules.isDeploymentResourceRewardSemantic(responseMetadata)).toBe(false);
+
+    const visibilityMetadata = structuredClone(pair);
+    visibilityMetadata.visibility = { scope: 'public' };
+    expect(rules.isDeploymentResourceRewardSemantic(visibilityMetadata)).toBe(false);
   });
 
   it('settles one or two fixed controller rewards through typed resource evidence', () => {

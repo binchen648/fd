@@ -131,3 +131,29 @@ This candidate does not accept or promote:
 - any F1 migration.
 
 Independent P3-R19 review is required before acceptance.
+
+## Current-main FB2-02 recertification (2026-10-24)
+
+This section is the current-main Builder receipt only. It is not Reviewer acceptance,
+credit, merge, or an F1 migration claim.
+
+- Exact Base: `287058dfbfc815346a5b665e73352122f81fa58c` (FB2-01 A-sync).
+- Branch: `codex/b2-p3-fb2-02-current-main-20261024`.
+- Scope: the six identity-free F1 deployment Resource Numeric consumers named by
+  TASK P3-FB2-02; no authoring, inventory, taxonomy, or migration changes.
+- Narrow current-main hardening: deployment-resource semantics now reject unknown
+  activation keys, non-canonical response-window metadata, and non-empty visibility
+  metadata before legacy fallback. Canonical compiled defaults remain accepted.
+- Focused receipt: `fb2-deployment-resource-reward.test.ts` 7/7,
+  `trigger-resource-runtime.test.ts` 9/9, and FB2-01 compatibility
+  `fb2-fixed-controller-mana-cost.test.ts` 5/5 (21/21).
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed; the
+  command reported the canonical content, fixture, and evidence hashes without
+  modifying tracked generated files.
+- `git diff --check`: passed before report update.
+
+The implementation remains identity-free and uses the existing typed Resolution
+Data-flow. No browser Gate-C surface, server protocol, or shared resolution
+primitive was changed; no new Candidate acceptance or credit is claimed here.
