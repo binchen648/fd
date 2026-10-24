@@ -1,8 +1,8 @@
 # P3-FB2-10 Saber Magic Resistance Runtime Result
 
-Owner: Codex B2  
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`  
-Base: `09ddfaee5ea54226d232c85d80db32a7b04b186e`  
+Owner: Codex B2
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Base: `09ddfaee5ea54226d232c85d80db32a7b04b186e`
 Scope: identity-free Saber-family Magic Resistance Power sub-contract only
 
 ## Implementation
