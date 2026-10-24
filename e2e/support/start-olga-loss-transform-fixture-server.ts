@@ -1,7 +1,8 @@
 import { createMatchServer } from '../../apps/server/src/match-server';
-import { olgaHostClientId, prepareOlgaFirstLossRoom, trismegistusDefinitionId, trismegistusInstanceId } from './prepare-olga-first-loss-room';
+import { olgaHostClientId, olgaPlayerId, prepareOlgaFirstLossRoom, trismegistusDefinitionId, trismegistusInstanceId } from './prepare-olga-first-loss-room';
 const server=createMatchServer(); const port=await server.listen(0); const roomId=`fd-b23-olga-${process.pid}`;
 const projection=server.hub.createRoom({roomId,hostClientId:olgaHostClientId,hostName:'房主',seed:20260904}); const room=server.hub.getRoom(roomId); prepareOlgaFirstLossRoom(room); const session=room.session; if(!session) throw new Error('B23 fixture requires started session');
 const state=session.state; const source=state.cards.find(c=>c.instanceId===trismegistusInstanceId || c.definitionId===trismegistusDefinitionId); if(!source) throw new Error('B23 fixture source missing'); source.instanceId=trismegistusInstanceId; source.zone='field'; source.visibility={scope:'public'}; state.abilityRuntime.cardState[source.instanceId]={active:true,faceDown:false,playedRound:1};
+const firstLossActivator=state.cards.find(c=>c.controllerPlayerId===olgaPlayerId && c.definitionId==='master.olga-marie.skill.astronomical-science'); if(firstLossActivator){ state.cards=state.cards.filter(c=>c.instanceId!==firstLossActivator.instanceId); delete state.abilityRuntime.cardState[firstLossActivator.instanceId]; }
 const client=projection.clients.find(c=>c.id===olgaHostClientId); if(!client) throw new Error('B23 fixture host missing'); process.stdout.write(`${JSON.stringify({httpBase:`http://127.0.0.1:${port}`,wsBase:`ws://127.0.0.1:${port}`,roomId,clientId:client.id,reconnectToken:room.getIssuedCredential(client.id)})}\n`);
 const shutdown=async()=>{await server.close();process.exit(0);}; process.once('SIGINT',shutdown);process.once('SIGTERM',shutdown);
