@@ -63,3 +63,26 @@ Focused compatibility result:
 This candidate does not promote generic Card Zone, Trigger Gateway, broad PLAY, the 14 mixed servant draw/play rows as complete routes, variable/custom-deck draw, Result Binding, Target/PendingInteraction, Visibility, Lifecycle, Modifier/Power, Battle, Special, or F1 migration.
 
 The A-owned 23-identity F1 component membership remains evidence alignment only. Waver-shaped direct route acceptance still requires independent R23 review before any migration claim.
+
+## Current-main FB2-06 recertification (2026-10-25)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `d0a7aa41af7dd922334034c117a9025027eafb85` (FB2-05 A-sync).
+- Branch: `codex/b2-p3-fb2-06-current-main-20261025`.
+- Current-main audit result: existing fixed-controller ordinary-deck draw component
+  and narrow Waver `advance/outpost` pay-one/draw-two route satisfy the contract;
+  no production change was required.
+- Focused compatibility: 4 files / 20 tests passed, including FB2-06, FB2-01,
+  Card Action PLAY, and FB2-03 component coverage.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical hashes.
+- `git diff --check`: passed.
+
+No generic Card Zone/PLAY/Trigger/Result Binding promotion, authoring migration,
+or shared protocol change is claimed. Initial content build emitted the known
+environment-only contracts TS6305 diagnostic; repository typecheck and all tests
+completed successfully afterward.
