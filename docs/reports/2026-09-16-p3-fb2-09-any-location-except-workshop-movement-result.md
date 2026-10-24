@@ -88,12 +88,20 @@ not Reviewer acceptance, migration credit, or an A-sync.
   and malformed fail-closed behavior. This Candidate additionally hardens exact
   activation/target/count/constraint/effect key sets while preserving the existing
   Ereshkigal target scope metadata; extra semantic metadata now fails closed.
-- Focused compatibility: 3 files / 20 tests passed.
+- Focused compatibility: 3 files / 52 tests passed (movement 7/7, complex 37/37,
+  Leonidas consumer 8/8). The Leonidas synthetic fixture was aligned with the
+  strict target contract by removing its empty `target.conditions: []`; no
+  production guard was relaxed.
 - Rules regression: 69 files / 487 tests passed.
 - Typecheck: `npm run typecheck` passed.
 - Generated-content determinism: `npm run verify:generated-content` passed with
   unchanged canonical hashes.
 - `git diff --check`: passed.
+
+- Full CI: 189 files passed; 6 historical Phase-3 evidence suites failed with
+  8 tests because referenced immutable historical blobs are unavailable in this
+  checkout. The FB2-09 movement and Leonidas suites passed; these failures are
+  unrelated to the Builder diff and are not represented as passes.
 
 No generic Movement, arbitrary/forced/third-party movement, authoring migration, or
 shared protocol change is claimed. Initial content build emitted the known

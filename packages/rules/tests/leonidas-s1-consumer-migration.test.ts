@@ -42,7 +42,7 @@ function probeArchive(): any {
       conditions: [],
       targets: [{
         id: 'destination', type: 'location', count: { min: 1, max: 1 },
-        constraints: [{ type: 'any_enabled_location' }, { type: 'not_location_kind', locationKind: 'workshop' }], conditions: [],
+        constraints: [{ type: 'any_enabled_location' }, { type: 'not_location_kind', locationKind: 'workshop' }],
       }],
       effects: [{ type: 'move_player', player: 'controller', to: 'destination' }],
       cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
