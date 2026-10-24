@@ -4081,7 +4081,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     }
   }
   if ((isPlaySourceCardWithCostResponseCostFamilyShape(a) || isAddToAttackCostFamilyShape(a)) &&
-    !isFixedControllerManaCostComponent(a)) {
+    (!isFixedControllerManaCostComponent(a) || !hasFixedManaCost(a.cost, 2))) {
     reject('resolution_failed', 'Unsupported fixed controller mana cost shape.');
   }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);

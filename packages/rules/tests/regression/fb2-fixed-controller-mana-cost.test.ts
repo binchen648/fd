@@ -246,4 +246,27 @@ describe('P3-FB2-01 fixed controller mana cost component', () => {
     })).toThrow('Unsupported fixed controller mana cost shape.');
     expect(JSON.stringify(session.state)).toBe(before);
   });
+
+  it.each([1, 3])('rejects Kayneth fixed-cost amount %d before payment or source movement', (amount) => {
+    const { session, playerId, volumen } = prepareVolumen();
+    const ability = session.state.abilityRuntime!.pack.cards['master.kayneth.deck.volumen-hydrargyrum']!.abilities
+      .find((candidate) => candidate.id === 'volumen.extra-play')!;
+    ability.cost[0]!.amount = amount;
+    const before = JSON.stringify(session.state);
+    expect(() => executeAbility(session.state, volumenContext(playerId, volumen)))
+      .toThrow('Unsupported fixed controller mana cost shape.');
+    expect(JSON.stringify(session.state)).toBe(before);
+  });
+
+  it('rejects Maiya positive wrong fixed amount before payment or pending-target mutation', () => {
+    const { session, playerId, military } = prepareMaiya();
+    const ability = session.state.abilityRuntime!.pack.cards['master.maiya.skill.military']!.abilities
+      .find((candidate) => candidate.id === 'military.attach-support-shot')!;
+    ability.cost[0]!.amount = 3;
+    const before = JSON.stringify(session.state);
+    expect(() => executeAbility(session.state, {
+      controllerId: playerId, sourceCardId: military, abilityId: 'military.attach-support-shot', variables: {}, selections: {},
+    })).toThrow('Unsupported fixed controller mana cost shape.');
+    expect(JSON.stringify(session.state)).toBe(before);
+  });
 });

@@ -4,14 +4,14 @@
 - Branch: `codex/b2-p3-fb2-01-current-main-20261024`
 - Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 
-Current-main audit retained the existing identity-free fixed controller mana component and added narrow fail-closed guards for both adopted parent families (Kayneth source-card PLAY and Maiya ADD_TO_ATTACK): the sole top-level `pay_mana` node rejects unknown fields, and each adopted family rejects zero, multiple, variable, non-mana, wrong-amount, and malformed fixed-cost metadata before generic legacy-cost fallback. Execution regressions prove mana, source zone, pending decisions, and events remain unchanged. Unrelated legacy cost families remain unchanged.
+Current-main audit retained the existing identity-free fixed controller mana component and added narrow fail-closed guards for both adopted parent families (Kayneth source-card PLAY and Maiya ADD_TO_ATTACK): the sole top-level `pay_mana` node rejects unknown fields, and each adopted family requires its exact canonical fixed amount of 2 while rejecting zero, multiple, variable, non-mana, wrong-amount, and malformed metadata before generic legacy-cost fallback. Execution regressions prove mana, source zone, pending decisions, and events remain unchanged. Unrelated legacy cost families remain unchanged.
 
 Verification:
 
 - `npm ci --offline --ignore-scripts`: exit 0 (workspace dependency reconstruction).
 - `npm run typecheck`: exit 0.
-- FB2-01 + Maiya/Kayneth focused suites: 3 files / 26 tests passed.
-- Current regression suite: 69 files / 491 tests passed.
+- FB2-01 + Maiya/Kayneth focused suites: 3 files / 29 tests passed.
+- Current regression suite: 69 files / 494 tests passed.
 - `npm run test:ci`: 189 files / 1518 passed / 8 failed / 114 skipped. The 8 failures are historical Phase-3 provenance/blob references to unavailable old artifacts, not FB2-01 behavior; no new deterministic runtime failure was observed.
 - Gate C: not required by the FB2-01 contract because payment behavior does not change transport, projection, pending interaction, reconnect, or stale-command protocols.
 - `git diff --check`: passed.
