@@ -65,3 +65,27 @@ Production:
 Tests:
 - `packages/rules/tests/regression/fb2-fixed-controller-set-mana.test.ts`
 - `packages/rules/tests/regression/resolution-dataflow.test.ts`
+
+## Current-main FB2-05 recertification (2026-10-24)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `d4d4049476033393d5aa29b000de44c7e0f19370` (FB2-04 A-sync).
+- Branch: `codex/b2-p3-fb2-05-current-main-20261024`.
+- Current-main audit result: the existing typed `set_mana` primitive and strict
+  fixed-controller component satisfy exact assignment, cap interval validation,
+  gain-block distinction, typed actual delta/event, same-value no-op, and rollback;
+  no production change was required.
+- Focused compatibility: 4 files / 33 tests passed, covering primitive schemas,
+  exact-set semantics, game-start parent compatibility, and Resolution Data-flow.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical hashes.
+- `git diff --check`: passed.
+
+No Trigger Gateway, parent route, authoring migration, or shared protocol change is
+claimed. The initial dependency setup emitted an environment-only content TS6305
+diagnostic because contracts `dist` was absent; repository typecheck and all focused
+tests completed successfully afterward.
