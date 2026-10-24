@@ -66,3 +66,29 @@ No browser Gate C is required because no projection, pending interaction, reconn
 This candidate does not promote broad `GENERIC_RESOURCE_NUMERIC`, generic parent routing, Trigger Gateway, Condition, Power, Battle, Card Zone, Interaction, Lifecycle, command-seal resource semantics, set/transfer/swap, variable resource expressions, or any F1 migration.
 
 Independent P3-R20 review is required.
+
+## Current-main FB2-03 recertification (2026-10-24)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `5e7211ed84d8e3bb0df3653610a2d488119e14ce` (FB2-02 A-sync).
+- Branch: `codex/b2-p3-fb2-03-current-main-20261024`.
+- Current-main audit result: no production change required. The existing
+  `isFixedControllerResourceAdjustmentComponent` is identity-free, accepts only
+  `adjust_mana`/`adjust_victory_points`, implicit or explicit controller, and
+  safe-integer literals with no hidden fields; accepted parent routes remain
+  independently bounded.
+- Focused compatibility: 4 files / 26 tests passed, including FB2-03 component,
+  TO-11 trigger, FB2-02 deployment, and FB2-01 fixed-cost coverage.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical content, fixture, and evidence hashes.
+- `git diff --check`: passed.
+
+The contract remains component-only: no F1 authoring migration, broad Resource
+Numeric route, parent gateway, Resolution Data-flow change, or credit claim is
+made. The initial dependency setup recorded an environment-only `@fd/contracts`
+missing-build-script / content TS6305 diagnostic; focused tests and repository
+typecheck completed successfully after dependency installation.
