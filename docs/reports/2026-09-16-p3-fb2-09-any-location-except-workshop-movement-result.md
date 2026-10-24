@@ -74,3 +74,26 @@ No F1 authoring is migrated by B2.
 ## Not promoted
 
 This candidate does not accept broad Movement, arbitrary `move_player`, forced/third-party movement, deployment, arrow/range movement, movement costs/conditions, multi-effect movement, movement-rule modifiers, or generic target selection. FM02 remains blocked on independent R27 acceptance and fresh A reconciliation.
+
+## Current-main FB2-09 recertification (2026-10-25)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `147bc8282be573d40441df8f9aee0d5f39ba446a` (FB2-08 A-sync).
+- Branch: `codex/b2-p3-fb2-09-current-main-20261025`.
+- Current-main audit result: existing typed `move_player` primitive and strict
+  any-enabled-location-except-workshop route satisfy authoritative movement hook,
+  occupancy/enabled/locked/source-active checks, counters/log/event provenance,
+  and malformed fail-closed behavior; no production change was required.
+- Focused compatibility: 3 files / 20 tests passed.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical hashes.
+- `git diff --check`: passed.
+
+No generic Movement, arbitrary/forced/third-party movement, authoring migration, or
+shared protocol change is claimed. Initial content build emitted the known
+environment-only contracts TS6305 diagnostic; repository typecheck and all tests
+completed successfully afterward.
