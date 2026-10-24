@@ -4073,6 +4073,9 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
       throw error;
     }
   }
+  if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isFixedControllerManaCostComponent(a)) {
+    reject('resolution_failed', 'Unsupported fixed controller mana cost shape.');
+  }
   if (isAddToAttackRouteCandidate(a)) assertAddToAttackSupportAvailable(s, ctx, a);
   preflightFaceUpEffectPlays(s, ctx, a);
   const p = player(s, ctx.controllerId); let manaCost = 0;

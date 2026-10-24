@@ -205,4 +205,16 @@ describe('P3-FB2-01 fixed controller mana cost component', () => {
     expect(session.state.cards.find((candidate) => candidate.instanceId === volumen)).toMatchObject({ zone: 'hand' });
     expect(session.state.abilityRuntime!.events).toHaveLength(eventCount);
   });
+
+  it('rejects malformed Kayneth fixed-cost metadata before legacy payment or source movement', () => {
+    const { session, playerId, volumen } = prepareVolumen();
+    const ability = session.state.abilityRuntime!.pack.cards['master.kayneth.deck.volumen-hydrargyrum']!.abilities
+      .find((candidate) => candidate.id === 'volumen.extra-play')!;
+    ability.cost[0]!.printedClause = 'unknown';
+    const before = JSON.stringify(session.state);
+
+    expect(() => executeAbility(session.state, volumenContext(playerId, volumen)))
+      .toThrow('Unsupported fixed controller mana cost shape.');
+    expect(JSON.stringify(session.state)).toBe(before);
+  });
 });

@@ -4,14 +4,14 @@
 - Branch: `codex/b2-p3-fb2-01-current-main-20261024`
 - Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 
-Current-main audit retained the existing identity-free fixed controller mana component and added one narrow fail-closed guard: the sole top-level `pay_mana` node now rejects unknown fields before parent-route adoption. No F1 authoring, inventory, taxonomy, governance, MatchSession, projection, or generic legacy-cost behavior was changed.
+Current-main audit retained the existing identity-free fixed controller mana component and added narrow fail-closed guards: the sole top-level `pay_mana` node rejects unknown fields, and an adopted source-card PLAY route rejects malformed fixed-cost metadata before generic legacy-cost fallback. The execution regression proves mana, source zone, and events remain unchanged. No F1 authoring, inventory, taxonomy, governance, MatchSession, projection, or generic legacy-cost behavior was changed.
 
 Verification:
 
 - `npm ci --offline --ignore-scripts`: exit 0 (workspace dependency reconstruction).
 - `npm run typecheck`: exit 0.
-- FB2-01 + Maiya/Kayneth focused suites: 3 files / 22 tests passed.
-- Current regression suite: 69 files / 487 tests passed.
+- FB2-01 + Maiya/Kayneth focused suites: 3 files / 23 tests passed.
+- Current regression suite: 69 files / 488 tests passed.
 - `npm run test:ci`: 189 files / 1518 passed / 8 failed / 114 skipped. The 8 failures are historical Phase-3 provenance/blob references to unavailable old artifacts, not FB2-01 behavior; no new deterministic runtime failure was observed.
 - Gate C: not required by the FB2-01 contract because payment behavior does not change transport, projection, pending interaction, reconnect, or stale-command protocols.
 - `git diff --check`: passed.
