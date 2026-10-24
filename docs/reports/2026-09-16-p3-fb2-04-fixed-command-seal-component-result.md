@@ -55,3 +55,26 @@ The first focused run showed that routing every direct Resource Numeric effect t
 ## Non-promotion
 
 This candidate does not accept command-seal payment, all-opponent adjustment, same-battlefield-opponent adjustment, restore-all, generic Target Selection, Trigger Gateway, broad Resource Numeric, migration, or later-wave semantics.
+
+## Current-main FB2-04 recertification (2026-10-24)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `771099eedb948c796b319d92cc5eca349d8a3a6f` (FB2-03 A-sync).
+- Branch: `codex/b2-p3-fb2-04-current-main-20261024`.
+- Current-main audit result: existing fixed command-seal component and its direct
+  action/B13 parent reuse satisfy the narrow contract; no production change was
+  required in this recertification.
+- Focused compatibility: 4 files / 22 tests passed, including FB2-04 component,
+  direct Resource Numeric, B13 battle-loss, and FB2-03 component coverage.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical hashes.
+- `git diff --check`: passed.
+
+The accepted scope remains fixed signed controller `adjust_command_seals` with
+optional directive metadata, typed actual delta and atomic underflow behavior. No
+F1 authoring, broad Resource Numeric, target semantics, or shared primitive change
+is claimed.
