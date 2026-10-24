@@ -143,11 +143,14 @@ credit, merge, or an F1 migration claim.
   TASK P3-FB2-02; no authoring, inventory, taxonomy, or migration changes.
 - Narrow current-main hardening: deployment-resource semantics now reject unknown
   activation keys, non-canonical response-window metadata, and non-empty visibility
-  metadata before legacy fallback. Canonical compiled defaults remain accepted.
-- Focused receipt: `fb2-deployment-resource-reward.test.ts` 7/7,
+  metadata before legacy fallback. The same family guard also rejects a wrong-kind
+  deployment/resource sibling with a non-empty location before legacy fallback;
+  canonical compiled defaults remain accepted. Ereshkigal's no-location any-player
+  deployment shape remains outside this guard.
+- Focused receipt: `fb2-deployment-resource-reward.test.ts` 8/8,
   `trigger-resource-runtime.test.ts` 9/9, and FB2-01 compatibility
-  `fb2-fixed-controller-mana-cost.test.ts` 5/5 (21/21).
-- Rules regression: 69 files / 487 tests passed.
+  `fb2-fixed-controller-mana-cost.test.ts` 5/5 (22/22).
+- Rules regression: 69 files / 488 tests passed.
 - Typecheck: `npm run typecheck` passed.
 - Generated-content determinism: `npm run verify:generated-content` passed; the
   command reported the canonical content, fixture, and evidence hashes without

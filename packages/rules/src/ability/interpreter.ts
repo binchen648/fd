@@ -2542,14 +2542,18 @@ function sourcePlayBasicAttackDrawEventScopeMatches(event: AbilityEvent, sourceC
   return sourcePlayedFaceUp && basicCompanion;
 }
 
+function isDeploymentResourceRewardFamilyCandidate(a: AuthoringAbility): boolean {
+  return str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
+    !!str(a.activation.eventLocationId) &&
+    a.effects.some((effect) => fixedControllerResourcePrimitiveTypes.has(str(effect.type)));
+}
+
 function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
-  return a.kind === 'forced_trigger' &&
-    str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
-    !!str(a.activation.eventLocationId);
+  return a.kind === 'forced_trigger' && isDeploymentResourceRewardFamilyCandidate(a);
 }
 
 export function isDeploymentResourceRewardSemantic(a: AuthoringAbility): boolean {
-  if (!isDeploymentResourceRewardCandidate(a)) return false;
+  if (a.kind !== 'forced_trigger' || !isDeploymentResourceRewardFamilyCandidate(a)) return false;
   if (Object.keys(a.activation).some((key) => !['trigger', 'eventLocationId'].includes(key))) return false;
   if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
@@ -3753,7 +3757,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isGameStartFixedControllerManaSetCandidate(a)) reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
-  if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
+  if (isDeploymentResourceRewardFamilyCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
   if (isBattleLossServantRevealCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss servant reveal semantic shape');

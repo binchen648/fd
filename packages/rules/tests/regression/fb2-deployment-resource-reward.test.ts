@@ -208,6 +208,22 @@ describe('P3-FB2-02 deployment resource reward', () => {
     expect(JSON.stringify(state)).toBe(before);
   });
 
+  it('fails a wrong-kind deployment resource sibling closed before legacy fallback', () => {
+    const raw = rewardRaw([{ type: 'adjust_mana', amount: 1 }]);
+    raw.cards.find((candidate: { id: string }) => candidate.id === sourceDefinitionId)!.abilities[0]!.kind = 'residual';
+    const pack = rules.loadAuthoringJson(raw);
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.players[0]!.masterCardId = raw.id;
+    state.players[0]!.locationId = 'magic_workshop';
+    rules.initializeAbilityRuntime(state, pack, { seed: 20260918 });
+    const sourceId = 'fb2-deployment-resource-wrong-kind';
+    state.cards.push({ instanceId: sourceId, definitionId: sourceDefinitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } });
+    const before = JSON.stringify(state);
+    expect(() => deployEvent(state, 'deploy-wrong-kind')).toThrow('Unsupported deployment resource reward semantic shape');
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
   it('does not narrow Ereshkigal existing any-player deployment trigger', () => {
     const pack = rules.loadAuthoringJson(ereshRaw);
     const state = createSeededGameState({ activeSeats: [1, 2] });
