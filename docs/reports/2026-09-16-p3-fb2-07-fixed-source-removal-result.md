@@ -36,3 +36,27 @@ The typed primitive/component rejects unsupported destination, non-controller de
 ## Scope judgment
 
 Exact F1 component alignment is 12 identities. Complete migration readiness added by FB2-07 is `0`; this result must not be reported as a 12-card F4 batch.
+
+## Current-main FB2-07 recertification (2026-10-25)
+
+This section is the Builder receipt from the exact current-main A-sync Base. It is
+not Reviewer acceptance, migration credit, or an A-sync.
+
+- Exact Base: `b25e1c2390b44cdb924abf96ce723e82aaafd77b` (FB2-06 A-sync).
+- Branch: `codex/b2-p3-fb2-07-current-main-20261025`.
+- Current-main audit result: existing typed `move_source_card` support for
+  controller `removed_from_game` and strict source-removal component satisfy the
+  ownership, public/inactive, typed evidence, rollback, and B15 skill-destination
+  compatibility contract; no production change was required.
+- Focused compatibility: 3 files / 22 tests passed, including source removal,
+  B15 terminal source-card zone, and B23 source-bound transform coverage.
+- Rules regression: 69 files / 487 tests passed.
+- Typecheck: `npm run typecheck` passed.
+- Generated-content determinism: `npm run verify:generated-content` passed with
+  unchanged canonical hashes.
+- `git diff --check`: passed.
+
+No generic Card Zone, arbitrary source movement, Trigger/Lifecycle/Target route,
+authoring migration, or shared protocol change is claimed. Initial content build
+emitted the known environment-only contracts TS6305 diagnostic; repository
+typecheck and all tests completed successfully afterward.
