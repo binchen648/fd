@@ -300,4 +300,25 @@ describe('P3-B23 Olga source-bound battle-loss state transform', () => {
     })).toThrow();
     expect(JSON.stringify(state)).toBe(before);
   });
+
+  it('fails closed when the transform effect is wrapped in the wrong ability kind', () => {
+    const malformed = structuredClone(raw);
+    const source = malformed.cards.find((card: { id: string }) => card.id === SOURCE_DEFINITION_ID);
+    const ability = source.abilities.find((candidate: { id: string }) => candidate.id === ABILITY_ID);
+    ability.kind = 'passive';
+    const state = setup({ archive: malformed });
+    const loaded = state.abilityRuntime!.pack.cards[SOURCE_DEFINITION_ID]!.abilities.find((candidate) => candidate.id === ABILITY_ID)!;
+    expect(rules.isBattleLossStateTransformSemantic(loaded)).toBe(false);
+
+    const before = JSON.stringify(state);
+    expect(() => rules.executeAbility(state, {
+      controllerId: 'p1',
+      sourceCardId: SOURCE_ID,
+      abilityId: ABILITY_ID,
+      variables: {},
+      selections: {},
+      event: lossEvent('b23-wrong-kind'),
+    })).toThrow(/Unsupported battle-loss state-transform semantic shape/);
+    expect(JSON.stringify(state)).toBe(before);
+  });
 });

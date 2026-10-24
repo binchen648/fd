@@ -6,10 +6,13 @@
 
 This candidate is a narrow current-main B23 correction. The identity-free loss-transform family now rejects the malformed Return Silence same-family route before legacy extended-effect fallback, while preserving canonical compiled response defaults. The focused regression also covers malformed effect and response-window shapes. No authoring, taxonomy, coverage, inventory, or B13-B22 production behavior was changed.
 
+The final correction also treats any ability containing the B23 transform effect as a same-family shape before semantic dispatch, so a wrong `kind` cannot fall through to the legacy extended-effect path. A dedicated wrong-kind regression proves atomic rejection.
+
 Checks:
 
 - `npm run typecheck`: exit 0.
 - B23 focused `battle-loss-state-transform.test.ts`: 9/9.
+- B23 focused after final fail-closed correction: 10/10; Olga activation compatibility: 8/8.
 - B13/B21 loss compatibility focused files: 25/25.
 - `git diff --check`: passed after the fixture correction.
 - Chromium Gate C: passed 1/1. The same-process fixture reaches the Olga action projection, end-turn resolves the authoritative loss and round-end transition, reconnect preserves the transformed source, and stale replay is rejected without a second mutation.

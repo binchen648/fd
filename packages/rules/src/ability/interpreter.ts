@@ -3172,11 +3172,13 @@ function isBattleLossStateTransformCandidate(a: AuthoringAbility): boolean {
 }
 
 function isBattleLossStateTransformFamilyShape(a: AuthoringAbility): boolean {
-  if (a.kind !== 'forced_trigger') return false;
   const hasLossTrigger = str(a.activation.trigger) === 'after_controller_loses_battle';
   const hasTransformEffect = a.effects.some((effect) => str(effect.type) === 'transform_to_return_silence_on_loss');
   const hasReturnSilenceEffect = a.effects.some((effect) => str(effect.type) === 'return_silence_battle_start');
-  return hasTransformEffect || (hasLossTrigger && hasReturnSilenceEffect);
+  // Any occurrence of the state-transform effect belongs to this family even
+  // when its surrounding ability shape is malformed.  That keeps malformed
+  // same-family abilities out of the legacy extended-effect fallback.
+  return hasTransformEffect || (a.kind === 'forced_trigger' && hasLossTrigger && hasReturnSilenceEffect);
 }
 
 export function isBattleLossStateTransformSemantic(a: AuthoringAbility): boolean {
