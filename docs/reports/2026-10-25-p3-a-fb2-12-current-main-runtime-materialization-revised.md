@@ -14,6 +14,8 @@ Status: `MATERIALIZED_DEPENDENCY_CANDIDATE_REVISED`
 
 Retained only the accepted FB2-12 runtime/test paths: `interpreter.ts`, `loader.ts`, `types.ts`, `combat-resolver.ts`, `schema/game.ts`, and the FB2-12 focused regression. The FB2-10 Magic Resistance helper/route and execution guards are absent. The current FB2-11 standalone `game.round_number` loader/evaluator guards remain intact; no redundant interpreter `name === game.round_number` bypass was added. FM03/FM04/FM06 authoring, coverage, generated artifacts, and task-index changes remain excluded.
 
+The semantic classifier now requires the typed numeric literal `limit.uses === 1`; the focused regression covers the malformed string `'1'` near-miss and rejects it independently of loader diagnostics.
+
 ## Verification
 
 - `npm run typecheck`: passed.

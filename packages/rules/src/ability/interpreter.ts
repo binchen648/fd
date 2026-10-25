@@ -1395,7 +1395,7 @@ export function isPresenceConcealmentAssassinationSemantic(a: AuthoringAbility):
     str(a.responseWindow.order) === 'turn_order' &&
     str(a.responseWindow.passBehavior) === 'decline_this_window' &&
     responseKeys.every((key) => ['opens', 'order', 'passBehavior'].includes(key)) &&
-    str(a.limit.type) === 'per_round' && Number(a.limit.uses) === 1 && str(a.limit.scope) === 'this_card' &&
+    str(a.limit.type) === 'per_round' && a.limit.uses === 1 && str(a.limit.scope) === 'this_card' &&
     limitKeys.every((key) => ['type', 'uses', 'scope'].includes(key));
 }
 

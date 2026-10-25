@@ -108,6 +108,7 @@ describe('P3-FB2-12 Presence Concealment pre-scoring response', () => {
       (a) => { a.responseWindow.order = 'simultaneous'; },
       (a) => { a.limit.type = 'per_game'; },
       (a) => { a.limit.uses = 2; },
+      (a) => { (a.limit as any).uses = '1'; },
       (a) => { a.cost.push({ type: 'pay_mana', amount: 1 }); },
     ];
     for (const mutate of mutations) {
