@@ -4,8 +4,9 @@ Status: `MIGRATION_CANDIDATE` only. This receipt is not Reviewer acceptance, cre
 
 ## Lineage and scope
 
-- Exact current-main Base: `d5c7f7140b84aa7efe045a3730c9eddd0d0ce296`.
-- Branch: `codex/s-p3-fm05-current-main-20261025`.
+- Exact materialized current-main Base: `c2df64f2cee72652a610ac5aec4f478fafbbc1f3` (started from A-sync `d5c7f7140b84aa7efe045a3730c9eddd0d0ce296`).
+- Branch: `codex/s-p3-fm05-current-main-materialized-20261025`.
+- The Base explicitly contains only the accepted FB2-02 and FB2-11 runtime/test deltas documented in `2026-10-25-p3-fm05-current-main-dependency-materialization.md`; historical FM03/FM04 drift is excluded.
 - Scope is authoring-only: the ten canonical servant archives, one focused migration test, and this report.
 - No runtime, coverage, generated artifact, unrelated servant, or governance file was changed.
 
