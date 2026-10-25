@@ -44,7 +44,9 @@ the variable branch from bypassing operator validation.
 Name-based aliases (`{ name: 'game.round_number' }` and
 `{ op: 'var', name: 'game.round_number' }`) are also rejected consistently;
 the loader does not report them as valid metrics and the evaluator cannot
-execute them.
+execute them. The evaluator performs this exact-shape check before
+`formula`, `formulaRef`, variable, or operator dispatch, covering aliases and
+operator/formula payloads that previously bypassed the guard.
 
 The first focused attempt before dependency setup exited nonzero because the
 fresh worktree had no installed `vitest`/built workspace packages. After

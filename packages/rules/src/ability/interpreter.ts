@@ -257,19 +257,19 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
     }
     if (!value || typeof value !== 'object' || Array.isArray(value)) reject('unsupported', 'Formula must be a controlled AST');
     const n = node(value);
+    if (n.var === 'game.round_number' || n.name === 'game.round_number') {
+      const keys = Object.keys(value as Record<string, unknown>);
+      if (keys.length !== 1 || keys[0] !== 'var' || n.var !== 'game.round_number') {
+        return reject('unsupported', 'game.round_number must be a standalone read-only variable');
+      }
+      return s.round.roundNumber;
+    }
     if (n.formula !== undefined) return visit(n.formula);
     if (n.formulaRef === 'cardFace.basePower') return visit(definition(s, sourceCardId)?.cardFace.basePower ?? 0);
     if (n.var !== undefined || n.op === 'var') {
       const name = str(n.var ?? n.name);
       // Check standard variables first
       if (name === 'controller.availableMana') return player(s, controllerId).mana;
-      if (name === 'game.round_number') {
-        const keys = Object.keys(value as Record<string, unknown>);
-        if (keys.length !== 1 || keys[0] !== 'var' || n.var !== 'game.round_number') {
-          return reject('unsupported', 'game.round_number must be a standalone read-only variable');
-        }
-        return s.round.roundNumber;
-      }
       if (name === 'consecutive_play_rounds') {
         const r = runtime(s);
         return r.consecutivePlayRounds[sourceCardId] ?? 1;
