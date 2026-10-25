@@ -24,9 +24,7 @@
       "printedText": "将【佛拉格拉克】加入你的技能区。",
       "cardFace": {
         "typeLabel": "被动",
-        "attributes": [],
-        "cost": 0,
-        "basePower": 0
+        "attributes": []
       },
       "playTiming": {
         "phase": "action",
@@ -69,6 +67,13 @@
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [
           {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/巴泽特·弗拉加·马克雷米兹.png",
+            "locator": "master.bazett/巴泽特·弗拉加·马克雷米兹"
+          },
+          {
             "kind": "legacy",
             "document": "legacy-content.json",
             "locator": "master/master.bazett/s1"
@@ -77,7 +82,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.bazett.skill.s1",
+            "locator": "masters[16].skills[0].text#line=1",
             "sha256": "9e340e6b8393bb059a4550c7275b7f61f05adde31ea6d88bfab810d541b78d22"
           }
         ],
@@ -105,13 +110,13 @@
         "id": "master.bazett"
       },
       "initialPlacement": "outside_game",
-      "printedText": "佛拉格拉克",
+      "printedText": "<每局游戏限一次>先发后至-下一次一名与你位于同一战场的对手使用宝具时，令其【败北】。",
       "cardFace": {
         "typeLabel": "魔术",
         "cost": 1,
-        "basePower": 0,
+        "basePower": 4,
         "attributes": [
-          "魔术"
+          "magecraft"
         ]
       },
       "playTiming": {
@@ -121,5 +126,16 @@
       "playRequirements": [],
       "abilities": []
     }
-  ]
+  ],
+  "sources": [
+    {
+      "id": "f1-image",
+      "type": "original_card_image",
+      "path": "assets/fm09/master.bazett.png"
+    }
+  ],
+  "publicInformation": {
+    "type": "master_package",
+    "sourceImage": "assets/fm09/master.bazett.png"
+  }
 }

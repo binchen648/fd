@@ -83,7 +83,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.ciel.skill.s1a",
+            "locator": "masters[24].skills[1].text#line=1",
             "sha256": "2cdf7e6bcc7876757898867a73658374247440ab0d78a6a21d2b8f34cf19d486"
           }
         ],
@@ -121,7 +121,7 @@
         "cost": 1,
         "basePower": 4,
         "attributes": [
-          "特殊"
+          "special"
         ]
       },
       "playTiming": {
@@ -154,7 +154,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/authoring/cards.json",
-            "locator": "skillCards[11].abilities[0].printedClause",
+            "locator": "masters[24].skills[3].text#line=1",
             "sha256": "232427277ebaef014071cc298108bdae588937e0a1cad95e09bfeb2be825f676"
           },
           {
@@ -178,5 +178,16 @@
         }
       }
     }
-  ]
+  ],
+  "sources": [
+    {
+      "id": "f1-image",
+      "type": "original_card_image",
+      "path": "assets/fm09/master.ciel.png"
+    }
+  ],
+  "publicInformation": {
+    "type": "master_package",
+    "sourceImage": "assets/fm09/master.ciel.png"
+  }
 }

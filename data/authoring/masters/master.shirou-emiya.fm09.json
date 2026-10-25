@@ -83,7 +83,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.shirou-emiya.skill.s2",
+            "locator": "masters[2].skills[1].text#line=1",
             "sha256": "a0ea1f45cedb3ac69c9d4050cfdadcf318cf32f62b749013a8454245535ca575"
           }
         ],
@@ -174,5 +174,16 @@
         }
       }
     }
-  ]
+  ],
+  "sources": [
+    {
+      "id": "f1-image",
+      "type": "original_card_image",
+      "path": "assets/fm09/master.shirou-emiya.png"
+    }
+  ],
+  "publicInformation": {
+    "type": "master_package",
+    "sourceImage": "assets/fm09/master.shirou-emiya.png"
+  }
 }

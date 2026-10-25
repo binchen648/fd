@@ -454,6 +454,7 @@ export function loadPlaytestContentPack(
   const authoringServants = authoringServantArchives
     .map((archive) => convertAuthoringServant(archive, options.workspaceRoot));
   const authoringMasters = authoringMasterArchives
+    .filter((archive) => archive.archiveType !== 'master_rule_definition_archive')
     .map((archive) => convertAuthoringMaster(archive, options.workspaceRoot));
   const servantCards = manifest.servantCardFiles.flatMap((path) =>
     readWorkspaceJson<NamedCardDefinition[]>(options.workspaceRoot, path),
@@ -733,7 +734,10 @@ export function compileLoadedPlaytestPack(
   pack: LoadedPlaytestContentPack,
   issues: PackValidationIssue[] = [],
 ): CompiledPlaytestPack {
-  const ruleArchives = structuredClone(pack.authoringArchives);
+  // Rules-only FM09 archives are authoring evidence for the rules loader, not
+  // part of the generated playable content artifact or frozen roster.
+  const ruleArchives = structuredClone(pack.authoringArchives)
+    .filter((archive) => archive.archiveType !== 'master_rule_definition_archive');
   return {
     library: {
       schemaVersion: 'fd-playtest-content-library-v1',

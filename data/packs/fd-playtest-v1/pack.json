@@ -25,18 +25,13 @@
     "data/authoring/masters/master.maiya.json",
     "data/authoring/masters/master.gatou.json",
     "data/authoring/masters/master.irisviel.json",
-    "data/authoring/masters/master.olga-marie.json"
-  ],
-  "authoringMasterRuleFiles": [
+    "data/authoring/masters/master.olga-marie.json",
     "data/authoring/masters/master.bazett.fm09.json",
-    "data/authoring/masters/master.caules.fm09.json",
     "data/authoring/masters/master.ciel.fm09.json",
     "data/authoring/masters/master.fujino.fm09.json",
-    "data/authoring/masters/master.shiki-nanaya.fm09.json",
     "data/authoring/masters/master.shiki-ryougi.fm09.json",
     "data/authoring/masters/master.shiki-tohno.fm09.json",
-    "data/authoring/masters/master.shirou-emiya.fm09.json",
-    "data/authoring/masters/master.zouken.fm09.json"
+    "data/authoring/masters/master.shirou-emiya.fm09.json"
   ],
   "eventSetFiles": [
     "data/packs/fd-playtest-v1/events/waxing-moon-ritual.json"

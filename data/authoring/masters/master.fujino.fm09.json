@@ -24,9 +24,7 @@
       "printedText": "将一张【歪曲之魔眼】加入你的技能区。",
       "cardFace": {
         "typeLabel": "被动",
-        "attributes": [],
-        "cost": 0,
-        "basePower": 0
+        "attributes": []
       },
       "playTiming": {
         "phase": "action",
@@ -55,7 +53,6 @@
               "type": "provision_skill_cards",
               "player": "controller",
               "targetDefinitionIds": [
-                "master.fujino.skill.s2",
                 "master.fujino.skill.s3"
               ]
             }
@@ -70,6 +67,13 @@
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [
           {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/浅上藤乃.png",
+            "locator": "master.fujino/浅上藤乃"
+          },
+          {
             "kind": "legacy",
             "document": "legacy-content.json",
             "locator": "master/master.fujino/s1"
@@ -78,7 +82,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.fujino.skill.s1",
+            "locator": "masters[65].skills[0].text#line=1",
             "sha256": "56df7da12a24eda99ea20c6daa55a387f0521f1651986c1797bb735882d8fdee"
           }
         ],
@@ -98,31 +102,6 @@
       }
     },
     {
-      "id": "master.fujino.skill.s2",
-      "name": "扭曲空间",
-      "cardType": "master_skill",
-      "owner": {
-        "type": "master",
-        "id": "master.fujino"
-      },
-      "initialPlacement": "outside_game",
-      "printedText": "扭曲空间",
-      "cardFace": {
-        "typeLabel": "魔术",
-        "cost": 1,
-        "basePower": 0,
-        "attributes": [
-          "魔术"
-        ]
-      },
-      "playTiming": {
-        "phase": "action",
-        "window": "controller_play_card_window"
-      },
-      "playRequirements": [],
-      "abilities": []
-    },
-    {
       "id": "master.fujino.skill.s3",
       "name": "歪曲之魔眼",
       "cardType": "master_skill",
@@ -131,13 +110,13 @@
         "id": "master.fujino"
       },
       "initialPlacement": "outside_game",
-      "printedText": "歪曲之魔眼",
+      "printedText": "此牌需追加打出。歪曲吧！-行动阶段：激活【扭曲空间】。",
       "cardFace": {
         "typeLabel": "魔术",
-        "cost": 1,
-        "basePower": 0,
+        "cost": 3,
+        "basePower": 4,
         "attributes": [
-          "魔术"
+          "magecraft"
         ]
       },
       "playTiming": {
@@ -147,5 +126,16 @@
       "playRequirements": [],
       "abilities": []
     }
-  ]
+  ],
+  "sources": [
+    {
+      "id": "f1-image",
+      "type": "original_card_image",
+      "path": "assets/fm09/master.fujino.png"
+    }
+  ],
+  "publicInformation": {
+    "type": "master_package",
+    "sourceImage": "assets/fm09/master.fujino.png"
+  }
 }

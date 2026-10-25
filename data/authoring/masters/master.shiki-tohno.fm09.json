@@ -24,9 +24,7 @@
       "printedText": "将【侵蚀】加入你的技能区。",
       "cardFace": {
         "typeLabel": "被动",
-        "attributes": [],
-        "cost": 0,
-        "basePower": 0
+        "attributes": []
       },
       "playTiming": {
         "phase": "action",
@@ -69,6 +67,13 @@
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [
           {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/远野四季.png",
+            "locator": "master.shiki-tohno/远野四季"
+          },
+          {
             "kind": "legacy",
             "document": "legacy-content.json",
             "locator": "master/master.shiki-tohno/s1"
@@ -77,7 +82,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.shiki-tohno.skill.s1",
+            "locator": "masters[27].skills[0].text#line=1",
             "sha256": "273cf9ef232863882acbc556785d1d2741a3a7752041987287f13df90989c97e"
           }
         ],
@@ -105,13 +110,13 @@
         "id": "master.shiki-tohno"
       },
       "initialPlacement": "outside_game",
-      "printedText": "侵蚀",
+      "printedText": "此牌需追加打出。血滴-你需花费1点战果来打出此牌。共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。",
       "cardFace": {
-        "typeLabel": "魔术",
+        "typeLabel": "迅捷",
         "cost": 1,
-        "basePower": 0,
+        "basePower": 4,
         "attributes": [
-          "魔术"
+          "agility"
         ]
       },
       "playTiming": {
@@ -121,5 +126,16 @@
       "playRequirements": [],
       "abilities": []
     }
-  ]
+  ],
+  "sources": [
+    {
+      "id": "f1-image",
+      "type": "original_card_image",
+      "path": "assets/fm09/master.shiki-tohno.png"
+    }
+  ],
+  "publicInformation": {
+    "type": "master_package",
+    "sourceImage": "assets/fm09/master.shiki-tohno.png"
+  }
 }

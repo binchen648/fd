@@ -25,9 +25,7 @@
       "printedText": "游戏开始时，将【生・切断】加入你的技能区。",
       "cardFace": {
         "typeLabel": "被动",
-        "attributes": [],
-        "cost": 0,
-        "basePower": 0
+        "attributes": []
       },
       "playTiming": {
         "phase": "action",
@@ -70,15 +68,22 @@
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [
           {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/两仪式.png",
+            "locator": "master.shiki-ryougi/两仪式"
+          },
+          {
             "kind": "legacy",
             "document": "legacy-content.json",
-            "locator": "master.master.shiki-ryougi.s1"
+            "locator": "master/master.shiki-ryougi/s1"
           }
         ],
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.shiki-ryougi.skill.s1",
+            "locator": "masters[64].skills[0].text#line=1",
             "sha256": "15e33e1b9482d12051e5b028e9bf5b81bbe9e9204afcd6723190573ae1867d69"
           }
         ],
@@ -110,13 +115,13 @@
         "id": "master.shiki-ryougi"
       },
       "initialPlacement": "outside_game",
-      "printedText": "此牌需追加打出。战斗阶段：选择一张你战斗中的非技能攻击。",
+      "printedText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
       "cardFace": {
-        "typeLabel": "魔术",
-        "cost": 1,
-        "basePower": 0,
+        "typeLabel": "迅捷",
+        "cost": 2,
+        "basePower": 2,
         "attributes": [
-          "魔术"
+          "agility"
         ]
       },
       "playTiming": {
@@ -199,7 +204,7 @@
         "f1ClauseSources": [
           {
             "document": "src/content/generated/legacy-content.json",
-            "locator": "master.shiki-ryougi.skill.s1a",
+            "locator": "masters[64].skills[1].text#line=1",
             "sha256": "d1e84428f5798f573fd01ed7f061e937925424f2fbab89c4a43ad6af7782d98f"
           }
         ],
@@ -237,7 +242,7 @@
         "cost": 1,
         "basePower": 0,
         "attributes": [
-          "魔术"
+          "magecraft"
         ]
       },
       "playTiming": {
@@ -301,5 +306,16 @@
         }
       }
     }
-  ]
+  ],
+  "sources": [
+    {
+      "id": "f1-image",
+      "type": "original_card_image",
+      "path": "assets/fm09/master.shiki-ryougi.png"
+    }
+  ],
+  "publicInformation": {
+    "type": "master_package",
+    "sourceImage": "assets/fm09/master.shiki-ryougi.png"
+  }
 }
