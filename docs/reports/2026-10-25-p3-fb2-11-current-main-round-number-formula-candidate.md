@@ -1,7 +1,7 @@
 # P3-FB2-11 Current-Main Round-Number Formula Candidate
 
-Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`  
-Exact Base: `1d0500390081620e94cd21d56ac83b4eafc51057`  
+Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
+Exact Base: `1d0500390081620e94cd21d56ac83b4eafc51057`
 Branch: `codex/b2-p3-fb2-11-current-main-20261025`
 
 ## Scope
