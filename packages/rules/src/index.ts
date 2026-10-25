@@ -5,6 +5,7 @@ export * from './core/event-engine';
 export * from './core/game-loop';
 export * from './core/map-engine';
 export * from './core/movement';
+export * from './core/rule-overrides';
 export * from './core/phase-machine';
 export * from './core/replacement-pipeline';
 export * from './core/scoring-resolver';

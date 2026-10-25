@@ -39,7 +39,7 @@ const supportedTypes = new Set([
   'soul_drag_power_bonus', 'transform_to_return_silence_on_loss', 'return_silence_battle_start',
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
   // Phase 3A resolution/data-flow infrastructure
-  'remove_advantage_position', 'noop', 'fail_invariant',
+  'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -66,7 +66,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
-  'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message',
+  'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -213,8 +213,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (node(m.scope).controller && !['self', 'controller', 'engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(str(node(m.scope).controller))) issue('ruleModifiers.scope.controller', 'Unmapped modifier controller', id);
         if (m.lifecycle && a.lifecycle && JSON.stringify(m.lifecycle) !== JSON.stringify(a.lifecycle)) issue('ruleModifiers.lifecycle', 'Independent modifier lifecycles require a separate ongoing handler', id);
       }
-      const requested = execution.hostOps ?? execution.allowedOperations ?? hostOperations;
-      const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : [];
+      const requested = execution.hostOps ?? execution.allowedOperations;
+      const installsRuleOverride = nodes(a.effects).some(effect => effect.type === 'install_rule_override');
+      const defaultAllowed = mode === 'automatic' && installsRuleOverride ? [] : [...hostOperations];
+      const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
       const candidateAbility: AuthoringAbility = { id, kind: str(a.kind), printedClause: str(a.printedClause), activation,

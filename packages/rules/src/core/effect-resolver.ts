@@ -3,6 +3,7 @@ import type { EffectStackItem, TimingWindow } from "../schema/effect";
 
 import type { ResolverResult } from "./resolver-contracts";
 import { applyReplacementEffect } from "./replacement-pipeline";
+import { grantMana } from "./rule-overrides";
 
 export function resolveEffectsForWindow(
   state: GameState,
@@ -54,33 +55,28 @@ function applyGainManaEffect(state: GameState, item: EffectStackItem): GameState
   if (amount === null) {
     return state;
   }
-
-  let applied = false;
-  const players = state.players.map((player) => {
-    if (player.id !== item.controllerPlayerId) {
-      return player;
-    }
-
-    applied = true;
-    return {
-      ...player,
-      mana: player.mana + amount,
-    };
-  });
-
-  if (!applied) {
+  if (!state.players.some((player) => player.id === item.controllerPlayerId)) {
     return state;
   }
 
+  const nextState = structuredClone(state);
+  const result = amount > 0
+    ? grantMana(nextState, item.controllerPlayerId, amount, { source: 'generic' })
+    : (() => {
+        const player = nextState.players.find((candidate) => candidate.id === item.controllerPlayerId)!;
+        const before = player.mana;
+        player.mana = Math.max(0, before + amount);
+        return { actualAmount: player.mana - before };
+      })();
+
   return {
-    ...state,
-    players,
-    log: state.log.concat({
+    ...nextState,
+    log: nextState.log.concat({
       type: "mana_gained",
-      message: `player:${item.controllerPlayerId}:mana+${amount}`,
+      message: `player:${item.controllerPlayerId}:mana+${result.actualAmount}`,
       payload: {
         playerId: item.controllerPlayerId,
-        amount,
+        amount: result.actualAmount,
         effectId: item.effect.id,
       },
     }),

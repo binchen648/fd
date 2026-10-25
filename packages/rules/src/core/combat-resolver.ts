@@ -14,6 +14,7 @@ import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
 import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
+import { logicalDayForPlayer } from './rule-overrides';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -390,9 +391,18 @@ export function deriveBattleParticipantsFromState(
       const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
+      let persistentPowerAdjustment = 0;
+      if (logicalDayForPlayer(state, player.id) === 1) {
+        persistentPowerAdjustment += state.ruleOverrides?.firstLogicalDayTotalPowerAdjustmentByPlayer?.[player.id] ?? 0;
+      }
+      const lowerVpAdjustment = state.ruleOverrides?.lowerVpBattleTotalPowerAdjustmentByPlayer?.[player.id];
+      if (typeof lowerVpAdjustment === 'number' && state.players.some((other) =>
+        other.id !== player.id && other.status === 'active' && other.locationId === battlefieldId && other.vp < player.vp)) {
+        persistentPowerAdjustment += lowerVpAdjustment;
+      }
       const participant = {
         playerId: player.id,
-        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower,
+        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
         externalSkillEffects,

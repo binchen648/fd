@@ -2,6 +2,7 @@ import type { CombatModifierRule } from "../schema/effect";
 import type { GameState } from "../schema/game";
 
 import type { ResolverResult } from "./resolver-contracts";
+import { grantMana } from "./rule-overrides";
 
 export interface SituationCardRuntime {
   cardId: string;
@@ -26,24 +27,18 @@ export function applySituationAtRoundStart(
   card: SituationCardRuntime,
 ): ResolverResult {
   const { currentSituationModifiers: _previousSituationModifiers, ...stateWithoutSituationModifiers } = state;
-  const nextPlayers = state.players.map((player) => {
-    if (player.status !== "active") {
-      return player;
-    }
-
-    return {
-      ...player,
-      mana: player.mana + (card.sharedManaReward ?? 0),
-    };
-  });
+  const nextState = structuredClone(stateWithoutSituationModifiers) as GameState;
+  for (const player of nextState.players) {
+    if (player.status !== "active") continue;
+    grantMana(nextState, player.id, card.sharedManaReward ?? 0, { source: 'situation' });
+  }
 
   return {
     nextState: {
-      ...stateWithoutSituationModifiers,
-      players: nextPlayers,
+      ...nextState,
       currentSituationCardId: card.cardId,
       ...(card.battleModifiers ? { currentSituationModifiers: card.battleModifiers } : {}),
-      log: state.log.concat({
+      log: nextState.log.concat({
         type: "situation_applied",
         message: `situation:${card.cardId}`,
       }),

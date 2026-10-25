@@ -2,6 +2,7 @@ import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import type { PlayerId, SafeEvent } from './types';
 import { clearTransientCardTransformState } from './card-instance-state';
+import { grantMana } from '../core/rule-overrides';
 
 export type EffectExecutionStatus = 'applied' | 'no_op';
 export type BindingFieldType = 'number' | 'player_ids' | 'boolean' | 'status';
@@ -1536,12 +1537,10 @@ function adjustMana(
 ): KnownEffectResult {
   const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_mana');
   const player = findPlayer(transaction.workingState, transaction.context.controllerId);
-  const runtime = transaction.workingState.abilityRuntime;
   const before = player.mana;
-  const cap = runtime?.manaCaps[player.id] ?? 12;
-  const blocked = amount > 0 && runtime?.manaGainBlocked.includes(player.id);
-  const after = blocked ? before : amount > 0 ? Math.min(cap, before + amount) : Math.max(0, before + amount);
-  player.mana = after;
+  const grant = amount > 0 ? grantMana(transaction.workingState, player.id, amount, { source: 'generic' }) : undefined;
+  const after = grant ? grant.after : Math.max(0, before + amount);
+  if (!grant) player.mana = after;
   const actualAmount = after - before;
   const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_adjusted`;
   if (actualAmount !== 0) {
@@ -1552,7 +1551,14 @@ function adjustMana(
     effectType: 'adjust_mana',
     status: actualAmount === 0 ? 'no_op' : 'applied',
     affectedEntities: actualAmount === 0 ? [] : [{ kind: 'player', id: player.id }],
-    payload: { playerId: player.id, requestedAmount: amount, actualAmount, before, after },
+    payload: {
+      playerId: player.id,
+      requestedAmount: amount,
+      actualAmount,
+      before,
+      after,
+      ...(grant ? { cappedRequestAmount: grant.cappedRequestAmount, overflowAmount: grant.overflowAmount } : {}),
+    },
     emittedEventIds: actualAmount === 0 ? [] : [eventId],
   };
 }
