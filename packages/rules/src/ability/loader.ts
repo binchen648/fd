@@ -1,7 +1,10 @@
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
-import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
+  isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
+} from './interaction-gateway';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -38,8 +41,9 @@ const supportedTypes = new Set([
   'look_at_match_deck_bottoms', 'swap_revealed_with_deck_bottom',
   'soul_drag_power_bonus', 'transform_to_return_silence_on_loss', 'return_silence_battle_start',
   'false_attendant_book_replacement', 'existing_attack_controlled_by_target', 'not_controller', 'at_battlefield',
+  'same_battlefield_as_controller', 'inspect_target_hand_optional_return_one_to_owner_deck',
   // Phase 3A resolution/data-flow infrastructure
-  'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override',
+  'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
@@ -66,7 +70,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
-  'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase',
+  'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -215,7 +219,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       const requested = execution.hostOps ?? execution.allowedOperations;
       const installsRuleOverride = nodes(a.effects).some(effect => effect.type === 'install_rule_override');
-      const defaultAllowed = mode === 'automatic' && installsRuleOverride ? [] : [...hostOperations];
+      const provisionsSkillCards = nodes(a.effects).some(effect => effect.type === 'provision_skill_cards');
+      const defaultAllowed = mode === 'automatic' && (installsRuleOverride || provisionsSkillCards) ? [] : [...hostOperations];
       const allowed = Array.isArray(requested) ? hostOperations.filter(op => requested.includes(op)) : defaultAllowed;
       if (Array.isArray(requested) && requested.some(op => !hostOperations.includes(op as typeof hostOperations[number]))) issue('execution.hostOps', 'Operation outside the host allowlist', id);
       if (mode !== 'automatic') issue('execution.mode', str(execution.reason) || mode, id, mode as ExecutionMode);
@@ -227,6 +232,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
+      }
+      if (isSameBattlefieldPrivateHandReturnInteractionCandidate(candidateAbility) && !isSameBattlefieldPrivateHandReturnInteractionSemantic(candidateAbility)) {
+        issue('interaction.gateway', 'Unsupported same-battlefield private hand-return interaction semantic shape', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

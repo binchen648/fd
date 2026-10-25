@@ -4,6 +4,8 @@ import type {
 } from '@fd/content';
 
 import { loadAuthoringJson, node, nodes, str } from './loader';
+import { gameStartSkillProvisioningTargetDefinitionIds, isGameStartSkillProvisioningCandidate } from './game-start-skill-provisioning';
+import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { sha256Hex } from './portable-sha256';
 import {
   DataFlowValidationError,
@@ -119,15 +121,16 @@ export function assertExecutableCardPack(value: unknown, content: ContentIdentit
   }
 }
 
-function classifyCard(cardType: string): Pick<ExecutableCardDefinition, 'playKind' | 'destinationZone'> {
-  const attack = ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(cardType);
+function classifyCard(card: AuthoringCard): Pick<ExecutableCardDefinition, 'playKind' | 'destinationZone'> {
+  const attack = hasRequiredAdditionalPlayMarker(card) ||
+    ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(card.cardType);
   return attack
     ? { playKind: 'attack', destinationZone: 'attack_area' }
     : { playKind: 'support', destinationZone: 'field' };
 }
 
 function executableDefinition(card: AuthoringCard, ownerId?: string): ExecutableCardDefinition {
-  return { ...card, ...(ownerId ? { ownerId } : {}), ...classifyCard(card.cardType) };
+  return { ...card, ...(ownerId ? { ownerId } : {}), ...classifyCard(card) };
 }
 
 function assertSemanticSubset(source: unknown, compiled: unknown, path: string): void {
@@ -472,6 +475,30 @@ function validatePresentationReferences(input: CompileInput, cards: Record<strin
   }
 }
 
+function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, ExecutableCardDefinition>): { targetIds: Set<string>; sourceIds: Set<string> } {
+  const targetIds = new Set<string>();
+  const sourceIds = new Set<string>();
+  for (const source of Object.values(cards)) {
+    for (const ability of source.abilities) {
+      if (!isGameStartSkillProvisioningCandidate(ability)) continue;
+      const targets = gameStartSkillProvisioningTargetDefinitionIds(ability);
+      if (!targets) throw new Error(`Unsupported game-start skill provisioning shape: ${source.id}#${ability.id}`);
+      if (source.cardType !== 'master_skill' || !source.ownerId) {
+        throw new Error(`Game-start skill provisioning source must be an owned master_skill: ${source.id}#${ability.id}`);
+      }
+      for (const definitionId of targets) {
+        const target = cards[definitionId];
+        if (!target || target.id === source.id || target.mode !== 'automatic' || target.cardType !== 'master_skill' || target.ownerId !== source.ownerId) {
+          throw new Error(`Invalid game-start skill provisioning target ${definitionId}: ${source.id}#${ability.id}`);
+        }
+      }
+      sourceIds.add(source.id);
+      targets.forEach((definitionId) => targetIds.add(definitionId));
+    }
+  }
+  return { targetIds, sourceIds };
+}
+
 function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<string> {
   const deferred = new Set<string>();
   const visit = (value: unknown): void => {
@@ -483,6 +510,13 @@ function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<s
     Object.values(current).forEach(visit);
   };
   Object.values(cards).forEach((card) => card.abilities.forEach(visit));
+  const provisioning = validatedGameStartSkillProvisioningDeferrals(cards);
+  for (const sourceId of provisioning.sourceIds) {
+    if (deferred.has(sourceId) || provisioning.targetIds.has(sourceId)) {
+      throw new Error(`Game-start skill provisioning source cannot itself be deferred: ${sourceId}`);
+    }
+  }
+  provisioning.targetIds.forEach((definitionId) => deferred.add(definitionId));
   return deferred;
 }
 

@@ -42,3 +42,44 @@ export function isPrivateOptionalHandPlayInteractionSemantic(ability: AuthoringA
     constraints.length === 1 && constraints[0]!.type === 'base_power_at_most' && Number(constraints[0]!.value) === 3 &&
     effect.type === 'play_selected_cards' && effect.target === target.id && effect.face === undefined;
 }
+
+function containsNodeType(value: unknown, type: string): boolean {
+  if (Array.isArray(value)) return value.some((entry) => containsNodeType(entry, type));
+  if (!value || typeof value !== 'object') return false;
+  const record = value as Record<string, unknown>;
+  return record.type === type || Object.values(record).some((entry) => containsNodeType(entry, type));
+}
+
+/** Reserved structural envelope for the FB2-23 private hand interaction. */
+export function isSameBattlefieldPrivateHandReturnInteractionCandidate(ability: AuthoringAbility): boolean {
+  return containsNodeType(ability, 'same_battlefield_as_controller') ||
+    containsNodeType(ability, 'inspect_target_hand_optional_return_one_to_owner_deck');
+}
+
+/** Exact identity-free semantic contract accepted by FB2-23. */
+export function isSameBattlefieldPrivateHandReturnInteractionSemantic(ability: AuthoringAbility): boolean {
+  if (!isSameBattlefieldPrivateHandReturnInteractionCandidate(ability)) return false;
+  if (ability.kind !== 'phase_action' ||
+    str(ability.activation.phase) !== 'action' ||
+    str(ability.activation.opens) !== 'controller_action_window' ||
+    ability.activation.requiresSourceState !== 'active' ||
+    !Object.keys(ability.activation).every((key) => ['phase', 'opens', 'requiresSourceState'].includes(key)) ||
+    ability.execution.mode !== 'automatic' ||
+    ability.conditions.length !== 0 || ability.cost.length !== 0 || ability.creates.length !== 0 || ability.ruleModifiers.length !== 0) return false;
+  if (Object.keys(ability.lifecycle).length !== 0 || Object.keys(ability.limit).length !== 0 || Object.keys(ability.visibility).length !== 0) return false;
+  if (str(ability.responseWindow.opens) || ability.responseWindow.order !== 'turn_order' || ability.responseWindow.passBehavior !== 'decline_this_window' ||
+    !Object.keys(ability.responseWindow).every((key) => ['order', 'passBehavior'].includes(key))) return false;
+  if (ability.targets.length !== 1 || ability.effects.length !== 1) return false;
+
+  const target = ability.targets[0]!;
+  if (target.type !== 'player') return false;
+  const count = node(target.count);
+  const constraints = nodes(target.constraints);
+  const effect = ability.effects[0]!;
+  return typeof target.id === 'string' && target.id.length > 0 &&
+    Object.keys(target).every((key) => ['id', 'type', 'count', 'constraints'].includes(key)) &&
+    Object.keys(count).every((key) => ['min', 'max'].includes(key)) && Number(count.min) === 1 && Number(count.max) === 1 &&
+    constraints.length === 1 && constraints[0]!.type === 'same_battlefield_as_controller' && Object.keys(constraints[0]!).length === 1 &&
+    effect.type === 'inspect_target_hand_optional_return_one_to_owner_deck' && effect.target === target.id &&
+    Object.keys(effect).every((key) => ['type', 'target'].includes(key));
+}

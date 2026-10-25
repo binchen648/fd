@@ -3,11 +3,17 @@ import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity } from '../core/card-source-state';
-import { isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic } from './interaction-gateway';
+import {
+  isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
+  isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
+} from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
+import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
   normalizeResolutionDataFlowNodes,
@@ -17,7 +23,7 @@ import {
 } from './resolution-dataflow';
 import type {
   AbilityCommand, AbilityDefinitionPack, AbilityEvent, AbilityPlayerView, AbilityRuntime, AuthoringAbility, AuthoringCard,
-  BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext,
+  BattleResult, BattleResultData, CalculationLine, CardPlayClassification, DispatchResult, EffectContext, ExecutableCardDefinition,
   LegalAction, OngoingEffect, PendingDecision, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
@@ -79,6 +85,7 @@ function legacyCardPlayClassification(d: AuthoringCard | undefined): CardPlayCla
 }
 /** Stable play classification. Card type, rather than power or effects, owns destination semantics. */
 export function classifyCardPlay(d: AuthoringCard | undefined): CardPlayClassification {
+  if (hasRequiredAdditionalPlayMarker(d)) return { playKind: 'attack', destinationZone: 'attack_area' };
   if (d && 'playKind' in d && 'destinationZone' in d) {
     return {
       playKind: d.playKind as CardPlayClassification['playKind'],
@@ -98,11 +105,15 @@ function entersAttackArea(s: GameState, sourceId: string): boolean {
 function isCommandSpellCard(s: GameState, sourceId: string): boolean {
   return definition(s, sourceId)?.cardType === 'command_spell';
 }
+function isRequiredAdditionalPlayCard(s: GameState, sourceId: string): boolean {
+  return hasRequiredAdditionalPlayMarker(definition(s, sourceId));
+}
 function legacyAttackAreaCardsPlayedThisRound(s: GameState, playerId: string): number {
   return s.cards.filter(c =>
     c.controllerPlayerId === playerId &&
     c.zone === 'attack_area' &&
-    runtime(s).cardState[c.instanceId]?.playedRound === s.round.roundNumber).length;
+    runtime(s).cardState[c.instanceId]?.playedRound === s.round.roundNumber &&
+    !isRequiredAdditionalPlayCard(s, c.instanceId)).length;
 }
 function attacksDeclaredThisRound(s: GameState, playerId: string): number {
   const r = runtime(s);
@@ -120,8 +131,9 @@ function attackPlayAllowance(s: GameState, playerId: string): number {
   return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId);
 }
 function attackPlayLimitReached(s: GameState, playerId: string, sourceId: string, ignoreStaged = false): boolean {
-  if (!entersAttackArea(s, sourceId)) return false;
-  const staged = ignoreStaged ? 0 : (stagedAttacks(s)[playerId] ?? []).filter(choice => entersAttackArea(s, choice.cardInstanceId)).length;
+  if (!entersAttackArea(s, sourceId) || isRequiredAdditionalPlayCard(s, sourceId)) return false;
+  const staged = ignoreStaged ? 0 : (stagedAttacks(s)[playerId] ?? []).filter(choice =>
+    entersAttackArea(s, choice.cardInstanceId) && !isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).length;
   return attacksDeclaredThisRound(s, playerId) + staged >= attackPlayAllowance(s, playerId);
 }
 function expectedPhaseWindow(abilityPhase: string): string | undefined {
@@ -417,6 +429,10 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       nodes(target.constraints).every(c => {
         if (c.type === 'not_controller') return candidate.id !== ctx.controllerId;
         if (c.type === 'at_battlefield') return isBattlefield(s, candidate.locationId);
+        if (c.type === 'same_battlefield_as_controller') {
+          const controllerLocationId = player(s, ctx.controllerId).locationId;
+          return isBattlefield(s, controllerLocationId) && candidate.locationId === controllerLocationId;
+        }
         if (c.type === 'existing_attack_controlled_by_target') {
           return s.cards.some(card =>
             card.controllerPlayerId === candidate.id &&
@@ -627,6 +643,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
+  if (isGameStartSkillProvisioningCandidate(a) &&
+    (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -673,18 +691,65 @@ export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
   return new Set(rules).size === rules.length;
 }
 
+function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string): boolean {
+  const state = runtime(s).cardState[instance.instanceId];
+  return instance.ownerPlayerId === controllerId && instance.controllerPlayerId === controllerId &&
+    instance.zone === 'skill' && instance.visibility.scope === 'owner_only' &&
+    instance.visibility.ownerPlayerId === controllerId && state?.active !== true && state?.faceDown !== true;
+}
+
+function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
+  const source = card(s, sourceId); const controller = player(s, source.controllerPlayerId);
+  const sourceDefinition = definition(s, sourceId) as ExecutableCardDefinition | undefined;
+  if (source.ownerPlayerId !== controller.id || source.zone !== 'skill' || sourceDefinition?.cardType !== 'master_skill' ||
+    sourceDefinition.ownerId !== controller.masterCardId) return false;
+  const targets = a.effects[0]?.targetDefinitionIds;
+  if (!Array.isArray(targets)) return false;
+  for (const definitionId of targets) {
+    if (typeof definitionId !== 'string') return false;
+    const target = runtime(s).pack.cards[definitionId] as ExecutableCardDefinition | undefined;
+    if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' ||
+      target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
+    const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
+    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id))) return false;
+  }
+  return true;
+}
+
+function provisionGameStartSkillCards(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, ctx.sourceCardId, a)) {
+    reject('resolution_failed', 'Unsupported game-start skill-provisioning semantic shape');
+  }
+  const targets = a.effects[0]!.targetDefinitionIds as string[];
+  for (const definitionId of targets) {
+    if (s.cards.some((candidate) => candidate.definitionId === definitionId)) continue;
+    const instanceId = nextId(s, 'provisioned-skill');
+    s.cards.push({
+      instanceId, definitionId, ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+      zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId,
+    });
+    runtime(s).cardState[instanceId] = { active: false, faceDown: false, playedRound: s.round.roundNumber };
+    runtime(s).events.push({
+      type: 'card_created', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+      cardInstanceId: instanceId, toZone: 'skill', movedCount: 1,
+    });
+  }
+}
+
 function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean {
   return Object.values(runtime(s).pack.cards).some((source) =>
     source.abilities.some((ability) =>
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
   if (c.zone === 'skill' && isActivationOnlyDefinition(s, c.definitionId)) return 'activation_only';
-  if (d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'))) return 'append_only';
+  const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
+  const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
+  if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
   if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
@@ -724,11 +789,14 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   const staged = stagedAttacks(s)[playerId] ?? [];
   if (staged.length && s.round.prioritySeat === p.seat) {
     result.push({ type: 'confirm_staged_attack' }, { type: 'cancel_staged_attack' });
+    const hasOrdinaryStagedAttack = staged.some((entry) =>
+      entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
-      if (!playFailure(s, playerId, c.instanceId) && entersAttackArea(s, c.instanceId)) {
+      const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, c.instanceId);
+      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
-      if (!playFailure(s, playerId, c.instanceId, true) && entersAttackArea(s, c.instanceId)) {
+      if (!playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
@@ -1067,6 +1135,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'play_source_card': {
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
+      if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
@@ -1203,6 +1272,36 @@ function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility
       context: structuredClone(ctx), remainingEffects: effects };
   }
   return undefined;
+}
+
+function createSameBattlefieldPrivateHandReturnInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility): PendingDecision {
+  if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a)) reject('resolution_failed', 'Unsupported same-battlefield private hand-return interaction semantic shape');
+  const playerTarget = a.targets[0]!;
+  const playerTargetId = str(playerTarget.id);
+  const selectedPlayerIds = ctx.selections[playerTargetId] ?? [];
+  if (selectedPlayerIds.length !== 1) reject('resolution_failed', 'Private hand inspection requires exactly one selected player');
+  const selectedPlayerId = selectedPlayerIds[0]!;
+  const selectedPlayer = s.players.find((candidate) => candidate.id === selectedPlayerId && candidate.status === 'active');
+  const controllerLocationId = player(s, ctx.controllerId).locationId;
+  if (!selectedPlayer || !isBattlefield(s, controllerLocationId) || selectedPlayer.locationId !== controllerLocationId) {
+    reject('illegal_target', 'Selected player is no longer at the controller battlefield');
+  }
+  const snapshot = s.cards.filter((candidate) => candidate.ownerPlayerId === selectedPlayerId && candidate.zone === 'hand').map((candidate) => candidate.instanceId);
+  const id = nextId(s, 'interaction');
+  const target: RuleNode = {
+    id: 'inspected_hand_card', type: 'card_instance', scope: { zone: 'hand', owner: 'any', controller: 'any' },
+    count: { min: 0, max: 1 }, visibility: 'private_to_controller',
+  };
+  return {
+    id, controllerId: ctx.controllerId, target, candidates: [...snapshot], min: 0, max: 1,
+    context: structuredClone(ctx), remainingEffects: [],
+    interaction: {
+      kind: 'same_battlefield_private_hand_return_v1', template: 'target', visibility: 'owner_only', cancelPolicy: 'forbidden',
+      sourceCardInstanceId: ctx.sourceCardId, abilityId: ctx.abilityId, createdRevision: runtime(s).revision + 1,
+      continuationRef: `${id}:continuation`, playerTargetId, selectedPlayerId,
+      constraints: { kind: 'target', targetKind: 'card', min: 0, max: 1, distinct: true },
+    },
+  };
 }
 
 function createPrivateOptionalHandPlayInteraction(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision {
@@ -2308,6 +2407,18 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isOptionalBattleResultVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported optional battle-result VP semantic shape');
   if (isBattleEndSourceReturnCandidate(a)) reject('resolution_failed', 'Unsupported battle-end source-return semantic shape');
   if (isBattleEndMobilePlayersRewardCandidate(a)) reject('resolution_failed', 'Unsupported battle-end mobile-player reward semantic shape');
+  if (isSameBattlefieldPrivateHandReturnInteractionCandidate(a)) {
+    if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a)) reject('resolution_failed', 'Unsupported same-battlefield private hand-return interaction semantic shape');
+    const playerTargetId = str(a.targets[0]?.id);
+    if (!Object.prototype.hasOwnProperty.call(ctx.selections, playerTargetId)) {
+      const pending = findPendingTarget(s, ctx, a, effects);
+      if (!pending) reject('resolution_failed', 'Private hand inspection requires a player selection');
+      runtime(s).pendingDecision = pending;
+      return;
+    }
+    runtime(s).pendingDecision = createSameBattlefieldPrivateHandReturnInteraction(s, ctx, a);
+    return;
+  }
   if (isPrivateOptionalHandPlayInteractionCandidate(a)) {
     if (!isPrivateOptionalHandPlayInteractionSemantic(a)) reject('resolution_failed', 'Unsupported private optional hand-play interaction semantic shape');
     const interactionTargetId = str(a.targets[0]?.id);
@@ -2401,6 +2512,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
+  }
+  if (isGameStartSkillProvisioningCandidate(a)) {
+    provisionGameStartSkillCards(s, ctx, a);
+    return;
   }
   if (isAlterEgoTransformCandidate(a)) {
     if (!isAlterEgoTransformSemantic(a)) reject('resolution_failed', 'Unsupported Alter Ego transform semantic shape');
@@ -2644,22 +2759,26 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
         const reasonCode = playFailure(s, viewerId, c.instanceId, faceDown);
         return { cardInstanceId: c.instanceId, faceDown, ...classification, ...(reasonCode ? { reasonCode } : {}) };
       })) } : {}) };
+  const d = r.pendingDecision;
+  const privatelyInspectedCardIds = new Set(
+    d?.interaction?.kind === 'same_battlefield_private_hand_return_v1' && d.controllerId === viewerId ? d.candidates : [],
+  );
   for (const c of s.cards) {
     if (c.zone === 'deck') continue;
     const privateZone = ['hand', 'skill', 'looked_cards'].includes(c.zone);
     const isPublic = !privateZone && (c.visibility.scope === 'public' || ongoing.some(o => o.controllerId === c.ownerPlayerId && o.publicZones.includes(c.zone)));
     const own = c.ownerPlayerId === viewerId;
-    if (!own && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
-    const hidden = !own && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
+    const privatelyInspected = privatelyInspectedCardIds.has(c.instanceId) && c.zone === 'hand';
+    if (!own && !privatelyInspected && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
+    const hidden = !own && !privatelyInspected && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
     // Opaque battlefield slot ids do not reveal definition ids embedded in legacy instance ids.
     const physicalState = runtime(s).cardState[c.instanceId];
     view.cards.push({ instanceId: hidden ? `hidden-field-${s.cards.indexOf(c)}` : c.instanceId,
-      ...(!hidden && (own || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
+      ...(!hidden && (own || privatelyInspected || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
       ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });
   }
-  const d = r.pendingDecision;
   if (d) {
     if (d.controllerId === viewerId) {
       const projectedCandidates = d.interaction ? d.candidates : candidates(s, d.context, d.target);
@@ -2692,7 +2811,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
     case 'stage_attack_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');
-      const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true);
+      const currentStaged = stagedAttacks(s)[playerId] ?? [];
+      const allowRequiredAdditional = isRequiredAdditionalPlayCard(s, command.cardInstanceId) && currentStaged.some((entry) =>
+        entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
+      const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true, false, false, false, allowRequiredAdditional);
       if (failure) reject(failure, 'Card cannot be staged in the current state');
       if (!entersAttackArea(s, command.cardInstanceId)) reject('not_attack_card', 'Only attack cards can be staged');
       if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown)) reject('illegal_action', 'Card staging is not available');
@@ -2747,6 +2869,49 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           applyAlterEgoTransform(s, d.context, a, selected);
           break;
         }
+        if (meta.kind === 'same_battlefield_private_hand_return_v1') {
+          const source = s.cards.find((candidate) => candidate.instanceId === d.context.sourceCardId);
+          const exactSyntheticTarget = d.target.id === 'inspected_hand_card' && d.target.type === 'card_instance' &&
+            node(d.target.scope).zone === 'hand' && node(d.target.scope).owner === 'any' && node(d.target.scope).controller === 'any' &&
+            Number(node(d.target.count).min) === 0 && Number(node(d.target.count).max) === 1 && d.target.visibility === 'private_to_controller';
+          if (!isSameBattlefieldPrivateHandReturnInteractionSemantic(a) || d.context.controllerId !== d.controllerId ||
+            !source || source.controllerPlayerId !== d.controllerId || !active(s, source.instanceId) || !exactSyntheticTarget ||
+            meta.template !== 'target' || meta.visibility !== 'owner_only' || meta.cancelPolicy !== 'forbidden' ||
+            meta.continuationRef !== `${d.id}:continuation` || meta.createdRevision !== runtime(s).revision ||
+            meta.sourceCardInstanceId !== d.context.sourceCardId || meta.abilityId !== d.context.abilityId ||
+            meta.playerTargetId !== str(a.targets[0]?.id) || d.context.selections[meta.playerTargetId]?.length !== 1 ||
+            d.context.selections[meta.playerTargetId]?.[0] !== meta.selectedPlayerId ||
+            meta.constraints.kind !== 'target' || meta.constraints.targetKind !== 'card' || meta.constraints.min !== 0 ||
+            meta.constraints.max !== 1 || meta.constraints.distinct !== true || d.min !== 0 || d.max !== 1 ||
+            new Set(d.candidates).size !== d.candidates.length || d.candidates.some((id) => {
+              const candidate = s.cards.find((card) => card.instanceId === id);
+              return !candidate || candidate.ownerPlayerId !== meta.selectedPlayerId || candidate.zone !== 'hand';
+            })) {
+            reject('resolution_failed', 'Corrupt private hand-return interaction state');
+          }
+          const selectedPlayer = s.players.find((candidate) => candidate.id === meta.selectedPlayerId && candidate.status === 'active');
+          const controllerLocationId = player(s, d.context.controllerId).locationId;
+          if (!selectedPlayer || !isBattlefield(s, controllerLocationId) || selectedPlayer.locationId !== controllerLocationId) {
+            reject('illegal_target', 'Selected player is no longer at the controller battlefield');
+          }
+          const currentAllowed = s.cards.filter((candidate) =>
+            candidate.ownerPlayerId === meta.selectedPlayerId && candidate.zone === 'hand').map((candidate) => candidate.instanceId);
+          if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max ||
+            new Set(selected).size !== selected.length || selected.some((id) => !d.candidates.includes(id) || !currentAllowed.includes(id))) {
+            reject('illegal_target', 'Selected private hand card is not legal');
+          }
+          delete r.pendingDecision;
+          if (selected.length === 1) {
+            const selectedCard = card(s, selected[0]!);
+            if (selectedCard.ownerPlayerId !== meta.selectedPlayerId || selectedCard.zone !== 'hand') {
+              reject('illegal_target', 'Selected private hand card no longer belongs to the selected player hand');
+            }
+            moveCard(s, selectedCard.instanceId, 'deck');
+            shuffle(s, meta.selectedPlayerId);
+            r.events.push({ type: 'deck_shuffled', playerId: meta.selectedPlayerId, sourceCardId: d.context.sourceCardId, abilityId: d.context.abilityId });
+          }
+          break;
+        }
         if (meta.kind !== 'private_optional_hand_play_v1' || meta.template !== 'target' || meta.visibility !== 'owner_only' ||
           meta.cancelPolicy !== 'forbidden' || meta.continuationRef !== `${d.id}:continuation` ||
           meta.createdRevision !== runtime(s).revision || meta.sourceCardInstanceId !== d.context.sourceCardId ||
@@ -2783,13 +2948,21 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular'): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
-  const attackChoices = choices.filter(c => entersAttackArea(s, c.cardInstanceId)).length;
-  if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + attackChoices > attackPlayAllowance(s, playerId)) {
+  const requiredAdditionalIds = new Set(choices
+    .filter(c => isRequiredAdditionalPlayCard(s, c.cardInstanceId))
+    .map(c => c.cardInstanceId));
+  const regularAttackChoices = choices.filter(c =>
+    entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId)).length;
+  if (quota === 'regular' && requiredAdditionalIds.size > 0 && regularAttackChoices === 0) {
+    reject('append_only', 'Required additional-play cards need a regular attack in the same batch');
+  }
+  if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + regularAttackChoices > attackPlayAllowance(s, playerId)) {
     reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
   let cost = 0;
   for (const c of choices) {
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect');
+    const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
+    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     if (!c.faceDown) cost += Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0);
   }
@@ -2840,7 +3013,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   counters.cardsPlayedByPlayer[playerId] = (counters.cardsPlayedByPlayer[playerId] ?? 0) + choices.length;
   if (quota === 'regular') {
-    counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + attackChoices;
+    counters.attacksDeclaredByPlayer[playerId] = (counters.attacksDeclaredByPlayer[playerId] ?? 0) + regularAttackChoices;
   }
   for (const c of choices.filter(c => !c.faceDown)) {
     processEvent(s, { id: nextId(s, 'declare'), type: 'on_use_declared', playerId, sourceCardId: c.cardInstanceId, playedCards });
