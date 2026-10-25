@@ -5,6 +5,7 @@ import {
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
+import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
@@ -1135,6 +1136,7 @@ export class MatchSession {
       if (this.state.abilityRuntime?.cardState[card.instanceId]) {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
+      clearTransientCardTransformState(this.state, card.instanceId);
       this.record('attached_card_returned', `${card.instanceId}:skill`, { attachment });
     }
     modeStateOf(this.state).supportShotAttachments = remaining;
@@ -1154,6 +1156,7 @@ export class MatchSession {
       if (this.state.abilityRuntime?.cardState[card.instanceId]) {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
+      clearTransientCardTransformState(this.state, card.instanceId);
       this.record('attack_area_card_discarded', `${card.instanceId}:discard`, {
         cardInstanceId: card.instanceId,
         definitionId: card.definitionId,

@@ -11,6 +11,7 @@
 import type { GameState } from '../schema/game';
 import type { RuleNode } from './types';
 import { node, str } from './loader';
+import { clearTransientCardTransformState } from './card-instance-state';
 
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
@@ -598,6 +599,7 @@ export function resolveExtendedEffect(
       if (targetCard) {
         targetCard.zone = 'skill';
         targetCard.visibility = { scope: 'owner_only', ownerPlayerId: controllerId };
+        clearTransientCardTransformState(state, targetCard.instanceId);
       }
       break;
     }
@@ -609,6 +611,8 @@ export function resolveExtendedEffect(
         if (sourceCard) {
           sourceCard.zone = 'skill';
           (sourceCard as any).active = false;
+          if (state.abilityRuntime?.cardState[sourceCard.instanceId]) state.abilityRuntime.cardState[sourceCard.instanceId]!.active = false;
+          clearTransientCardTransformState(state, sourceCard.instanceId);
         }
       }
       break;
