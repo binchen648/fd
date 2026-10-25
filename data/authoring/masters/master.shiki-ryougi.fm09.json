@@ -115,7 +115,7 @@
         "id": "master.shiki-ryougi"
       },
       "initialPlacement": "outside_game",
-      "printedText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
+      "printedText": "此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。",
       "cardFace": {
         "typeLabel": "迅捷",
         "cost": 2,
@@ -236,7 +236,7 @@
         "id": "master.shiki-ryougi"
       },
       "initialPlacement": "outside_game",
-      "printedText": "此牌需追加打出。行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
+      "printedText": "此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。",
       "cardFace": {
         "typeLabel": "魔术",
         "cost": 1,

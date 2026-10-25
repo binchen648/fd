@@ -110,7 +110,7 @@
         "id": "master.bazett"
       },
       "initialPlacement": "outside_game",
-      "printedText": "<每局游戏限一次>先发后至-下一次一名与你位于同一战场的对手使用宝具时，令其【败北】。",
+      "printedText": "<每局游戏限一次>\n先发后至-下一次一名与你位于同一战场的对手使用宝具时，令其【败北】。",
       "cardFace": {
         "typeLabel": "魔术",
         "cost": 1,

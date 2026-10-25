@@ -33,6 +33,15 @@ const sourceText: Record<string, string> = {
   'master.shiki-tohno.skill.s1': '将【侵蚀】加入你的技能区。',
   'master.shirou-emiya.skill.s2': '将【干将·莫邪】加入你的技能区。',
 };
+const targetText: Record<string, string> = {
+  'master.bazett.skill.s2': '<每局游戏限一次>\n先发后至-下一次一名与你位于同一战场的对手使用宝具时，令其【败北】。',
+  'master.ciel.skill.s2': '你拥有的魔力少于8点也可以打出此牌。\n驱魔-战斗阶段：若你赢得一场未进行争夺战的战斗，获得等于你地利位置数的战果。\n神职便利-战斗阶段：若你位于侦查，获得2点魔力。',
+  'master.fujino.skill.s3': '此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。',
+  'master.shiki-ryougi.skill.s2': '此牌需追加打出。若此牌与【死・紧握】一同打出，其+2魔力消耗。\n战斗阶段：选择一张你战斗中的非技能攻击，若其印刷威力与其所有者牌库底部的牌相同，弃置这两张牌。',
+  'master.shiki-ryougi.skill.s3': '此牌需追加打出。\n行动阶段：查看一名与你位于同一战场的玩家的手牌，你可将其中一张牌洗回其所有者的牌库。',
+  'master.shiki-tohno.skill.s2': '此牌需追加打出。\n血滴-你需花费1点战果来打出此牌。\n共融-战斗阶段：随机展示一名你交战对手弃牌堆的至多3张牌，你可以选择其中的一张基础牌与你控制或手牌的一张基础牌交换。',
+  'card.derived.master.shirou-emiya.ganjiang-moye': '（你的魔力需要达到8点才能打出此牌）投影-此牌需追加打出。',
+};
 
 function loaded() {
   return loadPlaytestContentPack(packPath, { workspaceRoot: '.' });
@@ -65,6 +74,9 @@ describe('P3-FM09 corrected shared game-start skill provisioning', () => {
       expect(source.phase3Evidence.f1SourceReferences).toHaveLength(2);
       expect(source.phase3Evidence.f1SourceReferences[0].kind).toBe('development-image');
       expect(source.phase3Evidence.f1SourceReferences[1].kind).toBe('legacy');
+    }
+    for (const card of archives.flatMap((archive: any) => archive.cards)) {
+      if (targetText[card.id]) expect(card.printedText).toBe(targetText[card.id]);
     }
   });
 

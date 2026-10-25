@@ -110,7 +110,7 @@
         "id": "master.fujino"
       },
       "initialPlacement": "outside_game",
-      "printedText": "此牌需追加打出。歪曲吧！-行动阶段：激活【扭曲空间】。",
+      "printedText": "此牌需追加打出。\n歪曲吧！-行动阶段：激活【扭曲空间】。",
       "cardFace": {
         "typeLabel": "魔术",
         "cost": 3,
