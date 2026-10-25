@@ -34,8 +34,9 @@ describe('P3-FM05 current-main Territory Creation authoring migration', () => {
     for (const [name, className, cardId] of members) {
       const raw = archive(name);
       expect(raw.class).toBe(className);
-      expect(raw.cards).toHaveLength(1);
-      const card = raw.cards[0];
+      expect(raw.cards).toHaveLength(name === 'semiramis' ? 2 : 1);
+      const card = raw.cards.find((candidate: { id: string }) => candidate.id === cardId);
+      expect(card).toBeDefined();
       expect(card.id).toBe(cardId);
       expect(card.printedText).toBe(printedText);
       expect(card.cardFace.cost).toBe(0);

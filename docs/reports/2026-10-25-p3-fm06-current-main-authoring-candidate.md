@@ -26,6 +26,7 @@ Each ability is the identity-free accepted FB2-12 shape: optional combat trigger
 - FB2-11 focused: 7/7.
 - FB2-12 runtime focused: 10/10.
 - Combined focused: 30/30.
+- FM05 compatibility regression: 4/4; Semiramis now permits its legitimate two-card archive while selecting the frozen FM05 card by exact ID; the other nine FM05 archives remain single-card.
 - `npm run typecheck`: passed.
 - `npm run content:validate`: passed, 7 masters / 7 servants / 20 events / 0 blocking issues.
 - `npm run verify:generated-content`: passed with unchanged hashes:
@@ -33,5 +34,6 @@ Each ability is the identity-free accepted FB2-12 shape: optional combat trigger
   - `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`
   - `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`
 - `git diff --check`: passed.
+- `npm run test:ci`: 118 files / 723 tests passed.
 
 This Candidate makes no acceptance or migration-credit claim; it is ready for independent Reviewer review on the exact current-main Base.
