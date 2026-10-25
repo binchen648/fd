@@ -624,7 +624,6 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
-  if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
@@ -1000,7 +999,7 @@ function cleanupOngoing(s: GameState): void {
       if (!validity.valid) pushLifecycleTransition(s, o, 'source_invalidated');
       continue;
     }
-    if (o.expiresAtRound !== undefined && s.round.roundNumber >= o.expiresAtRound && active(s, o.sourceCardId) && o.cleanup) {
+    if (o.expiresAtRound !== undefined && s.round.roundNumber >= o.expiresAtRound && active(s, o.sourceCardId)) {
       moveCard(s, o.sourceCardId, o.cleanup === 'remove_from_game' ? 'removed_from_game' : definition(s, o.sourceCardId)?.cardType === 'servant_skill' ? 'skill' : 'discard');
     }
   }
@@ -1339,45 +1338,6 @@ export function isResourceNumericTriggerSemantic(a: AuthoringAbility): boolean {
   return effect.type === 'adjust_mana' && isFixedControllerResourceAdjustmentComponent(effect);
 }
 
-export function isMagicResistancePowerModifierCandidate(a: AuthoringAbility): boolean {
-  if (a.kind !== 'phase_action' || a.ruleModifiers.length === 0) return false;
-  return a.ruleModifiers.some((modifier) => {
-    const scope = node(modifier.scope);
-    return str(modifier.type) === 'combat_power_modifier' ||
-      (str(modifier.operation) === 'set' && str(modifier.rule) === 'attack.currentPower' &&
-        str(scope.controller) === 'engaged_opponents_same_battlefield');
-  });
-}
-
-export function isMagicResistancePowerModifierSemantic(a: AuthoringAbility): boolean {
-  if (!isMagicResistancePowerModifierCandidate(a)) return false;
-  if (str(a.activation.phase) !== 'combat' || str(a.activation.opens) !== 'controller_combat_action_window' ||
-    str(a.activation.requiresSourceState) !== 'active') return false;
-  if (!Object.keys(a.activation).every((key) => ['phase', 'opens', 'requiresSourceState'].includes(key))) return false;
-  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.effects.length !== 0 || a.creates.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
-  if (str(a.responseWindow.opens) ||
-    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
-    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
-    !Object.keys(a.responseWindow).every((key) => ['order', 'passBehavior'].includes(key))) return false;
-  if (a.ruleModifiers.length !== 1) return false;
-
-  const modifier = a.ruleModifiers[0]!;
-  const scope = node(modifier.scope);
-  const constraints = nodes(scope.constraints);
-  const modifierLifecycle = node(modifier.lifecycle);
-  if (str(modifier.type) !== 'combat_power_modifier' || modifier.operation !== 'set' || modifier.rule !== 'attack.currentPower' ||
-    Number(modifier.value) !== 0 || !Number.isFinite(Number(modifier.value))) return false;
-  if (str(scope.controller) !== 'engaged_opponents_same_battlefield' || str(scope.object) !== 'attack_card' ||
-    !Object.keys(scope).every((key) => ['controller', 'object', 'constraints'].includes(key))) return false;
-  if (constraints.length !== 1 || str(constraints[0]!.type) !== 'has_attribute' || str(constraints[0]!.attribute) !== '魔术' ||
-    !Object.keys(constraints[0]!).every((key) => ['type', 'attribute'].includes(key))) return false;
-  if (str(modifierLifecycle.duration) !== 'this_round' ||
-    !Object.keys(modifierLifecycle).every((key) => key === 'duration')) return false;
-  return Object.keys(modifier).every((key) =>
-    ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key));
-}
-
 function isBattleLossResourceTriggerCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_controller_loses_battle' &&
@@ -1492,7 +1452,7 @@ export function classifyAlterEgoTransformVariant(a: AuthoringAbility): AlterEgoT
   if (a.effects.length === 2 && isExactCloseSourceEffect(a.effects[1]) && a.cost.length === 0 && Object.keys(a.limit).length === 0) return 'regular';
   const limitKeys = Object.keys(a.limit);
   if (a.effects.length === 1 && isFixedControllerManaCostComponent(a) && Number(a.cost[0]?.amount) === 3 &&
-    str(a.limit.type) === 'per_round' && a.limit.uses === 1 && str(a.limit.scope) === 'this_card' &&
+    str(a.limit.type) === 'per_round' && Number(a.limit.uses) === 1 && str(a.limit.scope) === 'this_card' &&
     limitKeys.every((key) => ['type', 'uses', 'scope'].includes(key))) return 'ex';
   return undefined;
 }
@@ -2322,11 +2282,6 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
-  if (isMagicResistancePowerModifierSemantic(a)) {
-    installOngoing(s, ctx, a);
-    cleanupOngoing(s);
-    return;
-  }
   if (isGameStartRuleOverrideSemantic(a)) {
     for (const effect of effects) resolveEffect(s, ctx, effect);
     return;
@@ -2343,7 +2298,6 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
-  if (isMagicResistancePowerModifierCandidate(a)) reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardFamilyCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
@@ -2441,9 +2395,6 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) {
     reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
-  }
-  if (isMagicResistancePowerModifierCandidate(a) && !isMagicResistancePowerModifierSemantic(a)) {
-    reject('resolution_failed', 'Unsupported magic-resistance power modifier semantic shape');
   }
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
