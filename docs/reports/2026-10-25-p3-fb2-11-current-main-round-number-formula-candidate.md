@@ -22,9 +22,9 @@ Changed files are limited to:
 
 ## Evidence
 
-- Focused FB2-11 + FB2-02: `2 files / 13 tests PASS`.
-- Rules regression suite: `49 files / 293 tests PASS`.
-- Standard full CI (`npm run test:ci`): `116 files / 706 tests PASS`.
+- Focused FB2-11 + FB2-02: `2 files / 14 tests PASS`.
+- Rules regression suite: `49 files / 294 tests PASS`.
+- Standard full CI (`npm run test:ci`): `116 files / 707 tests PASS`.
 - Typecheck (`npm run typecheck`): PASS.
 - Generated-content determinism (`npm run verify:generated-content`): PASS.
   Hashes remained:
@@ -40,6 +40,11 @@ The malformed `var: game.round_number` plus `op: subtract` shape is now
 rejected consistently by the loader and evaluator. The canonical metric is
 accepted only as a standalone `{ var: 'game.round_number' }` node, preventing
 the variable branch from bypassing operator validation.
+
+Name-based aliases (`{ name: 'game.round_number' }` and
+`{ op: 'var', name: 'game.round_number' }`) are also rejected consistently;
+the loader does not report them as valid metrics and the evaluator cannot
+execute them.
 
 The first focused attempt before dependency setup exited nonzero because the
 fresh worktree had no installed `vitest`/built workspace packages. After

@@ -102,4 +102,14 @@ describe('P3-FB2-11 trusted game round-number formula metric', () => {
     expect(() => rules.evaluateFormula({ op: 'subtract', var: 'game.round_number', args: [16, 2] }, state, 'p1', sourceId))
       .toThrow(/standalone read-only variable/);
   });
+
+  it('rejects name-based and op-var aliases consistently in loader and evaluator', () => {
+    for (const malformed of [{ name: 'game.round_number' }, { op: 'var', name: 'game.round_number' }]) {
+      const raw = structuredClone(syntheticArchive());
+      (raw.cards[0]!.cardFace.basePower as any) = malformed;
+      expect(rules.loadAuthoringJson(raw).report).toContainEqual(expect.objectContaining({ status: 'unsupported' }));
+      const { state, sourceId } = formulaState();
+      expect(() => rules.evaluateFormula(malformed, state, 'p1', sourceId)).toThrow();
+    }
+  });
 });
