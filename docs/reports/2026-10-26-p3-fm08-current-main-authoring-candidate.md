@@ -27,4 +27,3 @@ Each selected card is a canonical identity-free `game_start` forced trigger with
 - `npm run content:validate`: passed, 0 blocking issues.
 - `npm run verify:generated-content`: passed with unchanged hashes.
 - `git diff --check`: passed.
-
