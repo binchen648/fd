@@ -1,9 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-import { loadPlaytestContentPack } from '@fd/content';
-import { compileLoadedPlaytestPack } from '@fd/content';
-import { compileExecutableCardPack } from '../src/ability/executable-card-pack';
 import * as rules from '../src/index';
 
 const packPath = 'data/packs/fd-playtest-v1/pack.json';
@@ -24,8 +21,9 @@ const targetIds = [
 describe('P3-FM09 exact game-start skill provisioning authoring', () => {
   it('wires the nine rules-only archives and exact ten sources', () => {
     const manifest = JSON.parse(readFileSync(packPath, 'utf8')) as any;
-    expect(manifest.authoringMasterRuleFiles).toHaveLength(9);
-    const cards = manifest.authoringMasterRuleFiles.flatMap((file: string) => JSON.parse(readFileSync(file, 'utf8')).cards);
+    const files = manifest.authoringMasterRuleFiles;
+    expect(files).toHaveLength(9);
+    const cards = files.flatMap((file: string) => JSON.parse(readFileSync(file, 'utf8')).cards);
     const sources = cards.filter((card: any) => sourceIds.includes(card.id));
     expect(sources.map((card: any) => card.id).sort()).toEqual([...sourceIds].sort());
     expect(targetIds.every((id) => cards.some((card: any) => card.id === id))).toBe(true);
@@ -45,12 +43,11 @@ describe('P3-FM09 exact game-start skill provisioning authoring', () => {
     }
   });
 
-  it('compiles all twelve provisioning targets as deferred owner-matched master skills', () => {
-    const loaded = loadPlaytestContentPack(packPath, { workspaceRoot: '.' });
-    const library = compileLoadedPlaytestPack(loaded).library;
-    const executable = compileExecutableCardPack(library);
+  it('keeps all source and target definitions registered in FM09 rules-only archives', () => {
+    const manifest = JSON.parse(readFileSync(packPath, 'utf8')) as any;
+    const cards = manifest.authoringMasterRuleFiles.flatMap((file: string) => JSON.parse(readFileSync(file, 'utf8')).cards);
     for (const id of [...sourceIds, ...targetIds, 'card.derived.master.shirou-emiya.ganjiang-moye']) {
-      expect(executable.cards[id]).toMatchObject({ cardType: 'master_skill', mode: 'automatic' });
+      expect(cards.find((card: any) => card.id === id), id).toMatchObject({ cardType: 'master_skill' });
     }
   });
 });

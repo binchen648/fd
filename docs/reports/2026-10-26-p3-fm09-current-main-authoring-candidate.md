@@ -8,4 +8,6 @@ Status: `MIGRATION_CANDIDATE` only; no credit, A-sync, merge, or acceptance is i
 - Provisioning targets: eleven frozen targets plus derived `card.derived.master.shirou-emiya.ganjiang-moye`; the derived target is excluded from the frozen 944 denominator.
 - Scope: nine FM09 rules-only authoring archives, canonical `authoringMasterRuleFiles` pack wiring, and one focused authoring test. Runtime, generated content, coverage, task index, governance, and unrelated servants are untouched.
 
-Verification: JSON parse and `git diff --check` pass. Vitest/full CI/typecheck/content/determinism checks could not run in this isolated worktree because the workspace has no installed `vitest` binary; run the requested suite from the dependency-equipped current-main worktree before review.
+Verification environment: reused `E:/Codex/FD/.fd-pr447-review-fresh/node_modules` through an ignored local junction; lockfiles and tracked Candidate content were not changed.
+
+Verification: FM09 focused plus FB2-15/16/23, FM08/07/06/05, FB2-14/13/12/11/02 combined focused suite passed (15 files, 102 tests). Full CI passed (123 files, 774 tests). `npm run typecheck`, `npm run content:validate` (7 masters, 7 servants, 20 events, 0 blocking issues), `npm run verify:generated-content`, and `git diff --check` passed. No proxy push was performed from this builder worktree.
