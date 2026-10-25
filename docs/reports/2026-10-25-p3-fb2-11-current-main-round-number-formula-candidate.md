@@ -22,9 +22,9 @@ Changed files are limited to:
 
 ## Evidence
 
-- Focused FB2-11 + FB2-02: `2 files / 12 tests PASS`.
-- Rules regression suite: `49 files / 292 tests PASS`.
-- Standard full CI (`npm run test:ci`): `116 files / 705 tests PASS`.
+- Focused FB2-11 + FB2-02: `2 files / 13 tests PASS`.
+- Rules regression suite: `49 files / 293 tests PASS`.
+- Standard full CI (`npm run test:ci`): `116 files / 706 tests PASS`.
 - Typecheck (`npm run typecheck`): PASS.
 - Generated-content determinism (`npm run verify:generated-content`): PASS.
   Hashes remained:
@@ -33,7 +33,13 @@ Changed files are limited to:
   `b1bb8968097534c796cc6ff5775f3a14cfbbd063aa24e6b94f79a7e81d655cc3`.
 - Focused tests cover near-variable fail-closed loading, authoritative values
   at rounds 1/4/7/8, non-inference from unrelated counters, existing formula
-  compatibility, and rejection of subtraction/string expressions.
+  compatibility, rejection of subtraction/string expressions, and rejection
+  of a malformed operator-plus-round-variable node before evaluation.
+
+The malformed `var: game.round_number` plus `op: subtract` shape is now
+rejected consistently by the loader and evaluator. The canonical metric is
+accepted only as a standalone `{ var: 'game.round_number' }` node, preventing
+the variable branch from bypassing operator validation.
 
 The first focused attempt before dependency setup exited nonzero because the
 fresh worktree had no installed `vitest`/built workspace packages. After

@@ -91,4 +91,15 @@ describe('P3-FB2-11 trusted game round-number formula metric', () => {
     expect(() => rules.evaluateFormula({ op: 'subtract', args: [16, 2] }, state, 'p1', sourceId)).toThrow(/Unsupported formula operation/);
     expect(() => rules.evaluateFormula('16 - round * 2', state, 'p1', sourceId)).toThrow(/Formula must be a controlled AST/);
   });
+
+  it('rejects a round metric combined with an operator before calculation can execute', () => {
+    const raw = structuredClone(syntheticArchive());
+    (raw.cards[0]!.cardFace.basePower as any) = { op: 'subtract', var: 'game.round_number', args: [16, 2] };
+    const pack = rules.loadAuthoringJson(raw);
+    expect(pack.report).toContainEqual(expect.objectContaining({ status: 'unsupported' }));
+    const { state, sourceId } = formulaState();
+    state.round.roundNumber = 4;
+    expect(() => rules.evaluateFormula({ op: 'subtract', var: 'game.round_number', args: [16, 2] }, state, 'p1', sourceId))
+      .toThrow(/standalone read-only variable/);
+  });
 });
