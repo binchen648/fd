@@ -1,8 +1,8 @@
 # P3-A FM05 current-main materialized acceptance synchronization
 
-Role: Codex A accounting  
-Status: `SYNCHRONIZED`  
-Task: `P3-FM05`  
+Role: Codex A accounting
+Status: `SYNCHRONIZED`
+Task: `P3-FM05`
 Classification: accepted narrow authoring migration; zero migration credit
 
 ## Exact evidence
