@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_rule_definition_archive",
+  "id": "master.bazett",
+  "name": "巴泽特·弗拉加·马克雷米兹",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
+  },
+  "cards": [
+    {
+      "id": "master.bazett.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "传承保菌者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "printedText": "将【佛拉格拉克】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "s1.game-start-skill-provisioning",
+          "kind": "forced_trigger",
+          "printedClause": "将【佛拉格拉克】加入你的技能区。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.bazett.skill.s2"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.bazett/s1"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "master.bazett.skill.s1",
+            "sha256": "9e340e6b8393bb059a4550c7275b7f61f05adde31ea6d88bfab810d541b78d22"
+          }
+        ],
+        "sourceTextSha256": "9e340e6b8393bb059a4550c7275b7f61f05adde31ea6d88bfab810d541b78d22",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": null,
+          "basePower": null,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartSkillProvisioning": "P3-R41/FB2-15",
+          "nonPlayableMasterRuleArchive": "P3-R55/FB2-26"
+        }
+      }
+    },
+    {
+      "id": "master.bazett.skill.s2",
+      "name": "佛拉格拉克",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.bazett"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "佛拉格拉克",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "cost": 1,
+        "basePower": 0,
+        "attributes": [
+          "魔术"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": []
+    }
+  ]
+}

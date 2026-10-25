@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_rule_definition_archive",
+  "id": "master.zouken",
+  "name": "间桐脏砚",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
+  },
+  "cards": [
+    {
+      "id": "master.zouken.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "五百年的活尸",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.zouken"
+      },
+      "printedText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "s2.game-start-skill-provisioning",
+          "kind": "forced_trigger",
+          "printedClause": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.zouken.skill.s3",
+                "master.zouken.skill.s4"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.zouken/s2"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "master.zouken.skill.s2",
+            "sha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3"
+          }
+        ],
+        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s2",
+          "cost": null,
+          "basePower": null,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartSkillProvisioning": "P3-R41/FB2-15",
+          "nonPlayableMasterRuleArchive": "P3-R55/FB2-26"
+        }
+      }
+    },
+    {
+      "id": "master.zouken.skill.s3",
+      "name": "创造者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.zouken"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "创造者",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "cost": 1,
+        "basePower": 0,
+        "attributes": [
+          "魔术"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": []
+    },
+    {
+      "id": "master.zouken.skill.s4",
+      "name": "五百年的执念",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.zouken"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "五百年的执念",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "cost": 1,
+        "basePower": 0,
+        "attributes": [
+          "魔术"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": []
+    }
+  ]
+}

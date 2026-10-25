@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_rule_definition_archive",
+  "id": "master.shiki-nanaya",
+  "name": "远野志贵",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9"
+  },
+  "cards": [
+    {
+      "id": "master.shiki-nanaya.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "半身",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shiki-nanaya"
+      },
+      "printedText": "你拥有【直死之魔眼】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "s1.game-start-skill-provisioning",
+          "kind": "forced_trigger",
+          "printedClause": "你拥有【直死之魔眼】。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.shiki-nanaya.skill.s2"
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.shiki-nanaya/s1"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "master.shiki-nanaya.skill.s1",
+            "sha256": "b80e3620292b5d67e0bff3f7f13959cf7843e804a8e61172a786faf94a12a685"
+          }
+        ],
+        "sourceTextSha256": "b80e3620292b5d67e0bff3f7f13959cf7843e804a8e61172a786faf94a12a685",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": null,
+          "basePower": null,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartSkillProvisioning": "P3-R41/FB2-15",
+          "nonPlayableMasterRuleArchive": "P3-R55/FB2-26"
+        }
+      }
+    },
+    {
+      "id": "master.shiki-nanaya.skill.s2",
+      "name": "直死之魔眼",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.shiki-nanaya"
+      },
+      "initialPlacement": "outside_game",
+      "printedText": "直死之魔眼",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "cost": 1,
+        "basePower": 0,
+        "attributes": [
+          "魔术"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": []
+    }
+  ]
+}
