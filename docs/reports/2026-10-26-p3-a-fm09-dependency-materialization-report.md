@@ -3,7 +3,7 @@
 Role: Codex A (materialization only)  
 Task: `P3-FM09`  
 Exact Base: `1afe10ff9c1c1a65a0c2b68c56c5607cb0c1c447`  
-Candidate: pending commit for this report  
+Candidate: `1a1c7afd1a5fe152f9913846336d957c7d615455`  
 Historical accepted inputs: FB2-15 `23a666913a3050ad55d781e3f5b3a1518add4c3e`, FB2-16 `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`, FB2-23 `1cfd6000f5627a282e2549d23e5a176ba983384f`
 
 ## Scope
