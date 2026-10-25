@@ -8,6 +8,7 @@ Status: `MIGRATION_CANDIDATE` only. This report is not Reviewer acceptance, cred
 - Branch: `codex/s-p3-fm07-current-main-20261025`.
 - Base contains the accepted FB2-13 runtime plus FB2-02/11/12, FM05, and FM06 dependencies. No historical FM07 Candidate was cherry-picked.
 - Changes are authoring-only: nine servant archives, one master archive, one focused migration test, and this report. Shared runtime, coverage, generated artifacts, task index, governance, and unrelated servants are untouched.
+- The locked Reference metadata for Passionlip `sc-passionlip-1` is the sole regular-card type-label exception: `特殊`; the other eight regular cards remain `被动`. The Passionlip card face and `phase3Evidence.referenceStaticMetadata` both match that Reference.
 
 ## Exact 10-ID set and variants
 

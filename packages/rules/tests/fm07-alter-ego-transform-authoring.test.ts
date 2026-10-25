@@ -28,7 +28,7 @@ describe('P3-FM07 current-main Alter Ego authoring migration', () => {
       expect(raw.class).toBe('Alterego');
       const card = raw.cards.find((candidate: { id: string }) => candidate.id === cardId)!;
       expect(card.printedText).toBe(regularText);
-      expect(card.cardFace).toMatchObject({ typeLabel: '被动', attributes: [], cost: 2, basePower: 3 });
+      expect(card.cardFace).toMatchObject({ typeLabel: name === 'passionlip' ? '特殊' : '被动', attributes: [], cost: 2, basePower: 3 });
       expect(card.playRequirements).toEqual([{ type: 'skill_zone_mana_at_least', value: 8 }]);
       expect(card.phase3Evidence.sourceTextSha256).toBe('b6c74ac37a50b671ded913dbc6ae6736f2057904fe4c02924d79f84971cebbdf');
       expect(card.phase3Evidence.referenceStaticMetadata.handler).toBe('core.alter-ego-transform');
