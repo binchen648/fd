@@ -127,6 +127,8 @@ export interface BattleResultState {
   winnerPlayerIds: string[];
   tied: boolean;
   excludedPlayerIds?: string[];
+  /** Battle-local Presence Concealment defeats applied before winner/scoring settlement. */
+  presenceConcealmentDefeatedPlayerIds?: string[];
   /** Participants who lost but whose battle-loss effects are suppressed for this result. */
   lossEffectSuppressedPlayerIds?: string[];
   winnerPlayerId: string | null;

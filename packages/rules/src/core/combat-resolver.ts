@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower } from '../ability/interpreter';
+import { calculateCardPower, processAbilityEvent } from '../ability/interpreter';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -445,34 +445,28 @@ function splitVpPoolPerWinner(pool: number, winnerCount: number): number {
   return winnerCount > 0 && pool > 0 ? Math.ceil(pool / winnerCount) : 0;
 }
 
-function buildBattleResult(
+function buildBattleResultFromRanked(
   state: GameState,
-  input: CombatResolutionInput,
+  battlefieldId: CombatResolutionInput["battlefieldId"],
+  ranked: BattleParticipantBreakdown[],
+  presenceConcealmentDefeatedPlayerIds: string[] = [],
 ): GameState["battleResults"][number] | null {
-  if (!input.participants?.length) {
-    return null;
-  }
-
-  const location = getLocationById(state.map, state.locationConfig, input.battlefieldId);
-  const ranked = [...input.participants]
-    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
-    .sort((left, right) => right.effectivePower - left.effectivePower);
-  const excludedPlayerIds = ranked
-    .filter((participant) => cannotWinBattleThisRound(state, participant.playerId))
-    .map((participant) => participant.playerId);
+  if (!ranked.length) return null;
+  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
+  const excludedPlayerIds = [...new Set([
+    ...ranked.filter((participant) => cannotWinBattleThisRound(state, participant.playerId)).map((participant) => participant.playerId),
+    ...presenceConcealmentDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
+  ])];
   const eligible = ranked.filter((participant) => !excludedPlayerIds.includes(participant.playerId));
   const highestEligiblePower = eligible[0]?.effectivePower;
-
-  if (highestEligiblePower === undefined) {
-    return null;
-  }
+  if (highestEligiblePower === undefined) return null;
 
   const winners = eligible.filter((participant) => participant.effectivePower === highestEligiblePower);
   const winnerPlayerIds = winners.map((participant) => participant.playerId);
   const tied = winnerPlayerIds.length > 1;
   const runnerUp = eligible.find((participant) => participant.effectivePower < highestEligiblePower);
   const margin = tied ? 0 : highestEligiblePower - (runnerUp?.effectivePower ?? 0);
-  const eventVpPool = getBattleVpReward(state, input.battlefieldId, location);
+  const eventVpPool = getBattleVpReward(state, battlefieldId, location);
   const hasCompetitionReward = ranked.length > 1 &&
     location?.rewardHooks.includes("competition_rewards") === true &&
     typeof location.vpRewardRules?.competition === "number";
@@ -484,52 +478,47 @@ function buildBattleResult(
   const vpReward = Math.min(splitVpPoolPerWinner(eventVpPool, winnerPlayerIds.length), baseVpPerWinner);
   const competitionVpPerWinner = Math.max(0, baseVpPerWinner - vpReward);
   const locationVpPerWinner = splitVpPoolPerWinner(locationVpPool, winnerPlayerIds.length);
-
   const defaultVpAdjustments = buildDefaultVpAdjustments(
-    location,
-    input.battlefieldId,
-    winnerPlayerIds,
-    competitionVpPerWinner,
-    locationVpPerWinner,
+    location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
-    .filter((playerId) => hasRemoteOperationBonus(state, playerId, input.battlefieldId))
+    .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))
     .map((playerId) => ({
-        playerId,
-        delta: 2,
-        source: "battle_vp" as const,
-        label: "basic.preparation.win_bonus",
-      }));
+      playerId, delta: 2, source: "battle_vp" as const, label: "basic.preparation.win_bonus",
+    }));
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
   const lossEffectSuppressedPlayerIds = ranked
     .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
-    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, input.battlefieldId))
+    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
     .map((participant) => participant.playerId);
 
   return {
-    battlefieldId: input.battlefieldId,
-    winnerPlayerIds,
-    tied,
+    battlefieldId, winnerPlayerIds, tied,
     ...(excludedPlayerIds.length ? { excludedPlayerIds } : {}),
+    ...(presenceConcealmentDefeatedPlayerIds.length ? { presenceConcealmentDefeatedPlayerIds: [...new Set(presenceConcealmentDefeatedPlayerIds)] } : {}),
     ...(lossEffectSuppressedPlayerIds.length ? { lossEffectSuppressedPlayerIds } : {}),
     winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
-    margin,
-    vpReward,
-    baseVpPerWinner,
-    eventVpPool,
-    competitionVpPool,
+    margin, vpReward, baseVpPerWinner, eventVpPool, competitionVpPool,
     ...(vpAdjustments.length ? { vpAdjustments } : {}),
     militaryAdjustments: ranked.map((participant) => {
       const delta = winnerPlayerIds.includes(participant.playerId)
         ? margin
-        : ignoresBattleLossEffects(state, participant.playerId, input.battlefieldId) ? 0 : -margin;
-      return {
-        playerId: participant.playerId,
-        delta: Object.is(delta, -0) ? 0 : delta,
-      };
+        : ignoresBattleLossEffects(state, participant.playerId, battlefieldId) ? 0 : -margin;
+      return { playerId: participant.playerId, delta: Object.is(delta, -0) ? 0 : delta };
     }),
     participantBreakdowns: ranked,
   };
+}
+
+function buildBattleResult(
+  state: GameState,
+  input: CombatResolutionInput,
+): GameState["battleResults"][number] | null {
+  if (!input.participants?.length) return null;
+  const ranked = [...input.participants]
+    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
+    .sort((left, right) => right.effectivePower - left.effectivePower);
+  return buildBattleResultFromRanked(state, input.battlefieldId, ranked);
 }
 
 export function resolveBattlefield(
@@ -627,13 +616,61 @@ export function resolveBattlefield(
     }
     return { nextState, appliedLogEntries: [`return_silence:${input.battlefieldId}`] };
   }
-  const battleResult = buildBattleResult(state, {
-    ...input,
-    participants,
-  });
+  const ranked = [...participants]
+    .map((participant) => buildParticipantBreakdown(state, input.battlefieldId, participant))
+    .sort((left, right) => right.effectivePower - left.effectivePower);
+  const resultId = `battle-result:${state.round.roundNumber}:${input.battlefieldId}`;
+  const powerEventId = `battle-power:${state.round.roundNumber}:${input.battlefieldId}`;
+  let settlementState = state;
+
+  if (settlementState.abilityRuntime && !settlementState.abilityRuntime.processedEvents.includes(powerEventId)) {
+    const eventState = structuredClone(settlementState);
+    eventState.eventPlacements = nextPlacements;
+    processAbilityEvent(eventState, {
+      id: powerEventId,
+      type: 'after_battle_power_calculated',
+      battleId: abilityEventId,
+      resultId,
+      battlefieldId: input.battlefieldId,
+      battleParticipantIds: ranked.map((participant) => participant.playerId),
+      battleParticipantPowers: Object.fromEntries(ranked.map((participant) => [participant.playerId, participant.effectivePower])),
+    });
+    settlementState = eventState;
+  }
+
+  if (settlementState.abilityRuntime && (
+    settlementState.abilityRuntime.pendingDecision ||
+    settlementState.abilityRuntime.responseWindows.length ||
+    settlementState.abilityRuntime.hostRequests.length
+  )) {
+    return {
+      nextState: settlementState,
+      appliedLogEntries: [`battle_power_response_pending:${input.battlefieldId}`],
+    };
+  }
+
+  const currentParticipantIds = ranked.map((participant) => participant.playerId);
+  const currentParticipantPowers = Object.fromEntries(ranked.map((participant) => [participant.playerId, participant.effectivePower]));
+  const allPendingPresence = settlementState.abilityRuntime?.pendingPresenceConcealmentDefeats ?? [];
+  const matchingPendingPresence = allPendingPresence.filter((entry) =>
+    entry.resultId === resultId && entry.battlefieldId === input.battlefieldId);
+  for (const entry of matchingPendingPresence) {
+    if (entry.participantIds.length !== currentParticipantIds.length ||
+      entry.participantIds.some((playerId, index) => currentParticipantIds[index] !== playerId) ||
+      currentParticipantIds.some((playerId) => entry.participantPowers[playerId] !== currentParticipantPowers[playerId])) {
+      throw new Error('Presence Concealment frozen battle Power snapshot changed before settlement');
+    }
+  }
+  const presenceTargets = [...new Set(matchingPendingPresence.flatMap((entry) => entry.targetPlayerIds))];
+  const ignoredPresenceTargets = presenceTargets.filter((playerId) =>
+    ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));
+  const defeatedPresenceTargets = presenceTargets.filter((playerId) => !ignoredPresenceTargets.includes(playerId));
+
+  const battleResult = buildBattleResultFromRanked(
+    settlementState, input.battlefieldId, ranked, defeatedPresenceTargets);
   const nextBattleResults = battleResult
-    ? state.battleResults.concat(battleResult)
-    : state.battleResults;
+    ? settlementState.battleResults.concat(battleResult)
+    : settlementState.battleResults;
   const logEntry = battleResult
     ? ({
         type: "battle_resolved",
@@ -642,6 +679,7 @@ export function resolveBattlefield(
           winnerPlayerIds: battleResult.winnerPlayerIds,
           tied: battleResult.tied,
           excludedPlayerIds: battleResult.excludedPlayerIds,
+          presenceConcealmentDefeatedPlayerIds: battleResult.presenceConcealmentDefeatedPlayerIds,
           winnerPlayerId: battleResult.winnerPlayerId,
           margin: battleResult.margin,
           participantBreakdowns: battleResult.participantBreakdowns,
@@ -657,12 +695,32 @@ export function resolveBattlefield(
       } satisfies GameState["log"][number]);
 
   const nextState: GameState = {
-      ...state,
+      ...settlementState,
       eventPlacements: nextPlacements,
       battleResults: nextBattleResults,
-      log: state.log.concat(logEntry),
+      log: settlementState.log.concat(logEntry),
   };
-  if (state.abilityRuntime && battleResult) {
+  if (nextState.abilityRuntime && matchingPendingPresence.length) {
+    const consumed = new Set(matchingPendingPresence.map((entry) =>
+      `${entry.triggerEventId}:${entry.sourceCardId}:${entry.abilityId}`));
+    nextState.abilityRuntime.pendingPresenceConcealmentDefeats = allPendingPresence.filter((entry) =>
+      !consumed.has(`${entry.triggerEventId}:${entry.sourceCardId}:${entry.abilityId}`));
+  }
+  for (const playerId of defeatedPresenceTargets) {
+    nextState.log.push({
+      type: 'presence_concealment_defeat_applied',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, resultId },
+    });
+  }
+  for (const playerId of ignoredPresenceTargets) {
+    nextState.log.push({
+      type: 'presence_concealment_defeat_ignored',
+      message: `${input.battlefieldId}:${playerId}`,
+      payload: { playerId, battlefieldId: input.battlefieldId, resultId, sourceCardDefinitionId: 'basic.luck' },
+    });
+  }
+  if (settlementState.abilityRuntime && battleResult) {
     const winners = battleResult.winnerPlayerIds;
     const immuneLosers = participants
       .filter((participant) => !winners.includes(participant.playerId))
