@@ -67,6 +67,53 @@ Codex A must first produce a current-main reconciliation that:
 Until that A-owned handoff exists, this report recommends no successor
 dispatch. The formal ledger remains `111/944`; no credit is claimed.
 
+## A-owned current-main handoff / reconciliation
+
+This section is the requested A-owned handoff record for a future Builder
+dispatch. It is not an A-sync, acceptance, merge, or migration-credit event.
+
+### Rebound Base and scoped delta
+
+- Rebound Base for a fresh Builder: `1d0500390081620e94cd21d56ac83b4eafc51057`
+  (current-main FB2-10 A-sync).
+- The common handoff Base with the historical FB2-11 Candidate is
+  `09ddfaee5ea54226d232c85d80db32a7b04b186e`.
+- The historical FB2-11 implementation commit
+  `5383c37c8362341b8a581624b8ad1d77ddce356` is a four-file narrow change:
+  formula metric interpreter, loader allowlist, focused regression, and
+  implementation report. The wider FM03/FM04 material visible around that
+  planning lineage is excluded from this handoff and must not be copied.
+
+### Reconciled contract
+
+A fresh Builder may implement only the identity-free, read-only metric
+`game.round_number`, evaluating to authoritative `state.round.roundNumber`.
+The existing controlled formula operators remain unchanged (`const`, `var`,
+`add`, `multiply`, `min`, `count_cards`, `gt`, `lte`). No subtraction, string
+formula, arbitrary state path, identity/text routing, or authoring migration is
+authorized. The focused contract must retain fail-closed near-variable checks,
+deterministic values for round 1/4/7/8, existing Drake formula behavior, and
+FB2-02 deployment-resource compatibility.
+
+### Dependency/current-engine check
+
+The current formula engine already has the controlled AST evaluator and
+authoritative round state. FB2-02 remains the dependency for the deployment
+reward half of the prospective Territory family; FB2-11 supplies only the
+round-number formula dependency. No FB2-02 runtime or authoring change is
+needed for this handoff. Historical FB2-11 review evidence is semantic
+reference only: it cannot be reused as current-main review evidence until a
+fresh Candidate from the rebound Base is independently reviewed.
+
+### Dispatch authorization
+
+The next Builder is explicitly authorized to create a new FB2-11 Candidate
+from exact Base `1d0500390081620e94cd21d56ac83b4eafc51057`, restricted to the
+contract and four-file narrow scope above. The Builder must use a new branch,
+re-run focused/compatibility/typecheck/determinism/diff checks, and report a
+new Candidate for independent review. This handoff does not itself claim that
+implementation, review, acceptance, synchronization, or credit has occurred.
+
 ## Cross-repository branch/evidence audit
 
 Read-only branch inventory was performed against the configured `binchen648/fd`
