@@ -66,3 +66,50 @@ Codex A must first produce a current-main reconciliation that:
 
 Until that A-owned handoff exists, this report recommends no successor
 dispatch. The formal ledger remains `111/944`; no credit is claimed.
+
+## Cross-repository branch/evidence audit
+
+Read-only branch inventory was performed against the configured `binchen648/fd`
+remote and the separate local clone/remote for
+`fengling20011118-dotcom/fate-domination` on 2026-10-25. Branch names are
+evidence pointers only; a branch name or SHA is not treated as current-main
+acceptance.
+
+### `binchen648/fd`
+
+The proxy-backed remote advertised 1,274 heads, including 476 owner/source-
+evidence branches, 243 FB/FB2 branches, 40 FM branches, and 25 TO branches.
+The current-main chain is the explicitly named A-sync sequence through
+FB2-10, ending at `1d050039...`; its matching Builder, Reviewer, and A-sync
+refs are:
+
+| Slice | Builder/Candidate | Reviewer | A-sync/current-main status |
+|---|---|---|---|
+| B13–B23 | `codex/b-p3-b13...` through `codex/b-p3-b23...` | matching `r-p3-*` refs | historical current-main chain, individually A-synchronized through B23 |
+| FB2-01–FB2-10 | matching `b2-p3-fb2-*` refs | matching `r2-p3-fb2-*` refs | current-main A-sync refs through FB2-10; FB2-10 ends at `1d050039...` |
+| FB2-11 | no current-main B2/Reviewer/A-sync ref | historical contract lineage only | not reconciled to `1d050039...` |
+
+The remote also contains many owner-complete, source-evidence, recovery, and
+main-replay branches. These are not folded into the current-main chain unless
+an A-owned synchronization explicitly binds their Base, Candidate, and review
+evidence. Recovery refs and owner-complete refs therefore remain historical or
+parallel evidence, not successor authorization.
+
+### `fengling20011118-dotcom/fate-domination`
+
+The remote is reachable read-only through the proxy and advertises only a
+small documentation/legacy branch set plus `main` at
+`cbee4eb35562425464371aae9fdf9d4c9e1cf35d`. It has no matching current-main
+FB2-10/FB2-11 A-sync sequence. The local clone at
+`E:\Codex\FD\Fate_Domination-重构版` is independently dirty with unrelated UI,
+asset, and content changes; those changes were not inspected as evidence and
+were not modified. Its state cannot be used to rebind a rules-runtime task.
+
+### Merge-preparation decision
+
+No branch is marked merge-ready by this audit. The only safe preparation item
+is an A-owned current-main FB2-11 reconciliation that binds the historical
+round-number contract to `1d050039...`, verifies dependency compatibility, and
+decides whether fresh Builder/Reviewer evidence is required. Until then,
+`RECONCILIATION_REQUIRED` remains the status and the formal ledger stays
+`111/944`.
