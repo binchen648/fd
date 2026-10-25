@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.zouken",
+  "name": "间桐脏砚",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.zouken.skill.s5",
+      "aliases": [
+        "s5"
+      ],
+      "legacyId": "s5",
+      "name": "间桐家的宗主",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.zouken"
+      },
+      "printedText": "局势牌无法禁止你使用宝具。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.zouken.skill.s5.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "局势牌无法禁止你使用宝具。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "ignore_situation_play_forbid_attribute",
+              "attribute": "宝具"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/间桐脏砚.png",
+            "locator": "master.zouken/间桐脏砚"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.zouken/s5"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[14].skills[4].text#line=1",
+            "sha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f"
+          }
+        ],
+        "sourceTextSha256": "1bfe9fda4911dd95b0e6ef1462140b1d7e20cdacdd03df524fae374509bc668f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s5",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    }
+  ]
+}

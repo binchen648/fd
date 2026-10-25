@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.waver",
+  "name": "韦伯·维尔维特",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.waver.skill.s1",
+      "aliases": [
+        "s1"
+      ],
+      "legacyId": "s1",
+      "name": "鉴识眼",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.waver"
+      },
+      "printedText": "你可观看背面朝上的事件牌。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.waver.skill.s1.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "你可观看背面朝上的事件牌。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "view_face_down_events",
+              "enabled": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/韦伯·维尔维特.png",
+            "locator": "master.waver/韦伯·维尔维特"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.waver/s1"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[9].skills[0].text#line=1",
+            "sha256": "c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f"
+          }
+        ],
+        "sourceTextSha256": "c4004b02a61eb2cefa01526f174f4fb7815644f4267735020b2507177797058f",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.peperoncino",
+  "name": "斯堪的纳维亚·佩佩隆奇诺",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.peperoncino.skill.s1a",
+      "aliases": [
+        "s1a"
+      ],
+      "legacyId": "s1a",
+      "name": "心理论",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.peperoncino"
+      },
+      "printedText": "你可查看对手的弃牌堆。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.peperoncino.skill.s1a.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "你可查看对手的弃牌堆。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "view_opponent_discard",
+              "enabled": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/斯堪的纳维亚·佩佩隆奇诺.png",
+            "locator": "master.peperoncino/斯堪的纳维亚·佩佩隆奇诺"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.peperoncino/s1a"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[57].skills[1].text#line=1",
+            "sha256": "24da87d334a23689f9ef2d6607cd74ec0e9bfde162a49835f7e453afcd282cb2"
+          }
+        ],
+        "sourceTextSha256": "24da87d334a23689f9ef2d6607cd74ec0e9bfde162a49835f7e453afcd282cb2",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s1a",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    }
+  ]
+}

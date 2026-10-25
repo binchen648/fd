@@ -1,0 +1,300 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.fiore",
+  "name": "菲奥蕾·弗尔维吉",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Semantics come from frozen F1 plus accepted FB2-14/R39; locked Reference is used only for owner/static metadata."
+  },
+  "cards": [
+    {
+      "id": "master.fiore.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "瘫痪",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.fiore"
+      },
+      "printedText": "你无法在自己的行动阶段和战斗阶段移动。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.fiore.skill.s2.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "你无法在自己的行动阶段和战斗阶段移动。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "lock_controller_movement_in_own_action_and_combat",
+              "enabled": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/菲奥蕾·弗尔维吉.png",
+            "locator": "master.fiore/菲奥蕾·弗尔维吉"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.fiore/s2"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[42].skills[2].text#line=1",
+            "sha256": "e9646624a773a5a21ca08c3d63e072da56126dad075d4842d44faac9a95ec6e9"
+          }
+        ],
+        "sourceTextSha256": "e9646624a773a5a21ca08c3d63e072da56126dad075d4842d44faac9a95ec6e9",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s2",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    },
+    {
+      "id": "master.fiore.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "回路不良",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.fiore"
+      },
+      "printedText": "你于非高潮回合时每回合合计获得的魔力不能超过2点；你于高潮回合时每回合合计获得的魔力不能超过4点。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.fiore.skill.s3.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "你于非高潮回合时每回合合计获得的魔力不能超过2点；你于高潮回合时每回合合计获得的魔力不能超过4点。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "round_total_mana_gain_cap",
+              "regular": 2,
+              "climax": 4
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/菲奥蕾·弗尔维吉.png",
+            "locator": "master.fiore/菲奥蕾·弗尔维吉"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.fiore/s3"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[42].skills[3].text#line=1",
+            "sha256": "01a78c3d1650a32f187bf1b292e15807727370e11928021d7b91e7125ce3c2ac"
+          }
+        ],
+        "sourceTextSha256": "01a78c3d1650a32f187bf1b292e15807727370e11928021d7b91e7125ce3c2ac",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s3",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    },
+    {
+      "id": "master.fiore.skill.s4",
+      "aliases": [
+        "s4"
+      ],
+      "legacyId": "s4",
+      "name": "温顺",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.fiore"
+      },
+      "printedText": "若你的战斗中有战果低于你的其他玩家，你-2合计威力。\n若激活的局势牌包含禁止宝具使用的，菲奥蕾的技能威力为0且无法增加。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "master.fiore.skill.s4.game-start-rules",
+          "kind": "forced_trigger",
+          "printedClause": "若你的战斗中有战果低于你的其他玩家，你-2合计威力。\n若激活的局势牌包含禁止宝具使用的，菲奥蕾的技能威力为0且无法增加。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "total_power_adjustment_if_other_battle_participant_lower_vp",
+              "value": -2
+            },
+            {
+              "type": "install_rule_override",
+              "player": "controller",
+              "rule": "controller_master_skill_power_lock_if_situation_forbids",
+              "attribute": "宝具",
+              "value": 0
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/菲奥蕾·弗尔维吉.png",
+            "locator": "master.fiore/菲奥蕾·弗尔维吉"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.fiore/s4"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[42].skills[4].text#line=1",
+            "sha256": "2e3a64482c0111a766b5d3e991365342e414b1d5a38318681db77b9b99e4e3e3"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[42].skills[4].text#line=2",
+            "sha256": "ea4f5f28895a5793f359446e87a564397f12c2f0cf2073f095f200135afb6a4d"
+          }
+        ],
+        "sourceTextSha256": "b750f78e112432917ec6c612124040ca6f3c9f9a538943c2daeaea78e536364c",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s4",
+          "cost": 0,
+          "basePower": 0,
+          "legacyRequirement": null,
+          "typeLabel": "被动"
+        },
+        "acceptedContracts": {
+          "gameStartRuleOverrides": "P3-R39/FB2-14"
+        }
+      }
+    }
+  ]
+}

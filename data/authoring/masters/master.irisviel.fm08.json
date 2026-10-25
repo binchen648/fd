@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_skill_card_archive",
+  "id": "master.irisviel",
+  "name": "爱丽丝菲尔",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "FM08 canonical s1 is isolated from the pre-existing playtest-pack Irisviel archive so full-roster migration does not mutate locked playtest generated content."
+  },
+  "cards": [
+    {
+      "id": "master.irisviel.skill.s1",
+      "aliases": ["s1", "master.irisviel.skill.proxy-master"],
+      "legacyId": "s1",
+      "name": "代理御主",
+      "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.irisviel" },
+      "printedText": "令咒改为在前哨阶段使用。",
+      "cardFace": { "typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0 },
+      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "irisviel.proxy-master.command-seal-window",
+          "kind": "forced_trigger",
+          "printedClause": "令咒改为在前哨阶段使用。",
+          "activation": { "trigger": "game_start" },
+          "conditions": [], "targets": [], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {}, "limit": {}, "visibility": {},
+          "effects": [{ "type": "install_rule_override", "player": "controller", "rule": "command_spell_phase_override", "phase": "advance" }],
+          "execution": { "mode": "automatic" }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/爱丽丝菲尔.png", "locator": "master.irisviel/爱丽丝菲尔" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.irisviel/s1" }
+        ],
+        "f1ClauseSources": [{ "document": "src/content/generated/legacy-content.json", "locator": "masters[15].skills[0].text#line=1", "sha256": "d880afd3807b56ddd0ae4c2ad35829fc7991428aee15438515ade2ade66bf9fd" }],
+        "sourceTextSha256": "d880afd3807b56ddd0ae4c2ad35829fc7991428aee15438515ade2ade66bf9fd",
+        "referenceStaticMetadata": { "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动" },
+        "acceptedContracts": { "gameStartRuleOverrides": "P3-R39/FB2-14" }
+      }
+    }
+  ]
+}
