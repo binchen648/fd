@@ -257,6 +257,13 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
     }
     if (!value || typeof value !== 'object' || Array.isArray(value)) reject('unsupported', 'Formula must be a controlled AST');
     const n = node(value);
+    if (n.var === 'game.round_number' || n.name === 'game.round_number') {
+      const keys = Object.keys(value as Record<string, unknown>);
+      if (keys.length !== 1 || keys[0] !== 'var' || n.var !== 'game.round_number') {
+        return reject('unsupported', 'game.round_number must be a standalone read-only variable');
+      }
+      return s.round.roundNumber;
+    }
     if (n.formula !== undefined) return visit(n.formula);
     if (n.formulaRef === 'cardFace.basePower') return visit(definition(s, sourceCardId)?.cardFace.basePower ?? 0);
     if (n.var !== undefined || n.op === 'var') {
@@ -1190,17 +1197,27 @@ function sourcePlayBasicAttackDrawEventScopeMatches(event: AbilityEvent, sourceC
   return sourcePlayedFaceUp && basicCompanion;
 }
 
-function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
-  return a.kind === 'forced_trigger' &&
-    str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
+function isDeploymentResourceRewardFamilyCandidate(a: AuthoringAbility): boolean {
+  const deploymentAtLocation = str(a.activation.trigger) === 'after_player_deployed_to_battlefield' &&
     !!str(a.activation.eventLocationId);
+  return deploymentAtLocation && (a.kind === 'forced_trigger' ||
+    a.effects.some((effect) => fixedControllerResourcePrimitiveTypes.has(str(effect.type))));
+}
+
+function isDeploymentResourceRewardCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' && isDeploymentResourceRewardFamilyCandidate(a);
 }
 
 export function isDeploymentResourceRewardSemantic(a: AuthoringAbility): boolean {
-  if (!isDeploymentResourceRewardCandidate(a)) return false;
+  if (a.kind !== 'forced_trigger' || !isDeploymentResourceRewardFamilyCandidate(a)) return false;
+  if (Object.keys(a.activation).some((key) => !['trigger', 'eventLocationId'].includes(key))) return false;
   if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
-  if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
   if (a.effects.length < 1 || a.effects.length > 2) return false;
   return a.effects.every((effect) =>
     isFixedControllerResourceAdjustmentComponent(effect) && Number(effect.amount) > 0);
@@ -2012,7 +2029,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
-  if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
+  if (isDeploymentResourceRewardFamilyCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
   if (isBattleLossServantRevealCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss servant reveal semantic shape');

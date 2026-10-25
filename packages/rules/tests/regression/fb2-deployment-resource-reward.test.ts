@@ -110,6 +110,18 @@ describe('P3-FB2-02 deployment resource reward', () => {
     const target = structuredClone(pair);
     target.targets.push({ id: 'target', type: 'choose_player' });
     expect(rules.isDeploymentResourceRewardSemantic(target)).toBe(false);
+
+    const activationExtra = structuredClone(pair);
+    (activationExtra.activation as Record<string, unknown>).eventController = 'event_player';
+    expect(rules.isDeploymentResourceRewardSemantic(activationExtra)).toBe(false);
+
+    const responseMetadata = structuredClone(pair);
+    responseMetadata.responseWindow = { order: 'turn_order', priority: 'bogus' };
+    expect(rules.isDeploymentResourceRewardSemantic(responseMetadata)).toBe(false);
+
+    const visibilityMetadata = structuredClone(pair);
+    visibilityMetadata.visibility = { scope: 'public' };
+    expect(rules.isDeploymentResourceRewardSemantic(visibilityMetadata)).toBe(false);
   });
 
   it('settles one or two fixed controller rewards through typed resource evidence', () => {
@@ -194,6 +206,37 @@ describe('P3-FB2-02 deployment resource reward', () => {
     const before = JSON.stringify(state);
     expect(() => deployEvent(state, 'deploy-malformed')).toThrow('Unsupported deployment resource reward semantic shape');
     expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('fails a wrong-kind deployment resource sibling closed before legacy fallback', () => {
+    const raw = rewardRaw([{ type: 'adjust_mana', amount: 1 }]);
+    raw.cards.find((candidate: { id: string }) => candidate.id === sourceDefinitionId)!.abilities[0]!.kind = 'residual';
+    const pack = rules.loadAuthoringJson(raw);
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.players[0]!.masterCardId = raw.id;
+    state.players[0]!.locationId = 'magic_workshop';
+    rules.initializeAbilityRuntime(state, pack, { seed: 20260918 });
+    const sourceId = 'fb2-deployment-resource-wrong-kind';
+    state.cards.push({ instanceId: sourceId, definitionId: sourceDefinitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill', visibility: { scope: 'owner_only', ownerPlayerId: 'p1' } });
+    const before = JSON.stringify(state);
+    expect(() => deployEvent(state, 'deploy-wrong-kind')).toThrow('Unsupported deployment resource reward semantic shape');
+    expect(JSON.stringify(state)).toBe(before);
+  });
+
+  it('fails forced non-resource deployment siblings closed before legacy fallback', () => {
+    for (const effects of [
+      [{ type: 'adjust_command_seals', amount: 1 }],
+      [{ type: 'move_player', to: 'shinto' }],
+    ]) {
+      const { state } = setupReward([{ type: 'adjust_mana', amount: 1 }]);
+      state.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((candidate) => candidate.id === rewardAbilityId)!.effects = effects as never;
+      const before = JSON.stringify(state);
+      expect(() => deployEvent(state, `deploy-forced-malformed-${effects[0]!.type}`)).toThrow(
+        'Unsupported deployment resource reward semantic shape',
+      );
+      expect(JSON.stringify(state)).toBe(before);
+    }
   });
 
   it('does not narrow Ereshkigal existing any-player deployment trigger', () => {

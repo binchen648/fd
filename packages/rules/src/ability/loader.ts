@@ -99,7 +99,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       for (const key of Object.keys(n)) if (!mechanicKeys.has(key)) issue(`${path}.${key}`, 'Unmapped mechanic field', abilityId);
       if (n.type && !supportedTypes.has(str(n.type))) issue(`${path}.type`, `Unmapped type: ${str(n.type)}`, abilityId);
       if (n.op && !formulaOps.has(str(n.op))) issue(`${path}.op`, `Unmapped formula: ${str(n.op)}`, abilityId);
-      const serverMetric = ['controller.availableMana', 'consecutive_play_rounds',
+      if ((n.var === 'game.round_number' || n.name === 'game.round_number') &&
+        (Object.keys(n).length !== 1 || !Object.prototype.hasOwnProperty.call(n, 'var') || n.var !== 'game.round_number')) {
+        issue(path, 'game.round_number must be a standalone read-only variable', abilityId);
+      }
+      const serverMetric = ['controller.availableMana', 'consecutive_play_rounds', 'game.round_number',
         'controller.movement_distance_this_round',
         'controller.battlefields_passed_or_stayed_this_round'].includes(str(n.var ?? n.name));
       if ((n.var !== undefined || n.op === 'var') && !serverMetric &&
