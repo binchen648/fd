@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
-import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 
 import * as rules from '../../src/index';
+import { createSeededGameState } from '../../src/tools/seeded-state';
 
 const members = [
   ['anastasia', 'Caster', 'servant.anastasia.skill.sc-anastasia-1'],
@@ -72,8 +72,24 @@ describe('P3-FM05 current-main Territory Creation authoring migration', () => {
   it('loads every archive through the canonical authoring loader', () => {
     for (const [name, , cardId] of members) {
       const pack = rules.loadAuthoringJson(archive(name));
+      expect(pack.report).toEqual([]);
       expect(pack.cards[cardId]).toBeDefined();
       expect(pack.cards[cardId]!.abilities).toHaveLength(2);
+    }
+    const raw = archive('anastasia');
+    const cardId = 'servant.anastasia.skill.sc-anastasia-1';
+    const pack = rules.loadAuthoringJson(raw);
+    const state = createSeededGameState({ activeSeats: [1, 2] });
+    state.cards = [];
+    state.players[0]!.servantCardId = raw.id;
+    rules.initializeAbilityRuntime(state, pack, { seed: 20261025 });
+    const sourceId = 'fm05-round-formula-source';
+    state.cards.push({ instanceId: sourceId, definitionId: cardId, ownerPlayerId: 'p1', controllerPlayerId: 'p1',
+      zone: 'attack_area', visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState[sourceId] = { active: true, faceDown: false, playedRound: 1 };
+    for (const [round, value] of [[1, 14], [4, 8], [7, 2], [8, 0]] as const) {
+      state.round.roundNumber = round;
+      expect(rules.calculateCardPower(state, sourceId).value).toBe(value);
     }
   });
 
