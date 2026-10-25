@@ -106,7 +106,8 @@ describe('P3-FB2-11 trusted game round-number formula metric', () => {
   it('rejects name-based and op-var aliases consistently in loader and evaluator', () => {
     for (const malformed of [{ name: 'game.round_number' }, { op: 'var', name: 'game.round_number' },
       { name: 'game.round_number', op: 'add', args: [2, 3] },
-      { var: 'game.round_number', formula: 2 }, { name: 'game.round_number', formula: 2 }]) {
+      { var: 'game.round_number', formula: 2 }, { name: 'game.round_number', formula: 2 },
+      { var: 'controller.availableMana', name: 'game.round_number' }]) {
       const raw = structuredClone(syntheticArchive());
       (raw.cards[0]!.cardFace.basePower as any) = malformed;
       expect(rules.loadAuthoringJson(raw).report).toContainEqual(expect.objectContaining({ status: 'unsupported' }));

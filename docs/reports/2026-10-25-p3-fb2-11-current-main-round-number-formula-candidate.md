@@ -47,6 +47,8 @@ the loader does not report them as valid metrics and the evaluator cannot
 execute them. The evaluator performs this exact-shape check before
 `formula`, `formulaRef`, variable, or operator dispatch, covering aliases and
 operator/formula payloads that previously bypassed the guard.
+The loader independently checks both `var` and `name` fields, so a round-name
+alias cannot hide behind another variable such as `controller.availableMana`.
 
 The first focused attempt before dependency setup exited nonzero because the
 fresh worktree had no installed `vitest`/built workspace packages. After
