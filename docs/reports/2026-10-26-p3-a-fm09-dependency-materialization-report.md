@@ -1,9 +1,9 @@
 # P3-A FM09 dependency materialization report
 
-Role: Codex A (materialization only)  
-Task: `P3-FM09`  
-Exact Base: `1afe10ff9c1c1a65a0c2b68c56c5607cb0c1c447`  
-Candidate: `1a1c7afd1a5fe152f9913846336d957c7d615455`  
+Role: Codex A (materialization only)
+Task: `P3-FM09`
+Exact Base: `1afe10ff9c1c1a65a0c2b68c56c5607cb0c1c447`
+Candidate: `1a1c7afd1a5fe152f9913846336d957c7d615455`
 Historical accepted inputs: FB2-15 `23a666913a3050ad55d781e3f5b3a1518add4c3e`, FB2-16 `bc45b2032ec344d2c743d8b32e3a3d05aa8b67ca`, FB2-23 `1cfd6000f5627a282e2549d23e5a176ba983384f`
 
 ## Scope
@@ -33,6 +33,6 @@ Materialized only the three zero-credit runtime/test dependency gates in the req
 - `npm run content:validate`: PASS (`7 masters, 7 servants, 20 events, 0 blocking issues`).
 - `npm run verify:generated-content`: PASS after deterministic generated artifact refresh.
 - `git diff --cached --check`: PASS.
-- Full `npm run test:ci`: one pre-existing exact-base golden hash expectation fails because this materialization deterministically changes the generated definition hash from `37551fd5...` to `55e53412...`; all other completed tests pass (122/123 files, 773/774 tests at completion).
+- Full `npm run test:ci -- --maxWorkers=2`: PASS, 123/123 files and 774/774 tests; golden-card pipeline 2/2 PASS with the refreshed generated definition hash.
 
 No FM09 source authoring, credit/accounting, A-sync, merge, or retarget was performed.
