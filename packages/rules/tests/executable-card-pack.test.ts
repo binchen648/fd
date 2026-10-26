@@ -43,7 +43,10 @@ describe('ExecutableCardPack compiler', () => {
     expect(executable.characters).not.toHaveProperty('master.synthetic-rule');
     expect(executable.fallbackCommandSpells).not.toHaveProperty('master.synthetic-rule');
     expect(executable.cards['master.synthetic-rule.skill.1']).toBeDefined();
-    expect(executable.cards['master.synthetic-rule.skill.2']).toBeDefined();
+    expect(executable.cards['master.synthetic-rule.skill.2']).toMatchObject({
+      initialPlacement: 'outside_game',
+    });
+    expect(executable.cards['master.synthetic-rule.skill.2']!.initialZone).toBeUndefined();
   });
 
   it('fails closed when a mixed master rule-shaped archive omits its discriminator', () => {

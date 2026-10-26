@@ -43,10 +43,28 @@ type CompileInput = CompiledPlaytestContentLibrary;
 type ContentIdentityInput = Pick<CompiledPlaytestContentLibrary, 'pack' | 'dictionaries' | 'masters' | 'servants' | 'cards' | 'eventSets'>;
 type RuleArchive = CompileInput['rules']['archives'][number];
 
+const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
 
+function isMasterSupportArchive(archive: RuleArchive): boolean {
+  return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
+}
+
 function isMasterRuleArchive(archive: RuleArchive): boolean {
-  return archive.archiveType === MASTER_RULE_ARCHIVE_TYPE;
+  return archive.archiveType === MASTER_RULE_ARCHIVE_TYPE &&
+    !Object.prototype.hasOwnProperty.call(archive, 'deck') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
+}
+
+function isRulesOnlyMasterArchive(archive: RuleArchive): boolean {
+  return isMasterSupportArchive(archive) || isMasterRuleArchive(archive);
+}
+
+function hasMasterSupportArchiveShape(archive: RuleArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.length > 0 &&
+    archive.cards.every((card) => card.cardType === 'master_skill' && card.initialPlacement === 'outside_game') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'deck') &&
+    !Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
 }
 
 function hasMasterRuleArchiveShape(archive: RuleArchive): boolean {
@@ -57,9 +75,36 @@ function hasMasterRuleArchiveShape(archive: RuleArchive): boolean {
     archive.cards.some((card) => card.initialPlacement === undefined);
 }
 
+function assertMasterSupportArchive(archive: RuleArchive): void {
+  if (!isMasterSupportArchive(archive)) {
+    if (hasMasterSupportArchiveShape(archive)) {
+      throw new Error(`Master support-shaped archive requires archiveType=${MASTER_SUPPORT_ARCHIVE_TYPE}: ${archive.id}`);
+    }
+    return;
+  }
+  if (!archive.id.startsWith('master.')) throw new Error(`Master support archive id must start with master.: ${archive.id}`);
+  if (!Array.isArray(archive.cards) || archive.cards.length === 0) throw new Error(`Master support archive must contain at least one card: ${archive.id}`);
+  if (Object.prototype.hasOwnProperty.call(archive, 'deck') || Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    throw new Error(`Master support archive cannot define playable master presentation: ${archive.id}`);
+  }
+  for (const card of archive.cards) {
+    if (card.cardType !== 'master_skill') throw new Error(`Master support archive may contain only master_skill cards: ${archive.id}:${card.id}`);
+    if (card.initialPlacement !== 'outside_game') throw new Error(`Master support archive card requires initialPlacement=outside_game: ${archive.id}:${card.id}`);
+  }
+}
+
 function assertMasterRuleArchive(archive: RuleArchive): void {
+  // FM09 legacy records were historically registered through the normal
+  // master channel but carry the discriminator alongside playable metadata.
+  // Keep that established behavior; the explicit rules-only channel has no
+  // deck/presentation fields and is validated strictly below.
+  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE &&
+    (Object.prototype.hasOwnProperty.call(archive, 'deck') ||
+      Object.prototype.hasOwnProperty.call(archive, 'publicInformation'))) return;
   if (!isMasterRuleArchive(archive)) {
-    if (hasMasterRuleArchiveShape(archive)) {
+    if (hasMasterRuleArchiveShape(archive) &&
+      !Object.prototype.hasOwnProperty.call(archive, 'deck') &&
+      !Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
       throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE}: ${archive.id}`);
     }
     return;
@@ -197,6 +242,9 @@ function assertSemanticSubset(source: unknown, compiled: unknown, path: string):
 function validateSemanticSurvival(rawCard: Record<string, unknown>, compiledCard: AuthoringCard, path: string): void {
   for (const field of ['cardFace', 'playTiming', 'playRequirements'] as const) {
     assertSemanticSubset(rawCard[field] ?? (field === 'playRequirements' ? [] : {}), compiledCard[field], `${path}.${field}`);
+  }
+  if (rawCard.initialPlacement !== undefined) {
+    assertSemanticSubset(rawCard.initialPlacement, compiledCard.initialPlacement, `${path}.initialPlacement`);
   }
   const rawAbilities = nodes(rawCard.abilities);
   if (rawAbilities.length !== compiledCard.abilities.length) throw new Error(`Semantic loss at ${path}.abilities`);
@@ -541,6 +589,13 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
 
 function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<string> {
   const deferred = new Set<string>();
+  for (const card of Object.values(cards)) {
+    if (card.initialPlacement !== 'outside_game') continue;
+    if (card.cardType !== 'master_skill' || !card.ownerId?.startsWith('master.')) {
+      throw new Error(`Outside-game initial placement requires an owned master_skill: ${card.id}`);
+    }
+    deferred.add(card.id);
+  }
   const visit = (value: unknown): void => {
     if (Array.isArray(value)) return value.forEach(visit);
     if (!value || typeof value !== 'object') return;
@@ -573,6 +628,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
   archives.forEach((archive, archiveIndex) => {
     if (archiveIds.has(archive.id)) throw new Error(`Duplicate archive definition: ${archive.id}`);
     archiveIds.add(archive.id);
+    assertMasterSupportArchive(archive);
     assertMasterRuleArchive(archive);
     const compiled = loadAuthoringJson(archive);
     if (compiled.report.length) {
@@ -596,7 +652,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
         };
       });
     });
-    if (!isMasterRuleArchive(archive)) {
+    if (!isRulesOnlyMasterArchive(archive)) {
       const excludedCards = nodes(archive.excludedCards).map((card) => ({
         id: str(card.id),
         name: str(card.name),
@@ -619,7 +675,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     cards[definition.id] = executableDefinition(definition);
   }
 
-  for (const archive of archives.filter((candidate) => candidate.id.startsWith('master.') && !isMasterRuleArchive(candidate))) {
+  for (const archive of archives.filter((candidate) => candidate.id.startsWith('master.') && !isRulesOnlyMasterArchive(candidate))) {
     if (archive.cards.some((card) => card.cardType === 'command_spell')) continue;
     const definition = defaultCommandSpellCard(archive.id);
     if (cards[definition.id]) throw new Error(`Duplicate generated card definition: ${definition.id}`);

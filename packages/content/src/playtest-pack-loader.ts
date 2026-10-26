@@ -50,6 +50,9 @@ export interface LoadedPlaytestContentPack extends ContentPack {
   };
   eventCards: NamedCardDefinition[];
   authoringArchives: AuthoringArchive[];
+  authoringMasterRuleArchives: AuthoringArchive[];
+  authoringMasterSupportArchives: AuthoringArchive[];
+  authoringNormalArchives: AuthoringArchive[];
 }
 
 export interface PackValidationIssue {
@@ -539,6 +542,14 @@ export function loadPlaytestContentPack(
     version: manifest.version,
     manifest,
     authoringArchives: [...authoringMasterArchives, ...authoringServantArchives, ...authoringMasterSupportArchives, ...authoringMasterRuleArchives],
+    authoringMasterRuleArchives,
+    authoringMasterSupportArchives,
+    // Legacy FM09 records may still carry the discriminator in the normal
+    // manifest list. They are not the new explicit rules-only channel.
+    authoringNormalArchives: [
+      ...authoringMasterArchives.filter((archive) => archive.archiveType !== MASTER_RULE_ARCHIVE_TYPE),
+      ...authoringServantArchives,
+    ],
     dictionaries: {
       basicAttacks: readWorkspaceJson<BasicAttackDictionary>(
         options.workspaceRoot,
@@ -801,10 +812,14 @@ export function compileLoadedPlaytestPack(
   pack: LoadedPlaytestContentPack,
   issues: PackValidationIssue[] = [],
 ): CompiledPlaytestPack {
-  // Rules-only FM09 archives are authoring evidence for the rules loader, not
-  // part of the generated playable content artifact or frozen roster.
-  const ruleArchives = structuredClone(pack.authoringArchives)
-    .filter((archive) => archive.archiveType !== 'master_rule_definition_archive');
+  // Keep every explicitly loaded authoring archive in the rules source stream.
+  // Rules-only master archives are filtered from playable surfaces by the
+  // rules compiler; dropping them here makes this channel compile zero cards.
+  const ruleArchives = structuredClone([
+    ...pack.authoringNormalArchives,
+    ...pack.authoringMasterSupportArchives,
+    ...pack.authoringMasterRuleArchives,
+  ]);
   return {
     library: {
       schemaVersion: 'fd-playtest-content-library-v1',

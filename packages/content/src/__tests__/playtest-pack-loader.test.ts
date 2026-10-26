@@ -120,6 +120,35 @@ describe('playtest pack loader', () => {
     );
   });
 
+  it('keeps production mixed rule archives in the executable source stream', () => {
+    const loaded = loadPlaytestContentPack(packPath, { workspaceRoot });
+    const source = structuredClone(loaded.authoringArchives.find((archive) => archive.id === 'master.bazett')!);
+    const ruleArchive = {
+      ...source,
+      id: 'master.synthetic-loaded-rule',
+      archiveType: 'master_rule_definition_archive',
+      cards: source.cards.slice(0, 2).map((card, index) => ({
+        ...card,
+        id: `master.synthetic-loaded-rule.skill.${index + 1}`,
+        owner: { type: 'master', id: 'master.synthetic-loaded-rule' },
+        ...(index === 1 ? { initialPlacement: 'outside_game' as const } : {}),
+      })),
+    };
+    delete (ruleArchive as any).deck;
+    delete (ruleArchive as any).publicInformation;
+    loaded.authoringMasterRuleArchives.push(ruleArchive);
+
+    const compiled = compileLoadedPlaytestPack(loaded).library;
+    const ruleArchives = compiled.rules.archives.filter(
+      (archive) => archive.id === 'master.synthetic-loaded-rule',
+    );
+
+    expect(compiled.rules.archives).toHaveLength(loaded.authoringNormalArchives.length + 1);
+    expect(ruleArchives).toHaveLength(1);
+    expect(ruleArchives[0]!.cards).toHaveLength(2);
+    expect(ruleArchives.every((archive) => archive.cards.length > 0)).toBe(true);
+  });
+
   it('compiles identical source metadata and definition hash with source assets present or absent', () => {
     const withAssets = createMinimalWorkspace(true);
     const withoutAssets = createMinimalWorkspace(false);

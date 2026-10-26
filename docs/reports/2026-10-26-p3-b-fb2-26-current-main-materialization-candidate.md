@@ -1,8 +1,8 @@
 # P3-B FB2-26 current-main materialization candidate
 
-Role: Codex B2 runtime implementation  
-Task: `P3-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE`  
-Exact Base: `824afedfce8565848591b76ee42d60e666e70213` (post FB2-25 consumer A-sync)  
+Role: Codex B2 runtime implementation
+Task: `P3-FB2-26-NONPLAYABLE-MASTER-RULE-ARCHIVE`
+Exact Base: `824afedfce8565848591b76ee42d60e666e70213` (post FB2-25 consumer A-sync)
 Status: `IMPLEMENTATION_COMPLETE_CANDIDATE`
 
 ## Scope
@@ -23,6 +23,17 @@ The required rule archive shape is a `master.*` archive with at least two `maste
 - Content validation: PASS, 7 masters / 7 servants / 20 events / 0 blocking issues.
 - CI test set: PASS, 125 files / 786 tests (`npm run test:ci`).
 - `git diff --check`: PASS.
+
+## Reviewer revision
+
+Revision fixes the independent review findings without changing the task boundary:
+
+- `compileLoadedPlaytestPack` now forwards the explicit rule/support channels to the rules source stream; legacy FM09 records in the normal manifest channel retain their prior behavior.
+- The rules loader preserves and validates `initialPlacement: outside_game`; executable compilation treats those cards as deferred and keeps them out of the initial skill zone.
+- The executable compiler keeps both explicit support and mixed rules-only archives out of playable character, deck, and fallback command-spell surfaces, with fail-closed discriminator and shape checks.
+- Added production-path loader coverage for a loaded mixed rules-only archive and a regression assertion for outside-game initial placement.
+
+Revision verification: `npm run typecheck`, `npm run test:ci` (125 files / 787 tests), focused content/compiler tests (54 tests), `npm run content:validate`, `npm run verify:generated-content`, and `git diff --check` all pass.
 
 ## Acceptance boundary
 
