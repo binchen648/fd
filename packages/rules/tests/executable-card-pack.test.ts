@@ -19,6 +19,49 @@ function installResolutionFixture(input: ReturnType<typeof sourceInput>, effects
 }
 
 describe('ExecutableCardPack compiler', () => {
+  it('keeps mixed master rule archives out of the playable character and fallback-command surfaces', () => {
+    const input = sourceInput();
+    const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);
+    const cards = source.cards.filter((card) => card.cardType === 'master_skill').slice(0, 2).map((card, index) => ({
+      ...card,
+      id: `master.synthetic-rule.skill.${index + 1}`,
+      owner: { type: 'master', id: 'master.synthetic-rule' },
+      ...(index === 1 ? { initialPlacement: 'outside_game' } : { initialPlacement: undefined }),
+    }));
+    const archive = {
+      ...source,
+      id: 'master.synthetic-rule',
+      name: 'Synthetic rules-only master',
+      archiveType: 'master_rule_definition_archive',
+      cards,
+    };
+    delete (archive as any).deck;
+    delete (archive as any).publicInformation;
+    input.rules.archives.push(archive as typeof input.rules.archives[number]);
+
+    const executable = compileExecutableCardPack(input);
+    expect(executable.characters).not.toHaveProperty('master.synthetic-rule');
+    expect(executable.fallbackCommandSpells).not.toHaveProperty('master.synthetic-rule');
+    expect(executable.cards['master.synthetic-rule.skill.1']).toBeDefined();
+    expect(executable.cards['master.synthetic-rule.skill.2']).toBeDefined();
+  });
+
+  it('fails closed when a mixed master rule-shaped archive omits its discriminator', () => {
+    const input = sourceInput();
+    const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);
+    const cards = source.cards.filter((card) => card.cardType === 'master_skill').slice(0, 2).map((card, index) => ({
+      ...card,
+      id: `master.synthetic-invalid.skill.${index + 1}`,
+      owner: { type: 'master', id: 'master.synthetic-invalid' },
+      ...(index === 1 ? { initialPlacement: 'outside_game' } : { initialPlacement: undefined }),
+    }));
+    const archive = { ...source, id: 'master.synthetic-invalid', cards };
+    delete (archive as any).deck;
+    delete (archive as any).publicInformation;
+    input.rules.archives.push(archive as typeof input.rules.archives[number]);
+    expect(() => compileExecutableCardPack(input)).toThrow(/master_rule_definition_archive/);
+  });
+
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
     const executable = compileExecutableCardPack(input);
