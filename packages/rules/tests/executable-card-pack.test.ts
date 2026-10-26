@@ -65,6 +65,25 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(/master_rule_definition_archive/);
   });
 
+  it('fails closed for an approximate mixed-rule discriminator even with playable surfaces', () => {
+    const input = sourceInput();
+    const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);
+    const cards = source.cards.filter((card) => card.cardType === 'master_skill').slice(0, 2).map((card, index) => ({
+      ...card,
+      id: `master.synthetic-approximate.skill.${index + 1}`,
+      owner: { type: 'master', id: 'master.synthetic-approximate' },
+      ...(index === 1 ? { initialPlacement: 'outside_game' } : { initialPlacement: undefined }),
+    }));
+    input.rules.archives.push({
+      ...source,
+      id: 'master.synthetic-approximate',
+      archiveType: 'master_rule_definition_archiv',
+      cards,
+    } as typeof input.rules.archives[number]);
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/master_rule_definition_archive/);
+  });
+
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
     const executable = compileExecutableCardPack(input);

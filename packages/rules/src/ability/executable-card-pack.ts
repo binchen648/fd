@@ -42,6 +42,7 @@ export interface ExecutableCardPack {
 type CompileInput = CompiledPlaytestContentLibrary;
 type ContentIdentityInput = Pick<CompiledPlaytestContentLibrary, 'pack' | 'dictionaries' | 'masters' | 'servants' | 'cards' | 'eventSets'>;
 type RuleArchive = CompileInput['rules']['archives'][number];
+type InitialPlacementCard = { initialPlacement?: unknown };
 
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
@@ -102,9 +103,7 @@ function assertMasterRuleArchive(archive: RuleArchive): void {
     (Object.prototype.hasOwnProperty.call(archive, 'deck') ||
       Object.prototype.hasOwnProperty.call(archive, 'publicInformation'))) return;
   if (!isMasterRuleArchive(archive)) {
-    if (hasMasterRuleArchiveShape(archive) &&
-      !Object.prototype.hasOwnProperty.call(archive, 'deck') &&
-      !Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) {
+    if (hasMasterRuleArchiveShape(archive)) {
       throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE}: ${archive.id}`);
     }
     return;
@@ -243,8 +242,9 @@ function validateSemanticSurvival(rawCard: Record<string, unknown>, compiledCard
   for (const field of ['cardFace', 'playTiming', 'playRequirements'] as const) {
     assertSemanticSubset(rawCard[field] ?? (field === 'playRequirements' ? [] : {}), compiledCard[field], `${path}.${field}`);
   }
-  if (rawCard.initialPlacement !== undefined) {
-    assertSemanticSubset(rawCard.initialPlacement, compiledCard.initialPlacement, `${path}.initialPlacement`);
+  const initialPlacement = (rawCard as InitialPlacementCard).initialPlacement;
+  if (initialPlacement !== undefined && initialPlacement !== 'outside_game') {
+    throw new Error(`Unsupported initialPlacement at ${path}.initialPlacement`);
   }
   const rawAbilities = nodes(rawCard.abilities);
   if (rawAbilities.length !== compiledCard.abilities.length) throw new Error(`Semantic loss at ${path}.abilities`);
@@ -590,7 +590,7 @@ function validatedGameStartSkillProvisioningDeferrals(cards: Record<string, Exec
 function deferredCardIds(cards: Record<string, ExecutableCardDefinition>): Set<string> {
   const deferred = new Set<string>();
   for (const card of Object.values(cards)) {
-    if (card.initialPlacement !== 'outside_game') continue;
+    if ((card as InitialPlacementCard).initialPlacement !== 'outside_game') continue;
     if (card.cardType !== 'master_skill' || !card.ownerId?.startsWith('master.')) {
       throw new Error(`Outside-game initial placement requires an owned master_skill: ${card.id}`);
     }
@@ -640,7 +640,11 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
       const card = compiled.cards[rawCard.id];
       if (!card) throw new Error(`Missing compiled card definition: ${rawCard.id}`);
       validateSemanticSurvival(rawCard, card, `archives[${archiveIndex}].cards[${cardIndex}]`);
-      cards[card.id] = executableDefinition(card, archive.id);
+      const executableCard = {
+        ...card,
+        ...((rawCard as InitialPlacementCard).initialPlacement === 'outside_game' ? { initialPlacement: 'outside_game' as const } : {}),
+      };
+      cards[card.id] = executableDefinition(executableCard, archive.id);
       sourceMap[card.id] = { archiveId: archive.id, archiveIndex, cardIndex, path: `archives[${archiveIndex}].cards[${cardIndex}]` };
       card.abilities.forEach((ability, abilityIndex) => {
         sourceMap[`${card.id}#${ability.id}`] = {

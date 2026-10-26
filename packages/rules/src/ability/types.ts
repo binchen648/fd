@@ -24,7 +24,6 @@ export interface AuthoringAbility {
 export interface AuthoringCard {
   id: string; name: string; cardType: string; cardFace: RuleNode;
   playTiming: RuleNode; playRequirements: RuleNode[]; abilities: AuthoringAbility[];
-  initialPlacement?: 'outside_game';
   mode: ExecutionMode;
 }
 export interface ExecutableCardDefinition extends AuthoringCard {

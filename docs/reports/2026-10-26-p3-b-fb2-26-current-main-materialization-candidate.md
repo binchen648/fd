@@ -35,6 +35,12 @@ Revision fixes the independent review findings without changing the task boundar
 
 Revision verification: `npm run typecheck`, `npm run test:ci` (125 files / 787 tests), focused content/compiler tests (54 tests), `npm run content:validate`, `npm run verify:generated-content`, and `git diff --check` all pass.
 
+## Reviewer revision 2
+
+The second review revision tightens compiler fail-closed behavior for mixed-rule near misses. Any mixed rules-only shape without the exact `master_rule_definition_archive` discriminator now fails even when deck or public presentation fields are present; the historical FM09 exact discriminator plus playable metadata remains compatible. The regression suite covers the approximate discriminator case.
+
+The initial-placement transport was kept inside the executable compiler boundary. No changes remain in `packages/rules/src/ability/loader.ts` or `packages/rules/src/ability/types.ts`, so the revision stays within the original runtime/compiler and test scope.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.
