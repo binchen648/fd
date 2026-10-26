@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 
@@ -147,6 +147,26 @@ describe('playtest pack loader', () => {
     expect(ruleArchives).toHaveLength(1);
     expect(ruleArchives[0]!.cards).toHaveLength(2);
     expect(ruleArchives.every((archive) => archive.cards.length > 0)).toBe(true);
+  });
+
+  it('rejects a near-match mixed rule archive on the normal master manifest path', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const archivePath = join(workspace.root, 'data/authoring/masters/master.test.json');
+      const archive = JSON.parse(readFileSync(archivePath, 'utf8')) as any;
+      archive.archiveType = 'master_rule_definition_archiv';
+      archive.cards.push({
+        ...structuredClone(archive.cards[0]),
+        id: 'master.test.skill.outside',
+        initialPlacement: 'outside_game',
+      });
+      writeJson(archivePath, archive);
+
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root }))
+        .toThrow(/authoringMasterRuleFiles registration/);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
   });
 
   it('compiles identical source metadata and definition hash with source assets present or absent', () => {

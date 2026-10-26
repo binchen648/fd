@@ -41,6 +41,12 @@ The second review revision tightens compiler fail-closed behavior for mixed-rule
 
 The initial-placement transport was kept inside the executable compiler boundary. No changes remain in `packages/rules/src/ability/loader.ts` or `packages/rules/src/ability/types.ts`, so the revision stays within the original runtime/compiler and test scope.
 
+## Reviewer revision 3
+
+The normal `authoringMasterFiles` loader path now rejects every mixed ordinary/outside-game master shape unless it is the exact legacy FM09 discriminator with its established playable presentation metadata. Near-match, missing, or incorrectly registered mixed archives must use the explicit `authoringMasterRuleFiles` channel and fail before `convertAuthoringMaster` can create a playable master or overview. Added a real temporary-manifest loader regression for the near-match case.
+
+Revision verification: `npm run typecheck`, `npm run test:ci` (125 files / 789 tests), focused content/compiler tests (56 tests), `npm run content:validate`, `npm run verify:generated-content`, and `git diff --check` all pass.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.

@@ -227,6 +227,17 @@ function assertMasterRuleArchive(archive: AuthoringArchive): void {
   if (!outsideGame || !ordinary) throw new Error(`Master rule archive requires both ordinary and outside_game cards: ${archive.id}`);
 }
 
+function assertNormalMasterArchive(archive: AuthoringArchive): void {
+  if (!hasMasterRuleArchiveShape(archive)) return;
+  const hasPlayablePresentation = Object.prototype.hasOwnProperty.call(archive, 'deck') ||
+    Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
+  // Existing FM09 records use the exact discriminator while remaining on the
+  // historical normal-master path. Keep those records compatible. Any other
+  // mixed shape must use the explicit rules-only manifest channel.
+  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE && hasPlayablePresentation) return;
+  throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE} and authoringMasterRuleFiles registration: ${archive.id}`);
+}
+
 function readJson<T>(path: string): T {
   return JSON.parse(readFileSync(path, 'utf8')) as T;
 }
@@ -519,6 +530,7 @@ export function loadPlaytestContentPack(
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
   const authoringMasterRuleArchives = (manifest.authoringMasterRuleFiles ?? [])
     .map((path) => readWorkspaceJson<AuthoringArchive>(options.workspaceRoot, path));
+  authoringMasterArchives.forEach(assertNormalMasterArchive);
   authoringMasterSupportArchives.forEach(assertMasterSupportArchive);
   authoringMasterRuleArchives.forEach(assertMasterRuleArchive);
   const authoringServants = authoringServantArchives
