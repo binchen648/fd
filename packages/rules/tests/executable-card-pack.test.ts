@@ -84,6 +84,21 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(/master_rule_definition_archive/);
   });
 
+  it('fails closed for a wrong discriminator retaining a playable master card beside an outside-game skill', () => {
+    const input = sourceInput();
+    const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);
+    input.rules.archives.push({
+      ...source,
+      id: 'master.synthetic-wrong-discriminator',
+      archiveType: 'master_rule_definition_archiv',
+      cards: source.cards.map((card, index) => index === 0
+        ? { ...card, initialPlacement: 'outside_game' }
+        : card),
+    } as typeof input.rules.archives[number]);
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/invalid archiveType/);
+  });
+
   it('fails closed for a legacy playable archive with a foreign-owned mixed card', () => {
     const input = sourceInput();
     const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);

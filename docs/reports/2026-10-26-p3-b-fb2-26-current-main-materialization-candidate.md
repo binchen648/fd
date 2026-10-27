@@ -94,6 +94,25 @@ Revision 6 verification: `npm run typecheck`, focused content/compiler tests
 `npm run content:validate`, `npm run verify:generated-content`, and
 `git diff --check` all pass.
 
+## Reviewer revision 7
+
+The compiler's independent entry point now rejects wrong or approximate
+archive discriminators whenever a master archive retains playable presentation
+or ordinary `master_deck_card` content alongside an `outside_game`
+`master_skill`. This closes the path where a malformed archive could bypass the
+strict mixed-shape detector and still generate a playable character or fallback
+command spell. The exact FM09 exception remains limited to the validated
+ordinary/outside-game shape with matching master owners; explicit rules-only
+support remains unchanged.
+
+Added a focused compiler regression for the approximate discriminator plus an
+outside-game skill and retained playable master card.
+
+Revision 7 verification: `npm run typecheck`, focused content/compiler tests
+(62 tests), `npm run test:ci` (125 files / 794 tests),
+`npm run content:validate`, `npm run verify:generated-content`, and
+`git diff --check` all pass.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.
