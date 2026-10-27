@@ -169,6 +169,28 @@ describe('playtest pack loader', () => {
     }
   });
 
+  it('rejects a near-match archive with an outside-game command spell before playable conversion', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const archivePath = join(workspace.root, 'data/authoring/masters/master.test.json');
+      const archive = JSON.parse(readFileSync(archivePath, 'utf8')) as any;
+      archive.archiveType = 'master_rule_definition_archiv';
+      archive.cards.push({
+        ...structuredClone(archive.cards[0]),
+        id: 'master.test.command-spell',
+        cardType: 'command_spell',
+        initialPlacement: 'outside_game',
+      });
+
+      writeJson(archivePath, archive);
+
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root }))
+        .toThrow(/authoringMasterRuleFiles registration/);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
   it('compiles identical source metadata and definition hash with source assets present or absent', () => {
     const withAssets = createMinimalWorkspace(true);
     const withoutAssets = createMinimalWorkspace(false);

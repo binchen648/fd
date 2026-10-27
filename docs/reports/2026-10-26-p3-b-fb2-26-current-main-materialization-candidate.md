@@ -47,6 +47,18 @@ The normal `authoringMasterFiles` loader path now rejects every mixed ordinary/o
 
 Revision verification: `npm run typecheck`, `npm run test:ci` (125 files / 789 tests), focused content/compiler tests (56 tests), `npm run content:validate`, `npm run verify:generated-content`, and `git diff --check` all pass.
 
+## Reviewer revision 4
+
+The normal loader guard now rejects malformed mixed archives even when the
+outside-game card is not a `master_skill` (for example, an outside-game
+`command_spell`) and the archive uses an approximate discriminator. This check
+runs before `convertAuthoringMaster`, so the malformed archive cannot produce a
+playable master or overview. The exact legacy FM09 discriminator and playable
+presentation remain compatible, while explicit `authoringMasterRuleFiles`
+continues to use the strict rules-only channel.
+
+Revision verification: `npm run typecheck`, `npm run test:ci` (125 files / 790 tests), focused content/compiler tests (57 tests), `npm run content:validate`, `npm run verify:generated-content`, and `git diff --check` all pass.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.

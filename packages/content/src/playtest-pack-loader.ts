@@ -186,6 +186,10 @@ function hasMasterRuleArchiveShape(archive: AuthoringArchive): boolean {
     archive.cards.some((card) => card.initialPlacement === undefined);
 }
 
+function hasOutsideGameCard(archive: AuthoringArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.some((card) => card.initialPlacement === 'outside_game');
+}
+
 function assertMasterSupportArchive(archive: AuthoringArchive): void {
   if (archive.archiveType !== MASTER_SUPPORT_ARCHIVE_TYPE) {
     throw new Error(`Master support archive requires archiveType=${MASTER_SUPPORT_ARCHIVE_TYPE}: ${archive.id || '<missing-id>'}`);
@@ -228,14 +232,21 @@ function assertMasterRuleArchive(archive: AuthoringArchive): void {
 }
 
 function assertNormalMasterArchive(archive: AuthoringArchive): void {
-  if (!hasMasterRuleArchiveShape(archive)) return;
   const hasPlayablePresentation = Object.prototype.hasOwnProperty.call(archive, 'deck') ||
     Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
   // Existing FM09 records use the exact discriminator while remaining on the
   // historical normal-master path. Keep those records compatible. Any other
   // mixed shape must use the explicit rules-only manifest channel.
-  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE && hasPlayablePresentation) return;
-  throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE} and authoringMasterRuleFiles registration: ${archive.id}`);
+  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE && hasPlayablePresentation && hasMasterRuleArchiveShape(archive)) return;
+  // A normal authoring master must never carry an outside-game card. This
+  // catches malformed mixed archives even when a non-master_skill card (for
+  // example an outside-game command spell) prevents the strict rules-only
+  // shape detector from matching. Such records belong in an explicit
+  // support/rules manifest channel and must fail before conversion so they
+  // cannot create a playable master or overview.
+  if (hasOutsideGameCard(archive) || hasMasterRuleArchiveShape(archive)) {
+    throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE} and authoringMasterRuleFiles registration: ${archive.id}`);
+  }
 }
 
 function readJson<T>(path: string): T {
