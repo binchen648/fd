@@ -99,6 +99,26 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(/invalid archiveType/);
   });
 
+  it.each([
+    ['missing discriminator', undefined],
+    ['normal master discriminator', 'master_skill_card_archive'],
+  ])('fails closed for a %s retaining a playable master card beside an outside-game skill', (_label, archiveType) => {
+    const input = sourceInput();
+    const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);
+    const archive = {
+      ...source,
+      id: `master.synthetic-${_label.replaceAll(' ', '-')}`,
+      cards: source.cards.map((card, index) => index === 0
+        ? { ...card, initialPlacement: 'outside_game' }
+        : card),
+    } as any;
+    if (archiveType === undefined) delete archive.archiveType;
+    else archive.archiveType = archiveType;
+    input.rules.archives.push(archive as typeof input.rules.archives[number]);
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/invalid archiveType|master_rule_definition_archive/);
+  });
+
   it('fails closed for a legacy playable archive with a foreign-owned mixed card', () => {
     const input = sourceInput();
     const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);

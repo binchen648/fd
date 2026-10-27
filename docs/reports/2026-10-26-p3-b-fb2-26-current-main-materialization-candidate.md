@@ -113,6 +113,22 @@ Revision 7 verification: `npm run typecheck`, focused content/compiler tests
 `npm run content:validate`, `npm run verify:generated-content`, and
 `git diff --check` all pass.
 
+## Reviewer revision 8
+
+The compiler mixed-shape guard now covers missing and ordinary
+`master_skill_card_archive` discriminators as well as misspelled values. A
+master archive containing an `outside_game` `master_skill` together with an
+ordinary master skill, `master_deck_card`, or playable presentation must use
+the validated exact rules discriminator; otherwise compilation fails closed.
+The exact legacy FM09 playable exception and explicit rules-only channel remain
+unchanged.
+
+Added separate compiler probes for an omitted discriminator and the ordinary
+`master_skill_card_archive` discriminator. Revision 8 verification:
+`npm run typecheck`, focused content/compiler tests (63 tests),
+`npm run test:ci` (125 files / 796 tests), `npm run content:validate`,
+`npm run verify:generated-content`, and `git diff --check` all pass.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.

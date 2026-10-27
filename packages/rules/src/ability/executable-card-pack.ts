@@ -46,7 +46,6 @@ type InitialPlacementCard = { initialPlacement?: unknown };
 
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
-const MASTER_NORMAL_ARCHIVE_TYPE = 'master_skill_card_archive';
 
 function isMasterSupportArchive(archive: RuleArchive): boolean {
   return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
@@ -98,6 +97,13 @@ function hasOrdinaryPlayableMasterCard(archive: RuleArchive): boolean {
   return Array.isArray(archive.cards) && archive.cards.some((card) => card.cardType === 'master_deck_card');
 }
 
+function hasMixedPlayableMasterShape(archive: RuleArchive): boolean {
+  if (!hasOutsideGameMasterSkill(archive)) return false;
+  const hasOrdinaryMasterSkill = Array.isArray(archive.cards) && archive.cards.some((card) =>
+    card.cardType === 'master_skill' && card.initialPlacement === undefined);
+  return hasOrdinaryMasterSkill || hasOrdinaryPlayableMasterCard(archive) || hasPlayableMasterPresentation(archive);
+}
+
 function assertMasterSupportArchive(archive: RuleArchive): void {
   if (!isMasterSupportArchive(archive)) {
     if (hasMasterSupportArchiveShape(archive)) {
@@ -121,9 +127,8 @@ function assertMasterRuleArchive(archive: RuleArchive): void {
   // playable-master path when it carries any mixed rules or playable surface.
   // The compiler is also an independent entry point, so keep this guard here
   // even though the content loader rejects the same malformed source shape.
-  if (archive.id.startsWith('master.') && typeof archive.archiveType === 'string' &&
-    ![MASTER_NORMAL_ARCHIVE_TYPE, MASTER_SUPPORT_ARCHIVE_TYPE, MASTER_RULE_ARCHIVE_TYPE].includes(archive.archiveType) &&
-    (hasPlayableMasterPresentation(archive) || hasOutsideGameMasterSkill(archive) || hasOrdinaryPlayableMasterCard(archive))) {
+  if (archive.id.startsWith('master.') && archive.archiveType !== MASTER_RULE_ARCHIVE_TYPE &&
+    archive.archiveType !== MASTER_SUPPORT_ARCHIVE_TYPE && hasMixedPlayableMasterShape(archive)) {
     throw new Error(`Master archive has invalid archiveType; expected ${MASTER_RULE_ARCHIVE_TYPE} for mixed rules or a valid normal master archive: ${archive.id}`);
   }
   // FM09 legacy records were historically registered through the normal
