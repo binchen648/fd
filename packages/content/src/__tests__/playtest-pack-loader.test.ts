@@ -191,6 +191,27 @@ describe('playtest pack loader', () => {
     }
   });
 
+  it('rejects a legacy playable archive when a mixed card has a foreign owner', () => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const archivePath = join(workspace.root, 'data/authoring/masters/master.test.json');
+      const archive = JSON.parse(readFileSync(archivePath, 'utf8')) as any;
+      archive.archiveType = 'master_rule_definition_archive';
+      archive.cards.push({
+        ...structuredClone(archive.cards[0]),
+        id: 'master.test.skill.outside',
+        initialPlacement: 'outside_game',
+        owner: { type: 'master', id: 'master.foreign' },
+      });
+      writeJson(archivePath, archive);
+
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root }))
+        .toThrow(/invalid mixed shape or card owner/);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
   it('compiles identical source metadata and definition hash with source assets present or absent', () => {
     const withAssets = createMinimalWorkspace(true);
     const withoutAssets = createMinimalWorkspace(false);

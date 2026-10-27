@@ -84,6 +84,26 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(/master_rule_definition_archive/);
   });
 
+  it('fails closed for a legacy playable archive with a foreign-owned mixed card', () => {
+    const input = sourceInput();
+    const source = structuredClone(input.rules.archives.find((archive) => archive.id === 'master.kayneth')!);
+    const cards = source.cards.filter((card) => card.cardType === 'master_skill').slice(0, 2).map((card, index) => ({
+      ...card,
+      id: `master.synthetic-foreign-owner.skill.${index + 1}`,
+      owner: { type: 'master', id: index === 1 ? 'master.foreign-owner' : 'master.synthetic-foreign-owner' },
+      ...(index === 1 ? { initialPlacement: 'outside_game' } : { initialPlacement: undefined }),
+    }));
+    const archive = {
+      ...source,
+      id: 'master.synthetic-foreign-owner',
+      archiveType: 'master_rule_definition_archive',
+      cards,
+    };
+    input.rules.archives.push(archive as typeof input.rules.archives[number]);
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/invalid mixed shape or card owner/);
+  });
+
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
     const executable = compileExecutableCardPack(input);

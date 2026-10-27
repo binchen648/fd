@@ -186,6 +186,13 @@ function hasMasterRuleArchiveShape(archive: AuthoringArchive): boolean {
     archive.cards.some((card) => card.initialPlacement === undefined);
 }
 
+function hasMasterRuleArchiveOwnership(archive: AuthoringArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.every((card) => {
+    const owner = card.owner as Record<string, unknown> | undefined;
+    return owner?.type === 'master' && owner.id === archive.id;
+  });
+}
+
 function hasOutsideGameCard(archive: AuthoringArchive): boolean {
   return Array.isArray(archive.cards) && archive.cards.some((card) => card.initialPlacement === 'outside_game');
 }
@@ -237,7 +244,10 @@ function assertNormalMasterArchive(archive: AuthoringArchive): void {
   // Existing FM09 records use the exact discriminator while remaining on the
   // historical normal-master path. Keep those records compatible. Any other
   // mixed shape must use the explicit rules-only manifest channel.
-  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE && hasPlayablePresentation && hasMasterRuleArchiveShape(archive)) return;
+  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE && hasPlayablePresentation) {
+    if (hasMasterRuleArchiveShape(archive) && hasMasterRuleArchiveOwnership(archive)) return;
+    throw new Error(`Legacy master rule archive has invalid mixed shape or card owner: ${archive.id}`);
+  }
   // A normal authoring master must never carry an outside-game card. This
   // catches malformed mixed archives even when a non-master_skill card (for
   // example an outside-game command spell) prevents the strict rules-only

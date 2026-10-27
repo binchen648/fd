@@ -76,6 +76,13 @@ function hasMasterRuleArchiveShape(archive: RuleArchive): boolean {
     archive.cards.some((card) => card.initialPlacement === undefined);
 }
 
+function hasMasterRuleArchiveOwnership(archive: RuleArchive): boolean {
+  return Array.isArray(archive.cards) && archive.cards.every((card) => {
+    const owner = node((card as unknown as RuleNode).owner);
+    return owner.type === 'master' && owner.id === archive.id;
+  });
+}
+
 function assertMasterSupportArchive(archive: RuleArchive): void {
   if (!isMasterSupportArchive(archive)) {
     if (hasMasterSupportArchiveShape(archive)) {
@@ -101,7 +108,10 @@ function assertMasterRuleArchive(archive: RuleArchive): void {
   // deck/presentation fields and is validated strictly below.
   if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE &&
     (Object.prototype.hasOwnProperty.call(archive, 'deck') ||
-      Object.prototype.hasOwnProperty.call(archive, 'publicInformation'))) return;
+      Object.prototype.hasOwnProperty.call(archive, 'publicInformation'))) {
+    if (hasMasterRuleArchiveShape(archive) && hasMasterRuleArchiveOwnership(archive)) return;
+    throw new Error(`Legacy master rule archive has invalid mixed shape or card owner: ${archive.id}`);
+  }
   if (!isMasterRuleArchive(archive)) {
     if (hasMasterRuleArchiveShape(archive)) {
       throw new Error(`Master rule-shaped archive requires archiveType=${MASTER_RULE_ARCHIVE_TYPE}: ${archive.id}`);

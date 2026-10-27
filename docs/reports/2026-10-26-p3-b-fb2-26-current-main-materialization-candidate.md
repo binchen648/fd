@@ -59,6 +59,26 @@ continues to use the strict rules-only channel.
 
 Revision verification: `npm run typecheck`, `npm run test:ci` (125 files / 790 tests), focused content/compiler tests (57 tests), `npm run content:validate`, `npm run verify:generated-content`, and `git diff --check` all pass.
 
+## Reviewer revision 5
+
+The final legacy-FM09 boundary now validates card ownership at both runtime
+boundaries. A normal-channel archive with the exact
+`master_rule_definition_archive` discriminator and playable metadata is only
+accepted when it has the established ordinary/outside-game mixed shape and
+every card has `owner.type=master` with `owner.id` equal to the archive id.
+Exact-discriminator archives with a foreign-owned card, malformed card mix, or
+other invalid legacy shape now fail before playable conversion. The explicit
+`authoringMasterRuleFiles` rules-only channel remains strict and unchanged.
+
+Added real cross-owner regressions in both the normal content loader and the
+executable compiler. This prevents a malformed archive from producing a
+playable character or generated fallback command spell through either path.
+
+Revision 5 verification: `npm run typecheck`, focused content/compiler tests
+(59 tests), `npm run test:ci` (125 files / 792 tests),
+`npm run content:validate`, `npm run verify:generated-content`, and
+`git diff --check` all pass.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.
