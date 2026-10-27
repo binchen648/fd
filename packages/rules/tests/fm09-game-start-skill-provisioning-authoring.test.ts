@@ -48,10 +48,14 @@ function loaded() {
 }
 
 describe('P3-FM09 corrected shared game-start skill provisioning', () => {
-  it('uses the formal authoringMasterFiles loader path and exposes 7 sources', () => {
+  it('uses the normal plus explicit rules channels and exposes 7 sources', () => {
     const manifest = JSON.parse(readFileSync(packPath, 'utf8')) as any;
-    expect(manifest.authoringMasterRuleFiles).toBeUndefined();
-    expect(manifest.authoringMasterFiles.filter((file: string) => file.includes('.fm09.json'))).toHaveLength(6);
+    expect(manifest.authoringMasterFiles.filter((file: string) => file.includes('.fm09.json'))).toHaveLength(3);
+    expect(manifest.authoringMasterRuleFiles).toEqual([
+      'data/authoring/masters/master.ciel.json',
+      'data/authoring/masters/master.shiki-ryougi.json',
+      'data/authoring/masters/master.shirou-emiya.json',
+    ]);
     const pack = loaded();
     const ids = new Set(pack.authoringArchives.flatMap((archive: any) => archive.cards).map((card: any) => card.id));
     expect(sourceIds.every((id) => ids.has(id))).toBe(true);

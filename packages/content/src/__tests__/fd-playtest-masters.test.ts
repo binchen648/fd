@@ -19,11 +19,8 @@ describe('fd-playtest-v1 master content', () => {
       'master.irisviel',
       'master.olga-marie',
       'master.bazett',
-      'master.ciel',
       'master.fujino',
-      'master.shiki-ryougi',
       'master.shiki-tohno',
-      'master.shirou-emiya',
     ]);
   });
 

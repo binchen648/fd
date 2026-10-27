@@ -2,25 +2,12 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 13,
+    "masters": 10,
     "servants": 7,
     "events": 20,
     "blockingIssues": 0
   },
   "entities": [
-    {
-      "entityId": "card.derived.master.shirou-emiya.ganjiang-moye",
-      "displayName": "干将·莫邪",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/卫宫士郎.htm",
-      "imagePath": "assets/fm09/master.shirou-emiya.png",
-      "imageIndex": 2,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
     {
       "entityId": "event-set.waxing_moon_ritual",
       "displayName": "盈月之仪",
@@ -314,58 +301,6 @@
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/巴泽特·弗拉加·马克雷米兹.htm",
       "imagePath": "assets/fm09/master.bazett.png",
-      "imageIndex": 2,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.ciel",
-      "displayName": "希耶尔",
-      "entityKind": "master",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/希耶尔.htm",
-      "imagePath": "assets/fm09/master.ciel.png",
-      "imageIndex": 0,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.ciel.overview",
-      "displayName": "希耶尔",
-      "entityKind": "master_overview",
-      "capabilityStatus": "FULL",
-      "htmPath": "chm-extract/希耶尔.htm",
-      "imagePath": "assets/fm09/master.ciel.png",
-      "imageIndex": 0,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.ciel.skill.s1a",
-      "displayName": "埋葬机关的修女",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/希耶尔.htm",
-      "imagePath": "assets/fm09/master.ciel.png",
-      "imageIndex": 1,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.ciel.skill.s2",
-      "displayName": "火葬式典",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/希耶尔.htm",
-      "imagePath": "assets/fm09/master.ciel.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -815,84 +750,6 @@
       ]
     },
     {
-      "entityId": "master.shiki-ryougi",
-      "displayName": "两仪式",
-      "entityKind": "master",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/两仪式.htm",
-      "imagePath": "assets/fm09/master.shiki-ryougi.png",
-      "imageIndex": 0,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shiki-ryougi.overview",
-      "displayName": "两仪式",
-      "entityKind": "master_overview",
-      "capabilityStatus": "FULL",
-      "htmPath": "chm-extract/两仪式.htm",
-      "imagePath": "assets/fm09/master.shiki-ryougi.png",
-      "imageIndex": 0,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shiki-ryougi.skill.s1",
-      "displayName": "死线",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/两仪式.htm",
-      "imagePath": "assets/fm09/master.shiki-ryougi.png",
-      "imageIndex": 1,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shiki-ryougi.skill.s1a",
-      "displayName": "欠损",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/两仪式.htm",
-      "imagePath": "assets/fm09/master.shiki-ryougi.png",
-      "imageIndex": 3,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shiki-ryougi.skill.s2",
-      "displayName": "生・切断",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/两仪式.htm",
-      "imagePath": "assets/fm09/master.shiki-ryougi.png",
-      "imageIndex": 2,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shiki-ryougi.skill.s3",
-      "displayName": "死・紧握",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/两仪式.htm",
-      "imagePath": "assets/fm09/master.shiki-ryougi.png",
-      "imageIndex": 4,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
       "entityId": "master.shiki-tohno",
       "displayName": "远野四季",
       "entityKind": "master",
@@ -1017,45 +874,6 @@
       "htmPath": "chm-extract/间桐慎二.htm",
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
       "imageIndex": 2,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shirou-emiya",
-      "displayName": "卫宫士郎",
-      "entityKind": "master",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/卫宫士郎.htm",
-      "imagePath": "assets/fm09/master.shirou-emiya.png",
-      "imageIndex": 0,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shirou-emiya.overview",
-      "displayName": "卫宫士郎",
-      "entityKind": "master_overview",
-      "capabilityStatus": "FULL",
-      "htmPath": "chm-extract/卫宫士郎.htm",
-      "imagePath": "assets/fm09/master.shirou-emiya.png",
-      "imageIndex": 0,
-      "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
-    },
-    {
-      "entityId": "master.shirou-emiya.skill.s2",
-      "displayName": "投影",
-      "entityKind": "master_skill",
-      "capabilityStatus": "HOST_ADJUDICATED",
-      "htmPath": "chm-extract/卫宫士郎.htm",
-      "imagePath": "assets/fm09/master.shirou-emiya.png",
-      "imageIndex": 1,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -1559,13 +1377,6 @@
   "issues": [
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "card.derived.master.shirou-emiya.ganjiang-moye source image was not verified in this checkout: assets/fm09/master.shirou-emiya.png",
-      "entityId": "card.derived.master.shirou-emiya.ganjiang-moye",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "event-set.waxing_moon_ritual source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
       "entityId": "event-set.waxing_moon_ritual",
       "field": "source.imagePath",
@@ -1722,34 +1533,6 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.bazett.skill.s2 source image was not verified in this checkout: assets/fm09/master.bazett.png",
       "entityId": "master.bazett.skill.s2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.ciel source image was not verified in this checkout: assets/fm09/master.ciel.png",
-      "entityId": "master.ciel",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.ciel.overview source image was not verified in this checkout: assets/fm09/master.ciel.png",
-      "entityId": "master.ciel.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.ciel.skill.s1a source image was not verified in this checkout: assets/fm09/master.ciel.png",
-      "entityId": "master.ciel.skill.s1a",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.ciel.skill.s2 source image was not verified in this checkout: assets/fm09/master.ciel.png",
-      "entityId": "master.ciel.skill.s2",
       "field": "source.imagePath",
       "blocking": false
     },
@@ -1993,48 +1776,6 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shiki-ryougi source image was not verified in this checkout: assets/fm09/master.shiki-ryougi.png",
-      "entityId": "master.shiki-ryougi",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shiki-ryougi.overview source image was not verified in this checkout: assets/fm09/master.shiki-ryougi.png",
-      "entityId": "master.shiki-ryougi.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shiki-ryougi.skill.s1 source image was not verified in this checkout: assets/fm09/master.shiki-ryougi.png",
-      "entityId": "master.shiki-ryougi.skill.s1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shiki-ryougi.skill.s1a source image was not verified in this checkout: assets/fm09/master.shiki-ryougi.png",
-      "entityId": "master.shiki-ryougi.skill.s1a",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shiki-ryougi.skill.s2 source image was not verified in this checkout: assets/fm09/master.shiki-ryougi.png",
-      "entityId": "master.shiki-ryougi.skill.s2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shiki-ryougi.skill.s3 source image was not verified in this checkout: assets/fm09/master.shiki-ryougi.png",
-      "entityId": "master.shiki-ryougi.skill.s3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.shiki-tohno source image was not verified in this checkout: assets/fm09/master.shiki-tohno.png",
       "entityId": "master.shiki-tohno",
       "field": "source.imagePath",
@@ -2100,27 +1841,6 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.shinji.skill.useless-person source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
       "entityId": "master.shinji.skill.useless-person",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shirou-emiya source image was not verified in this checkout: assets/fm09/master.shirou-emiya.png",
-      "entityId": "master.shirou-emiya",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shirou-emiya.overview source image was not verified in this checkout: assets/fm09/master.shirou-emiya.png",
-      "entityId": "master.shirou-emiya.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shirou-emiya.skill.s2 source image was not verified in this checkout: assets/fm09/master.shirou-emiya.png",
-      "entityId": "master.shirou-emiya.skill.s2",
       "field": "source.imagePath",
       "blocking": false
     },

@@ -101,15 +101,18 @@ describe('playtest pack loader', () => {
     expect(loaded.servants).toHaveLength(
       loaded.manifest.servantFiles.length + (loaded.manifest.authoringServantFiles?.length ?? 0),
     );
-    expect(loaded.masters).toHaveLength(13);
+    expect(loaded.masters).toHaveLength(10);
     const fm09Ids = [
-      'master.bazett', 'master.ciel', 'master.fujino',
-      'master.shiki-ryougi', 'master.shiki-tohno', 'master.shirou-emiya',
+      'master.bazett', 'master.fujino', 'master.shiki-tohno',
     ];
     expect(loaded.masters.map((master) => master.id)).toEqual(expect.arrayContaining(fm09Ids));
     for (const id of fm09Ids) {
       expect(loaded.cards.some((card) => card.id === `${id}.overview`)).toBe(true);
       expect(loaded.cards.some((card) => card.id.startsWith(`${id}.skill.`))).toBe(true);
+    }
+    for (const id of ['master.ciel', 'master.shiki-ryougi', 'master.shirou-emiya']) {
+      expect(loaded.masters.some((master) => master.id === id)).toBe(false);
+      expect(loaded.authoringMasterRuleArchives.some((archive) => archive.id === id)).toBe(true);
     }
     expect(loaded.eventSets).toHaveLength(1);
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
@@ -152,7 +155,11 @@ describe('playtest pack loader', () => {
       (archive) => archive.id === 'master.synthetic-loaded-rule',
     );
 
-    expect(compiled.rules.archives).toHaveLength(loaded.authoringNormalArchives.length + 1);
+    expect(compiled.rules.archives).toHaveLength(
+      loaded.authoringNormalArchives.length +
+      loaded.authoringMasterSupportArchives.length +
+      loaded.authoringMasterRuleArchives.length,
+    );
     expect(ruleArchives).toHaveLength(1);
     expect(ruleArchives[0]!.cards).toHaveLength(2);
     expect(ruleArchives.every((archive) => archive.cards.length > 0)).toBe(true);
