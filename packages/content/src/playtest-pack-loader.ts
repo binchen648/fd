@@ -576,7 +576,6 @@ export function loadPlaytestContentPack(
   const authoringServants = authoringServantArchives
     .map((archive) => convertAuthoringServant(archive, options.workspaceRoot));
   const authoringMasters = authoringMasterArchives
-    .filter((archive) => archive.archiveType !== 'master_rule_definition_archive')
     .map((archive) => convertAuthoringMaster(archive, options.workspaceRoot));
   const servantCards = manifest.servantCardFiles.flatMap((path) =>
     readWorkspaceJson<NamedCardDefinition[]>(options.workspaceRoot, path),
@@ -597,10 +596,12 @@ export function loadPlaytestContentPack(
     authoringMasterRuleArchives,
     authoringMasterSupportArchives,
     // Legacy FM09 records may still carry the discriminator in the normal
-    // manifest list. They are not the new explicit rules-only channel.
+    // manifest list. They remain playable; only archives explicitly loaded
+    // through authoringMasterRuleFiles are the rules-only channel.
     authoringNormalArchives: [
-      ...authoringMasterArchives.filter((archive) => archive.archiveType !== MASTER_RULE_ARCHIVE_TYPE),
+      ...authoringMasterArchives.filter((archive) => !isFm09LegacyPlayableArchive(archive)),
       ...authoringServantArchives,
+      ...authoringMasterArchives.filter((archive) => isFm09LegacyPlayableArchive(archive)),
     ],
     dictionaries: {
       basicAttacks: readWorkspaceJson<BasicAttackDictionary>(

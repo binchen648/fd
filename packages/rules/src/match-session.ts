@@ -171,7 +171,16 @@ type RuntimeContentLibrary = {
 const uncheckedContent = contentLibrary as unknown as CompiledPlaytestContentLibrary & { rules: unknown };
 assertExecutableCardPack(uncheckedContent.rules, uncheckedContent);
 const runtimeContent: RuntimeContentLibrary = { pack: uncheckedContent.pack, rules: uncheckedContent.rules };
-const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
+// The executable library also retains six FM09 legacy master archives as
+// playable content, but this product session remains the approved seven-seat
+// roster. Keep the historical session roster explicit instead of allowing
+// retained legacy archives to expand the number of active players.
+const PLAYTEST_MASTER_ROSTER_IDS = new Set([
+  'master.kayneth', 'master.shinji', 'master.kiritsugu', 'master.maiya',
+  'master.gatou', 'master.irisviel', 'master.olga-marie',
+]);
+const masterCharacters = Object.values(runtimeContent.rules.characters)
+  .filter((character) => character.kind === 'master' && PLAYTEST_MASTER_ROSTER_IDS.has(character.id));
 const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
 
 const attributeTags = {

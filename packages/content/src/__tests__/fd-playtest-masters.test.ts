@@ -9,7 +9,7 @@ const pack = loadPlaytestContentPack(resolve('data/packs/fd-playtest-v1/pack.jso
 });
 
 describe('fd-playtest-v1 master content', () => {
-  it('loads the approved seven authoring masters through the playtest pack', () => {
+  it('loads the approved authoring masters through the playtest pack', () => {
     expect(pack.masters.map((master) => master.id)).toEqual([
       'master.kayneth',
       'master.shinji',
@@ -18,6 +18,12 @@ describe('fd-playtest-v1 master content', () => {
       'master.gatou',
       'master.irisviel',
       'master.olga-marie',
+      'master.bazett',
+      'master.ciel',
+      'master.fujino',
+      'master.shiki-ryougi',
+      'master.shiki-tohno',
+      'master.shirou-emiya',
     ]);
   });
 

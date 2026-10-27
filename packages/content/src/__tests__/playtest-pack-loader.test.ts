@@ -101,7 +101,16 @@ describe('playtest pack loader', () => {
     expect(loaded.servants).toHaveLength(
       loaded.manifest.servantFiles.length + (loaded.manifest.authoringServantFiles?.length ?? 0),
     );
-    expect(loaded.masters).toHaveLength(7);
+    expect(loaded.masters).toHaveLength(13);
+    const fm09Ids = [
+      'master.bazett', 'master.ciel', 'master.fujino',
+      'master.shiki-ryougi', 'master.shiki-tohno', 'master.shirou-emiya',
+    ];
+    expect(loaded.masters.map((master) => master.id)).toEqual(expect.arrayContaining(fm09Ids));
+    for (const id of fm09Ids) {
+      expect(loaded.cards.some((card) => card.id === `${id}.overview`)).toBe(true);
+      expect(loaded.cards.some((card) => card.id.startsWith(`${id}.skill.`))).toBe(true);
+    }
     expect(loaded.eventSets).toHaveLength(1);
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
     expect(loaded.eventCards).toHaveLength(18);
