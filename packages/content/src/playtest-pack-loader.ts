@@ -244,8 +244,8 @@ function assertNormalMasterArchive(archive: AuthoringArchive): void {
   // Existing FM09 records use the exact discriminator while remaining on the
   // historical normal-master path. Keep those records compatible. Any other
   // mixed shape must use the explicit rules-only manifest channel.
-  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE && hasPlayablePresentation) {
-    if (hasMasterRuleArchiveShape(archive) && hasMasterRuleArchiveOwnership(archive)) return;
+  if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE) {
+    if (hasPlayablePresentation && hasMasterRuleArchiveShape(archive) && hasMasterRuleArchiveOwnership(archive)) return;
     throw new Error(`Legacy master rule archive has invalid mixed shape or card owner: ${archive.id}`);
   }
   // A normal authoring master must never carry an outside-game card. This

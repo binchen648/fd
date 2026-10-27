@@ -79,6 +79,21 @@ Revision 5 verification: `npm run typecheck`, focused content/compiler tests
 `npm run content:validate`, `npm run verify:generated-content`, and
 `git diff --check` all pass.
 
+## Reviewer revision 6
+
+The normal authoring-master loader now rejects the exact
+`master_rule_definition_archive` discriminator unless the archive is the
+complete compatible FM09 playable shape. An exact discriminator with missing
+playable metadata, too few cards, or no ordinary/outside-game pair can no
+longer pass the normal path and disappear during channel filtering. Added a
+regression for the one-card, non-playable malformed shape. Valid legacy FM09
+records and the explicit rules-only channel remain supported.
+
+Revision 6 verification: `npm run typecheck`, focused content/compiler tests
+(60 tests), `npm run test:ci` (125 files / 793 tests),
+`npm run content:validate`, `npm run verify:generated-content`, and
+`git diff --check` all pass.
+
 ## Acceptance boundary
 
 This is a B2 Candidate only. No frozen identity or migration credit is claimed; no consumer authoring is included. A fresh GPT-6 Sol Reviewer must independently verify the exact runtime/test scope and the fail-closed archive boundaries before any A synchronization.
