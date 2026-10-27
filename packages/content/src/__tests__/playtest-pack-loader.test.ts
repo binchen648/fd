@@ -228,6 +228,35 @@ describe('playtest pack loader', () => {
     }
   });
 
+  it.each([
+    ['exact legacy discriminator', 'master_rule_definition_archive'],
+    ['near discriminator', 'master_rule_definition_archiv'],
+    ['missing discriminator', undefined],
+    ['ordinary discriminator', 'master_skill_card_archive'],
+  ])('rejects a non-FM09 master.maiya mixed archive on the normal manifest path (%s)', (_label, archiveType) => {
+    const workspace = createMinimalWorkspace(false);
+    try {
+      const archivePath = join(workspace.root, 'data/authoring/masters/master.test.json');
+      const archive = JSON.parse(readFileSync(archivePath, 'utf8')) as any;
+      archive.id = 'master.maiya';
+      archive.name = '久宇舞弥';
+      archive.cards[0].owner = { type: 'master', id: 'master.maiya' };
+      archive.cards.push({
+        ...structuredClone(archive.cards[0]),
+        id: 'master.maiya.skill.outside',
+        initialPlacement: 'outside_game',
+      });
+      if (archiveType === undefined) delete archive.archiveType;
+      else archive.archiveType = archiveType;
+      writeJson(archivePath, archive);
+
+      expect(() => loadPlaytestContentPack(workspace.packPath, { workspaceRoot: workspace.root }))
+        .toThrow(/invalid mixed shape or card owner|authoringMasterRuleFiles registration/);
+    } finally {
+      rmSync(workspace.root, { recursive: true, force: true });
+    }
+  });
+
   it('compiles identical source metadata and definition hash with source assets present or absent', () => {
     const withAssets = createMinimalWorkspace(true);
     const withoutAssets = createMinimalWorkspace(false);

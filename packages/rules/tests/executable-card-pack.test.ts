@@ -139,6 +139,27 @@ describe('ExecutableCardPack compiler', () => {
     expect(() => compileExecutableCardPack(input)).toThrow(/invalid mixed shape or card owner/);
   });
 
+  it.each([
+    ['exact legacy discriminator', 'master_rule_definition_archive'],
+    ['near discriminator', 'master_rule_definition_archiv'],
+    ['missing discriminator', undefined],
+    ['ordinary discriminator', 'master_skill_card_archive'],
+  ])('fails closed for the non-FM09 master.maiya mixed archive (%s)', (_label, archiveType) => {
+    const input = sourceInput();
+    const archiveIndex = input.rules.archives.findIndex((archive) => archive.id === 'master.maiya');
+    const archive = structuredClone(input.rules.archives[archiveIndex]!);
+    archive.cards = archive.cards.map((card, index) => ({
+      ...card,
+      owner: { type: 'master', id: 'master.maiya' },
+      ...(index === 1 ? { initialPlacement: 'outside_game' as const } : {}),
+    }));
+    if (archiveType === undefined) delete (archive as any).archiveType;
+    else (archive as any).archiveType = archiveType;
+    input.rules.archives[archiveIndex] = archive;
+
+    expect(() => compileExecutableCardPack(input)).toThrow(/invalid archiveType|invalid mixed shape or card owner|master_rule_definition_archive/);
+  });
+
   it('normalizes one canonical runtime definition and explicit deck per source archive', () => {
     const input = sourceInput();
     const executable = compileExecutableCardPack(input);

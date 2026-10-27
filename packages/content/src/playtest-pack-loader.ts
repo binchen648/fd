@@ -170,6 +170,18 @@ export interface AuthoringArchive {
 
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
+// These six records are the only FM09 archives that historically carried the
+// rules discriminator on the normal playable-master manifest path.  Keep the
+// compatibility exception identity-bound; an exact discriminator alone must
+// never turn an arbitrary mixed archive into a playable master.
+const FM09_LEGACY_MASTER_IDS = new Set([
+  'master.bazett',
+  'master.ciel',
+  'master.fujino',
+  'master.shiki-ryougi',
+  'master.shiki-tohno',
+  'master.shirou-emiya',
+]);
 
 function hasMasterSupportArchiveShape(archive: AuthoringArchive): boolean {
   return Array.isArray(archive.cards) && archive.cards.length > 0 &&
@@ -191,6 +203,15 @@ function hasMasterRuleArchiveOwnership(archive: AuthoringArchive): boolean {
     const owner = card.owner as Record<string, unknown> | undefined;
     return owner?.type === 'master' && owner.id === archive.id;
   });
+}
+
+function isFm09LegacyPlayableArchive(archive: AuthoringArchive): boolean {
+  return archive.archiveType === MASTER_RULE_ARCHIVE_TYPE &&
+    FM09_LEGACY_MASTER_IDS.has(archive.id) &&
+    (Object.prototype.hasOwnProperty.call(archive, 'deck') ||
+      Object.prototype.hasOwnProperty.call(archive, 'publicInformation')) &&
+    hasMasterRuleArchiveShape(archive) &&
+    hasMasterRuleArchiveOwnership(archive);
 }
 
 function hasOutsideGameCard(archive: AuthoringArchive): boolean {
@@ -239,13 +260,11 @@ function assertMasterRuleArchive(archive: AuthoringArchive): void {
 }
 
 function assertNormalMasterArchive(archive: AuthoringArchive): void {
-  const hasPlayablePresentation = Object.prototype.hasOwnProperty.call(archive, 'deck') ||
-    Object.prototype.hasOwnProperty.call(archive, 'publicInformation');
   // Existing FM09 records use the exact discriminator while remaining on the
   // historical normal-master path. Keep those records compatible. Any other
   // mixed shape must use the explicit rules-only manifest channel.
   if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE) {
-    if (hasPlayablePresentation && hasMasterRuleArchiveShape(archive) && hasMasterRuleArchiveOwnership(archive)) return;
+    if (isFm09LegacyPlayableArchive(archive)) return;
     throw new Error(`Legacy master rule archive has invalid mixed shape or card owner: ${archive.id}`);
   }
   // A normal authoring master must never carry an outside-game card. This

@@ -46,6 +46,17 @@ type InitialPlacementCard = { initialPlacement?: unknown };
 
 const MASTER_SUPPORT_ARCHIVE_TYPE = 'master_support_definition_archive';
 const MASTER_RULE_ARCHIVE_TYPE = 'master_rule_definition_archive';
+// Only these six FM09 identities may use the historical playable-master
+// compatibility path with the rules discriminator.  Other exact mixed
+// archives must be rejected; rules-only archives remain explicitly supported.
+const FM09_LEGACY_MASTER_IDS = new Set([
+  'master.bazett',
+  'master.ciel',
+  'master.fujino',
+  'master.shiki-ryougi',
+  'master.shiki-tohno',
+  'master.shirou-emiya',
+]);
 
 function isMasterSupportArchive(archive: RuleArchive): boolean {
   return archive.archiveType === MASTER_SUPPORT_ARCHIVE_TYPE;
@@ -81,6 +92,14 @@ function hasMasterRuleArchiveOwnership(archive: RuleArchive): boolean {
     const owner = node((card as unknown as RuleNode).owner);
     return owner.type === 'master' && owner.id === archive.id;
   });
+}
+
+function isFm09LegacyPlayableArchive(archive: RuleArchive): boolean {
+  return archive.archiveType === MASTER_RULE_ARCHIVE_TYPE &&
+    FM09_LEGACY_MASTER_IDS.has(archive.id) &&
+    hasPlayableMasterPresentation(archive) &&
+    hasMasterRuleArchiveShape(archive) &&
+    hasMasterRuleArchiveOwnership(archive);
 }
 
 function hasPlayableMasterPresentation(archive: RuleArchive): boolean {
@@ -136,9 +155,8 @@ function assertMasterRuleArchive(archive: RuleArchive): void {
   // Keep that established behavior; the explicit rules-only channel has no
   // deck/presentation fields and is validated strictly below.
   if (archive.archiveType === MASTER_RULE_ARCHIVE_TYPE &&
-    (Object.prototype.hasOwnProperty.call(archive, 'deck') ||
-      Object.prototype.hasOwnProperty.call(archive, 'publicInformation'))) {
-    if (hasMasterRuleArchiveShape(archive) && hasMasterRuleArchiveOwnership(archive)) return;
+    hasPlayableMasterPresentation(archive)) {
+    if (isFm09LegacyPlayableArchive(archive)) return;
     throw new Error(`Legacy master rule archive has invalid mixed shape or card owner: ${archive.id}`);
   }
   if (!isMasterRuleArchive(archive)) {
