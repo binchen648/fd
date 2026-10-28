@@ -10423,18 +10423,18 @@
               {
                 "type": "schedule_exact_deck_rebuild_after_unlock_round",
                 "definitionIds": [
-                  "card.cardb3",
-                  "card.cardb3",
-                  "card.cardb4",
-                  "card.cardb4",
-                  "card.cardb4",
-                  "card.carda3",
-                  "card.carda3",
-                  "card.carda4",
-                  "card.carda4",
-                  "card.carda4",
-                  "card.cardluck",
-                  "card.cardsurveil"
+                  "basic.strength.3",
+                  "basic.strength.3",
+                  "basic.strength.4",
+                  "basic.strength.4",
+                  "basic.strength.4",
+                  "basic.agility.3",
+                  "basic.agility.3",
+                  "basic.agility.4",
+                  "basic.agility.4",
+                  "basic.agility.4",
+                  "basic.luck",
+                  "basic.surveil"
                 ],
                 "targetRoundOffset": 1
               }
@@ -12942,11 +12942,11 @@
       "master.shiki-tohno": "master.shiki-tohno.command-spell",
       "master.shirou-emiya": "master.shirou-emiya.command-spell"
     },
-    "definitionHash": "90eb3c960c44572d5203a0e7cc010edd50c239dac2b3f32f1f26543df1e8e51e",
+    "definitionHash": "165b3a524fd28f7985b351027e64cbee44216c46a238d14c64f2d1f47c4a3366",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "90eb3c960c44572d5203a0e7cc010edd50c239dac2b3f32f1f26543df1e8e51e"
+      "definitionHash": "165b3a524fd28f7985b351027e64cbee44216c46a238d14c64f2d1f47c4a3366"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

@@ -25,9 +25,9 @@ const EXPECTED_SOURCE_SHA = {
   s3: 'a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df',
 } as const;
 const DECK = [
-  'card.cardb3', 'card.cardb3', 'card.cardb4', 'card.cardb4', 'card.cardb4',
-  'card.carda3', 'card.carda3', 'card.carda4', 'card.carda4', 'card.carda4',
-  'card.cardluck', 'card.cardsurveil',
+  'basic.strength.3', 'basic.strength.3', 'basic.strength.4', 'basic.strength.4', 'basic.strength.4',
+  'basic.agility.3', 'basic.agility.3', 'basic.agility.4', 'basic.agility.4', 'basic.agility.4',
+  'basic.luck', 'basic.surveil',
 ];
 
 function readArchive(): any { return JSON.parse(readFileSync(ARCHIVE_PATH, 'utf8')); }
@@ -50,16 +50,6 @@ function setup(): { state: GameState; source: Record<keyof typeof IDS, string> }
   state.players[1]!.locationId = 'miyama_town';
   const pack = generatedPack();
   rules.initializeAbilityRuntime(state, pack, { seed: 20261028 });
-  for (const id of new Set(DECK)) {
-    const definition = structuredClone(state.abilityRuntime!.pack.cards[IDS.s3]!);
-    definition.id = id;
-    definition.cardType = id === 'card.cardsurveil' || id === 'card.cardluck' ? 'master_deck_card' : 'basic_attack';
-    definition.cardFace = { typeLabel: '基础', attributes: ['力量'], cost: 0, basePower: 1 };
-    definition.abilities = [];
-    definition.playRequirements = [];
-    definition.initialZone = undefined;
-    state.abilityRuntime!.pack.cards[id] = definition;
-  }
   const source = {
     ascension: add(state, IDS.ascension, 'skill', 'caules-ascension'),
     s1: add(state, IDS.s1, 'skill', 'caules-s1'),
@@ -72,14 +62,7 @@ function setup(): { state: GameState; source: Record<keyof typeof IDS, string> }
   return { state, source };
 }
 function installBasic(state: GameState, id = 'owner-test.basic'): string {
-  const template = structuredClone(state.abilityRuntime!.pack.cards[IDS.s3]!);
-  template.id = id;
-  template.cardType = 'basic_attack';
-  template.cardFace = { typeLabel: '基础', attributes: ['力量'], cost: 0, basePower: 2 };
-  template.abilities = [];
-  template.initialZone = undefined;
-  state.abilityRuntime!.pack.cards[id] = template;
-  return add(state, id, 'hand');
+  return add(state, 'basic.strength.3', 'hand', id);
 }
 
 describe('P3 Caules Yggdmillennia exact five-card owner Candidate', () => {
