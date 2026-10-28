@@ -2220,7 +2220,7 @@ function executeZoukenFounderGainManaCommandSpell(s: GameState, ctx: EffectConte
   const runtimeState = runtime(s);
   const cap = runtimeState.manaCaps[ctx.controllerId] ?? 12;
   if (controller.mana < 4) reject('insufficient_mana', 'Zouken founder command-spell replacement requires four mana before resolution');
-  if (runtimeState.manaGainBlocked.includes(ctx.controllerId) || !Number.isSafeInteger(cap) || cap < controller.mana) {
+  if (runtimeState.manaGainBlocked.includes(ctx.controllerId) || !Number.isSafeInteger(cap) || controller.mana >= cap) {
     reject('resolution_failed', 'Zouken founder command-spell replacement is blocked by the mana cap');
   }
   const transaction = structuredClone(s);

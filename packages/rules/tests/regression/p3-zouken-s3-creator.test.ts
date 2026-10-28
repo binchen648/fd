@@ -100,10 +100,10 @@ describe('P3 Zouken s3 creator', () => {
       expect.objectContaining({ type: 'command_seals_adjusted' }),
     ]));
 
-    for (const blockedBy of ['insufficient', 'cap'] as const) {
+    for (const blockedBy of ['insufficient', 'cap', 'full-cap'] as const) {
       const blocked = setup();
       const blockedSource = addCommandSpell(blocked);
-      blocked.players[0]!.mana = blockedBy === 'insufficient' ? 3 : 6;
+      blocked.players[0]!.mana = blockedBy === 'insufficient' ? 3 : blockedBy === 'full-cap' ? 12 : 6;
       if (blockedBy === 'cap') blocked.abilityRuntime!.manaGainBlocked.push('p1');
       const before = structuredClone(blocked);
       expect(() => rules.executeAbility(blocked, {
