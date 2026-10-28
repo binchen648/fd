@@ -82,7 +82,7 @@ describe('P3-FB2-15 identity-free game-start skill provisioning', () => {
     const state = setup(setupAbility([TARGET_ONE, TARGET_TWO]));
     state.cards.push({
       instanceId: 'retained-target', definitionId: TARGET_ONE, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill',
-      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' }, generatedBy: 'source-instance',
     });
     start(state);
     const beforeReplay = JSON.stringify(state.cards);
@@ -92,6 +92,25 @@ describe('P3-FB2-15 identity-free game-start skill provisioning', () => {
     start(restored, 'restored-game-start');
     expect(provisioned(restored, TARGET_ONE)).toHaveLength(1);
     expect(provisioned(restored, TARGET_TWO)).toHaveLength(1);
+  });
+
+  it.each([
+    ['missing provenance', undefined],
+    ['wrong source provenance', 'other-source'],
+    ['forged provenance', 'forged-target-source'],
+  ])('rejects a retained target with %s during preflight and restore replay', (_label, generatedBy) => {
+    const state = setup(setupAbility([TARGET_ONE, TARGET_TWO]));
+    state.cards.push({
+      instanceId: 'forged-retained-target', definitionId: TARGET_ONE, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' }, ...(generatedBy === undefined ? {} : { generatedBy }),
+    });
+    start(state);
+    expect(provisioned(state, TARGET_ONE)).toHaveLength(1);
+    expect(provisioned(state, TARGET_TWO)).toHaveLength(0);
+    const restored = structuredClone(state);
+    start(restored, `restored-${_label}`);
+    expect(provisioned(restored, TARGET_ONE)).toHaveLength(1);
+    expect(provisioned(restored, TARGET_TWO)).toHaveLength(0);
   });
 
   it('fails closed for malformed, duplicate, non-game-start, and unauthorized structural variants', () => {

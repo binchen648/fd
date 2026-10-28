@@ -735,11 +735,12 @@ export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
   return new Set(rules).size === rules.length;
 }
 
-function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string): boolean {
+function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string, sourceId: string): boolean {
   const state = runtime(s).cardState[instance.instanceId];
   return instance.ownerPlayerId === controllerId && instance.controllerPlayerId === controllerId &&
     instance.zone === 'skill' && instance.visibility.scope === 'owner_only' &&
-    instance.visibility.ownerPlayerId === controllerId && state?.active !== true && state?.faceDown !== true;
+    instance.visibility.ownerPlayerId === controllerId && instance.generatedBy === sourceId &&
+    state?.active !== true && state?.faceDown !== true;
 }
 
 function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
@@ -755,7 +756,7 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
     if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' ||
       target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
     const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
-    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id))) return false;
+    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id, sourceId))) return false;
   }
   return true;
 }
