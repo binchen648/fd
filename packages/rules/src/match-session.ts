@@ -2,6 +2,7 @@ import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
   initializeAbilityRuntime,
+  isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
   projectAbilityState,
 } from './ability/interpreter';
@@ -891,7 +892,7 @@ export class MatchSession {
 
   restoreToCheckpoint(checkpointId: string): boolean {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
-    if (!snapshot) return false;
+    if (!snapshot || !isDeferredAbilityRuntimeProvenanceValidForRestore(snapshot.state)) return false;
     this.state = structuredClone(snapshot.state);
     this.logs = structuredClone(snapshot.logs);
     this.battleHistory = structuredClone(snapshot.battleHistory);
@@ -1571,6 +1572,7 @@ export function restoreMatchSession(snapshot: MatchSessionSnapshot): MatchSessio
     maxActionsPerPlayer: snapshot.maxActionsPerPlayer,
   });
   session.state = structuredClone(snapshot.state);
+  if (!isDeferredAbilityRuntimeProvenanceValidForRestore(session.state)) throw new Error('Invalid deferred ability runtime provenance');
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);
   session.replaySnapshots = structuredClone(snapshot.replaySnapshots ?? []);

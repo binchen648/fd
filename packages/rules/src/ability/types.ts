@@ -194,10 +194,15 @@ export interface SafeEvent {
   fromZone?: string;
   toZone?: string;
   movedCount?: number;
+  attribute?: string;
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   reversed?: boolean; attributeOverrides?: string[];
+  /** Exact declaration bound to a physical definition-driven skill play. */
+  declaredAttribute?: string;
+  /** False while an accepted rewrite keeps that declaration secret until combat. */
+  declaredAttributeRevealed?: boolean;
 }
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
@@ -227,11 +232,19 @@ export interface AbilityRuntime {
   battlefieldsPassedOrStayedThisRound: Record<PlayerId, number>;
   /** Successful positive mana gained in the current authoritative round. */
   manaGainedThisRound: { round: number; byPlayer: Record<PlayerId, number> };
+  /** Game-long, per-definition declaration history for accepted declaration-play rules. */
+  declaredAttributesByPlayerDefinition?: Record<PlayerId, Record<string, string[]>>;
+  /** Exact next-round deck rebuilds scheduled by accepted definition-driven ascension rules. */
+  pendingExactDeckRebuilds?: Array<{
+    controllerId: PlayerId; sourceCardId: string; abilityId: string; targetRound: number; definitionIds: string[];
+  }>;
+  /** Round marker for accepted paid deployment choice that suppresses battle-loss effects. */
+  battleLossIgnoreRoundByPlayer?: Record<PlayerId, number>;
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }
-export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean }
-export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstanceId: string; faceDown?: boolean }
+export interface PlayCardAction { type: 'play_card'; cardInstanceId: string; faceDown?: boolean; declaredAttribute?: string }
+export interface StageAttackCardAction { type: 'stage_attack_card'; cardInstanceId: string; faceDown?: boolean; declaredAttribute?: string }
 export interface ConfirmStagedAttackAction { type: 'confirm_staged_attack' }
 export interface CancelStagedAttackAction { type: 'cancel_staged_attack' }
 export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceId: string; abilityId: string; variableCosts?: { name: string; min: number; max: number }[] }
@@ -247,7 +260,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; declaredAttribute?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

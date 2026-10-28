@@ -31,3 +31,4 @@ export * from './ability/interpreter';
 export * from './ability/card-instance-state';
 export * from './ability/report';
 export * from './ability/resolution-dataflow';
+export * from './ability/definition-declaration-deck-capability';

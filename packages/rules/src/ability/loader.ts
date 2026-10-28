@@ -5,6 +5,11 @@ import {
   isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
   isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
 } from './interaction-gateway';
+import {
+  SET_OWNED_DEFINITION_SKILL_ACTIVE_EFFECT, DEPLOYMENT_BATTERY_CHOICE_EFFECT, DECLARED_ATTRIBUTE_PLAY_RULE_EFFECT,
+  ZERO_MATCHING_OPPONENT_BASIC_ATTACKS_EFFECT, DECLARATION_SECRET_REWRITE_EFFECT, SCHEDULE_DECK_REBUILD_AFTER_UNLOCK_EFFECT,
+  REVEAL_SECRET_DECLARATIONS_EFFECT, containsDefinitionDeclarationDeckPrivilegedNode, isAcceptedDefinitionDeclarationDeckAbility,
+} from './definition-declaration-deck-capability';
 
 export function node(value: unknown): RuleNode {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as RuleNode : {};
@@ -44,13 +49,16 @@ const supportedTypes = new Set([
   'same_battlefield_as_controller', 'inspect_target_hand_optional_return_one_to_owner_deck',
   // Phase 3A resolution/data-flow infrastructure
   'remove_advantage_position', 'noop', 'fail_invariant', 'install_rule_override', 'provision_skill_cards',
+  SET_OWNED_DEFINITION_SKILL_ACTIVE_EFFECT, DEPLOYMENT_BATTERY_CHOICE_EFFECT, DECLARED_ATTRIBUTE_PLAY_RULE_EFFECT,
+  ZERO_MATCHING_OPPONENT_BASIC_ATTACKS_EFFECT, DECLARATION_SECRET_REWRITE_EFFECT, SCHEDULE_DECK_REBUILD_AFTER_UNLOCK_EFFECT,
+  REVEAL_SECRET_DECLARATIONS_EFFECT,
 ]);
 const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'count_cards', 'gt', 'lte']);
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
   'after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_gains_victory', 'when_formula_condition_met',
   // New triggers for 5 servants
   'after_controller_loses_battle', 'while_active', 'when_power_calculation_applied',
-  'after_battle_ended', 'after_player_deployed_to_battlefield', 'when_play_requirements_checked',
+  'after_battle_ended', 'after_player_deployed_to_battlefield', 'after_player_deployed_to_location', 'after_master_ascension_unlocked', 'when_play_requirements_checked',
   // Master triggers
   'game_start', 'after_controller_enters_location', 'after_controller_loses_all_command_seals',
   'round_end', 'after_controller_first_loses_battle', 'after_battle_power_calculated',
@@ -71,6 +79,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
+  'definitionId', 'active', 'allowedAttributes', 'uniquePerGame', 'requiresActiveSkillSource', 'basicOnly', 'sameBattlefield', 'allowRepeat',
+  'targetRoundOffset', 'definitionIds', 'workshopLocationId', 'battlefieldDefinitionId', 'manaGain', 'ignoreDefeatManaCost',
 ]);
 
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
@@ -235,6 +245,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (isSameBattlefieldPrivateHandReturnInteractionCandidate(candidateAbility) && !isSameBattlefieldPrivateHandReturnInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported same-battlefield private hand-return interaction semantic shape', id);
+      }
+      if (containsDefinitionDeclarationDeckPrivilegedNode(candidateAbility) && !isAcceptedDefinitionDeclarationDeckAbility(candidateAbility)) {
+        issue('definitionDeclarationDeck.gateway', 'Definition declaration/deck privileged mechanics require an accepted exact whole-ability semantic', id);
       }
       const failure = report.find(r => r.abilityId === id && r.status === 'unsupported');
       const visibility = candidateAbility.visibility;

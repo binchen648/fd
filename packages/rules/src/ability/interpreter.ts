@@ -13,6 +13,13 @@ import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, insta
 import { node, nodes, str } from './loader';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
+import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
+import {
+  applyDueExactDeckRebuilds, canExecuteDefinitionDeclarationDeckEffect, commitDeclaredAttributePlay,
+  containsDefinitionDeclarationDeckPrivilegedNode, declarationPlayRule, definitionDeclarationDeckRuntimeValidForRestore,
+  deploymentBatteryChoiceCandidates, isAcceptedDefinitionDeclarationDeckAbility, isDeploymentBatteryChoiceEffect,
+  legalDeclaredAttributes, resolveDefinitionDeclarationDeckEffect, validateDeclaredAttributePlay,
+} from './definition-declaration-deck-capability';
 export { isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import {
   DataFlowValidationError,
@@ -448,6 +455,10 @@ function persistentMovementLockBlocksTarget(s: GameState, ctx: EffectContext, ta
 function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[] {
   if (nodes(target.conditions).some(c => !condition(s, ctx, c))) return [];
   if (target.type === 'choice') {
+    const sourceAbility = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
+    if (isAcceptedDefinitionDeclarationDeckAbility(sourceAbility) && isDeploymentBatteryChoiceEffect(sourceAbility.effects[0]!)) {
+      return deploymentBatteryChoiceCandidates(s, ctx.controllerId, sourceAbility);
+    }
     // Return the option IDs as candidates
     const options = Array.isArray(target.options) ? target.options : [];
     return options.map((opt: any) => opt.id || '');
@@ -676,6 +687,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
+  if (containsDefinitionDeclarationDeckPrivilegedNode(a) && !isAcceptedDefinitionDeclarationDeckAbility(a)) return false;
+  if (isAcceptedDefinitionDeclarationDeckAbility(a) && a.kind !== 'passive' && !canExecuteDefinitionDeclarationDeckEffect(s, context(s, sourceId, a.id, event), a)) return false;
   if (a.activation.requiresSourceState === 'active' && !active(s, sourceId)) return false;
   if (runtime(s).cardState[sourceId]?.faceDown) return false;
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
@@ -825,9 +838,14 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
       const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, c.instanceId);
       if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
-        result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
+        const declarationRule = declarationPlayRule(definition(s, c.instanceId));
+        if (declarationRule) {
+          for (const declaredAttribute of legalDeclaredAttributes(s, playerId, c.instanceId)) {
+            result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, declaredAttribute });
+          }
+        } else result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
-      if (!playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      if (!declarationPlayRule(definition(s, c.instanceId)) && !playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
@@ -836,12 +854,22 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   for (const c of s.cards.filter(c => c.controllerPlayerId === playerId)) {
     const alreadyStaged = staged.some((entry) => entry.cardInstanceId === c.instanceId);
     if (!alreadyStaged && !playFailure(s, playerId, c.instanceId)) {
-      result.push({ type: 'play_card', cardInstanceId: c.instanceId });
-      if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
-        result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
+      const declarationRule = declarationPlayRule(definition(s, c.instanceId));
+      if (declarationRule) {
+        for (const declaredAttribute of legalDeclaredAttributes(s, playerId, c.instanceId)) {
+          result.push({ type: 'play_card', cardInstanceId: c.instanceId, declaredAttribute });
+          if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
+            result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, declaredAttribute });
+          }
+        }
+      } else {
+        result.push({ type: 'play_card', cardInstanceId: c.instanceId });
+        if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
+          result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
+        }
       }
     }
-    if (!alreadyStaged && !playFailure(s, playerId, c.instanceId, true)) {
+    if (!alreadyStaged && !declarationPlayRule(definition(s, c.instanceId)) && !playFailure(s, playerId, c.instanceId, true)) {
       result.push({ type: 'play_card', cardInstanceId: c.instanceId, faceDown: true });
       if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && entry.faceDown === true)) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
@@ -973,13 +1001,7 @@ function payEffectCost(s: GameState, ctx: EffectContext, cost: RuleNode, selecte
   p.mana -= value;
 }
 function shuffle(s: GameState, ownerId: string): void {
-  const r = runtime(s); const indexes = s.cards.map((c, i) => c.ownerPlayerId === ownerId && c.zone === 'deck' ? i : -1).filter(i => i >= 0);
-  const deck = indexes.map(i => s.cards[i]!);
-  for (let i = deck.length - 1; i > 0; i--) {
-    let x = r.randomState; x ^= x << 13; x ^= x >>> 17; x ^= x << 5; r.randomState = x >>> 0;
-    const j = Math.floor((r.randomState / 0x100000000) * (i + 1)); [deck[i], deck[j]] = [deck[j]!, deck[i]!];
-  }
-  indexes.forEach((index, i) => { s.cards[index] = deck[i]!; });
+  shuffleOwnedDeckDeterministically(s, ownerId);
 }
 function shortestPath(s: GameState, from: string, to: string): string[] {
   if (from === to) return [from];
@@ -2614,6 +2636,13 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
     provisionGameStartSkillCards(s, ctx, a);
     return;
   }
+  if (containsDefinitionDeclarationDeckPrivilegedNode(a)) {
+    if (!isAcceptedDefinitionDeclarationDeckAbility(a)) reject('resolution_failed', 'Unsupported definition declaration/deck semantic');
+    const pending = findPendingTarget(s, ctx, a, a.effects);
+    if (pending) { runtime(s).pendingDecision = pending; return; }
+    if (!resolveDefinitionDeclarationDeckEffect(s, ctx, a)) reject('resolution_failed', 'Definition declaration/deck resolution failed');
+    return;
+  }
   if (isAlterEgoTransformCandidate(a)) {
     if (!isAlterEgoTransformSemantic(a)) reject('resolution_failed', 'Unsupported Alter Ego transform semantic shape');
     resolveAlterEgoTransformResponse(s, ctx, a);
@@ -2806,6 +2835,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
+    applyDueExactDeckRebuilds(copy, round);
   }
   copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
@@ -2874,7 +2904,9 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
       ...(!hidden && (own || privatelyInspected || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
-      ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });
+      ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}),
+      ...(!hidden && physicalState?.declaredAttribute !== undefined && (own || physicalState.declaredAttributeRevealed === true)
+        ? { declaredAttribute: physicalState.declaredAttribute } : {}) });
   }
   if (d) {
     if (d.controllerId === viewerId) {
@@ -2901,7 +2933,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       if (!owned) reject('illegal_action', 'Card is not available');
       const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true);
       if (failure) reject(failure, 'Card cannot be played in the current state');
-      if (!legal.some(a => a.type === 'play_card' && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown)) reject('illegal_action', 'Card play is not available');
+      if (!legal.some(a => a.type === 'play_card' && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown && a.declaredAttribute === command.declaredAttribute)) reject('illegal_action', 'Card play is not available');
       playBatch(s, playerId, [command]);
       break;
     }
@@ -2914,9 +2946,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true, false, false, false, allowRequiredAdditional);
       if (failure) reject(failure, 'Card cannot be staged in the current state');
       if (!entersAttackArea(s, command.cardInstanceId)) reject('not_attack_card', 'Only attack cards can be staged');
-      if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown)) reject('illegal_action', 'Card staging is not available');
+      if (!legal.some(a => a.type === command.type && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown && a.declaredAttribute === command.declaredAttribute)) reject('illegal_action', 'Card staging is not available');
       const staged = stagedAttacks(s);
-      staged[playerId] = [...(staged[playerId] ?? []), { type: 'play_card', cardInstanceId: command.cardInstanceId, ...(command.faceDown ? { faceDown: true } : {}) }];
+      staged[playerId] = [...(staged[playerId] ?? []), { type: 'play_card', cardInstanceId: command.cardInstanceId, ...(command.faceDown ? { faceDown: true } : {}), ...(command.declaredAttribute ? { declaredAttribute: command.declaredAttribute } : {}) }];
       break;
     }
     case 'confirm_staged_attack': {
@@ -3027,6 +3059,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
       }
       d.context.selections[str(d.target.id)] = selected; delete r.pendingDecision;
+      const resumedAbility = abilityDefinition(s, d.context.sourceCardId, d.context.abilityId);
+      if (isAcceptedDefinitionDeclarationDeckAbility(resumedAbility)) { executeAbility(s, d.context); break; }
       executeEffects(s, d.context, d.remainingEffects); break;
     }
     case 'resolve_response': {
@@ -3056,6 +3090,19 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   if (quota === 'regular' && attacksDeclaredThisRound(s, playerId) + regularAttackChoices > attackPlayAllowance(s, playerId)) {
     reject('attack_play_limit_reached', 'Attack play limit reached for this round');
   }
+  const declaredByCard = new Map<string, NonNullable<ReturnType<typeof validateDeclaredAttributePlay>>>();
+  for (const choice of choices) {
+    const hasDeclarationRule = !!declarationPlayRule(definition(s, choice.cardInstanceId));
+    if (!hasDeclarationRule && choice.declaredAttribute === undefined) continue;
+    if (choice.faceDown) reject('play_requirement', 'Declared-attribute skill must be played face up');
+    try {
+      const declaration = validateDeclaredAttributePlay(s, playerId, choice.cardInstanceId, choice.declaredAttribute);
+      if (!declaration) reject('play_requirement', 'Declared-attribute play requires an accepted declaration rule');
+      declaredByCard.set(choice.cardInstanceId, declaration);
+    } catch {
+      reject('play_requirement', 'Declared attribute is not legal for this play');
+    }
+  }
   let cost = 0;
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
@@ -3072,6 +3119,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
     runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber };
+    commitDeclaredAttributePlay(s, playerId, c.cardInstanceId, declaredByCard.get(c.cardInstanceId));
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
     
     // Track noble phantasm costs for cards with 宝具 attribute
@@ -3141,6 +3189,10 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
     return { ok: false, view: projectAbilityState(s, playerId), events: [], calculations: [], rejection: { code: error.code, message: error.message,
       ...(error.code === 'host_adjudicated' && blocked ? { allowedOperations: blocked.execution.allowedOperations } : {}) } };
   }
+}
+/** Validate deferred capability provenance before a serialized runtime is restored. */
+export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
+  try { return definitionDeclarationDeckRuntimeValidForRestore(s); } catch { return false; }
 }
 /** The transport should expose only dispatch/view; phase and event hooks are trusted server operations. */
 export function createAbilitySession(initialState: GameState) {
