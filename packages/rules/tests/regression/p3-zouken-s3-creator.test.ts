@@ -142,6 +142,12 @@ describe('P3 Zouken s3 creator', () => {
     expect(battle.battleResults.at(-1)!.winnerPlayerIds).toContain('p1');
     expect(battle.battleResults.at(-1)!.participantBreakdowns.find((entry) => entry.playerId === 'p1')!.basePower).toBe(2);
     const battleResult = battle.battleResults.at(-1)!;
+    state.scoringBreakdown = battleResult.participantBreakdowns.map((entry) => ({
+      playerId: entry.playerId, vpDelta: 0, militaryDelta: 0, eliminated: false, reasons: [],
+    }));
+    state.log.push({ type: 'battle_scored', message: 'scored:miyama_town', payload: {
+      battlefieldId: 'miyama_town', winnerPlayerIds: [...battleResult.winnerPlayerIds],
+    }});
     const canonicalReceipt = {
       battlePhaseResolutionId: 'battle-phase:1',
       battleId: 'battle-phase:1:battle:miyama_town:1',
@@ -236,6 +242,7 @@ describe('P3 Zouken s3 creator', () => {
       resultId: 'battle-phase:1:battle:miyama_town:1:result', battlefieldId: 'miyama_town',
       battleParticipantIds: ['p1', 'p2'], winnerPlayerIds: ['p1'], loserIds: ['p2'], battleOrdinal: 1,
     };
+    forgedReceipt.abilityRuntime!.canonicalBattleScoringReceipts = { [forgedReceiptPayload.resultId]: forgedReceiptPayload };
     forgedReceipt.log.push({ type: 'battle_scored_canonical', message: forgedReceiptPayload.resultId, payload: forgedReceiptPayload });
     expect(() => rules.processAbilityEvent(forgedReceipt, {
       id: 'forged-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1',

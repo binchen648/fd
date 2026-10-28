@@ -1617,6 +1617,10 @@ function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
     entry.payload?.resultId === event.resultId);
   const receiptPayload = scoringReceipt?.payload;
   const runtimeReceipt = runtime(s).canonicalBattleScoringReceipts?.[event.resultId];
+  const scoringLog = [...s.log].reverse().find((entry) => entry.type === 'battle_scored' &&
+    entry.payload?.battlefieldId === event.battlefieldId);
+  const scoringWinners = scoringLog?.payload?.winnerPlayerIds;
+  const scoredPlayers = s.scoringBreakdown?.map((entry) => entry.playerId) ?? [];
   const receiptParticipants = runtimeReceipt?.battleParticipantIds;
   const receiptWinners = runtimeReceipt?.winnerPlayerIds;
   const receiptLosers = runtimeReceipt?.loserIds;
@@ -1629,7 +1633,8 @@ function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
       receiptPayload.battleId !== event.battleId || receiptPayload.resultId !== event.resultId ||
       receiptPayload.battlefieldId !== event.battlefieldId || receiptPayload.battleOrdinal !== runtimeReceipt.battleOrdinal ||
       !sameIds(receiptParticipants, participantIds!) || !sameIds(receiptWinners, winners!) ||
-      !sameIds(receiptLosers, loserIds!) || !sameIds(receiptPayload.battleParticipantIds, receiptParticipants!) ||
+      !sameIds(receiptLosers, loserIds!) || !scoringLog || !sameIds(scoringWinners, winners!) ||
+      !participantIds!.every((id) => scoredPlayers.includes(id)) || !sameIds(receiptPayload.battleParticipantIds, receiptParticipants!) ||
       !sameIds(receiptPayload.winnerPlayerIds, receiptWinners!) || !sameIds(receiptPayload.loserIds, receiptLosers!)) {
     reject('invalid_event', 'Zouken founder victory conversion requires the authoritative scoring receipt');
   }
@@ -3573,6 +3578,10 @@ function canonicalBattleScoringReceiptsValidForRestore(s: GameState): boolean {
     const log = s.log.find((entry) => entry.type === 'battle_scored_canonical' && entry.payload?.resultId === resultId);
     if (!log || log.payload?.battleId !== receipt.battleId || log.payload?.resultId !== receipt.resultId ||
         log.payload?.battlefieldId !== receipt.battlefieldId || log.payload?.battleOrdinal !== receipt.battleOrdinal) return false;
+    const scoringLog = s.log.find((entry) => entry.type === 'battle_scored' && entry.payload?.battlefieldId === receipt.battlefieldId);
+    if (!scoringLog || !Array.isArray(scoringLog.payload?.winnerPlayerIds) ||
+        !sameIds(scoringLog.payload.winnerPlayerIds, receipt.winnerPlayerIds) ||
+        !Array.isArray(s.scoringBreakdown) || !receipt.battleParticipantIds.every((id) => s.scoringBreakdown!.some((entry) => entry.playerId === id))) return false;
   }
   if (canonicalLogs.some((log) => typeof log.payload?.resultId !== 'string' || !Object.prototype.hasOwnProperty.call(receipts, log.payload.resultId))) return false;
   return true;
