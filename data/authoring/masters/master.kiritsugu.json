@@ -4,6 +4,11 @@
   "name": "卫宫切嗣",
   "class": "Master",
   "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "The frozen F1 clause is the source receipt. Current authoring and generated text intentionally add the explicit 行动阶段： prefix as semantic timing normalization; this is not a byte/hash identity claim."
+  },
   "sources": [
     {
       "id": "chm_page",
@@ -44,8 +49,11 @@
     },
     {
       "id": "master.kiritsugu.skill.time-alter",
+      "aliases": ["s2"],
+      "legacyId": "s2",
       "name": "固有时制御",
       "cardType": "master_skill",
+      "owner": { "type": "master", "id": "master.kiritsugu" },
       "printedText": "行动阶段：暗置打出一张牌，然后抽一张牌。",
       "cardFace": { "cost": 0, "basePower": 0 },
       "playTiming": { "phase": "action", "window": "controller_play_card_window" },
@@ -66,7 +74,29 @@
           "execution": { "mode": "automatic" }
         }
       ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          { "kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/卫宫切嗣.png", "locator": "master.kiritsugu/卫宫切嗣" },
+          { "kind": "legacy", "document": "legacy-content.json", "locator": "master/master.kiritsugu/s2" }
+        ],
+        "f1ClauseSources": [
+          { "document": "src/content/generated/legacy-content.json", "locator": "masters[0].skills[1].text#line=1", "sha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0" }
+        ],
+        "sourceTextSha256": "37250362ba119e621015b05c59c6694b319f15900647522fb8c5400ea8290df0",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s2",
+          "handler": "core.kiritsugu-time-control"
+        },
+        "acceptedContracts": { "cardActionSemanticsMinimalPlay": "P3-TO-10/CARD_ACTION_SEMANTICS_MINIMAL_PLAY" },
+        "currentRouteNormalization": {
+          "currentPrintedText": "行动阶段：暗置打出一张牌，然后抽一张牌。",
+          "sourceClauseIsByteIdentical": false,
+          "timingPrefix": "行动阶段："
+        }
+      }
     },
     {
       "id": "master.kiritsugu.skill.square-accel",
