@@ -1613,14 +1613,19 @@ function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
   if (!Number.isSafeInteger(ordinal) || ordinal < 1) {
     reject('invalid_event', 'Zouken founder victory conversion requires a canonical battle result');
   }
-  const scoringReceipt = [...s.log].reverse().find((entry) => entry.type === 'battle_scored' &&
-    entry.payload?.battlefieldId === event.battlefieldId);
-  if (scoringReceipt) {
-    const scoredWinners = scoringReceipt.payload?.winnerPlayerIds;
-    if (!Array.isArray(scoredWinners) || scoredWinners.length !== winners!.length ||
-        scoredWinners.some((id) => !winners!.includes(String(id)))) {
-      reject('invalid_event', 'Zouken founder victory conversion requires the authoritative scoring winner receipt');
-    }
+  const scoringReceipt = [...s.log].reverse().find((entry) => entry.type === 'battle_scored_canonical' &&
+    entry.payload?.resultId === event.resultId);
+  const receiptPayload = scoringReceipt?.payload;
+  const receiptParticipants = receiptPayload?.battleParticipantIds;
+  const receiptWinners = receiptPayload?.winnerPlayerIds;
+  const receiptLosers = receiptPayload?.loserIds;
+  const sameIds = (left: unknown, right: readonly string[]) => Array.isArray(left) && left.length === right.length &&
+    new Set(left.map(String)).size === right.length && right.every((id) => left.includes(id));
+  if (!scoringReceipt || receiptPayload?.battlePhaseResolutionId !== event.battlePhaseResolutionId ||
+      receiptPayload.battleId !== event.battleId || receiptPayload.resultId !== event.resultId ||
+      receiptPayload.battlefieldId !== event.battlefieldId || !sameIds(receiptParticipants, participantIds!) ||
+      !sameIds(receiptWinners, winners!) || !sameIds(receiptLosers, loserIds!)) {
+    reject('invalid_event', 'Zouken founder victory conversion requires the authoritative scoring receipt');
   }
   const entry = s.ruleOverrides?.zoukenFounderPowerByPlayer?.[ctx.controllerId];
   if (!entry || entry.sourceCardId !== ctx.sourceCardId || entry.abilityId !== ZOUKEN_S3_ACTION_ID ||
@@ -2204,6 +2209,20 @@ function isZoukenFounderGainManaCommandSpell(s: GameState, ctx: EffectContext, a
     spend.directive === 'spend_command_spell';
 }
 
+function executeZoukenFounderGainManaCommandSpell(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
+  const controller = player(s, ctx.controllerId);
+  const runtimeState = runtime(s);
+  const cap = runtimeState.manaCaps[ctx.controllerId] ?? 12;
+  if (controller.mana < 4) reject('insufficient_mana', 'Zouken founder command-spell replacement requires four mana before resolution');
+  if (runtimeState.manaGainBlocked.includes(ctx.controllerId) || !Number.isSafeInteger(cap) || cap < controller.mana) {
+    reject('resolution_failed', 'Zouken founder command-spell replacement is blocked by the mana cap');
+  }
+  const transaction = structuredClone(s);
+  resolveEffect(transaction, ctx, effects[0]!);
+  resolveEffect(transaction, ctx, effects[1]!);
+  Object.assign(s, transaction);
+}
+
 function isBattleLossStateTransformCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_controller_loses_battle' &&
@@ -2743,8 +2762,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isZoukenFounderGainManaCommandSpell(s, ctx, a, effects)) {
-    resolveEffect(s, ctx, effects[0]!);
-    resolveEffect(s, ctx, effects[1]!);
+    executeZoukenFounderGainManaCommandSpell(s, ctx, effects);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;

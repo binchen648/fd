@@ -1308,6 +1308,21 @@ export class MatchSession {
         battlefieldId: battle.battlefieldId,
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
       };
+      if (!this.state.log.some((entry) => entry.type === 'battle_scored_canonical' && entry.payload?.resultId === resultId)) {
+        this.state.log.push({
+          type: 'battle_scored_canonical',
+          message: resultId,
+          payload: {
+            battlePhaseResolutionId,
+            battleId,
+            resultId,
+            battlefieldId: battle.battlefieldId,
+            battleParticipantIds: [...participants],
+            winnerPlayerIds: [...battle.winnerPlayerIds],
+            loserIds: [...loserIds],
+          },
+        });
+      }
       if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
         pending.push(resultEvent);
       }

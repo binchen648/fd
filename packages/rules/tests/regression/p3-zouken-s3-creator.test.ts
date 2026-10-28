@@ -40,6 +40,20 @@ function context(abilityId: string, variables: Record<string, number> = {}): Eff
   return { controllerId: 'p1', sourceCardId: SOURCE, abilityId, variables, selections: {} };
 }
 
+function addCommandSpell(state: GameState): string {
+  const commandSource = 'p1-master.zouken.command-spell';
+  state.cards.push({
+    instanceId: commandSource,
+    definitionId: 'master.zouken.command-spell',
+    ownerPlayerId: 'p1',
+    controllerPlayerId: 'p1',
+    zone: 'skill',
+    visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+  });
+  state.abilityRuntime!.cardState[commandSource] = { active: true, faceDown: false, playedRound: 1 };
+  return commandSource;
+}
+
 describe('P3 Zouken s3 creator', () => {
   it('loads the exact three real-pack abilities and projects no command seals', () => {
     const state = setup();
@@ -70,17 +84,8 @@ describe('P3 Zouken s3 creator', () => {
 
   it('replaces the real generated command-spell gain-mana sequence atomically', () => {
     const state = setup();
-    const commandSource = 'p1-master.zouken.command-spell';
+    const commandSource = addCommandSpell(state);
     state.players[0]!.mana = 6;
-    state.cards.push({
-      instanceId: commandSource,
-      definitionId: 'master.zouken.command-spell',
-      ownerPlayerId: 'p1',
-      controllerPlayerId: 'p1',
-      zone: 'skill',
-      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
-    });
-    state.abilityRuntime!.cardState[commandSource] = { active: true, faceDown: false, playedRound: 1 };
     state.round.activePhase = 'action';
     state.round.prioritySeat = 1;
     rules.executeAbility(state, {
@@ -94,6 +99,18 @@ describe('P3 Zouken s3 creator', () => {
     expect(state.abilityRuntime!.events).not.toEqual(expect.arrayContaining([
       expect.objectContaining({ type: 'command_seals_adjusted' }),
     ]));
+
+    for (const blockedBy of ['insufficient', 'cap'] as const) {
+      const blocked = setup();
+      const blockedSource = addCommandSpell(blocked);
+      blocked.players[0]!.mana = blockedBy === 'insufficient' ? 3 : 6;
+      if (blockedBy === 'cap') blocked.abilityRuntime!.manaGainBlocked.push('p1');
+      const before = structuredClone(blocked);
+      expect(() => rules.executeAbility(blocked, {
+        controllerId: 'p1', sourceCardId: blockedSource, abilityId: 'command-spell.gain-mana', variables: {}, selections: {},
+      })).toThrow();
+      expect(blocked).toEqual(before);
+    }
   });
 
   it('pays exactly 2X, records source-bound power, and rejects duplicate or forged variables', () => {
@@ -124,6 +141,20 @@ describe('P3 Zouken s3 creator', () => {
     Object.assign(state, battle);
     expect(battle.battleResults.at(-1)!.winnerPlayerIds).toContain('p1');
     expect(battle.battleResults.at(-1)!.participantBreakdowns.find((entry) => entry.playerId === 'p1')!.basePower).toBe(2);
+    const battleResult = battle.battleResults.at(-1)!;
+    state.log.push({
+      type: 'battle_scored_canonical',
+      message: 'battle-phase:1:battle:miyama_town:1:result',
+      payload: {
+        battlePhaseResolutionId: 'battle-phase:1',
+        battleId: 'battle-phase:1:battle:miyama_town:1',
+        resultId: 'battle-phase:1:battle:miyama_town:1:result',
+        battlefieldId: 'miyama_town',
+        battleParticipantIds: battleResult.participantBreakdowns.map((entry) => entry.playerId),
+        winnerPlayerIds: [...battleResult.winnerPlayerIds],
+        loserIds: battleResult.participantBreakdowns.map((entry) => entry.playerId).filter((id) => !battleResult.winnerPlayerIds.includes(id)),
+      },
+    });
     rules.processAbilityEvent(state, {
       id: 's3-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1',
       battleId: 'battle-phase:1:battle:miyama_town:1', resultId: 'battle-phase:1:battle:miyama_town:1:result',
@@ -166,6 +197,7 @@ describe('P3 Zouken s3 creator', () => {
     (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
     expect(state.battleResults).toEqual([]);
     expect(state.log.some((entry) => entry.type === 'battle_scored')).toBe(true);
+    expect(state.log.some((entry) => entry.type === 'battle_scored_canonical')).toBe(true);
     expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([
       expect.objectContaining({ type: 'zouken_s3_victory_points_settled', delta: 1 }),
     ]));
