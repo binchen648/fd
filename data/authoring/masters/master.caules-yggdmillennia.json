@@ -35,7 +35,7 @@
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s1"}],
-        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[0].text#line=1", "sha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc"}],
+        "f1ClauseSources": [{"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[0].text#line=1", "sha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc"}],
         "sourceTextSha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc",
         "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动"},
         "acceptedContracts": {"gameStartSkillProvisioning": "FB2-15"}
@@ -58,7 +58,7 @@
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s1a"}],
-        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[1].text#line=1", "sha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5"}],
+        "f1ClauseSources": [{"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[1].text#line=1", "sha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5"}],
         "sourceTextSha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5",
         "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1a", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动"},
         "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
@@ -82,7 +82,7 @@
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s2"}],
-        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[2].text#line=1,2", "sha256": "3b220e60b2d59c8430594def46e0db5f7efcbfea91d7090a03d899c594006f8a"}],
+        "f1ClauseSources": [{"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[2].text#line=1", "sha256": "56a619fc1e8118c5c1d483fcf8fc131762cc133c1022716ef92827aaf1970b7a"}, {"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[2].text#line=2", "sha256": "e621c341ce11faf0e1cb6b03eb273701f4fa9b8d241d2ed3eef63fafee369212"}],
         "sourceTextSha256": "3b220e60b2d59c8430594def46e0db5f7efcbfea91d7090a03d899c594006f8a",
         "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s2", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "前哨"},
         "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
@@ -108,7 +108,7 @@
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s3"}],
-        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[3].text#line=1,2,3", "sha256": "a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df"}],
+        "f1ClauseSources": [{"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[3].text#line=1", "sha256": "8bf28ff132ab181f01d36fb6fc96d68aa88814ccf49ee2b289a1b66fdebb5563"}, {"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[3].text#line=2", "sha256": "3e4a566ba3639ea957f2ce91123f2c2e816a0a4b727aff590772e079bcb169fb"}, {"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[3].text#line=3", "sha256": "c94cf087070c5944a8ab261307aa135d059e292f8054e5d007d811f2b3df4153"}],
         "sourceTextSha256": "a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df",
         "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s3", "cost": 5, "basePower": 6, "legacyRequirement": 5, "typeLabel": "魔术"},
         "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
@@ -133,7 +133,7 @@
       "phase3Evidence": {
         "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
         "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/ascension"}],
-        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[4].text#line=1", "sha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b"}],
+        "f1ClauseSources": [{"document": "src/content/generated/legacy-content.json", "locator": "masters[43].skills[4].text#line=1", "sha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b"}],
         "sourceTextSha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b",
         "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "ascension", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "升华技"},
         "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
