@@ -145,9 +145,6 @@ describe('P3 Zouken s3 creator', () => {
     state.scoringBreakdown = battleResult.participantBreakdowns.map((entry) => ({
       playerId: entry.playerId, vpDelta: 0, militaryDelta: 0, eliminated: false, reasons: [],
     }));
-    state.log.push({ type: 'battle_scored', message: 'scored:miyama_town', payload: {
-      battlefieldId: 'miyama_town', winnerPlayerIds: [...battleResult.winnerPlayerIds],
-    }});
     const canonicalReceipt = {
       battlePhaseResolutionId: 'battle-phase:1',
       battleId: 'battle-phase:1:battle:miyama_town:1',
@@ -161,6 +158,7 @@ describe('P3 Zouken s3 creator', () => {
       battleOrdinal: 1,
     };
     state.abilityRuntime!.canonicalBattleScoringReceipts = { [canonicalReceipt.resultId]: canonicalReceipt };
+    state.log.push({ type: 'battle_scored', message: 'scored:miyama_town', payload: canonicalReceipt });
     state.log.push({
       type: 'battle_scored_canonical',
       message: 'battle-phase:1:battle:miyama_town:1:result',
@@ -227,6 +225,11 @@ describe('P3 Zouken s3 creator', () => {
     state.cards = [{ instanceId: SOURCE, definitionId: S3, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } }];
     state.abilityRuntime!.cardState[SOURCE] = { active: true, faceDown: false, playedRound: 1 };
     for (let round = 1; round <= 3; round++) {
+      if (round > 1) {
+        const attackId = `p2-basic-round-${round}`;
+        state.cards.push({ instanceId: attackId, definitionId: 'basic.strength.5', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+        state.abilityRuntime!.cardState[attackId] = { active: true, faceDown: false, playedRound: round };
+      }
       state.players[0]!.mana = 8;
       state.round.activePhase = 'action';
       state.round.prioritySeat = 1;
@@ -238,7 +241,9 @@ describe('P3 Zouken s3 creator', () => {
         state.players.forEach((entry) => { entry.locationId = entry.id === 'p1' || entry.id === 'p2' ? 'miyama_town' : 'recon'; });
       }
     }
-    expect(Object.keys(state.abilityRuntime!.canonicalBattleScoringReceipts ?? {})).toHaveLength(3);
+    const receipts = Object.values(state.abilityRuntime!.canonicalBattleScoringReceipts ?? {});
+    expect(receipts).toHaveLength(3);
+    expect(receipts.map((receipt) => receipt.winnerPlayerIds)).toEqual([['p1'], ['p2'], ['p2']]);
     const restored = rules.restoreMatchSession(session.serializeSession());
     expect(Object.keys(restored.state.abilityRuntime!.canonicalBattleScoringReceipts ?? {})).toHaveLength(3);
   });

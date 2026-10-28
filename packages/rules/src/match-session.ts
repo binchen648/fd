@@ -1323,6 +1323,9 @@ export class MatchSession {
       };
       runtime.canonicalBattleScoringReceipts ??= {};
       runtime.canonicalBattleScoringReceipts[resultId] = structuredClone(scoringReceipt);
+      const scoringLog = [...this.state.log].reverse().find((entry) => entry.type === 'battle_scored' &&
+        entry.payload?.battlefieldId === battle.battlefieldId && entry.payload?.resultId === undefined);
+      if (scoringLog) scoringLog.payload = { ...(scoringLog.payload ?? {}), ...scoringReceipt };
       if (!this.state.log.some((entry) => entry.type === 'battle_scored_canonical' && entry.payload?.resultId === resultId)) {
         this.state.log.push({
           type: 'battle_scored_canonical',

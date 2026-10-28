@@ -1618,7 +1618,7 @@ function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
   const receiptPayload = scoringReceipt?.payload;
   const runtimeReceipt = runtime(s).canonicalBattleScoringReceipts?.[event.resultId];
   const scoringLog = [...s.log].reverse().find((entry) => entry.type === 'battle_scored' &&
-    entry.payload?.battlefieldId === event.battlefieldId);
+    entry.payload?.resultId === event.resultId);
   const scoringWinners = scoringLog?.payload?.winnerPlayerIds;
   const scoredPlayers = s.scoringBreakdown?.map((entry) => entry.playerId) ?? [];
   const receiptParticipants = runtimeReceipt?.battleParticipantIds;
@@ -3586,10 +3586,15 @@ function canonicalBattleScoringReceiptsValidForRestore(s: GameState): boolean {
         log.payload?.battlefieldId !== receipt.battlefieldId || log.payload?.battleOrdinal !== receipt.battleOrdinal ||
         !sameIds(log.payload?.scoringParticipantIds, receipt.scoringParticipantIds) ||
         !sameIds(log.payload?.scoringWinnerPlayerIds, receipt.scoringWinnerPlayerIds)) return false;
-    const scoringLog = s.log.find((entry) => entry.type === 'battle_scored' && entry.payload?.battlefieldId === receipt.battlefieldId);
+    const scoringLog = s.log.find((entry) => entry.type === 'battle_scored' && entry.payload?.resultId === receipt.resultId);
     const receiptRound = Number(receipt.battlePhaseResolutionId.slice('battle-phase:'.length));
-    if (!scoringLog || !Array.isArray(scoringLog.payload?.winnerPlayerIds) ||
+    if (!scoringLog || scoringLog.payload?.battlePhaseResolutionId !== receipt.battlePhaseResolutionId ||
+        scoringLog.payload?.battleId !== receipt.battleId || scoringLog.payload?.resultId !== receipt.resultId ||
+        scoringLog.payload?.battlefieldId !== receipt.battlefieldId || scoringLog.payload?.battleOrdinal !== receipt.battleOrdinal ||
+        !Array.isArray(scoringLog.payload?.winnerPlayerIds) ||
         !sameIds(scoringLog.payload.winnerPlayerIds, receipt.winnerPlayerIds) ||
+        !sameIds(scoringLog.payload.scoringParticipantIds, receipt.scoringParticipantIds) ||
+        !sameIds(scoringLog.payload.scoringWinnerPlayerIds, receipt.scoringWinnerPlayerIds) ||
         (receiptRound === s.round.roundNumber && (!Array.isArray(s.scoringBreakdown) ||
           !receipt.scoringParticipantIds.every((id) => s.scoringBreakdown!.some((entry) => entry.playerId === id))))) return false;
   }
@@ -3620,7 +3625,7 @@ function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
     if (!source || source.definitionId !== ZOUKEN_S3_SOURCE_ID || !Number.isSafeInteger(round) || round < 1 || round > s.round.roundNumber ||
         !isZoukenS3Source(s, source.instanceId)) return false;
     const powerEntry = power[source.controllerPlayerId];
-    if (!powerEntry || powerEntry.sourceCardId !== sourceId || powerEntry.round !== round ||
+    if (!powerEntry || powerEntry.sourceCardId !== sourceId || powerEntry.round < round ||
         !runtime(s).events.some((event) => event.type === 'zouken_s3_power_conversion' &&
           event.sourceCardId === sourceId && event.playerId === source.controllerPlayerId)) return false;
   }
