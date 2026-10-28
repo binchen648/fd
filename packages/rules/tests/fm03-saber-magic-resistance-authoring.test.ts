@@ -20,6 +20,16 @@ const members = [
   ['servant.saber', 'servant.saber.skill.sc-saber-1', '0cdfc3fafc790b59414b23e58a39fd0926dd776a7df6ccba352ce65dd3c74d22'],
   ['servant.saitou', 'servant.saitou.skill.sc-saitou-1', 'b2b1bc7cdbc3adce79362de44635ed871f652c60e3b5abe691a07e26458a8d05'],
 ] as const;
+const SHARED_CLAUSES = [
+  '1cef15482dd584d9d18b4e9016476b7bffb31cb0331efd38b4025a26611c84c2',
+  'f0631437ce658c07be75426fc0394d6f32c6fafc10805bcb359ff17d4de97f85',
+];
+const MAGIC_CLAUSES = [...SHARED_CLAUSES, 'dcaf950c99dfaf589dac80e3e1d6c0d65e6d97020e1943f499fcb1e204610158'];
+const MAGIC_RESISTANCE_CLAUSE = 'bd7530459d6ccd00217d1192b06509e322d48bafd44f037c383470ecbba55229';
+const SABER_CLAUSES = [
+  'bab4b24653f4b6af35b87c7be8dc062c4a11d8d3d772ba1252310615102b9045',
+  '8375256a1b87eeb7f39aa2dd40980fd8a6b7f3f9c24604dd318a37bc5616ddd4',
+];
 
 function readArchive(ownerId: string): any {
   return JSON.parse(readFileSync(`data/authoring/servants/${ownerId}.json`, 'utf8'));
@@ -77,6 +87,11 @@ describe('P3-FM03 exact ten-member Saber Magic Resistance authoring migration', 
         },
         canonicalSkillZoneManaRequirement: { value: 8, authority: 'final_rules_9.4' },
       });
+      const expectedClauses = ownerId === 'servant.saber' ? SABER_CLAUSES :
+        (ownerId === 'servant.lakshmibai' || ownerId === 'servant.saitou') ? MAGIC_CLAUSES :
+          [...SHARED_CLAUSES, MAGIC_RESISTANCE_CLAUSE];
+      expect(card.phase3Evidence.f1ClauseSources.map((source: any) => source.sha256)).toEqual(expectedClauses);
+      expect(card.phase3Evidence.f1SourceReferences).toHaveLength(2);
       expect(card.abilities).toHaveLength(3);
       expect(card.abilities.map((ability: any) => ability.printedClause).join('').replaceAll('\r', '').replaceAll('\n', ''))
         .toBe(card.printedText.replaceAll('\r', '').replaceAll('\n', ''));
@@ -102,8 +117,7 @@ describe('P3-FM03 exact ten-member Saber Magic Resistance authoring migration', 
       expect(abilities).toHaveLength(3);
       expect(rules.isOptionalBattleResultVpTriggerSemantic(abilities[0]!)).toBe(true);
       expect(rules.isOptionalBattleResultExtraVpTriggerSemantic(abilities[1]!)).toBe(true);
-      expect(rules.isMagicResistancePowerModifierCandidate(abilities[2]!)).toBe(true);
-      expect(rules.isMagicResistancePowerModifierSemantic(abilities[2]!)).toBe(true);
+      expect(rules.isCombatMagicResistanceModifierSemantic(abilities[2]!)).toBe(true);
     }
   });
 
@@ -152,6 +166,40 @@ describe('P3-FM03 exact ten-member Saber Magic Resistance authoring migration', 
     expect(rules.calculateCardPower(state, oppForce).value).toBe(4);
     expect(rules.calculateCardPower(state, ownMagic).value).toBe(5);
     expect(rules.calculateCardPower(state, remoteMagic).value).toBe(5);
+  });
+
+  it('maps all three frozen Magic wordings to the canonical magic target', () => {
+    const partitions = [
+      ['servant.altera', '魔术'],
+      ['servant.lakshmibai', '魔法'],
+      ['servant.saber', '魔法/魔术'],
+    ] as const;
+    for (const [ownerId, wording] of partitions) {
+      const raw = structuredClone(readArchive(ownerId));
+      const cardId = raw.cards[0].id as string;
+      raw.cards.push({
+        id: `fixture.fm03.${wording}`, name: wording, cardType: 'basic_attack',
+        cardFace: { typeLabel: wording, attributes: [wording], cost: 0, basePower: 5 },
+        playTiming: { phase: 'action', window: 'controller_play_card_window' }, playRequirements: [], abilities: [],
+      });
+      const pack = rules.loadAuthoringJson(raw);
+      expect(pack.report).toEqual([]);
+      const state = createSeededGameState({ activeSeats: [1, 2] });
+      state.cards = [];
+      state.round.activePhase = 'battle';
+      state.round.prioritySeat = 1;
+      state.players[0]!.locationId = 'shinto';
+      state.players[1]!.locationId = 'shinto';
+      rules.initializeAbilityRuntime(state, pack, { seed: 20261028 });
+      addRuntimeCard(state, `${ownerId}-source`, cardId, 'p1', 'field');
+      addRuntimeCard(state, `${ownerId}-target`, `fixture.fm03.${wording}`, 'p2', 'attack_area');
+      const resistanceId = abilityIds(cardId).resistance;
+      const activation = rules.getLegalActions(state, 'p1').find((action) =>
+        action.type === 'activate_ability' && action.cardInstanceId === `${ownerId}-source` && action.abilityId === resistanceId);
+      expect(activation).toBeDefined();
+      expect(rules.dispatchAbilityCommand(state, 'p1', activation!).ok).toBe(true);
+      expect(rules.calculateCardPower(state, `${ownerId}-target`).value).toBe(0);
+    }
   });
 
   it('runs newly migrated Altera Noble Bloom as two independent typed +1 VP responses', () => {
