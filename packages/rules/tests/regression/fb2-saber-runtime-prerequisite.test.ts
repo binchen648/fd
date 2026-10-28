@@ -49,6 +49,10 @@ describe('FB2 Saber runtime prerequisite', () => {
       expect(rules.dispatchAbilityCommand(partitionState, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(true);
       expect(rules.calculateCardPower(partitionState, 'attack').value).toBe(0);
     }
+    const canonicalState = setup();
+    (canonicalState.abilityRuntime!.pack.cards['fixture.magic'] as any).cardFace.attributes = ['magic'];
+    expect(rules.dispatchAbilityCommand(canonicalState, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(true);
+    expect(rules.calculateCardPower(canonicalState, 'attack').value).toBe(0);
   });
 
   it('sets only an engaged same-battlefield opponent 魔术 attack to zero and expires safely', () => {
@@ -66,6 +70,16 @@ describe('FB2 Saber runtime prerequisite', () => {
     rules.advanceAbilityPhase(state, 'action', state.round.roundNumber + 1);
     expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
     expect(attack.id).toBe(abilityId);
+  });
+
+  it('does not modify an inactive target when its controller has another active attack', () => {
+    const state = setup();
+    state.cards.push({ instanceId: 'attack-inactive', definitionId: 'fixture.magic', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+    state.abilityRuntime!.cardState['attack-inactive'] = { active: false, faceDown: false, playedRound: state.round.roundNumber };
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(true);
+    expect(rules.calculateCardPower(state, 'attack').value).toBe(0);
+    expect(rules.calculateCardPower(state, 'attack-inactive').value).toBe(7);
+    expect(rules.calculateCardPower(state, 'attack-inactive').lines.some((line) => line.value === 0)).toBe(false);
   });
 
   it('rejects inactive, defeated, nonparticipant, and replayed engagement without mutating provenance', () => {

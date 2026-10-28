@@ -344,22 +344,23 @@ function liveOngoing(s: GameState): OngoingEffect[] {
     (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
 }
 function canonicalMagicAttribute(attribute: unknown): 'magic' | undefined {
-  return ['魔术', '魔法', '魔法/魔术'].includes(str(attribute)) ? 'magic' : undefined;
+  return ['magic', '魔术', '魔法', '魔法/魔术'].includes(str(attribute)) ? 'magic' : undefined;
+}
+function eligibleCombatCard(s: GameState, card: CardInstance): boolean {
+  if (!['field', 'attack_area'].includes(card.zone)) return false;
+  const cardState = runtime(s).cardState[card.instanceId];
+  if (cardState?.active !== true || cardState.faceDown) return false;
+  const cardDefinition = definition(s, card.instanceId);
+  if (!cardDefinition) return false;
+  const attrs = cardDefinition.cardFace.attributes;
+  const formula = typeof cardDefinition.cardFace.basePower === 'object' && cardDefinition.cardFace.basePower !== null;
+  return ['servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(cardDefinition.cardType) ||
+    ((Number(cardDefinition.cardFace.basePower ?? 0) > 0 || formula) && Array.isArray(attrs) && attrs.length > 0);
 }
 function eligibleCombatParticipant(s: GameState, playerId: string): boolean {
   const participant = s.players.find((candidate) => candidate.id === playerId);
   if (!participant || participant.status !== 'active' || !isBattlefield(s, participant.locationId)) return false;
-  return s.cards.some((candidate) => {
-    if (candidate.controllerPlayerId !== playerId || !['field', 'attack_area'].includes(candidate.zone)) return false;
-    const cardState = runtime(s).cardState[candidate.instanceId];
-    if (cardState?.active !== true || cardState.faceDown) return false;
-    const cardDefinition = definition(s, candidate.instanceId);
-    if (!cardDefinition) return false;
-    const attrs = cardDefinition.cardFace.attributes;
-    const formula = typeof cardDefinition.cardFace.basePower === 'object' && cardDefinition.cardFace.basePower !== null;
-    return ['servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(cardDefinition.cardType) ||
-      ((Number(cardDefinition.cardFace.basePower ?? 0) > 0 || formula) && Array.isArray(attrs) && attrs.length > 0);
-  });
+  return s.cards.some((candidate) => candidate.controllerPlayerId === playerId && eligibleCombatCard(s, candidate));
 }
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);
@@ -397,6 +398,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
+    if (scope.object === 'attack_card' && !eligibleCombatCard(s, source)) continue;
     const ctx = context(s, modifier.sourceCardId, '');
     if (!nodes(scope.constraints).every(c => {
       const attribute = canonicalMagicAttribute(c.attribute);
@@ -2094,7 +2096,7 @@ export function isCombatMagicResistanceModifierSemantic(a: AuthoringAbility): bo
     str(scope.controller) !== 'engaged_opponents_same_battlefield' || str(scope.object) !== 'attack_card') return false;
   const constraints = nodes(scope.constraints);
   if (constraints.length !== 1 || Object.keys(constraints[0]!).some((key) => !['type', 'attribute'].includes(key)) ||
-    str(constraints[0]!.type) !== 'has_attribute' || canonicalMagicAttribute(constraints[0]!.attribute) !== 'magic') return false;
+    str(constraints[0]!.type) !== 'has_attribute' || !['魔术', '魔法', '魔法/魔术'].includes(str(constraints[0]!.attribute))) return false;
   const lifecycle = node(modifier.lifecycle);
   return Object.keys(lifecycle).length === 1 && lifecycle.duration === 'this_round';
 }
