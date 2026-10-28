@@ -268,7 +268,7 @@
         "referenceStaticMetadata": {
           "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
           "legacySkillId": "s3",
-          "cost": null,
+          "cost": 0,
           "basePower": null,
           "legacyRequirement": null,
           "typeLabel": "行动阶段"
