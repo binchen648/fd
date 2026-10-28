@@ -193,8 +193,14 @@ describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set
     const basic = add(state, BASIC, 'p1', 'hand');
     rules.playAbilityCardBatch(state, 'p1', [{ cardInstanceId: basic }, { cardInstanceId: s3.instanceId, declaredAttribute: '力量' }]);
     expect(state.abilityRuntime!.cardState[s3.instanceId]!.declaredAttributeRevealed).toBe(false);
+    const secretEvent = state.abilityRuntime!.events.find((event) => event.type === 'card_attribute_declared_secret');
+    expect(secretEvent).toMatchObject({ playerId: 'p1', sourceCardId: s3.instanceId, visibility: 'p1' });
+    expect(secretEvent).not.toHaveProperty('attribute');
     expect(rules.projectAbilityState(state, 'p1').cards.find((card) => card.instanceId === s3.instanceId)?.declaredAttribute).toBe('力量');
     expect(rules.projectAbilityState(state, 'p2').cards.find((card) => card.instanceId === s3.instanceId)?.declaredAttribute).toBeUndefined();
+    (state as any).modeState = { stagedAttacks: { p1: [{ type: 'play_card', cardInstanceId: basic, declaredAttribute: '力量' }] } };
+    expect(rules.projectAbilityState(state, 'p1').stagedAttacks?.[0]?.cards[0]).toHaveProperty('declaredAttribute', '力量');
+    expect(rules.projectAbilityState(state, 'p2').stagedAttacks?.[0]?.cards[0]).not.toHaveProperty('declaredAttribute');
     state.round.activePhase = 'battle'; state.round.prioritySeat = state.players[0]!.seat;
     rules.processAbilityEvent(state, { id: 'fixture-combat-window', type: 'controller_combat_action_window', playerId: 'p1' });
     expect(state.abilityRuntime!.cardState[s3.instanceId]!.declaredAttributeRevealed).toBe(true);
@@ -227,6 +233,17 @@ describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(state)).toBe(false);
   });
 
+  it('keeps declaration choices out of MatchSession shared telemetry and legacy log projection', () => {
+    const session = rules.createMatchSession({ seed: 20261005, humanPlayerId: 'p1' });
+    session.dispatchPlayerAction('p1', { type: 'play_card', cardInstanceId: 'missing-card', declaredAttribute: 'SECRET_DECLARATION' } as any);
+    expect(JSON.stringify(session.getClientProjection('p2').logs)).not.toContain('SECRET_DECLARATION');
+    session.logs.push({ id: 'legacy-secret', round: 1, phase: 'preparation', type: 'legacy', message: 'legacy', payload: {
+      command: { declaredAttribute: 'SECRET_DECLARATION' },
+      events: [{ type: 'card_attribute_declared_secret', attribute: 'SECRET_DECLARATION' }],
+    } });
+    expect(JSON.stringify(session.getClientProjection('p2').logs)).not.toContain('SECRET_DECLARATION');
+  });
+
   it('keeps production capability routing identity- and text-free', () => {
     for (const path of ['packages/rules/src/ability/definition-declaration-deck-capability.ts','packages/rules/src/ability/interpreter.ts','packages/rules/src/ability/loader.ts']) {
       const text = readFileSync(path, 'utf8').toLowerCase();
@@ -235,4 +252,3 @@ describe('P3 Caules Yggdmillennia owner-readiness complete identity-free gap set
     }
   });
 });
-

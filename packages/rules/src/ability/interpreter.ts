@@ -2846,7 +2846,11 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
   const r = runtime(s); const ongoing = liveOngoing(s); const exists = s.players.some(p => p.id === viewerId);
   const staged = Object.entries(stagedAttacks(s))
     .filter(([playerId]) => playerId === viewerId || s.cards.some((card) => card.controllerPlayerId === playerId && card.zone === 'attack_area' && card.visibility.scope === 'public'))
-    .map(([playerId, cards]) => ({ playerId, cards: cards.map((entry) => ({ ...entry })) }));
+    .map(([playerId, cards]) => ({ playerId, cards: cards.map((entry) => {
+      if (playerId === viewerId) return { ...entry };
+      const { declaredAttribute: _privateDeclaration, ...publicEntry } = entry;
+      return publicEntry;
+    }) }));
   const view: AbilityPlayerView = { revision: r.revision, phase: s.round.activePhase, round: s.round.roundNumber,
     legalActions: exists ? getLegalActions(s, viewerId) : [],
     players: s.players.map(p => {

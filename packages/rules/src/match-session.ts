@@ -82,6 +82,25 @@ export interface MatchSessionLogEntry {
   payload?: Record<string, unknown>;
 }
 
+/** Shared telemetry must not turn an owner's declaration choice into a public side channel. */
+function redactSharedDeclarationPayload(value: unknown, secretEvent = false): unknown {
+  if (Array.isArray(value)) return value.map((entry) => redactSharedDeclarationPayload(entry, secretEvent));
+  if (!value || typeof value !== 'object') return value;
+  const source = value as Record<string, unknown>;
+  const nestedSecretEvent = secretEvent || source.type === 'card_attribute_declared_secret';
+  const result: Record<string, unknown> = {};
+  for (const [key, child] of Object.entries(source)) {
+    if (key === 'declaredAttribute') continue;
+    if (nestedSecretEvent && key === 'attribute') continue;
+    result[key] = redactSharedDeclarationPayload(child, nestedSecretEvent);
+  }
+  return result;
+}
+
+function redactSharedRecord<T>(value: T): T {
+  return redactSharedDeclarationPayload(value) as T;
+}
+
 export interface MatchDirectiveView {
   id: string;
   controllerId?: string;
@@ -838,10 +857,10 @@ export class MatchSession {
       priorityPlayerId: this.priorityPlayer()?.id ?? this.humanPlayerId,
       view,
       interactionWindows: projectInteractionWindows(this.state, playerId),
-      directives: this.directiveViews(),
+      directives: redactSharedRecord(this.directiveViews()),
       zones: this.projectZones(playerId),
-      logs: this.logs.slice(-80),
-      replay: this.replay.slice(-40),
+      logs: redactSharedRecord(this.logs.slice(-80)),
+      replay: redactSharedRecord(this.replay.slice(-40)),
       battleBreakdowns: this.battleHistory,
       finalRanking: this.finalRanking(),
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
@@ -1527,7 +1546,7 @@ export class MatchSession {
       phase: state?.round.activePhase ?? 'action',
       type,
       message,
-      ...(payload ? { payload } : {}),
+      ...(payload ? { payload: redactSharedRecord(payload) } : {}),
     });
   }
 
