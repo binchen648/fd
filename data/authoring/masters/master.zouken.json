@@ -256,7 +256,12 @@
           {
             "document": "src/content/generated/legacy-content.json",
             "locator": "masters[14].skills[2].text#line=1",
-            "sha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17e3"
+            "sha256": "f94b2f9c32f7e86e65aa93611e9fcd140aaed7aae300388a85b1e86ce3f79ede"
+          },
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[14].skills[2].text#line=2",
+            "sha256": "eebcb82e2cc75d9f64efcdee761235dbfdf49182c5a36d1a1b7dc1eb850afe10"
           }
         ],
         "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17e3",

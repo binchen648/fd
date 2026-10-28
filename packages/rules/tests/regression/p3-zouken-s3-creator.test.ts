@@ -68,6 +68,34 @@ describe('P3 Zouken s3 creator', () => {
     expect(state.abilityRuntime!.events).toHaveLength(before.abilityRuntime!.events.length);
   });
 
+  it('replaces the real generated command-spell gain-mana sequence atomically', () => {
+    const state = setup();
+    const commandSource = 'p1-master.zouken.command-spell';
+    state.players[0]!.mana = 6;
+    state.cards.push({
+      instanceId: commandSource,
+      definitionId: 'master.zouken.command-spell',
+      ownerPlayerId: 'p1',
+      controllerPlayerId: 'p1',
+      zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' },
+    });
+    state.abilityRuntime!.cardState[commandSource] = { active: true, faceDown: false, playedRound: 1 };
+    state.round.activePhase = 'action';
+    state.round.prioritySeat = 1;
+    rules.executeAbility(state, {
+      controllerId: 'p1', sourceCardId: commandSource, abilityId: 'command-spell.gain-mana', variables: {}, selections: {},
+    });
+    expect(state.players[0]!.mana).toBe(6);
+    expect((state.players[0] as unknown as { commandSpells: number }).commandSpells).toBe(3);
+    expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([
+      expect.objectContaining({ type: 'zouken_s3_command_seal_replaced', delta: -4 }),
+    ]));
+    expect(state.abilityRuntime!.events).not.toEqual(expect.arrayContaining([
+      expect.objectContaining({ type: 'command_seals_adjusted' }),
+    ]));
+  });
+
   it('pays exactly 2X, records source-bound power, and rejects duplicate or forged variables', () => {
     const state = setup();
     state.round.activePhase = 'action';
@@ -112,6 +140,38 @@ describe('P3 Zouken s3 creator', () => {
     expect(state.abilityRuntime!.events).toEqual(events);
   });
 
+  it('settles through the real MatchSession scoring barrier after battleResults are cleared', () => {
+    const session = rules.createMatchSession({ seed: 20261029, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const state = session.state;
+    state.players.forEach((entry) => {
+      entry.locationId = entry.id === 'p1' || entry.id === 'p2' ? 'miyama_town' : 'recon';
+      entry.vp = 0;
+      entry.militaryResult = 0;
+    });
+    state.players[0]!.masterCardId = 'master.zouken';
+    state.players[0]!.mana = 8;
+    state.cards = [{
+      instanceId: SOURCE,
+      definitionId: S3,
+      ownerPlayerId: 'p1',
+      controllerPlayerId: 'p1',
+      zone: 'field',
+      visibility: { scope: 'public' },
+    }];
+    state.abilityRuntime!.cardState[SOURCE] = { active: true, faceDown: false, playedRound: 1 };
+    state.round.activePhase = 'action';
+    state.round.prioritySeat = 1;
+    rules.executeAbility(state, context(ACTION, { X: 1 }));
+    state.round.activePhase = 'battle';
+    (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+    expect(state.battleResults).toEqual([]);
+    expect(state.log.some((entry) => entry.type === 'battle_scored')).toBe(true);
+    expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([
+      expect.objectContaining({ type: 'zouken_s3_victory_points_settled', delta: 1 }),
+    ]));
+    expect(state.ruleOverrides!.zoukenFounderVictorySettledBySource?.[SOURCE]).toBe(1);
+  });
+
   it('fails closed for inactive/foreign sources and forged restore ledgers', () => {
     const state = setup();
     state.abilityRuntime!.cardState[SOURCE]!.active = false;
@@ -128,5 +188,8 @@ describe('P3 Zouken s3 creator', () => {
     const missing = structuredClone(valid);
     delete missing.ruleOverrides!.zoukenFounderPowerByPlayer!.p1!.abilityId;
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(missing)).toBe(false);
+    const isolatedVictory = setup();
+    isolatedVictory.ruleOverrides = { zoukenFounderVictorySettledBySource: { [SOURCE]: 1 } };
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(isolatedVictory)).toBe(false);
   });
 });

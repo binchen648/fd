@@ -1589,20 +1589,38 @@ function executeZoukenS3Action(s: GameState, ctx: EffectContext, a: AuthoringAbi
 
 function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
   const event = ctx.event;
+  const winners = event?.battleResult?.winners;
+  const loserIds = event?.battleResult?.loserIds;
+  const participantIds = event?.battleParticipantIds;
+  const participantSet = participantIds ? new Set(participantIds) : undefined;
+  const outcomeIds = winners && loserIds ? [...winners, ...loserIds] : [];
+  const outcomeSet = new Set(outcomeIds);
+  const participantsAreCanonical = Array.isArray(participantIds) && participantSet!.size === participantIds.length &&
+    Array.isArray(winners) && new Set(winners).size === winners.length &&
+    Array.isArray(loserIds) && new Set(loserIds).size === loserIds.length &&
+    winners.every((id) => participantSet!.has(id)) && loserIds.every((id) => participantSet!.has(id)) &&
+    winners.every((id) => !loserIds.includes(id)) && participantSet!.size === outcomeSet.size &&
+    [...participantSet!].every((id) => outcomeSet.has(id));
   if (!event || event.type !== 'after_controller_wins_battle' || event.playerId !== ctx.controllerId ||
       !event.battlePhaseResolutionId || !event.battleId || !event.resultId || !event.battlefieldId ||
       event.resultId !== `${event.battleId}:result` || event.battlePhaseResolutionId !== `battle-phase:${s.round.roundNumber}` ||
-      !event.battleResult?.winners.includes(ctx.controllerId) ||
+      !participantsAreCanonical || !participantSet!.has(ctx.controllerId) || !winners!.includes(ctx.controllerId) ||
       !event.battleId.startsWith(`${event.battlePhaseResolutionId}:battle:${event.battlefieldId}:`) ||
       !isZoukenS3Source(s, ctx.sourceCardId) || !hasActiveZoukenFounder(s, ctx.controllerId)) {
     reject('invalid_event', 'Zouken founder victory conversion requires its canonical win event');
   }
   const ordinal = Number(event.battleId.slice(`${event.battlePhaseResolutionId}:battle:${event.battlefieldId}:`.length));
-  const canonicalBattle = Number.isSafeInteger(ordinal) && ordinal > 0 ? s.battleResults[ordinal - 1] : undefined;
-  if (!canonicalBattle || canonicalBattle.battlefieldId !== event.battlefieldId ||
-      canonicalBattle.winnerPlayerIds.length !== event.battleResult!.winners.length ||
-      canonicalBattle.winnerPlayerIds.some((id) => !event.battleResult!.winners.includes(id))) {
+  if (!Number.isSafeInteger(ordinal) || ordinal < 1) {
     reject('invalid_event', 'Zouken founder victory conversion requires a canonical battle result');
+  }
+  const scoringReceipt = [...s.log].reverse().find((entry) => entry.type === 'battle_scored' &&
+    entry.payload?.battlefieldId === event.battlefieldId);
+  if (scoringReceipt) {
+    const scoredWinners = scoringReceipt.payload?.winnerPlayerIds;
+    if (!Array.isArray(scoredWinners) || scoredWinners.length !== winners!.length ||
+        scoredWinners.some((id) => !winners!.includes(String(id)))) {
+      reject('invalid_event', 'Zouken founder victory conversion requires the authoritative scoring winner receipt');
+    }
   }
   const entry = s.ruleOverrides?.zoukenFounderPowerByPlayer?.[ctx.controllerId];
   if (!entry || entry.sourceCardId !== ctx.sourceCardId || entry.abilityId !== ZOUKEN_S3_ACTION_ID ||
@@ -2175,6 +2193,17 @@ function applyZoukenFounderSealReplacement(s: GameState, ctx: EffectContext, amo
   return true;
 }
 
+function isZoukenFounderGainManaCommandSpell(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): boolean {
+  if (!hasActiveZoukenFounder(s, ctx.controllerId) || definition(s, ctx.sourceCardId)?.cardType !== 'command_spell' ||
+      a.id !== 'command-spell.gain-mana' || effects.length !== 2) return false;
+  const [gain, spend] = effects;
+  return gain?.type === 'adjust_mana' && gain.amount === 4 &&
+    (gain.player === undefined || gain.player === 'controller') &&
+    spend?.type === 'adjust_command_seals' && spend.amount === -1 &&
+    (spend.player === undefined || spend.player === 'controller') && spend.target === undefined &&
+    spend.directive === 'spend_command_spell';
+}
+
 function isBattleLossStateTransformCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_controller_loses_battle' &&
@@ -2709,6 +2738,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
       if (event.sourceCardId === ctx.sourceCardId && event.abilityId === ctx.abilityId &&
         (event.type === 'victory_points_adjusted' || event.type === 'effect_resolved')) event.unpreventable = true;
     }
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
+  if (isZoukenFounderGainManaCommandSpell(s, ctx, a, effects)) {
+    resolveEffect(s, ctx, effects[0]!);
+    resolveEffect(s, ctx, effects[1]!);
     installOngoing(s, ctx, a);
     cleanupOngoing(s);
     return;
@@ -3512,6 +3548,10 @@ function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
     const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
     if (!source || source.definitionId !== ZOUKEN_S3_SOURCE_ID || !Number.isSafeInteger(round) || round < 1 || round > s.round.roundNumber ||
         !isZoukenS3Source(s, source.instanceId)) return false;
+    const powerEntry = power[source.controllerPlayerId];
+    if (!powerEntry || powerEntry.sourceCardId !== sourceId || powerEntry.round !== round ||
+        !runtime(s).events.some((event) => event.type === 'zouken_s3_power_conversion' &&
+          event.sourceCardId === sourceId && event.playerId === source.controllerPlayerId)) return false;
   }
   return true;
 }
