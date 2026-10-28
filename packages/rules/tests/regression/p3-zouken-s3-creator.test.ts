@@ -267,6 +267,9 @@ describe('P3 Zouken s3 creator', () => {
     const isolatedVictory = setup();
     isolatedVictory.ruleOverrides = { zoukenFounderVictorySettledBySource: { [SOURCE]: 1 } };
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(isolatedVictory)).toBe(false);
+    const isolatedAfterAction = structuredClone(valid);
+    isolatedAfterAction.ruleOverrides!.zoukenFounderVictorySettledBySource = { [SOURCE]: 1 };
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(isolatedAfterAction)).toBe(false);
 
     const forgedReceipt = setup();
     forgedReceipt.round.activePhase = 'action';
