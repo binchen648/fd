@@ -348,9 +348,18 @@ function canonicalMagicAttribute(attribute: unknown): 'magic' | undefined {
 }
 function eligibleCombatParticipant(s: GameState, playerId: string): boolean {
   const participant = s.players.find((candidate) => candidate.id === playerId);
-  if (!participant || participant.status !== 'active' || participant.statusEffects?.includes('defeated') || !isBattlefield(s, participant.locationId)) return false;
-  return s.cards.some((candidate) => candidate.controllerPlayerId === playerId && candidate.zone === 'attack_area' &&
-    candidate.visibility.scope === 'public' && ['servant_attack', 'basic_attack'].includes(definition(s, candidate.instanceId)?.cardType ?? ''));
+  if (!participant || participant.status !== 'active' || !isBattlefield(s, participant.locationId)) return false;
+  return s.cards.some((candidate) => {
+    if (candidate.controllerPlayerId !== playerId || !['field', 'attack_area'].includes(candidate.zone)) return false;
+    const cardState = runtime(s).cardState[candidate.instanceId];
+    if (cardState?.active !== true || cardState.faceDown) return false;
+    const cardDefinition = definition(s, candidate.instanceId);
+    if (!cardDefinition) return false;
+    const attrs = cardDefinition.cardFace.attributes;
+    const formula = typeof cardDefinition.cardFace.basePower === 'object' && cardDefinition.cardFace.basePower !== null;
+    return ['servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(cardDefinition.cardType) ||
+      ((Number(cardDefinition.cardFace.basePower ?? 0) > 0 || formula) && Array.isArray(attrs) && attrs.length > 0);
+  });
 }
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);

@@ -21,6 +21,8 @@ function setup() {
   state.abilityRuntime!.cardState.source = { active: true, faceDown: false, playedRound: state.round.roundNumber };
   state.cards.push({ instanceId: 'own-attack', definitionId: 'fixture.magic', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
   state.cards.push({ instanceId: 'attack', definitionId: 'fixture.magic', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
+  state.abilityRuntime!.cardState['own-attack'] = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+  state.abilityRuntime!.cardState.attack = { active: true, faceDown: false, playedRound: state.round.roundNumber };
   return state;
 }
 
@@ -73,9 +75,8 @@ describe('FB2 Saber runtime prerequisite', () => {
     expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
     expect(state.abilityRuntime!.ongoingEffects).toHaveLength(1);
     state.players[1]!.status = 'active';
-    state.cards = state.cards.filter((card) => card.instanceId !== 'own-attack');
+    state.abilityRuntime!.cardState.attack!.active = false;
     expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
-    state.cards.push({ instanceId: 'own-attack-2', definitionId: 'fixture.magic', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(false);
     state.abilityRuntime!.cardState.source!.active = false;
     expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
@@ -88,6 +89,16 @@ describe('FB2 Saber runtime prerequisite', () => {
     expect(rules.getLegalActions(state, 'p1').some((a) => a.type === 'activate_ability' && a.abilityId === abilityId)).toBe(false);
     expect(() => rules.executeAbility(state, { controllerId: 'p1', sourceCardId: 'source', abilityId, variables: {}, selections: {} })).toThrow(/Unsupported combat Magic Resistance/);
     const fresh = setup(); fresh.abilityRuntime!.cardState.source!.active = false;
+    expect(fresh.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((a) => a.id === abilityId)).toBeDefined();
+    expect(rules.getLegalActions(fresh, 'p1').some((a) => a.type === 'activate_ability' && a.abilityId === abilityId)).toBe(false);
+    for (const mutate of [
+      (a: any) => { a.ruleModifiers[0].scope.controller = 'controller'; },
+      (a: any) => { a.ruleModifiers[0].lifecycle.duration = 'while_active'; },
+    ]) {
+      const malformed = setup(); const candidate = malformed.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((a) => a.id === abilityId)!;
+      mutate(candidate);
+      expect(rules.isCombatMagicResistanceModifierSemantic(candidate)).toBe(false);
+    }
     expect(fresh.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.some((a) => a.id.endsWith('noble-bloom'))).toBe(true);
     expect(fresh.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.some((a) => a.id.endsWith('noble-bloom-extra-vp'))).toBe(true);
   });
