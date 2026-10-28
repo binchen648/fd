@@ -1616,15 +1616,21 @@ function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
   const scoringReceipt = [...s.log].reverse().find((entry) => entry.type === 'battle_scored_canonical' &&
     entry.payload?.resultId === event.resultId);
   const receiptPayload = scoringReceipt?.payload;
-  const receiptParticipants = receiptPayload?.battleParticipantIds;
-  const receiptWinners = receiptPayload?.winnerPlayerIds;
-  const receiptLosers = receiptPayload?.loserIds;
+  const runtimeReceipt = runtime(s).canonicalBattleScoringReceipts?.[event.resultId];
+  const receiptParticipants = runtimeReceipt?.battleParticipantIds;
+  const receiptWinners = runtimeReceipt?.winnerPlayerIds;
+  const receiptLosers = runtimeReceipt?.loserIds;
   const sameIds = (left: unknown, right: readonly string[]) => Array.isArray(left) && left.length === right.length &&
     new Set(left.map(String)).size === right.length && right.every((id) => left.includes(id));
-  if (!scoringReceipt || receiptPayload?.battlePhaseResolutionId !== event.battlePhaseResolutionId ||
+  if (!scoringReceipt || !runtimeReceipt || runtimeReceipt.battlePhaseResolutionId !== event.battlePhaseResolutionId ||
+      runtimeReceipt.battleId !== event.battleId || runtimeReceipt.resultId !== event.resultId ||
+      runtimeReceipt.battlefieldId !== event.battlefieldId || !Number.isSafeInteger(runtimeReceipt.battleOrdinal) ||
+      runtimeReceipt.battleOrdinal < 1 || receiptPayload?.battlePhaseResolutionId !== event.battlePhaseResolutionId ||
       receiptPayload.battleId !== event.battleId || receiptPayload.resultId !== event.resultId ||
-      receiptPayload.battlefieldId !== event.battlefieldId || !sameIds(receiptParticipants, participantIds!) ||
-      !sameIds(receiptWinners, winners!) || !sameIds(receiptLosers, loserIds!)) {
+      receiptPayload.battlefieldId !== event.battlefieldId || receiptPayload.battleOrdinal !== runtimeReceipt.battleOrdinal ||
+      !sameIds(receiptParticipants, participantIds!) || !sameIds(receiptWinners, winners!) ||
+      !sameIds(receiptLosers, loserIds!) || !sameIds(receiptPayload.battleParticipantIds, receiptParticipants!) ||
+      !sameIds(receiptPayload.winnerPlayerIds, receiptWinners!) || !sameIds(receiptPayload.loserIds, receiptLosers!)) {
     reject('invalid_event', 'Zouken founder victory conversion requires the authoritative scoring receipt');
   }
   const entry = s.ruleOverrides?.zoukenFounderPowerByPlayer?.[ctx.controllerId];
@@ -3544,6 +3550,34 @@ function manaCapRuntimeProvenanceValidForRestore(s: GameState): boolean {
   return true;
 }
 
+function canonicalBattleScoringReceiptsValidForRestore(s: GameState): boolean {
+  const receipts = runtime(s).canonicalBattleScoringReceipts;
+  const canonicalLogs = s.log.filter((entry) => entry.type === 'battle_scored_canonical');
+  if (receipts === undefined) return canonicalLogs.length === 0;
+  if (!receipts || typeof receipts !== 'object' || Array.isArray(receipts)) return false;
+  const pendingIds = new Set((runtime(s).pendingPostBattleEvents ?? []).map((event) => event.id));
+  const processedIds = new Set(runtime(s).processedEvents);
+  const sameIds = (left: unknown, right: readonly string[]) => Array.isArray(left) && left.length === right.length &&
+    new Set(left.map(String)).size === right.length && right.every((id) => left.includes(id));
+  for (const [resultId, receipt] of Object.entries(receipts)) {
+    if (!receipt || typeof receipt !== 'object' || receipt.resultId !== resultId ||
+        typeof receipt.battlePhaseResolutionId !== 'string' || typeof receipt.battleId !== 'string' ||
+        typeof receipt.battlefieldId !== 'string' || !Number.isSafeInteger(receipt.battleOrdinal) || receipt.battleOrdinal < 1 ||
+        !receipt.battlePhaseResolutionId.startsWith('battle-phase:') ||
+        Number(receipt.battlePhaseResolutionId.slice('battle-phase:'.length)) > s.round.roundNumber ||
+        receipt.battleId !== `${receipt.battlePhaseResolutionId}:battle:${receipt.battlefieldId}:${receipt.battleOrdinal}` ||
+        receipt.resultId !== `${receipt.battleId}:result` || receipt.winnerPlayerIds.some((id) => receipt.loserIds.includes(id)) ||
+        !sameIds(receipt.battleParticipantIds, [...new Set([...receipt.winnerPlayerIds, ...receipt.loserIds])]) ||
+        !sameIds(receipt.winnerPlayerIds, receipt.winnerPlayerIds) || !sameIds(receipt.loserIds, receipt.loserIds) ||
+        (!pendingIds.has(resultId) && !processedIds.has(resultId))) return false;
+    const log = s.log.find((entry) => entry.type === 'battle_scored_canonical' && entry.payload?.resultId === resultId);
+    if (!log || log.payload?.battleId !== receipt.battleId || log.payload?.resultId !== receipt.resultId ||
+        log.payload?.battlefieldId !== receipt.battlefieldId || log.payload?.battleOrdinal !== receipt.battleOrdinal) return false;
+  }
+  if (canonicalLogs.some((log) => typeof log.payload?.resultId !== 'string' || !Object.prototype.hasOwnProperty.call(receipts, log.payload.resultId))) return false;
+  return true;
+}
+
 function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
   const overrides = s.ruleOverrides;
   if (!overrides) return true;
@@ -3575,7 +3609,7 @@ function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
 }
 
 export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
-  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s) && zoukenFounderRuntimeProvenanceValidForRestore(s); } catch { return false; }
+  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s) && canonicalBattleScoringReceiptsValidForRestore(s) && zoukenFounderRuntimeProvenanceValidForRestore(s); } catch { return false; }
 }
 /** The transport should expose only dispatch/view; phase and event hooks are trusted server operations. */
 export function createAbilitySession(initialState: GameState) {

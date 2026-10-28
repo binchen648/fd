@@ -17,6 +17,7 @@ import type {
   ExecutableCardDefinition,
   ExecutableCharacterDefinition,
   LegalAction,
+  CanonicalBattleScoringReceipt,
 } from './ability/types';
 import type { GameState, PhaseName } from './schema/game';
 import type { CompiledPlaytestContentLibrary } from '@fd/content';
@@ -1308,6 +1309,18 @@ export class MatchSession {
         battlefieldId: battle.battlefieldId,
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
       };
+      const scoringReceipt: CanonicalBattleScoringReceipt = {
+        battlePhaseResolutionId,
+        battleId,
+        resultId,
+        battlefieldId: battle.battlefieldId,
+        battleParticipantIds: [...participants],
+        winnerPlayerIds: [...battle.winnerPlayerIds],
+        loserIds: [...loserIds],
+        battleOrdinal,
+      };
+      runtime.canonicalBattleScoringReceipts ??= {};
+      runtime.canonicalBattleScoringReceipts[resultId] = structuredClone(scoringReceipt);
       if (!this.state.log.some((entry) => entry.type === 'battle_scored_canonical' && entry.payload?.resultId === resultId)) {
         this.state.log.push({
           type: 'battle_scored_canonical',
@@ -1320,6 +1333,7 @@ export class MatchSession {
             battleParticipantIds: [...participants],
             winnerPlayerIds: [...battle.winnerPlayerIds],
             loserIds: [...loserIds],
+            battleOrdinal,
           },
         });
       }

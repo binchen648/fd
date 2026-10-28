@@ -264,7 +264,7 @@
             "sha256": "eebcb82e2cc75d9f64efcdee761235dbfdf49182c5a36d1a1b7dc1eb850afe10"
           }
         ],
-        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17e3",
+        "sourceTextSha256": "cea95dc5010d588158e85f29d23cbbfa92f4a3211825312a12d0f641b7648b44",
         "referenceStaticMetadata": {
           "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
           "legacySkillId": "s3",

@@ -142,18 +142,21 @@ describe('P3 Zouken s3 creator', () => {
     expect(battle.battleResults.at(-1)!.winnerPlayerIds).toContain('p1');
     expect(battle.battleResults.at(-1)!.participantBreakdowns.find((entry) => entry.playerId === 'p1')!.basePower).toBe(2);
     const battleResult = battle.battleResults.at(-1)!;
+    const canonicalReceipt = {
+      battlePhaseResolutionId: 'battle-phase:1',
+      battleId: 'battle-phase:1:battle:miyama_town:1',
+      resultId: 'battle-phase:1:battle:miyama_town:1:result',
+      battlefieldId: 'miyama_town',
+      battleParticipantIds: battleResult.participantBreakdowns.map((entry) => entry.playerId),
+      winnerPlayerIds: [...battleResult.winnerPlayerIds],
+      loserIds: battleResult.participantBreakdowns.map((entry) => entry.playerId).filter((id) => !battleResult.winnerPlayerIds.includes(id)),
+      battleOrdinal: 1,
+    };
+    state.abilityRuntime!.canonicalBattleScoringReceipts = { [canonicalReceipt.resultId]: canonicalReceipt };
     state.log.push({
       type: 'battle_scored_canonical',
       message: 'battle-phase:1:battle:miyama_town:1:result',
-      payload: {
-        battlePhaseResolutionId: 'battle-phase:1',
-        battleId: 'battle-phase:1:battle:miyama_town:1',
-        resultId: 'battle-phase:1:battle:miyama_town:1:result',
-        battlefieldId: 'miyama_town',
-        battleParticipantIds: battleResult.participantBreakdowns.map((entry) => entry.playerId),
-        winnerPlayerIds: [...battleResult.winnerPlayerIds],
-        loserIds: battleResult.participantBreakdowns.map((entry) => entry.playerId).filter((id) => !battleResult.winnerPlayerIds.includes(id)),
-      },
+      payload: canonicalReceipt,
     });
     rules.processAbilityEvent(state, {
       id: 's3-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1',
@@ -223,5 +226,23 @@ describe('P3 Zouken s3 creator', () => {
     const isolatedVictory = setup();
     isolatedVictory.ruleOverrides = { zoukenFounderVictorySettledBySource: { [SOURCE]: 1 } };
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(isolatedVictory)).toBe(false);
+
+    const forgedReceipt = setup();
+    forgedReceipt.round.activePhase = 'action';
+    forgedReceipt.round.prioritySeat = 1;
+    rules.executeAbility(forgedReceipt, context(ACTION, { X: 1 }));
+    const forgedReceiptPayload = {
+      battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-phase:1:battle:miyama_town:1',
+      resultId: 'battle-phase:1:battle:miyama_town:1:result', battlefieldId: 'miyama_town',
+      battleParticipantIds: ['p1', 'p2'], winnerPlayerIds: ['p1'], loserIds: ['p2'], battleOrdinal: 1,
+    };
+    forgedReceipt.log.push({ type: 'battle_scored_canonical', message: forgedReceiptPayload.resultId, payload: forgedReceiptPayload });
+    expect(() => rules.processAbilityEvent(forgedReceipt, {
+      id: 'forged-result', type: 'after_battle_result_determined', battlePhaseResolutionId: 'battle-phase:1',
+      battleId: forgedReceiptPayload.battleId, resultId: forgedReceiptPayload.resultId, battlefieldId: 'miyama_town',
+      battleParticipantIds: ['p1', 'p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] },
+    })).toThrow(/authoritative scoring receipt/);
+    expect(forgedReceipt.players[0]!.vp).toBe(0);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(forgedReceipt)).toBe(false);
   });
 });

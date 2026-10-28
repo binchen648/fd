@@ -210,6 +210,16 @@ export interface CardRuntimeState {
   /** False while an accepted rewrite keeps that declaration secret until combat. */
   declaredAttributeRevealed?: boolean;
 }
+export interface CanonicalBattleScoringReceipt {
+  battlePhaseResolutionId: string;
+  battleId: string;
+  resultId: string;
+  battlefieldId: string;
+  battleParticipantIds: PlayerId[];
+  winnerPlayerIds: PlayerId[];
+  loserIds: PlayerId[];
+  battleOrdinal: number;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -221,6 +231,8 @@ export interface AbilityRuntime {
   pendingPostBattleEvents?: AbilityEvent[];
   /** Server-owned once-per-battle-phase terminal event, staged until ordinary post-battle work is settled. */
   pendingBattleTerminalEvent?: AbilityEvent;
+  /** Server-owned receipt committed by MatchSession only after authoritative scoring. */
+  canonicalBattleScoringReceipts?: Record<string, CanonicalBattleScoringReceipt>;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
   transformedReturnSilenceSourceCardIds?: string[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
