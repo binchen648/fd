@@ -19,6 +19,7 @@ function setup() {
   rules.initializeAbilityRuntime(state, pack, { seed: 42 });
   state.cards.push({ instanceId: 'source', definitionId: sourceDefinitionId, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } });
   state.abilityRuntime!.cardState.source = { active: true, faceDown: false, playedRound: state.round.roundNumber };
+  state.cards.push({ instanceId: 'own-attack', definitionId: 'fixture.magic', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
   state.cards.push({ instanceId: 'attack', definitionId: 'fixture.magic', ownerPlayerId: 'p2', controllerPlayerId: 'p2', zone: 'attack_area', visibility: { scope: 'public' } });
   return state;
 }
@@ -28,10 +29,23 @@ describe('FB2 Saber runtime prerequisite', () => {
     const state = setup();
     const ability = state.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((a) => a.id === abilityId)!;
     expect(rules.isCombatMagicResistanceModifierSemantic(ability)).toBe(true);
-    for (const attribute of ['魔法', '魔法/魔术', '力量', '特殊']) {
+    for (const attribute of ['魔术', '魔法', '魔法/魔术']) {
+      const altered = structuredClone(ability);
+      altered.ruleModifiers[0]!.scope = { ...altered.ruleModifiers[0]!.scope, constraints: [{ type: 'has_attribute', attribute }] };
+      expect(rules.isCombatMagicResistanceModifierSemantic(altered)).toBe(true);
+    }
+    for (const attribute of ['力量', '特殊', '魔术/魔法', '魔法术']) {
       const altered = structuredClone(ability);
       altered.ruleModifiers[0]!.scope = { ...altered.ruleModifiers[0]!.scope, constraints: [{ type: 'has_attribute', attribute }] };
       expect(rules.isCombatMagicResistanceModifierSemantic(altered)).toBe(false);
+    }
+    for (const attribute of ['魔术', '魔法', '魔法/魔术']) {
+      const partitionState = setup();
+      const partitionAbility = partitionState.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((a) => a.id === abilityId)!;
+      partitionAbility.ruleModifiers[0]!.scope = { ...partitionAbility.ruleModifiers[0]!.scope, constraints: [{ type: 'has_attribute', attribute }] };
+      (partitionState.abilityRuntime!.pack.cards['fixture.magic'] as any).cardFace.attributes = [attribute];
+      expect(rules.dispatchAbilityCommand(partitionState, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(true);
+      expect(rules.calculateCardPower(partitionState, 'attack').value).toBe(0);
     }
   });
 
@@ -40,7 +54,9 @@ describe('FB2 Saber runtime prerequisite', () => {
     const attack = state.abilityRuntime!.pack.cards[sourceDefinitionId]!.abilities.find((a) => a.id === abilityId)!;
     expect(rules.getLegalActions(state, 'p1')).toEqual(expect.arrayContaining([expect.objectContaining({ abilityId })]));
     expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(true);
-    expect(rules.calculateCardPower(state, 'attack').value).toBe(0);
+    const affected = rules.calculateCardPower(state, 'attack');
+    expect(affected.value).toBe(0);
+    expect(affected.lines).toEqual(expect.arrayContaining([expect.objectContaining({ value: 0 })]));
     expect(state.abilityRuntime!.ongoingEffects).toHaveLength(1);
     state.players[1]!.locationId = 'shinto';
     expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
@@ -48,6 +64,21 @@ describe('FB2 Saber runtime prerequisite', () => {
     rules.advanceAbilityPhase(state, 'action', state.round.roundNumber + 1);
     expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
     expect(attack.id).toBe(abilityId);
+  });
+
+  it('rejects inactive, defeated, nonparticipant, and replayed engagement without mutating provenance', () => {
+    const state = setup();
+    state.players[1]!.status = 'eliminated';
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(true);
+    expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
+    expect(state.abilityRuntime!.ongoingEffects).toHaveLength(1);
+    state.players[1]!.status = 'active';
+    state.cards = state.cards.filter((card) => card.instanceId !== 'own-attack');
+    expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
+    state.cards.push({ instanceId: 'own-attack-2', definitionId: 'fixture.magic', ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'attack_area', visibility: { scope: 'public' } });
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'activate_ability', cardInstanceId: 'source', abilityId }).ok).toBe(false);
+    state.abilityRuntime!.cardState.source!.active = false;
+    expect(rules.calculateCardPower(state, 'attack').value).toBe(7);
   });
 
   it('fails closed for malformed, inactive, and nonparticipant sources while preserving Noble Bloom routes', () => {

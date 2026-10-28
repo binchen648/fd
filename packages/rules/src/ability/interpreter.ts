@@ -343,12 +343,24 @@ function liveOngoing(s: GameState): OngoingEffect[] {
     sourceBoundOngoingIsLive(s, o) &&
     (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
 }
+function canonicalMagicAttribute(attribute: unknown): 'magic' | undefined {
+  return ['魔术', '魔法', '魔法/魔术'].includes(str(attribute)) ? 'magic' : undefined;
+}
+function eligibleCombatParticipant(s: GameState, playerId: string): boolean {
+  const participant = s.players.find((candidate) => candidate.id === playerId);
+  if (!participant || participant.status !== 'active' || participant.statusEffects?.includes('defeated') || !isBattlefield(s, participant.locationId)) return false;
+  return s.cards.some((candidate) => candidate.controllerPlayerId === playerId && candidate.zone === 'attack_area' &&
+    candidate.visibility.scope === 'public' && ['servant_attack', 'basic_attack'].includes(definition(s, candidate.instanceId)?.cardType ?? ''));
+}
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);
   if (!scoped || scoped === 'self' || scoped === 'controller') return modifierControllerId === source.controllerPlayerId;
   if (['engaged_opponents_same_battlefield', 'opponents_at_same_battlefield'].includes(scoped)) {
-    return modifierControllerId !== source.controllerPlayerId &&
-      sameBattlefield(s, player(s, modifierControllerId).locationId, player(s, source.controllerPlayerId).locationId);
+    const sourcePlayer = player(s, source.controllerPlayerId);
+    const targetPlayer = player(s, modifierControllerId);
+    return scoped === 'engaged_opponents_same_battlefield' && modifierControllerId !== source.controllerPlayerId &&
+      eligibleCombatParticipant(s, source.controllerPlayerId) && eligibleCombatParticipant(s, modifierControllerId) &&
+      sameBattlefield(s, targetPlayer.locationId, sourcePlayer.locationId);
   }
   return false;
 }
@@ -377,7 +389,13 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
     const ctx = context(s, modifier.sourceCardId, '');
-    if (!nodes(scope.constraints).every(c => constraint(s, ctx, source, c))) continue;
+    if (!nodes(scope.constraints).every(c => {
+      const attribute = canonicalMagicAttribute(c.attribute);
+      if (c.type === 'has_attribute' && attribute === 'magic') {
+        return getEffectiveCardAttributes(s, sourceId).some((candidate) => canonicalMagicAttribute(candidate) === 'magic');
+      }
+      return constraint(s, ctx, source, c);
+    })) continue;
     const amount = numeric(s, ctx, m.value);
     if (m.operation === 'set') result.value = amount;
     else if (m.operation === 'add') result.value += amount;
@@ -2067,7 +2085,7 @@ export function isCombatMagicResistanceModifierSemantic(a: AuthoringAbility): bo
     str(scope.controller) !== 'engaged_opponents_same_battlefield' || str(scope.object) !== 'attack_card') return false;
   const constraints = nodes(scope.constraints);
   if (constraints.length !== 1 || Object.keys(constraints[0]!).some((key) => !['type', 'attribute'].includes(key)) ||
-    str(constraints[0]!.type) !== 'has_attribute' || str(constraints[0]!.attribute) !== '魔术') return false;
+    str(constraints[0]!.type) !== 'has_attribute' || canonicalMagicAttribute(constraints[0]!.attribute) !== 'magic') return false;
   const lifecycle = node(modifier.lifecycle);
   return Object.keys(lifecycle).length === 1 && lifecycle.duration === 'this_round';
 }
