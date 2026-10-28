@@ -218,6 +218,8 @@ export interface CanonicalBattleScoringReceipt {
   battleParticipantIds: PlayerId[];
   winnerPlayerIds: PlayerId[];
   loserIds: PlayerId[];
+  scoringParticipantIds: PlayerId[];
+  scoringWinnerPlayerIds: PlayerId[];
   battleOrdinal: number;
 }
 export interface AbilityRuntime {

@@ -1317,6 +1317,8 @@ export class MatchSession {
         battleParticipantIds: [...participants],
         winnerPlayerIds: [...battle.winnerPlayerIds],
         loserIds: [...loserIds],
+        scoringParticipantIds: battle.participantBreakdowns?.map((entry) => entry.playerId) ?? [...participants],
+        scoringWinnerPlayerIds: [...battle.winnerPlayerIds],
         battleOrdinal,
       };
       runtime.canonicalBattleScoringReceipts ??= {};
@@ -1333,6 +1335,8 @@ export class MatchSession {
             battleParticipantIds: [...participants],
             winnerPlayerIds: [...battle.winnerPlayerIds],
             loserIds: [...loserIds],
+            scoringParticipantIds: [...scoringReceipt.scoringParticipantIds],
+            scoringWinnerPlayerIds: [...scoringReceipt.scoringWinnerPlayerIds],
             battleOrdinal,
           },
         });

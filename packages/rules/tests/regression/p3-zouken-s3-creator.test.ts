@@ -156,6 +156,8 @@ describe('P3 Zouken s3 creator', () => {
       battleParticipantIds: battleResult.participantBreakdowns.map((entry) => entry.playerId),
       winnerPlayerIds: [...battleResult.winnerPlayerIds],
       loserIds: battleResult.participantBreakdowns.map((entry) => entry.playerId).filter((id) => !battleResult.winnerPlayerIds.includes(id)),
+      scoringParticipantIds: battleResult.participantBreakdowns.map((entry) => entry.playerId),
+      scoringWinnerPlayerIds: [...battleResult.winnerPlayerIds],
       battleOrdinal: 1,
     };
     state.abilityRuntime!.canonicalBattleScoringReceipts = { [canonicalReceipt.resultId]: canonicalReceipt };
@@ -213,6 +215,34 @@ describe('P3 Zouken s3 creator', () => {
     expect(state.ruleOverrides!.zoukenFounderVictorySettledBySource?.[SOURCE]).toBe(1);
   });
 
+  it('restores a real three-round scoring receipt history without reusing the last breakdown', () => {
+    const session = rules.createMatchSession({ seed: 20261029, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const state = session.state;
+    state.players.forEach((entry) => {
+      entry.locationId = entry.id === 'p1' || entry.id === 'p2' ? 'miyama_town' : 'recon';
+      entry.vp = 0;
+      entry.militaryResult = 0;
+    });
+    state.players[0]!.masterCardId = 'master.zouken';
+    state.cards = [{ instanceId: SOURCE, definitionId: S3, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } }];
+    state.abilityRuntime!.cardState[SOURCE] = { active: true, faceDown: false, playedRound: 1 };
+    for (let round = 1; round <= 3; round++) {
+      state.players[0]!.mana = 8;
+      state.round.activePhase = 'action';
+      state.round.prioritySeat = 1;
+      rules.executeAbility(state, context(ACTION, { X: 1 }));
+      state.round.activePhase = 'battle';
+      (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+      if (round < 3) {
+        (session as unknown as { startRound: (nextRound: number) => void }).startRound(round + 1);
+        state.players.forEach((entry) => { entry.locationId = entry.id === 'p1' || entry.id === 'p2' ? 'miyama_town' : 'recon'; });
+      }
+    }
+    expect(Object.keys(state.abilityRuntime!.canonicalBattleScoringReceipts ?? {})).toHaveLength(3);
+    const restored = rules.restoreMatchSession(session.serializeSession());
+    expect(Object.keys(restored.state.abilityRuntime!.canonicalBattleScoringReceipts ?? {})).toHaveLength(3);
+  });
+
   it('fails closed for inactive/foreign sources and forged restore ledgers', () => {
     const state = setup();
     state.abilityRuntime!.cardState[SOURCE]!.active = false;
@@ -241,6 +271,7 @@ describe('P3 Zouken s3 creator', () => {
       battlePhaseResolutionId: 'battle-phase:1', battleId: 'battle-phase:1:battle:miyama_town:1',
       resultId: 'battle-phase:1:battle:miyama_town:1:result', battlefieldId: 'miyama_town',
       battleParticipantIds: ['p1', 'p2'], winnerPlayerIds: ['p1'], loserIds: ['p2'], battleOrdinal: 1,
+      scoringParticipantIds: ['p1', 'p2'], scoringWinnerPlayerIds: ['p1'],
     };
     forgedReceipt.abilityRuntime!.canonicalBattleScoringReceipts = { [forgedReceiptPayload.resultId]: forgedReceiptPayload };
     forgedReceipt.log.push({ type: 'battle_scored_canonical', message: forgedReceiptPayload.resultId, payload: forgedReceiptPayload });
