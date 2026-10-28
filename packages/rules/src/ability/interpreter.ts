@@ -640,6 +640,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
   if (isFixedControllerAdvanceDrawActionCandidate(a) && !isFixedControllerAdvanceDrawActionSemantic(a)) return false;
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) return false;
+  if (isCombatMagicResistanceModifierCandidate(a) && !isCombatMagicResistanceModifierSemantic(a)) return false;
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
@@ -2035,6 +2036,42 @@ export function isAnyLocationExceptWorkshopMovementSemantic(a: AuthoringAbility)
     (effect.player === undefined || effect.player === 'controller');
 }
 
+function isCombatMagicResistanceModifierCandidate(a: AuthoringAbility): boolean {
+  return a.ruleModifiers.some((modifier) => {
+    const scope = node(modifier.scope);
+    return str(modifier.type) === 'combat_power_modifier' ||
+      str(modifier.rule) === 'attack.currentPower' ||
+      str(scope.controller) === 'engaged_opponents_same_battlefield' ||
+      str(scope.object) === 'attack_card' ||
+      nodes(scope.constraints).some((constraint) => str(constraint.type) === 'has_attribute');
+  });
+}
+
+export function isCombatMagicResistanceModifierSemantic(a: AuthoringAbility): boolean {
+  if (!isCombatMagicResistanceModifierCandidate(a) || a.kind !== 'phase_action' ||
+    str(a.activation.phase) !== 'combat' || str(a.activation.opens) !== 'controller_combat_action_window' ||
+    str(a.activation.requiresSourceState) !== 'active' ||
+    Object.keys(a.activation).some((key) => !['phase', 'opens', 'requiresSourceState'].includes(key))) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.effects.length !== 0 ||
+    a.creates.length !== 0 || Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 ||
+    Object.keys(a.visibility).length !== 0 || a.ruleModifiers.length !== 1) return false;
+  if (Object.keys(a.responseWindow).some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window')) return false;
+  const modifier = a.ruleModifiers[0]!;
+  if (Object.keys(modifier).some((key) => !['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'value', 'lifecycle'].includes(key)) ||
+    str(modifier.type) !== 'combat_power_modifier' || str(modifier.operation) !== 'set' ||
+    str(modifier.rule) !== 'attack.currentPower' || modifier.value !== 0) return false;
+  const scope = node(modifier.scope);
+  if (Object.keys(scope).some((key) => !['controller', 'object', 'constraints'].includes(key)) ||
+    str(scope.controller) !== 'engaged_opponents_same_battlefield' || str(scope.object) !== 'attack_card') return false;
+  const constraints = nodes(scope.constraints);
+  if (constraints.length !== 1 || Object.keys(constraints[0]!).some((key) => !['type', 'attribute'].includes(key)) ||
+    str(constraints[0]!.type) !== 'has_attribute' || str(constraints[0]!.attribute) !== '魔术') return false;
+  const lifecycle = node(modifier.lifecycle);
+  return Object.keys(lifecycle).length === 1 && lifecycle.duration === 'this_round';
+}
+
 export function isResourceNumericDirectActionSemantic(a: AuthoringAbility): boolean {
   return a.kind === 'phase_action' &&
     str(a.activation.phase) === 'action' &&
@@ -2411,10 +2448,16 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isCombatMagicResistanceModifierSemantic(a)) {
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isPresenceConcealmentAssassinationCandidate(a)) {
     if (!isPresenceConcealmentAssassinationSemantic(a)) reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
   }
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  if (isCombatMagicResistanceModifierCandidate(a)) reject('resolution_failed', 'Unsupported combat Magic Resistance modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isGameStartFixedControllerManaSetCandidate(a)) reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
@@ -2525,6 +2568,9 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isAnyLocationExceptWorkshopMovementCandidate(a) && !isAnyLocationExceptWorkshopMovementSemantic(a)) {
     reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
+  }
+  if (isCombatMagicResistanceModifierCandidate(a) && !isCombatMagicResistanceModifierSemantic(a)) {
+    reject('resolution_failed', 'Unsupported combat Magic Resistance modifier semantic shape');
   }
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) {
     reject('resolution_failed', 'Unsupported Presence Concealment semantic shape');
