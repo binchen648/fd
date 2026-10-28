@@ -106,6 +106,12 @@ export interface OngoingEffect {
   cleanup: string; ruleModifiers: RuleModifier[]; publicZones: string[]; sourceMustRemainActive?: boolean;
   policyKey?: string; sourceDefinitionIdAtInstall?: string; sourceValidityPolicyId?: string; installedRevision?: number;
 }
+export interface ManaCapProvenance {
+  sourceCardId: string;
+  sourceDefinitionId: string;
+  abilityId: string;
+  cap: number;
+}
 export interface LifecycleTransition {
   transitionId: string; lifecycleId: string; kind: 'install' | 'source_invalidated';
   causationId: string; createdRevision: number; roundId: number;
@@ -219,7 +225,7 @@ export interface AbilityRuntime {
   transformedReturnSilenceSourceCardIds?: string[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
   events: SafeEvent[]; calculations: { controllerId: PlayerId; lines: CalculationLine[] }[];
-  preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaGainBlocked: PlayerId[];
+  preventEffects: boolean; manaCaps: Record<PlayerId, number>; manaCapProvenance?: Record<PlayerId, ManaCapProvenance>; manaGainBlocked: PlayerId[];
   hostRequests: { controllerId: PlayerId; sourceCardId: string; abilityId: string; allowedOperations: HostOperation[] }[];
   roomMode: 'standard' | 'development';
   // Usage tracking for per-game limits

@@ -39,7 +39,7 @@ const supportedTypes = new Set([
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
   'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
   // Master authoring adapters
-  'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
+  'record_master_directive', 'adjust_command_seals', 'set_mana', 'set_mana_cap', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck',
   'movement_rule_override', 'deployment_rule_override', 'play_source_card',
   'attach_card_to_player_attack', 'append_only_rule', 'transfer_vp_to_owner',

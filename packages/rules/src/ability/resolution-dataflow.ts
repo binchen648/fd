@@ -20,6 +20,7 @@ export type EffectResultType =
   | 'close_source_card'
   | 'adjust_mana'
   | 'set_mana'
+  | 'set_mana_cap'
   | 'pay_mana'
   | 'adjust_command_seals'
   | 'adjust_victory_points'
@@ -63,6 +64,14 @@ export interface AdjustManaResult {
 export interface SetManaResult {
   playerId: PlayerId;
   targetAmount: number;
+  actualDelta: number;
+  before: number;
+  after: number;
+}
+
+export interface SetManaCapResult {
+  playerId: PlayerId;
+  targetCap: number;
   actualDelta: number;
   before: number;
   after: number;
@@ -179,6 +188,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'close_source_card', CloseSourceCardResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
   | EffectResultEnvelope<'set_mana', SetManaResult>
+  | EffectResultEnvelope<'set_mana_cap', SetManaCapResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
   | EffectResultEnvelope<'adjust_victory_points', AdjustVictoryPointsResult>
@@ -252,6 +262,13 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
     before: 'number',
     after: 'number',
     targetAmount: 'number',
+    actualDelta: 'number',
+    status: 'status',
+  },
+  set_mana_cap: {
+    before: 'number',
+    after: 'number',
+    targetCap: 'number',
     actualDelta: 'number',
     status: 'status',
   },
@@ -345,6 +362,7 @@ export type ResolutionEffectNode =
   | { id: string; type: 'close_source_card'; bind?: string }
   | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'set_mana'; player: 'controller'; amount: number; bind?: string }
+  | { id: string; type: 'set_mana_cap'; player: 'controller'; amount: number; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
   | { id: string; type: 'adjust_victory_points'; player: 'controller'; amount: ValueExpression; bind?: string }
@@ -488,6 +506,11 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     type: 'set_mana',
     resultSchema: resultSchemas.set_mana,
     execute: setManaPrimitive,
+  },
+  {
+    type: 'set_mana_cap',
+    resultSchema: resultSchemas.set_mana_cap,
+    execute: setManaCap,
   },
   {
     type: 'pay_mana',
@@ -754,6 +777,7 @@ function validateEffectReferences(
       validateValueExpression(effect.amount, available, unsafeBranchBindings, issues, `${path}.amount`);
       break;
     case 'set_mana':
+    case 'set_mana_cap':
       break;
     case 'adjust_mana':
     case 'pay_mana':
@@ -1595,6 +1619,40 @@ function setMana(
   };
 }
 
+function setManaCap(
+  transaction: AbilityResolutionTransaction,
+  effect: Extract<ResolutionEffectNode, { type: 'set_mana_cap' }>,
+): KnownEffectResult {
+  const targetCap = effect.amount;
+  if (!Number.isSafeInteger(targetCap) || targetCap < 0) {
+    throw new ResolutionRuntimeError('invalid_amount', 'Mana cap target must be a nonnegative safe integer.');
+  }
+  const player = findPlayer(transaction.workingState, transaction.context.controllerId);
+  if (player.mana > targetCap) {
+    throw new ResolutionRuntimeError('mana_cap_below_current', 'Mana cap cannot be below the controller current mana.');
+  }
+  const runtime = transaction.workingState.abilityRuntime;
+  if (!runtime) throw new ResolutionRuntimeError('missing_ability_runtime', 'Ability runtime is missing.');
+  const before = runtime.manaCaps[player.id] ?? 12;
+  if (!Number.isSafeInteger(before) || before < 0) {
+    throw new ResolutionRuntimeError('invalid_runtime_state', 'Existing mana cap is invalid.');
+  }
+  const actualDelta = targetCap - before;
+  runtime.manaCaps[player.id] = targetCap;
+  const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_cap_set`;
+  if (actualDelta !== 0) {
+    transaction.emittedEvents.push(resourceEvent(transaction, eventId, 'mana_cap_set', player.id, 'mana', actualDelta, before, targetCap));
+  }
+  return {
+    effectId: effect.id,
+    effectType: 'set_mana_cap',
+    status: actualDelta === 0 ? 'no_op' : 'applied',
+    affectedEntities: actualDelta === 0 ? [] : [{ kind: 'player', id: player.id }],
+    payload: { playerId: player.id, targetCap, actualDelta, before, after: targetCap },
+    emittedEventIds: actualDelta === 0 ? [] : [eventId],
+  };
+}
+
 function payMana(
   transaction: AbilityResolutionTransaction,
   effect: Extract<ResolutionEffectNode, { type: 'pay_mana' }>,
@@ -1920,6 +1978,14 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         ...coerceBind(current.bind),
       };
     case 'set_mana':
+      return {
+        id,
+        type,
+        player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
+        amount: coerceFixedIntegerLiteral(current.amount, `${path}.amount`, issues),
+        ...coerceBind(current.bind),
+      };
+    case 'set_mana_cap':
       return {
         id,
         type,

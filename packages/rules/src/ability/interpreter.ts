@@ -684,7 +684,8 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isPresenceConcealmentAssassinationCandidate(a) && !isPresenceConcealmentAssassinationSemantic(a)) return false;
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
-  if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
+  if (isZoukenManaBootstrapCandidate(a) && (!isZoukenManaBootstrapSemantic(a) || !zoukenManaBootstrapSourceValid(s, sourceId, a) || !manaCapProvenanceMatches(s, sourceId, a))) return false;
+  if (!isZoukenManaBootstrapCandidate(a) && isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
   if (containsDefinitionDeclarationDeckPrivilegedNode(a) && !isAcceptedDefinitionDeclarationDeckAbility(a)) return false;
@@ -1400,6 +1401,76 @@ export function isFixedControllerManaSetComponent(effect: AuthoringAbility['effe
   if (effect.player !== undefined && effect.player !== 'controller') return false;
   if (!Number.isSafeInteger(effect.amount) || Number(effect.amount) < 0) return false;
   return Object.keys(effect).every((key) => ['type', 'player', 'amount'].includes(key));
+}
+
+function exactEffectKeys(effect: RuleNode, keys: readonly string[]): boolean {
+  const actual = Object.keys(effect).sort();
+  const expected = [...keys].sort();
+  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+}
+
+function isExactZoukenManaSetEffect(effect: RuleNode | undefined): boolean {
+  return !!effect && effect.type === 'set_mana' && effect.id === 'set-controller-mana' &&
+    effect.player === 'controller' && effect.amount === 10 &&
+    exactEffectKeys(effect, ['id', 'type', 'player', 'amount']);
+}
+
+function isExactZoukenManaCapEffect(effect: RuleNode | undefined): boolean {
+  return !!effect && effect.type === 'set_mana_cap' && effect.id === 'set-controller-mana-cap' &&
+    effect.player === 'controller' && effect.amount === 16 &&
+    exactEffectKeys(effect, ['id', 'type', 'player', 'amount']);
+}
+
+export function isZoukenManaBootstrapCandidate(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' && a.effects.some((effect) => str(effect.type) === 'set_mana_cap');
+}
+
+export function isZoukenManaBootstrapSemantic(a: AuthoringAbility): boolean {
+  if (!isZoukenManaBootstrapCandidate(a) || a.execution.mode !== 'automatic' ||
+    !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length !== 0) return false;
+  if (str(a.activation.trigger) !== 'game_start' || Object.keys(a.activation).some((key) => key !== 'trigger')) return false;
+  if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0 || a.ruleModifiers.length !== 0) return false;
+  const responseKeys = Object.keys(a.responseWindow);
+  if (responseKeys.some((key) => !['order', 'passBehavior'].includes(key)) ||
+    (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+    (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+    Object.keys(a.lifecycle).length !== 0 || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
+  return a.effects.length === 2 && isExactZoukenManaSetEffect(a.effects[0]) && isExactZoukenManaCapEffect(a.effects[1]);
+}
+
+function zoukenManaBootstrapSourceValid(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
+  if (!isZoukenManaBootstrapSemantic(a)) return false;
+  const source = card(s, sourceId);
+  const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+  const sourceDefinition = definition(s, sourceId) as ExecutableCardDefinition | undefined;
+  return !!controller && source.ownerPlayerId === controller.id && source.controllerPlayerId === controller.id &&
+    source.zone === 'skill' && source.visibility.scope === 'owner_only' && source.visibility.ownerPlayerId === controller.id &&
+    sourceDefinition?.cardType === 'master_skill' && sourceDefinition.ownerId === controller.masterCardId &&
+    sourceDefinition.abilities.some((candidate) => candidate.id === a.id && candidate === a);
+}
+
+function manaCapProvenanceMatches(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
+  const source = card(s, sourceId);
+  const controllerId = source.controllerPlayerId;
+  const provenance = runtime(s).manaCapProvenance?.[controllerId];
+  if (!provenance) return true;
+  return provenance.sourceCardId === sourceId && provenance.sourceDefinitionId === source.definitionId &&
+    provenance.abilityId === a.id && provenance.cap === 16 && runtime(s).manaCaps[controllerId] === 16;
+}
+
+function executeZoukenManaBootstrap(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!zoukenManaBootstrapSourceValid(s, ctx.sourceCardId, a) || !manaCapProvenanceMatches(s, ctx.sourceCardId, a)) {
+    reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap provenance');
+  }
+  executeResolutionEffects(s, ctx, a.effects);
+  const source = card(s, ctx.sourceCardId);
+  const provenance = runtime(s).manaCapProvenance ??= {};
+  provenance[ctx.controllerId] = {
+    sourceCardId: ctx.sourceCardId,
+    sourceDefinitionId: source.definitionId,
+    abilityId: a.id,
+    cap: 16,
+  };
 }
 
 function isGameStartFixedControllerManaSetCandidate(a: AuthoringAbility): boolean {
@@ -2488,6 +2559,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (isZoukenManaBootstrapSemantic(a)) {
+    executeZoukenManaBootstrap(s, ctx, a);
+    return;
+  }
   if (isGameStartRuleOverrideSemantic(a)) {
     for (const effect of effects) resolveEffect(s, ctx, effect);
     return;
@@ -2511,6 +2586,7 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isAnyLocationExceptWorkshopMovementCandidate(a)) reject('resolution_failed', 'Unsupported any-location-except-workshop movement semantic shape');
   if (isCombatMagicResistanceModifierCandidate(a)) reject('resolution_failed', 'Unsupported combat Magic Resistance modifier semantic shape');
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
+  if (isZoukenManaBootstrapCandidate(a)) reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
   if (isGameStartFixedControllerManaSetCandidate(a)) reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (isDeploymentResourceRewardFamilyCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
@@ -2630,7 +2706,10 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) {
     reject('resolution_failed', 'Unsupported persistent RuleOverride semantic shape');
   }
-  if (isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) {
+  if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) {
+    reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
+  }
+  if (!isZoukenManaBootstrapCandidate(a) && isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) {
     reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   }
   if (isGameStartSkillProvisioningCandidate(a)) {
@@ -3196,8 +3275,37 @@ export function dispatchAbilityCommand(s: GameState, playerId: string, command: 
   }
 }
 /** Validate deferred capability provenance before a serialized runtime is restored. */
+function manaCapRuntimeProvenanceValidForRestore(s: GameState): boolean {
+  const r = s.abilityRuntime;
+  if (!r) return true;
+  const playerIds = new Set(s.players.map((entry) => entry.id));
+  const caps = r.manaCaps;
+  const provenance = r.manaCapProvenance ?? {};
+  if (!caps || typeof caps !== 'object' || Array.isArray(caps) || !provenance || typeof provenance !== 'object' || Array.isArray(provenance)) return false;
+  for (const [playerId, cap] of Object.entries(caps)) {
+    const player = s.players.find((entry) => entry.id === playerId);
+    const entry = provenance[playerId];
+    if (!player || !Number.isSafeInteger(cap) || cap < 0 || player.mana > cap || !entry || typeof entry !== 'object') return false;
+    if (entry.cap !== cap || !Number.isSafeInteger(entry.cap) || entry.cap < 0 ||
+      typeof entry.sourceCardId !== 'string' || typeof entry.sourceDefinitionId !== 'string' || typeof entry.abilityId !== 'string') return false;
+    const source = s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId);
+    if (!source || source.definitionId !== entry.sourceDefinitionId || source.ownerPlayerId !== playerId ||
+      source.controllerPlayerId !== playerId || source.zone !== 'skill' || source.visibility.scope !== 'owner_only' ||
+      source.visibility.ownerPlayerId !== playerId) return false;
+    const sourceDefinition = r.pack.cards[source.definitionId] as ExecutableCardDefinition | undefined;
+    const ability = sourceDefinition?.abilities.find((candidate) => candidate.id === entry.abilityId);
+    if (!sourceDefinition || sourceDefinition.cardType !== 'master_skill' || sourceDefinition.ownerId !== player.masterCardId ||
+      !ability || !isZoukenManaBootstrapSemantic(ability) || entry.cap !== 16 ||
+      !ability.effects.some((effect) => effect.type === 'set_mana_cap' && effect.amount === entry.cap)) return false;
+  }
+  for (const playerId of Object.keys(provenance)) {
+    if (!playerIds.has(playerId) || !Object.prototype.hasOwnProperty.call(caps, playerId)) return false;
+  }
+  return true;
+}
+
 export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
-  try { return definitionDeclarationDeckRuntimeValidForRestore(s); } catch { return false; }
+  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s); } catch { return false; }
 }
 /** The transport should expose only dispatch/view; phase and event hooks are trusted server operations. */
 export function createAbilitySession(initialState: GameState) {

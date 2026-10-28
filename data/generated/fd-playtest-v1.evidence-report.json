@@ -2,7 +2,7 @@
   "schemaVersion": "fd-playtest-evidence-report-v1",
   "packId": "fd-playtest-v1",
   "summary": {
-    "masters": 13,
+    "masters": 14,
     "servants": 7,
     "events": 20,
     "blockingIssues": 0
@@ -1056,6 +1056,58 @@
       "htmPath": "chm-extract/卫宫士郎.htm",
       "imagePath": "assets/fm09/master.shirou-emiya.png",
       "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.zouken",
+      "displayName": "间桐脏砚",
+      "entityKind": "master",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "data/authoring/masters/zouken.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.zouken.overview",
+      "displayName": "间桐脏砚",
+      "entityKind": "master_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "data/authoring/masters/zouken.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.zouken.skill.s1",
+      "displayName": "大空洞的亡者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "data/authoring/masters/zouken.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "master.zouken.skill.s5",
+      "displayName": "间桐家的宗主",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "data/authoring/masters/zouken.png",
+      "imageIndex": 2,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -2121,6 +2173,34 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.shirou-emiya.skill.s2 source image was not verified in this checkout: assets/fm09/master.shirou-emiya.png",
       "entityId": "master.shirou-emiya.skill.s2",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.zouken source image was not verified in this checkout: data/authoring/masters/zouken.png",
+      "entityId": "master.zouken",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.zouken.overview source image was not verified in this checkout: data/authoring/masters/zouken.png",
+      "entityId": "master.zouken.overview",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.zouken.skill.s1 source image was not verified in this checkout: data/authoring/masters/zouken.png",
+      "entityId": "master.zouken.skill.s1",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.zouken.skill.s5 source image was not verified in this checkout: data/authoring/masters/zouken.png",
+      "entityId": "master.zouken.skill.s5",
       "field": "source.imagePath",
       "blocking": false
     },
