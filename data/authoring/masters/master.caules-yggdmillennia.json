@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "master_rule_definition_archive",
+  "id": "master.caules-yggdmillennia",
+  "name": "考列斯·千界树",
+  "class": "Master",
+  "sourcePolicy": {
+    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
+    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+    "note": "Frozen F1 source receipts are authoritative for identity, printed text, and semantics; locked Reference supplies only static metadata. Runtime semantics use the accepted identity-free contracts."
+  },
+  "cards": [
+    {
+      "id": "master.caules-yggdmillennia.skill.s1",
+      "aliases": ["s1"],
+      "legacyId": "s1",
+      "name": "电气魔术",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.caules-yggdmillennia"},
+      "printedText": "你拥有【巴格达电池】与【绞首刑之雷】。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [],
+      "abilities": [{
+        "id": "caules-yggdmillennia.s1.provision-skills",
+        "kind": "forced_trigger",
+        "printedClause": "你拥有【巴格达电池】与【绞首刑之雷】。",
+        "activation": {"trigger": "game_start"},
+        "conditions": [], "targets": [], "cost": [], "creates": [], "ruleModifiers": [],
+        "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"},
+        "limit": {}, "visibility": {},
+        "effects": [{"type": "provision_skill_cards", "player": "controller", "targetDefinitionIds": ["master.caules-yggdmillennia.skill.s2", "master.caules-yggdmillennia.skill.s3"]}],
+        "execution": {"mode": "automatic", "allowedOperations": []}
+      }],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s1"}],
+        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[0].text#line=1", "sha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc"}],
+        "sourceTextSha256": "04f3937163428e7c889372d1ddf5061b721739030740d043d1f65daa66ea60bc",
+        "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动"},
+        "acceptedContracts": {"gameStartSkillProvisioning": "FB2-15"}
+      }
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s1a",
+      "aliases": ["s1a"],
+      "legacyId": "s1a",
+      "name": "电流术理",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.caules-yggdmillennia"},
+      "printedText": "游戏开始与每回合结束时，【绞首刑之雷】更改为未激活状态（【绞首刑之雷】视为技能）。",
+      "cardFace": {"typeLabel": "被动", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [
+        {"id": "caules-yggdmillennia.s1a.deactivate-thunder-start", "kind": "forced_trigger", "printedClause": "游戏开始时，【绞首刑之雷】更改为未激活状态。", "activation": {"trigger": "game_start"}, "conditions": [], "targets": [], "effects": [{"type": "set_owned_definition_skill_active", "definitionId": "master.caules-yggdmillennia.skill.s3", "active": false}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "caules-yggdmillennia.s1a.deactivate-thunder-round", "kind": "forced_trigger", "printedClause": "每回合结束时，【绞首刑之雷】更改为未激活状态。", "activation": {"trigger": "round_end"}, "conditions": [], "targets": [], "effects": [{"type": "set_owned_definition_skill_active", "definitionId": "master.caules-yggdmillennia.skill.s3", "active": false}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s1a"}],
+        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[1].text#line=1", "sha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5"}],
+        "sourceTextSha256": "44c7ec6f62cf2b231c95e05fdb4e32694be7a774eb777db95ceaf07ad24c15f5",
+        "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s1a", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "被动"},
+        "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
+      }
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s2",
+      "aliases": ["s2"],
+      "legacyId": "s2",
+      "name": "巴格达电池",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.caules-yggdmillennia"},
+      "initialPlacement": "outside_game",
+      "printedText": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。\n起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。",
+      "cardFace": {"typeLabel": "前哨", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [
+        {"id": "caules-yggdmillennia.s2.battery", "kind": "forced_trigger", "printedClause": "充电-前哨阶段：若你于前哨阶段部署于魔术工房，选择下列一项：1.获得1点魔力。2.花费2点魔力，你于本回合无视【败北】状态。", "activation": {"trigger": "after_player_deployed_to_location"}, "conditions": [], "targets": [{"id": "deployment_battery_mode", "type": "choice", "options": [{"id": "gain_mana", "label": "获得1点魔力"}, {"id": "ignore_defeat", "label": "花费2点魔力并无视本回合败北"}], "count": {"min": 1, "max": 1}}], "effects": [{"type": "deployment_battery_choice", "workshopLocationId": "magic_workshop", "battlefieldDefinitionId": "master.caules-yggdmillennia.skill.s3", "manaGain": 1, "ignoreDefeatManaCost": 2}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "caules-yggdmillennia.s2.activate-thunder", "kind": "forced_trigger", "printedClause": "起载-前哨阶段：若你于前哨阶段部署于战场，激活【绞首刑之雷】。", "activation": {"trigger": "after_player_deployed_to_battlefield"}, "conditions": [], "targets": [], "effects": [{"type": "set_owned_definition_skill_active", "definitionId": "master.caules-yggdmillennia.skill.s3", "active": true}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s2"}],
+        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[2].text#line=1,2", "sha256": "3b220e60b2d59c8430594def46e0db5f7efcbfea91d7090a03d899c594006f8a"}],
+        "sourceTextSha256": "3b220e60b2d59c8430594def46e0db5f7efcbfea91d7090a03d899c594006f8a",
+        "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s2", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "前哨"},
+        "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
+      }
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.s3",
+      "aliases": ["s3"],
+      "legacyId": "s3",
+      "name": "绞首刑之雷",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.caules-yggdmillennia"},
+      "initialPlacement": "outside_game",
+      "printedText": "此牌需追加打出，你需宣言一种本局游戏未宣言过的属性才可打出此牌。\n电气魔术-战斗阶段：将所有与你位于同一战场的对手控制的，具有你宣言属性的基础攻击的威力设为0。\n（Deck变体：力量/迅捷/魔术/特殊/宝具 五种属性各可宣言一次）",
+      "cardFace": {"typeLabel": "魔术", "attributes": ["魔术"], "cost": 5, "basePower": 6},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"},
+      "playRequirements": [{"type": "skill_zone_mana_at_least", "value": 5}],
+      "abilities": [
+        {"id": "caules-yggdmillennia.s3.append-only", "kind": "passive", "printedClause": "此牌需追加打出。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "append_only_rule"}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "caules-yggdmillennia.s3.declaration", "kind": "passive", "printedClause": "你需宣言一种本局游戏未宣言过的属性才可打出此牌。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "declared_attribute_required_additional_play_rule", "allowedAttributes": ["力量", "迅捷", "魔术", "特殊", "宝具"], "uniquePerGame": true, "requiresActiveSkillSource": true}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "caules-yggdmillennia.s3.electromancy", "kind": "phase_action", "printedClause": "电气魔术-战斗阶段：将所有与你位于同一战场的对手控制的，具有你宣言属性的基础攻击的威力设为0。", "activation": {"phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active"}, "conditions": [], "targets": [], "effects": [{"type": "zero_matching_same_battlefield_opponent_basic_attacks", "value": 0, "sameBattlefield": true, "basicOnly": true}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/s3"}],
+        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[3].text#line=1,2,3", "sha256": "a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df"}],
+        "sourceTextSha256": "a33323cef1f83bcf541c9c60aea118587c56ad5f4a92b958228630d5018be6df",
+        "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "s3", "cost": 5, "basePower": 6, "legacyRequirement": 5, "typeLabel": "魔术"},
+        "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
+      }
+    },
+    {
+      "id": "master.caules-yggdmillennia.skill.ascension",
+      "aliases": ["ascension"],
+      "legacyId": "ascension",
+      "name": "最后的叙述者",
+      "cardType": "master_skill",
+      "owner": {"type": "master", "id": "master.caules-yggdmillennia"},
+      "initialPlacement": "outside_game",
+      "printedText": "你的【绞首刑之雷】更改为：\"打出时：秘密宣言一种属性并于你的战斗阶段开始时展示\"。解锁此技能的回合结束后，从牌库、弃牌堆以及手牌移除你的所有牌；并以如下牌组成一副新的牌库使用：力量4x2 力量5x3 魔术4x2 魔术5x3 幸运x1 侦查x1。",
+      "cardFace": {"typeLabel": "升华技", "attributes": [], "cost": 0, "basePower": 0},
+      "playTiming": {"phase": "action", "window": "controller_play_card_window"}, "playRequirements": [],
+      "abilities": [
+        {"id": "caules-yggdmillennia.ascension.rewrite-declaration", "kind": "passive", "printedClause": "你的【绞首刑之雷】更改为：\"打出时：秘密宣言一种属性并于你的战斗阶段开始时展示\"。", "activation": {"trigger": "while_active"}, "conditions": [], "targets": [], "effects": [{"type": "rewrite_definition_declaration_secret_until_combat", "definitionId": "master.caules-yggdmillennia.skill.s3", "allowRepeat": true, "visibility": "secret_until_combat_start"}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "caules-yggdmillennia.ascension.rebuild-deck", "kind": "forced_trigger", "printedClause": "解锁此技能的回合结束后，从牌库、弃牌堆以及手牌移除你的所有牌；并以指定12张牌组成一副新的牌库使用。", "activation": {"trigger": "after_master_ascension_unlocked"}, "conditions": [], "targets": [], "effects": [{"type": "schedule_exact_deck_rebuild_after_unlock_round", "definitionIds": ["card.cardb3", "card.cardb3", "card.cardb4", "card.cardb4", "card.cardb4", "card.carda3", "card.carda3", "card.carda4", "card.carda4", "card.carda4", "card.cardluck", "card.cardsurveil"], "targetRoundOffset": 1}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}},
+        {"id": "caules-yggdmillennia.ascension.reveal-declaration", "kind": "forced_trigger", "printedClause": "于你的战斗阶段开始时展示秘密宣言。", "activation": {"trigger": "controller_combat_action_window"}, "conditions": [], "targets": [], "effects": [{"type": "reveal_secret_definition_declarations", "definitionId": "master.caules-yggdmillennia.skill.s3"}], "cost": [], "creates": [], "ruleModifiers": [], "lifecycle": {}, "responseWindow": {"order": "turn_order", "passBehavior": "decline_this_window"}, "limit": {}, "visibility": {}, "execution": {"mode": "automatic", "allowedOperations": []}}
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [{"kind": "development-image", "document": "Fate_Domination-开发版", "category": "master", "page": "images/masters/考列斯·千界树.png", "locator": "master.caules-yggdmillennia/考列斯·千界树"}, {"kind": "legacy", "document": "legacy-content.json", "locator": "master/master.caules-yggdmillennia/ascension"}],
+        "f1ClauseSources": [{"document": "Fate_Domination-开发版/data_masters.js", "locator": "masters[43].skills[4].text#line=1", "sha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b"}],
+        "sourceTextSha256": "3d47013f151e984bb50139967a85d16f0a70a825d4e2865d3f5a781f8151881b",
+        "referenceStaticMetadata": {"commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9", "legacySkillId": "ascension", "cost": 0, "basePower": 0, "legacyRequirement": null, "typeLabel": "升华技"},
+        "acceptedContracts": {"definitionDeclarationDeckCapability": "P3-B/FB2-26"}
+      }
+    }
+  ]
+}
