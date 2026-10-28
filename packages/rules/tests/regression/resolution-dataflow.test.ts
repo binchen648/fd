@@ -156,6 +156,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'adjust_mana', player: 'controller', amount: 1, bind: binding };
     case 'set_mana':
       return { id: `produce-${binding}`, type: 'set_mana', player: 'controller', amount: 1, bind: binding };
+    case 'set_mana_cap':
+      return { id: `produce-${binding}`, type: 'set_mana_cap', player: 'controller', amount: 13, bind: binding };
     case 'pay_mana':
       return { id: `produce-${binding}`, type: 'pay_mana', player: 'controller', amount: 0, bind: binding };
     case 'adjust_command_seals':
@@ -202,6 +204,7 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
       'remove_advantage_position',
       'adjust_mana',
       'set_mana',
+      'set_mana_cap',
       'pay_mana',
       'adjust_command_seals',
       'adjust_victory_points',
@@ -381,6 +384,16 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
             pack: { cards: {} }, revision: 0, sequence: 0, randomState: 20260909,
             cardState: { 'synthetic-source': { active: true, faceDown: false, playedRound: 1 } },
             ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
+            events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [],
+            roomMode: 'standard', abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
+            movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {}, playRulesVersion: 'explicit-v1',
+            playCounters: { round: 1, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} },
+          };
+        }
+        if (effectType === 'set_mana_cap') {
+          state.abilityRuntime = {
+            pack: { cards: {} }, revision: 0, sequence: 0, randomState: 20260909,
+            cardState: {}, ongoingEffects: [], responseWindows: [], usedAbilities: {}, processedEvents: [], revealedServants: [],
             events: [], calculations: [], preventEffects: false, manaCaps: {}, manaGainBlocked: [], hostRequests: [],
             roomMode: 'standard', abilityUsage: {}, noblePhantasmCostsThisRound: {}, consecutivePlayRounds: {},
             movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {}, playRulesVersion: 'explicit-v1',

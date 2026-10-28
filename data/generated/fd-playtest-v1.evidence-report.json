@@ -1101,13 +1101,26 @@
       ]
     },
     {
+      "entityId": "master.zouken.skill.s3",
+      "displayName": "创造者",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "data/authoring/masters/zouken.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
       "entityId": "master.zouken.skill.s5",
       "displayName": "间桐家的宗主",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "data/authoring/masters/zouken.png",
-      "imageIndex": 2,
+      "imageIndex": 3,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -2194,6 +2207,13 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.zouken.skill.s1 source image was not verified in this checkout: data/authoring/masters/zouken.png",
       "entityId": "master.zouken.skill.s1",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.zouken.skill.s3 source image was not verified in this checkout: data/authoring/masters/zouken.png",
+      "entityId": "master.zouken.skill.s3",
       "field": "source.imagePath",
       "blocking": false
     },

@@ -685,6 +685,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   if (isAlterEgoTransformCandidate(a) && !isAlterEgoTransformSemantic(a)) return false;
   if (isGameStartRuleOverrideCandidate(a) && !isGameStartRuleOverrideSemantic(a)) return false;
   if (isZoukenManaBootstrapCandidate(a) && (!isZoukenManaBootstrapSemantic(a) || !zoukenManaBootstrapSourceValid(s, sourceId, a) || !manaCapProvenanceMatches(s, sourceId, a))) return false;
+  if (isZoukenS3AbilityCandidate(a) && (!isZoukenS3Semantic(a) || !isZoukenS3Source(s, sourceId))) return false;
   if (!isZoukenManaBootstrapCandidate(a) && isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) return false;
   if (isGameStartSkillProvisioningCandidate(a) &&
     (!isGameStartSkillProvisioningSemantic(a) || !gameStartSkillProvisioningPreflight(s, sourceId, a))) return false;
@@ -695,9 +696,10 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   const activationPhase = effectiveActivationPhase(s, sourceId, a);
   if (activationPhase && activationPhase !== phase(s)) return false;
   if (definition(s, sourceId)?.cardType === 'command_spell' &&
-    Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
-  if (isBattleLossResourceTriggerSemantic(a) &&
-    Number((player(s, card(s, sourceId).controllerPlayerId) as unknown as { commandSpells?: number }).commandSpells ?? 3) <= 0) return false;
+    effectiveCommandSpells(s, card(s, sourceId).controllerPlayerId) <= 0 &&
+    !hasActiveZoukenFounder(s, card(s, sourceId).controllerPlayerId)) return false;
+  if (isBattleLossResourceTriggerSemantic(a) && effectiveCommandSpells(s, card(s, sourceId).controllerPlayerId) <= 0 &&
+      !hasActiveZoukenFounder(s, card(s, sourceId).controllerPlayerId)) return false;
   if (!isCommandSpellCard(s, sourceId) && a.kind === 'phase_action' && runtime(s).usedAbilities[`${sourceId}:${a.id}`] === s.round.roundNumber) return false;
   if (abilityLimitReached(s, sourceId, a)) return false;
   if ((isPlayActionRouteCandidate(a) || isAddToAttackRouteCandidate(a) || isAnyLocationExceptWorkshopMovementSemantic(a)) &&
@@ -710,6 +712,7 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
   }
   if (isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, context(s, sourceId, a.id, event), a)) return false;
+  if (isZoukenS3ActionSemantic(a) && player(s, card(s, sourceId).controllerPlayerId).mana < 2) return false;
   if (isCloseSourceCardOnPlayedTrigger(a) && closeSourceStateError(s, sourceId, card(s, sourceId).controllerPlayerId)) return false;
   if (isAlterEgoTransformSemantic(a)) {
     const ctx = context(s, sourceId, a.id, event);
@@ -880,7 +883,11 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const interaction = classifyAbilityInteraction(a);
       if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) || s.round.prioritySeat !== p.seat || !canActivate(s, c.instanceId, a)) continue;
-      const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
+      const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({
+        name: str(node(x.amount).var),
+        min: isZoukenS3ActionSemantic(a) ? 1 : 0,
+        max: isZoukenS3ActionSemantic(a) ? Math.floor(p.mana / 2) : p.mana,
+      }));
       result.push({ type: 'activate_ability', cardInstanceId: c.instanceId, abilityId: a.id, ...(costs.length ? { variableCosts: costs } : {}) });
     }
   }
@@ -1236,8 +1243,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'adjust_command_seals': {
-      const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
       const amount = numeric(s, ctx, effect.amount);
+      if (applyZoukenFounderSealReplacement(s, ctx, amount)) break;
+      const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
       const next = Math.max(0, current + amount);
       (p as unknown as { commandSpells: number }).commandSpells = next;
       pushModeDirective(s, {
@@ -1471,6 +1479,141 @@ function executeZoukenManaBootstrap(s: GameState, ctx: EffectContext, a: Authori
     abilityId: a.id,
     cap: 16,
   };
+}
+
+const ZOUKEN_S3_SOURCE_ID = 'master.zouken.skill.s3';
+const ZOUKEN_S3_PASSIVE_ID = 'zouken.founder';
+const ZOUKEN_S3_ACTION_ID = 'zouken.founder.power-conversion';
+const ZOUKEN_S3_WIN_ID = 'zouken.founder.after-win';
+const ZOUKEN_S3_PASSIVE_CLAUSE = '你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。';
+const ZOUKEN_S3_ACTION_CLAUSE = '行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。';
+const ZOUKEN_S3_WIN_CLAUSE = '若你于本回合赢得战斗，获得X点战果。';
+
+function isZoukenS3Source(s: GameState, sourceCardId: string): boolean {
+  const source = s.cards.find((entry) => entry.instanceId === sourceCardId);
+  const sourceDefinition = definition(s, sourceCardId) as ExecutableCardDefinition | undefined;
+  const controller = source && s.players.find((entry) => entry.id === source.controllerPlayerId);
+  return !!source && !!controller && source.definitionId === ZOUKEN_S3_SOURCE_ID &&
+    source.ownerPlayerId === controller.id && source.controllerPlayerId === controller.id &&
+    ['field', 'attack_area'].includes(source.zone) && active(s, sourceCardId) &&
+    runtime(s).cardState[sourceCardId]?.faceDown !== true &&
+    sourceDefinition?.id === ZOUKEN_S3_SOURCE_ID && sourceDefinition.cardType === 'master_skill' &&
+    sourceDefinition.ownerId === controller.masterCardId;
+}
+
+function hasActiveZoukenFounder(s: GameState, playerId: string): boolean {
+  return s.cards.some((source) => source.controllerPlayerId === playerId && isZoukenS3Source(s, source.instanceId) &&
+    (runtime(s).pack.cards[source.definitionId]?.abilities ?? []).some((ability) => isZoukenS3PassiveSemantic(ability)));
+}
+
+function isExactZoukenS3Directive(effect: RuleNode | undefined, id: string, directive: string): boolean {
+  return !!effect && effect.type === 'record_master_directive' && effect.id === id && effect.directive === directive &&
+    exactEffectKeys(effect, ['id', 'type', 'directive']);
+}
+
+function isExactZoukenS3ResponseWindow(a: AuthoringAbility): boolean {
+  return Object.keys(a.responseWindow).every((key) => ['order', 'passBehavior'].includes(key)) &&
+    (a.responseWindow.order === undefined || a.responseWindow.order === 'turn_order') &&
+    (a.responseWindow.passBehavior === undefined || a.responseWindow.passBehavior === 'decline_this_window');
+}
+
+export function isZoukenS3AbilityCandidate(a: AuthoringAbility): boolean {
+  return [ZOUKEN_S3_PASSIVE_ID, ZOUKEN_S3_ACTION_ID, ZOUKEN_S3_WIN_ID].includes(a.id);
+}
+
+export function isZoukenS3PassiveSemantic(a: AuthoringAbility): boolean {
+  return a.kind === 'passive' && a.id === ZOUKEN_S3_PASSIVE_ID && a.printedClause === ZOUKEN_S3_PASSIVE_CLAUSE &&
+    a.execution.mode === 'automatic' && Array.isArray(a.execution.allowedOperations) && a.execution.allowedOperations.length === 0 &&
+    exactEffectKeys(a.activation, ['trigger']) && a.activation.trigger === 'while_active' &&
+    a.conditions.length === 0 && a.targets.length === 0 && a.cost.length === 0 && a.creates.length === 0 &&
+    a.ruleModifiers.length === 0 && Object.keys(a.lifecycle).length === 0 && isExactZoukenS3ResponseWindow(a) &&
+    Object.keys(a.limit).length === 0 && Object.keys(a.visibility).length === 0 && a.effects.length === 1 &&
+    isExactZoukenS3Directive(a.effects[0], 'zouken-founder', 'zouken_founder');
+}
+
+export function isZoukenS3ActionSemantic(a: AuthoringAbility): boolean {
+  if (a.kind !== 'phase_action' || a.id !== ZOUKEN_S3_ACTION_ID || a.printedClause !== ZOUKEN_S3_ACTION_CLAUSE ||
+      a.execution.mode !== 'automatic' || !Array.isArray(a.execution.allowedOperations) || a.execution.allowedOperations.length !== 0 ||
+      !exactEffectKeys(a.activation, ['phase', 'opens', 'requiresSourceState']) || a.activation.phase !== 'action' ||
+      a.activation.opens !== 'controller_action_window' || a.activation.requiresSourceState !== 'active' ||
+      a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 1 || a.effects.length !== 1 ||
+      a.creates.length !== 0 || a.ruleModifiers.length !== 0 || Object.keys(a.lifecycle).length !== 0 ||
+      !isExactZoukenS3ResponseWindow(a) || Object.keys(a.limit).length !== 0 || Object.keys(a.visibility).length !== 0) return false;
+  const cost = a.cost[0]!;
+  return cost.type === 'pay_mana' && cost.id === 'zouken-founder-pay-2x' && cost.player === 'controller' &&
+    node(cost.amount).var === 'X' && exactEffectKeys(cost, ['id', 'type', 'player', 'amount']) &&
+    isExactZoukenS3Directive(a.effects[0], 'zouken-founder-power', 'zouken_founder_power_conversion');
+}
+
+export function isZoukenS3WinSemantic(a: AuthoringAbility): boolean {
+  return a.kind === 'forced_trigger' && a.id === ZOUKEN_S3_WIN_ID && a.printedClause === ZOUKEN_S3_WIN_CLAUSE &&
+    a.execution.mode === 'automatic' && Array.isArray(a.execution.allowedOperations) && a.execution.allowedOperations.length === 0 &&
+    exactEffectKeys(a.activation, ['trigger', 'requiresSourceState']) && a.activation.trigger === 'after_controller_wins_battle' &&
+    a.activation.requiresSourceState === 'active' && a.conditions.length === 0 && a.targets.length === 0 && a.cost.length === 0 &&
+    a.creates.length === 0 && a.ruleModifiers.length === 0 && Object.keys(a.lifecycle).length === 0 &&
+    isExactZoukenS3ResponseWindow(a) && Object.keys(a.limit).length === 0 && Object.keys(a.visibility).length === 0 &&
+    a.effects.length === 1 && isExactZoukenS3Directive(a.effects[0], 'zouken-founder-vp', 'zouken_founder_victory_points');
+}
+
+export function isZoukenS3Semantic(a: AuthoringAbility): boolean {
+  return isZoukenS3PassiveSemantic(a) || isZoukenS3ActionSemantic(a) || isZoukenS3WinSemantic(a);
+}
+
+function effectiveCommandSpells(s: GameState, playerId: string): number {
+  return hasActiveZoukenFounder(s, playerId) ? 0 : Number((player(s, playerId) as unknown as { commandSpells?: number }).commandSpells ?? 3);
+}
+
+function executeZoukenS3Action(s: GameState, ctx: EffectContext, a: AuthoringAbility): void {
+  if (!isZoukenS3ActionSemantic(a) || !isZoukenS3Source(s, ctx.sourceCardId) || !hasActiveZoukenFounder(s, ctx.controllerId)) {
+    reject('resolution_failed', 'Unsupported Zouken founder action semantic shape');
+  }
+  const controller = player(s, ctx.controllerId);
+  const x = ctx.variables.X;
+  if (phase(s) !== 'action' || s.round.prioritySeat !== controller.seat ||
+      typeof x !== 'number' || !Number.isSafeInteger(x) || x < 1 || x * 2 > controller.mana) {
+    reject('invalid_cost', 'Zouken founder X must be a positive integer within twice the mana cost');
+  }
+  const existing = s.ruleOverrides?.zoukenFounderPowerByPlayer?.[ctx.controllerId];
+  if (existing?.round === s.round.roundNumber) reject('ability_limit_reached', 'Zouken founder action already used this round');
+  const before = controller.mana;
+  controller.mana -= x * 2;
+  s.ruleOverrides ??= {};
+  s.ruleOverrides.zoukenFounderPowerByPlayer = {
+    ...(s.ruleOverrides.zoukenFounderPowerByPlayer ?? {}),
+    [ctx.controllerId]: { sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, round: s.round.roundNumber, amount: x },
+  };
+  runtime(s).usedAbilities[`${ctx.sourceCardId}:${a.id}`] = s.round.roundNumber;
+  runtime(s).events.push({ type: 'zouken_s3_power_conversion', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, resource: 'mana', requestedDelta: -x * 2, delta: -x * 2, before, after: controller.mana });
+}
+
+function settleZoukenS3Win(s: GameState, ctx: EffectContext): void {
+  const event = ctx.event;
+  if (!event || event.type !== 'after_controller_wins_battle' || event.playerId !== ctx.controllerId ||
+      !event.battlePhaseResolutionId || !event.battleId || !event.resultId || !event.battlefieldId ||
+      event.resultId !== `${event.battleId}:result` || event.battlePhaseResolutionId !== `battle-phase:${s.round.roundNumber}` ||
+      !event.battleResult?.winners.includes(ctx.controllerId) ||
+      !event.battleId.startsWith(`${event.battlePhaseResolutionId}:battle:${event.battlefieldId}:`) ||
+      !isZoukenS3Source(s, ctx.sourceCardId) || !hasActiveZoukenFounder(s, ctx.controllerId)) {
+    reject('invalid_event', 'Zouken founder victory conversion requires its canonical win event');
+  }
+  const ordinal = Number(event.battleId.slice(`${event.battlePhaseResolutionId}:battle:${event.battlefieldId}:`.length));
+  const canonicalBattle = Number.isSafeInteger(ordinal) && ordinal > 0 ? s.battleResults[ordinal - 1] : undefined;
+  if (!canonicalBattle || canonicalBattle.battlefieldId !== event.battlefieldId ||
+      canonicalBattle.winnerPlayerIds.length !== event.battleResult!.winners.length ||
+      canonicalBattle.winnerPlayerIds.some((id) => !event.battleResult!.winners.includes(id))) {
+    reject('invalid_event', 'Zouken founder victory conversion requires a canonical battle result');
+  }
+  const entry = s.ruleOverrides?.zoukenFounderPowerByPlayer?.[ctx.controllerId];
+  if (!entry || entry.sourceCardId !== ctx.sourceCardId || entry.abilityId !== ZOUKEN_S3_ACTION_ID ||
+      entry.round !== s.round.roundNumber || !Number.isSafeInteger(entry.amount) || entry.amount < 1) return;
+  const settled = s.ruleOverrides!.zoukenFounderVictorySettledBySource ??= {};
+  if (settled[ctx.sourceCardId] === s.round.roundNumber) return;
+  const controller = player(s, ctx.controllerId); const before = controller.vp;
+  controller.vp += entry.amount; settled[ctx.sourceCardId] = s.round.roundNumber;
+  runtime(s).events.push({ type: 'zouken_s3_victory_points_settled', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, resource: 'victory_points', requestedDelta: entry.amount, delta: entry.amount, before, after: controller.vp,
+    triggerEventId: event.id });
 }
 
 function isGameStartFixedControllerManaSetCandidate(a: AuthoringAbility): boolean {
@@ -2015,6 +2158,23 @@ function settleBattleEndMobilePlayersReward(s: GameState, ctx: EffectContext): v
   });
 }
 
+function applyZoukenFounderSealReplacement(s: GameState, ctx: EffectContext, amount: number): boolean {
+  if (!hasActiveZoukenFounder(s, ctx.controllerId) || !Number.isSafeInteger(amount) || amount === 0) return false;
+  const controller = player(s, ctx.controllerId);
+  const replacement = Math.abs(amount) * 4;
+  const before = controller.mana;
+  if (amount < 0) {
+    if (before < replacement) reject('insufficient_mana', 'Zouken founder command-seal replacement requires four mana per seal');
+    controller.mana -= replacement;
+  } else {
+    grantMana(s, controller.id, replacement, { source: 'generic' });
+  }
+  runtime(s).events.push({ type: 'zouken_s3_command_seal_replaced', playerId: controller.id, sourceCardId: ctx.sourceCardId,
+    abilityId: ctx.abilityId, resource: 'mana', requestedDelta: amount < 0 ? -replacement : replacement,
+    delta: controller.mana - before, before, after: controller.mana });
+  return true;
+}
+
 function isBattleLossStateTransformCandidate(a: AuthoringAbility): boolean {
   return a.kind === 'forced_trigger' &&
     str(a.activation.trigger) === 'after_controller_loses_battle' &&
@@ -2553,6 +2713,13 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     cleanupOngoing(s);
     return;
   }
+  if (hasActiveZoukenFounder(s, ctx.controllerId) && effects.length > 0 && effects.every((effect) =>
+      effect.type === 'adjust_command_seals' && (effect.player === undefined || effect.player === 'controller') && effect.target === undefined)) {
+    for (const effect of effects) resolveEffect(s, ctx, effect);
+    installOngoing(s, ctx, a);
+    cleanupOngoing(s);
+    return;
+  }
   if (isResourceNumericDirectActionSemantic(a) || isResourceNumericTriggerSemantic(a) || isGameStartFixedControllerManaSetSemantic(a) || isDeploymentResourceRewardSemantic(a) || isBattleLossResourceTriggerSemantic(a) || isBattleLossServantRevealSemantic(a) || isSharedVictoryVpTriggerSemantic(a) || isOptionalBattleResultVpTriggerSemantic(a) || isOptionalBattleResultExtraVpTriggerSemantic(a) || isBattleEndSourceReturnSemantic(a) || isSourcePlayBasicAttackDrawTriggerSemantic(a)) {
     executeResolutionEffects(s, ctx, effects);
     installOngoing(s, ctx, a);
@@ -2561,6 +2728,14 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   }
   if (isZoukenManaBootstrapSemantic(a)) {
     executeZoukenManaBootstrap(s, ctx, a);
+    return;
+  }
+  if (isZoukenS3WinSemantic(a)) {
+    settleZoukenS3Win(s, ctx);
+    return;
+  }
+  if (isZoukenS3ActionSemantic(a)) {
+    executeZoukenS3Action(s, ctx, a);
     return;
   }
   if (isGameStartRuleOverrideSemantic(a)) {
@@ -2708,6 +2883,17 @@ export function executeAbility(s: GameState, ctx: EffectContext): void {
   }
   if (isZoukenManaBootstrapCandidate(a) && !isZoukenManaBootstrapSemantic(a)) {
     reject('resolution_failed', 'Unsupported Zouken game-start mana bootstrap semantic shape');
+  }
+  if (isZoukenS3AbilityCandidate(a) && (!isZoukenS3Semantic(a) || !isZoukenS3Source(s, ctx.sourceCardId))) {
+    reject('resolution_failed', 'Unsupported Zouken s3 semantic or source provenance');
+  }
+  if (isZoukenS3ActionSemantic(a)) {
+    executeZoukenS3Action(s, ctx, a);
+    return;
+  }
+  if (isZoukenS3WinSemantic(a)) {
+    settleZoukenS3Win(s, ctx);
+    return;
   }
   if (!isZoukenManaBootstrapCandidate(a) && isGameStartFixedControllerManaSetCandidate(a) && !isGameStartFixedControllerManaSetSemantic(a)) {
     reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
@@ -2951,7 +3137,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
           cardFace: r.pack.cards[cardId]!.cardFace,
         })),
       } : r.pack.servantPackage;
-      return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, commandSpells: Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3), masterCardId: p.masterCardId,
+      return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, commandSpells: effectiveCommandSpells(s, p.id), masterCardId: p.masterCardId,
         ...(p.locationId ? { locationId: p.locationId } : {}), handCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'hand').length,
         deckCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').length,
         ...(r.revealedServants.includes(p.id) && servantPackage && p.servantCardId === servantPackage.id
@@ -3304,8 +3490,34 @@ function manaCapRuntimeProvenanceValidForRestore(s: GameState): boolean {
   return true;
 }
 
+function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
+  const overrides = s.ruleOverrides;
+  if (!overrides) return true;
+  const playerIds = new Set(s.players.map((entry) => entry.id));
+  const power = overrides.zoukenFounderPowerByPlayer ?? {};
+  const settled = overrides.zoukenFounderVictorySettledBySource ?? {};
+  if (!power || typeof power !== 'object' || Array.isArray(power) || !settled || typeof settled !== 'object' || Array.isArray(settled)) return false;
+  for (const [playerId, entry] of Object.entries(power)) {
+    if (!playerIds.has(playerId) || !entry || typeof entry !== 'object' ||
+        typeof entry.sourceCardId !== 'string' || entry.abilityId !== ZOUKEN_S3_ACTION_ID ||
+        !Number.isSafeInteger(entry.round) || entry.round < 1 || !Number.isSafeInteger(entry.amount) || entry.amount < 1) return false;
+    const source = s.cards.find((candidate) => candidate.instanceId === entry.sourceCardId);
+    if (!source || source.controllerPlayerId !== playerId || source.ownerPlayerId !== playerId ||
+        source.definitionId !== ZOUKEN_S3_SOURCE_ID || !['field', 'attack_area'].includes(source.zone) ||
+        !isZoukenS3Source(s, source.instanceId) || entry.round > s.round.roundNumber) return false;
+    const ability = runtime(s).pack.cards[source.definitionId]?.abilities.find((candidate) => candidate.id === ZOUKEN_S3_ACTION_ID);
+    if (!ability || !isZoukenS3ActionSemantic(ability)) return false;
+  }
+  for (const [sourceId, round] of Object.entries(settled)) {
+    const source = s.cards.find((candidate) => candidate.instanceId === sourceId);
+    if (!source || source.definitionId !== ZOUKEN_S3_SOURCE_ID || !Number.isSafeInteger(round) || round < 1 || round > s.round.roundNumber ||
+        !isZoukenS3Source(s, source.instanceId)) return false;
+  }
+  return true;
+}
+
 export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
-  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s); } catch { return false; }
+  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s) && zoukenFounderRuntimeProvenanceValidForRestore(s); } catch { return false; }
 }
 /** The transport should expose only dispatch/view; phase and event hooks are trusted server operations. */
 export function createAbilitySession(initialState: GameState) {

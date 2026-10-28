@@ -179,6 +179,10 @@ export interface RuleOverrideState {
   extraAttackPlayAllowanceByManaByPlayer?: Record<string, { threshold: number; amount: number }>;
   viewFaceDownEventsPlayerIds?: string[];
   ignoreSituationPlayForbidAttributesByPlayer?: Record<string, string[]>;
+  /** Source-bound Zouken s3 current-round combat-power conversion. */
+  zoukenFounderPowerByPlayer?: Record<string, { sourceCardId: string; abilityId: string; round: number; amount: number }>;
+  /** Idempotency ledger for Zouken s3 round victory conversion. */
+  zoukenFounderVictorySettledBySource?: Record<string, number>;
 }
 
 export interface GameState {

@@ -115,6 +115,167 @@
       }
     },
     {
+      "id": "master.zouken.skill.s3",
+      "aliases": [
+        "s3"
+      ],
+      "legacyId": "s3",
+      "name": "创造者",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.zouken"
+      },
+      "printedText": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。\n行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+      "cardFace": {
+        "typeLabel": "行动阶段",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "zouken.founder",
+          "kind": "passive",
+          "printedClause": "你没有令咒。每当你获得令咒时，改为获得4点魔力；当你因其他能力需要花费令咒时，改为花费4点魔力。",
+          "activation": {
+            "trigger": "while_active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "id": "zouken-founder",
+              "type": "record_master_directive",
+              "directive": "zouken_founder"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "zouken.founder.power-conversion",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：花费2X魔力，获得X点合计威力，若你于本回合赢得战斗，获得X点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [
+            {
+              "id": "zouken-founder-pay-2x",
+              "type": "pay_mana",
+              "player": "controller",
+              "amount": {
+                "var": "X"
+              }
+            }
+          ],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "id": "zouken-founder-power",
+              "type": "record_master_directive",
+              "directive": "zouken_founder_power_conversion"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "zouken.founder.after-win",
+          "kind": "forced_trigger",
+          "printedClause": "若你于本回合赢得战斗，获得X点战果。",
+          "activation": {
+            "trigger": "after_controller_wins_battle",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "id": "zouken-founder-vp",
+              "type": "record_master_directive",
+              "directive": "zouken_founder_victory_points"
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
+        "f1SourceReferences": [
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "master",
+            "page": "images/masters/间桐脏砚.png",
+            "locator": "master.zouken/间桐脏砚"
+          },
+          {
+            "kind": "legacy",
+            "document": "legacy-content.json",
+            "locator": "master/master.zouken/s3"
+          }
+        ],
+        "f1ClauseSources": [
+          {
+            "document": "src/content/generated/legacy-content.json",
+            "locator": "masters[14].skills[2].text#line=1",
+            "sha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17e3"
+          }
+        ],
+        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17e3",
+        "referenceStaticMetadata": {
+          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
+          "legacySkillId": "s3",
+          "cost": null,
+          "basePower": null,
+          "legacyRequirement": null,
+          "typeLabel": "行动阶段"
+        },
+        "acceptedContracts": {
+          "founderCommandSealReplacement": "P3-ZOUKEN-S3-COMMAND-SEAL-REPLACEMENT",
+          "founderVariablePowerAction": "P3-ZOUKEN-S3-VARIABLE-POWER-ACTION",
+          "founderBattleVictoryConversion": "P3-ZOUKEN-S3-BATTLE-VICTORY-CONVERSION"
+        }
+      }
+    },
+    {
       "id": "master.zouken.skill.s5",
       "aliases": [
         "s5"

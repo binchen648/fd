@@ -400,6 +400,10 @@ export function deriveBattleParticipantsFromState(
         other.id !== player.id && other.status === 'active' && other.locationId === battlefieldId && other.vp < player.vp)) {
         persistentPowerAdjustment += lowerVpAdjustment;
       }
+      const founderPower = state.ruleOverrides?.zoukenFounderPowerByPlayer?.[player.id];
+      if (founderPower?.round === state.round.roundNumber && Number.isSafeInteger(founderPower.amount) && founderPower.amount > 0) {
+        persistentPowerAdjustment += founderPower.amount;
+      }
       const participant = {
         playerId: player.id,
         totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,

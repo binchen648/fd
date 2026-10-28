@@ -1757,6 +1757,12 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
     if (expression.field === 'before') return result.payload.before;
     if (expression.field === 'after') return result.payload.after;
   }
+  if (result.effectType === 'set_mana_cap') {
+    if (expression.field === 'targetCap') return result.payload.targetCap;
+    if (expression.field === 'actualDelta') return result.payload.actualDelta;
+    if (expression.field === 'before') return result.payload.before;
+    if (expression.field === 'after') return result.payload.after;
+  }
   if (['adjust_mana', 'pay_mana', 'adjust_command_seals'].includes(result.effectType)) {
     const payload = result.payload as AdjustManaResult | PayManaResult | AdjustCommandSealsResult;
     if (expression.field === 'requestedAmount') return payload.requestedAmount;
