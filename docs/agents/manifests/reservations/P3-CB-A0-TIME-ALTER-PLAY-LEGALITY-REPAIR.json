@@ -8,7 +8,7 @@
   "requiredBase": "a42b5e1c517141b90f3407773958b0d8afe63264",
   "ruleRulingCommit": "a1328bead4d653991f7b52817686e24e882d50b4",
   "ruleRulingBlob": "5865aa653f614da29361b777569cb8a0f44d0c2f",
-  "status": "GRANTED_PENDING_OWNER_BINDING_AND_NONCONFLICT",
+  "status": "RELEASED_FOR_SCHEDULING",
   "sourcePaths": [
     "data/authoring/masters/master.kiritsugu.json",
     "packages/rules/src/ability/interpreter.ts",
@@ -37,10 +37,21 @@
   "proposedBranch": "codex/b-p3-cb-a0-time-alter-play-legality-repair",
   "proposedWorktree": "D:/fd-validation/b-cb-a0-play-clarification",
   "conditions": "Planner publishes the task manifest and index entry before B writes. K03 loader claim is released by the cited closure register; B still binds a clean exact-main branch and confirms no live competing writer for listed paths. Permission is literal and does not authorize other shared-runtime files or a heavy-test window. Preserve dirty D:/fd user work.",
-  "productionWriteAuthorized": true,
-  "sharedRuntimeWriteAuthorized": true,
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
   "testWindowExclusive": false,
   "promotionAuthorized": false,
   "creditDelta": 0,
-  "release": "Planner releases this writer grant after B freezes one candidate for Reviewer B; no automatic successor grant"
+  "release": "Explicit A0 Owner release under user scheduling authority on 2026-10-29; see releaseRecord. Frozen candidate is unchanged. No A0 shared-runtime writer remains authorized by this reservation.",
+  "releaseRecord": "docs/agents/manifests/releases/P3-CB-A0-TO-DR-P01.json",
+  "releaseNotice": "docs/agents/P3-CB-A0-TO-DR-P01-RELEASE.md",
+  "frozenCandidateSha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+  "releasedSharedPaths": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/loader.ts"
+  ],
+  "schedulingSuccessorTask": "DR-P01",
+  "successorBinding": "Use DR-P01's own exact task/base/branch/worktree and literal scope; this release is not an unrestricted runtime grant or test-window grant.",
+  "otherA0Paths": "Previous A0 source/test/evidence grants are retired at the frozen candidate; they are not transferred to DR-P01.",
+  "authority": "Direct user instruction on 2026-10-29 plus acknowledgement by Codex B as A0 Owner; publication on the original Planner control lineage does not claim an unavailable separate Planner-session acknowledgement."
 }

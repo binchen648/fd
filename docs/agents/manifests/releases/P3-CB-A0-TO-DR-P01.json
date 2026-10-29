@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "fd-explicit-runtime-reservation-release-v1",
+  "recordId": "P3-CB-A0-TO-DR-P01",
+  "issuedDate": "2026-10-29",
+  "observedLocalTime": "2026-10-29T15:28:28.1425753+08:00",
+  "issuer": "Codex B, A0 implementation and frozen-candidate owner",
+  "schedulingAuthority": "Explicit user instruction in this conversation on 2026-10-29 to complete the release/transfer and preserve/disposition historical dirty work",
+  "publicationLineage": "codex/planner-p3-e08-environment-recovery",
+  "publicationBaseSha": "47bd05fe38d46edbb008d81e67b7e8fecfd0158f",
+  "plannerSessionAcknowledgement": "NOT_AVAILABLE_NOT_CLAIMED; user-authorized control publication rather than impersonating a Planner conversation",
+  "previousReservation": {
+    "id": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+    "path": "docs/agents/manifests/reservations/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
+    "inheritedEpoch": "FD-P3-2026-09-23-09",
+    "status": "RELEASED_FOR_SCHEDULING",
+    "a0FurtherRuntimeWritesAuthorized": false
+  },
+  "frozenCandidate": {
+    "sha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+    "branch": "codex/b-p3-cb-a0-time-alter-play-legality-repair",
+    "absoluteWorktree": "D:/fd-validation/b-cb-a0-play-clarification",
+    "localHeadMatches": true,
+    "worktreeCleanAtRelease": true,
+    "remoteHeadMatches": true,
+    "freezeAcknowledgedByOwner": true,
+    "sourceOrReceiptsModifiedByRelease": false,
+    "validationDisposition": "VALIDATION_BLOCKED as recorded by candidate; freeze/release does not approve runtime, waive CI or grant promotion"
+  },
+  "transfer": {
+    "fromTask": "P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR",
+    "toTask": "DR-P01",
+    "status": "EXPLICIT_A0_RELEASE_AND_DR_P01_SCHEDULING_HANDOFF",
+    "paths": [
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/ability/loader.ts"
+    ],
+    "effectiveBoundary": "Publication of the Git commit introducing this record and updating the old reservation on the original Planner remote control branch",
+    "oldReservationIsNoLongerBlocker": true,
+    "successorOwnerBinding": "DR-P01 binds its own authorized task/owner/exact base/branch/worktree before source writes; none is invented here",
+    "successorScope": "Only the literal semantics and paths already authorized for DR-P01; no grant for unrelated functions, content, registry, KPI, evidence classification or other mechanic families",
+    "otherA0PathsTransferred": false,
+    "heavyTestWindowTransferred": false,
+    "acceptanceOrPromotionTransferred": false,
+    "newCompetingReservationMustStillBeChecked": true
+  },
+  "historicalDirtyWork": {
+    "absoluteWorktree": "D:/f49-26",
+    "branch": "codex/b2-fb2-49-r12-fix",
+    "headSha": "26cadeacbdd602e6c512c3b4c0e5adae4e27c46c",
+    "disposition": "PRESERVED_IN_PLACE_FROZEN_LEGACY_WORK_NOT_AN_ACTIVE_SHARED_WRITER",
+    "schedulingDecision": "Under this user instruction the dormant FB2-49 work is not a current interpreter.ts or loader.ts writer reservation and cannot block DR-P01 on that basis. No original-worker session acknowledgement is claimed.",
+    "handling": "No reset, checkout, stash, clean, move, deletion, merge or cherry-pick. Existing uncommitted bytes remain in place; do not import them into DR-P01 or resume their runtime writes without a separate explicit grant.",
+    "files": [
+      {"path": "packages/rules/src/ability/interpreter.ts", "sha256": "e5a35900cee8b5964526afbb96a62eb23b869f5d7cce65acd17717411ae7b2de", "bytes": 278701, "lastWriteUtc": "2026-09-21T05:52:32.2936542Z"},
+      {"path": "packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts", "sha256": "fd6baf29738de00a795377fcd7ae2f08541fc9f23b80cba6ad040e69ab2a41c7", "bytes": 35971, "lastWriteUtc": "2026-09-21T05:51:53.9269896Z"},
+      {"path": "docs/reports/2026-09-21-p3-b2-fb2-49-opponent-close-to-one-interaction-result.md", "sha256": "ec9197277188d405d90bb8a2c8e1f17182a42f0f929f0b7c1720df55196569ac", "bytes": 39875, "lastWriteUtc": "2026-09-21T05:55:51.3888852Z"}
+    ],
+    "observationLimit": "Local Git status, file timestamps and scoped process observation; not proof about all possible remote or future writers"
+  },
+  "controlOnly": true,
+  "runtimeCodeChanged": false,
+  "a0CandidateChanged": false,
+  "migrationCreditDelta": 0,
+  "promotionAuthorized": false,
+  "ownerSessionForwarding": "No available cross-session channel; this durable record publishes the A0 Owner acknowledgement and user-authorized scheduling disposition for Planner and DR-P01 to consume. No fabricated message delivery or separate Planner acknowledgement.",
+  "recordCommit": "The publishing commit introducing this path; exact SHA is returned in the handoff and is queryable through Git history. This field deliberately does not contain a self-referential commit hash."
+}
