@@ -119,4 +119,25 @@ describe('P3 Zouken s2 五百年的活尸 authoritative game-start provisioning'
     partial.state.cards = partial.state.cards.filter((card) => card.definitionId !== TARGETS[1]);
     expect(() => rules.restoreMatchSession(partial)).toThrow(/Invalid deferred ability runtime provenance/);
   });
+
+  it.each([
+    ['s3 cardState missing', TARGETS[0], (state: Session['state']) => { delete state.abilityRuntime!.cardState[provisioned(state, TARGETS[0])[0]!.instanceId]; }],
+    ['s4 cardState missing', TARGETS[1], (state: Session['state']) => { delete state.abilityRuntime!.cardState[provisioned(state, TARGETS[1])[0]!.instanceId]; }],
+    ['s3 cardState active', TARGETS[0], (state: Session['state']) => { state.abilityRuntime!.cardState[provisioned(state, TARGETS[0])[0]!.instanceId]!.active = true; }],
+    ['s4 cardState faceDown', TARGETS[1], (state: Session['state']) => { state.abilityRuntime!.cardState[provisioned(state, TARGETS[1])[0]!.instanceId]!.faceDown = true; }],
+  ] as Array<[string, typeof TARGETS[number], (state: Session['state']) => void]>)('rejects %s without mutating the serialized bytes or replay state', (_label, definitionId, mutate) => {
+    const session = sessionWithZouken();
+    start(session);
+    const snapshot = session.serializeSession();
+    mutate(snapshot.state);
+    const bytesBeforeRestore = JSON.stringify(snapshot);
+    expect(() => rules.restoreMatchSession(snapshot)).toThrow(/Invalid deferred ability runtime provenance/);
+    expect(JSON.stringify(snapshot)).toBe(bytesBeforeRestore);
+
+    const replay = rules.restoreMatchSession(session.serializeSession());
+    mutate(replay.state);
+    const beforeReplay = structuredClone(replay.state);
+    expect(() => start(replay, `zouken-s2-forged-card-state-${definitionId}`)).toThrow();
+    expect(replay.state).toEqual(beforeReplay);
+  });
 });

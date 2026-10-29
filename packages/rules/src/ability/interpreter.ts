@@ -742,12 +742,12 @@ export function isGameStartRuleOverrideSemantic(a: AuthoringAbility): boolean {
   return new Set(rules).size === rules.length;
 }
 
-function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string, sourceId: string): boolean {
+function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, controllerId: string, sourceId: string, requireRuntimeState = false): boolean {
   const state = runtime(s).cardState[instance.instanceId];
   return instance.ownerPlayerId === controllerId && instance.controllerPlayerId === controllerId &&
     instance.zone === 'skill' && instance.visibility.scope === 'owner_only' &&
     instance.visibility.ownerPlayerId === controllerId && instance.generatedBy === sourceId &&
-    state?.active !== true && state?.faceDown !== true;
+    (!requireRuntimeState || (state !== undefined && state.active === false && state.faceDown === false));
 }
 
 function atomicProvisioningTargetOrderIsCanonical(s: GameState, sourceDefinition: ExecutableCardDefinition, targets: string[]): boolean {
@@ -776,7 +776,7 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
       target.ownerId !== controller.masterCardId || target.initialZone !== undefined ||
       (gameStartSkillProvisioningRequiresAtomicCommit(a) && (target.abilities.length === 0 || target.abilities.some((ability) => ability.execution.mode !== 'automatic')))) return false;
     const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
-    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id, sourceId))) return false;
+    if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id, sourceId, gameStartSkillProvisioningRequiresAtomicCommit(a)))) return false;
   }
   return true;
 }
@@ -3903,7 +3903,7 @@ function gameStartSkillProvisioningRuntimeProvenanceValidForRestore(s: GameState
             (gameStartSkillProvisioningRequiresAtomicCommit(ability) && existing.some((cards) => cards.length > 0) && existing.some((cards) => cards.length === 0))) return false;
         for (const [index, cards] of existing.entries()) {
           for (const generated of cards) {
-            if (!provisionedSkillCardIsValid(s, generated, controller.id, source.instanceId)) return false;
+            if (!provisionedSkillCardIsValid(s, generated, controller.id, source.instanceId, gameStartSkillProvisioningRequiresAtomicCommit(ability))) return false;
             const target = r.pack.cards[targets[index]!] as ExecutableCardDefinition | undefined;
             if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' || target.ownerId !== controller.masterCardId || target.initialZone !== undefined ||
                 (gameStartSkillProvisioningRequiresAtomicCommit(ability) && (target.abilities.length === 0 || target.abilities.some((candidate) => candidate.execution.mode !== 'automatic')))) return false;

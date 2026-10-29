@@ -14,13 +14,14 @@
 - Added an explicit atomic game-start provisioning marker to the existing shape-based provisioning primitive. The s2 source must provision exactly two canonical next skills in owner archive order (`s3` then `s4`); the targets are deferred from initial placement and generated in one transactional resolution.
 - Added preflight rejection for wrong source/owner, target order, missing/inert/foreign/duplicate/partial targets, non-game-start envelopes, and forged provenance before event/revision mutation.
 - Added serialized-runtime provenance validation requiring generated target card metadata and exactly matching `card_created` evidence for every provisioned target.
+- Runtime provenance now requires a present `cardState` entry with explicit `active: false` and `faceDown: false`; missing, active, or face-down generated s3/s4 state is rejected before replay/restore mutation.
 - Added real seven-player MatchSession, replay/idempotence, serialize/restore, and forged envelope regression coverage.
 
 ## Verification
 
 Passing commands:
 
-- `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s2-undead-provisioning.test.ts packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts` — 21/21.
+- `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s2-undead-provisioning.test.ts packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts` — 25/25.
 - `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s1-mana-bootstrap.test.ts packages/rules/tests/regression/p3-zouken-s3-creator.test.ts packages/rules/tests/regression/p3-zouken-s4-pseudo-vampire.test.ts packages/rules/tests/match-session.test.ts` — 48/48.
 - `npm run typecheck`.
 - `npm run content:validate` — 14 masters, 7 servants, 20 events, 0 blocking issues.
