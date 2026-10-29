@@ -11,7 +11,7 @@ import { checkExtendedCondition, resolveExtendedEffect } from './extended-effect
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, situationForbidsAttribute } from '../core/rule-overrides';
 import { node, nodes, str } from './loader';
-import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
+import { gameStartSkillProvisioningRequiresAtomicCommit, isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
 import { hasRequiredAdditionalPlayMarker } from './required-additional-play';
 import { shuffleOwnedDeckDeterministically } from './deterministic-deck-order';
 import {
@@ -750,6 +750,14 @@ function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, contr
     state?.active !== true && state?.faceDown !== true;
 }
 
+function atomicProvisioningTargetOrderIsCanonical(s: GameState, sourceDefinition: ExecutableCardDefinition, targets: string[]): boolean {
+  if (targets.length !== 2 || !sourceDefinition.ownerId) return false;
+  const character = runtime(s).pack.characters?.[sourceDefinition.ownerId];
+  const sourceIndex = character?.cardIds.indexOf(sourceDefinition.id) ?? -1;
+  const canonical = sourceIndex >= 0 ? character?.cardIds.slice(sourceIndex + 1, sourceIndex + 3) : undefined;
+  return !!canonical && canonical.length === 2 && canonical[0] === targets[0] && canonical[1] === targets[1];
+}
+
 function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
   const source = card(s, sourceId); const controller = player(s, source.controllerPlayerId);
   const sourceDefinition = definition(s, sourceId) as ExecutableCardDefinition | undefined;
@@ -757,11 +765,16 @@ function gameStartSkillProvisioningPreflight(s: GameState, sourceId: string, a: 
     sourceDefinition.ownerId !== controller.masterCardId) return false;
   const targets = a.effects[0]?.targetDefinitionIds;
   if (!Array.isArray(targets)) return false;
+  if (gameStartSkillProvisioningRequiresAtomicCommit(a) && !atomicProvisioningTargetOrderIsCanonical(s, sourceDefinition, targets.filter((target): target is string => typeof target === 'string'))) return false;
+  const existingTargetCounts = targets.map((definitionId) => s.cards.filter((candidate) => candidate.definitionId === definitionId).length);
+  if (gameStartSkillProvisioningRequiresAtomicCommit(a) && existingTargetCounts.some((count) => count > 0) &&
+      existingTargetCounts.some((count) => count === 0)) return false;
   for (const definitionId of targets) {
     if (typeof definitionId !== 'string') return false;
     const target = runtime(s).pack.cards[definitionId] as ExecutableCardDefinition | undefined;
     if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' ||
-      target.ownerId !== controller.masterCardId || target.initialZone !== undefined) return false;
+      target.ownerId !== controller.masterCardId || target.initialZone !== undefined ||
+      (gameStartSkillProvisioningRequiresAtomicCommit(a) && (target.abilities.length === 0 || target.abilities.some((ability) => ability.execution.mode !== 'automatic')))) return false;
     const existing = s.cards.filter((candidate) => candidate.definitionId === definitionId);
     if (existing.length > 1 || (existing.length === 1 && !provisionedSkillCardIsValid(s, existing[0]!, controller.id, sourceId))) return false;
   }
@@ -3340,6 +3353,16 @@ function consumeDelayedActivations(s: GameState, event: AbilityEvent): void {
 function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
+  if (event.type === 'game_start') {
+    for (const source of s.cards) {
+      for (const ability of definition(s, source.instanceId)?.abilities ?? []) {
+        if (isGameStartSkillProvisioningCandidate(ability) && ability.effects.some((effect) => effect.atomic === true) &&
+            (!isGameStartSkillProvisioningSemantic(ability) || !gameStartSkillProvisioningPreflight(s, source.instanceId, ability))) {
+          reject('invalid_event', 'Atomic game-start skill provisioning provenance is invalid');
+        }
+      }
+    }
+  }
   r.processedEvents.push(event.id);
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
   const triggered = collectTriggeredAbilities(s, event);
@@ -3855,6 +3878,49 @@ function canonicalBattleScoringReceiptsValidForRestore(s: GameState): boolean {
   return true;
 }
 
+function gameStartSkillProvisioningRuntimeProvenanceValidForRestore(s: GameState): boolean {
+  const r = runtime(s);
+  const provisioningAbilities = new Map<string, Array<{ sourceDefinitionId: string; ability: AuthoringAbility }>>();
+  for (const [sourceDefinitionId, sourceDefinition] of Object.entries(r.pack.cards)) {
+    for (const ability of sourceDefinition.abilities) {
+      if (!isGameStartSkillProvisioningCandidate(ability)) continue;
+      if (!isGameStartSkillProvisioningSemantic(ability)) return false;
+      provisioningAbilities.set(sourceDefinitionId, [...(provisioningAbilities.get(sourceDefinitionId) ?? []), { sourceDefinitionId, ability }]);
+    }
+  }
+  for (const [sourceDefinitionId, entries] of provisioningAbilities) {
+    for (const source of s.cards.filter((candidate) => candidate.definitionId === sourceDefinitionId)) {
+      const controller = s.players.find((candidate) => candidate.id === source.controllerPlayerId);
+      if (!controller || source.ownerPlayerId !== controller.id || source.zone !== 'skill' || source.visibility.scope !== 'owner_only' ||
+          source.visibility.ownerPlayerId !== controller.id || (r.pack.cards[sourceDefinitionId] as ExecutableCardDefinition).ownerId !== controller.masterCardId) return false;
+      for (const { ability } of entries) {
+        const targets = ability.effects[0]?.targetDefinitionIds;
+        if (!Array.isArray(targets) || targets.some((target) => typeof target !== 'string')) return false;
+        const sourceDefinition = r.pack.cards[sourceDefinitionId] as ExecutableCardDefinition;
+        if (gameStartSkillProvisioningRequiresAtomicCommit(ability) && !atomicProvisioningTargetOrderIsCanonical(s, sourceDefinition, targets as string[])) return false;
+        const existing = targets.map((target) => s.cards.filter((candidate) => candidate.definitionId === target));
+        if (existing.some((cards) => cards.length > 1) ||
+            (gameStartSkillProvisioningRequiresAtomicCommit(ability) && existing.some((cards) => cards.length > 0) && existing.some((cards) => cards.length === 0))) return false;
+        for (const [index, cards] of existing.entries()) {
+          for (const generated of cards) {
+            if (!provisionedSkillCardIsValid(s, generated, controller.id, source.instanceId)) return false;
+            const target = r.pack.cards[targets[index]!] as ExecutableCardDefinition | undefined;
+            if (!target || target.mode !== 'automatic' || target.cardType !== 'master_skill' || target.ownerId !== controller.masterCardId || target.initialZone !== undefined ||
+                (gameStartSkillProvisioningRequiresAtomicCommit(ability) && (target.abilities.length === 0 || target.abilities.some((candidate) => candidate.execution.mode !== 'automatic')))) return false;
+            const events = r.events.filter((event) => event.type === 'card_created' && event.sourceCardId === source.instanceId &&
+              event.abilityId === ability.id && event.cardInstanceId === generated.instanceId && event.toZone === 'skill');
+            if (events.length !== 1) return false;
+          }
+        }
+        const targetSet = new Set(targets);
+        const provisioningEvents = r.events.filter((event) => event.type === 'card_created' && event.sourceCardId === source.instanceId && event.abilityId === ability.id);
+        if (provisioningEvents.some((event) => !targetSet.has(s.cards.find((candidate) => candidate.instanceId === event.cardInstanceId)?.definitionId ?? ''))) return false;
+      }
+    }
+  }
+  return true;
+}
+
 function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
   const overrides = s.ruleOverrides;
   if (!overrides) return true;
@@ -3972,7 +4038,7 @@ function battleDeferredEnvelopeProvenanceValidForRestore(s: GameState): boolean 
 }
 
 export function isDeferredAbilityRuntimeProvenanceValidForRestore(s: GameState): boolean {
-  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s) && canonicalBattleScoringReceiptsValidForRestore(s) && zoukenFounderRuntimeProvenanceValidForRestore(s) && zoukenS4RuntimeProvenanceValidForRestore(s) && battleDeferredEnvelopeProvenanceValidForRestore(s); } catch { return false; }
+  try { return definitionDeclarationDeckRuntimeValidForRestore(s) && manaCapRuntimeProvenanceValidForRestore(s) && gameStartSkillProvisioningRuntimeProvenanceValidForRestore(s) && canonicalBattleScoringReceiptsValidForRestore(s) && zoukenFounderRuntimeProvenanceValidForRestore(s) && zoukenS4RuntimeProvenanceValidForRestore(s) && battleDeferredEnvelopeProvenanceValidForRestore(s); } catch { return false; }
 }
 /** The transport should expose only dispatch/view; phase and event hooks are trusted server operations. */
 export function createAbilitySession(initialState: GameState) {

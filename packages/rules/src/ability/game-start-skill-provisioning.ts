@@ -10,7 +10,12 @@ function isExactGameStartSkillProvisioningEffect(effect: RuleNode): boolean {
     Array.isArray(targets) && targets.length > 0 &&
     targets.every((target) => typeof target === 'string' && target.length > 0) &&
     new Set(targets).size === targets.length &&
-    Object.keys(effect).every((key) => ['type', 'player', 'targetDefinitionIds'].includes(key));
+    (effect.atomic === undefined || effect.atomic === true) &&
+    Object.keys(effect).every((key) => ['type', 'player', 'targetDefinitionIds', 'atomic'].includes(key));
+}
+
+export function gameStartSkillProvisioningRequiresAtomicCommit(ability: AuthoringAbility): boolean {
+  return isGameStartSkillProvisioningSemantic(ability) && ability.effects[0]?.atomic === true;
 }
 
 export function isGameStartSkillProvisioningSemantic(ability: AuthoringAbility): boolean {

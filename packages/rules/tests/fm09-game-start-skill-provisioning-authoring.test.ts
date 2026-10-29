@@ -80,11 +80,14 @@ describe('P3-FM09 corrected shared game-start skill provisioning', () => {
     }
   });
 
-  it('does not reclassify Caules/Nanaya/Zouken or Fujino s2 as shared provisioning', () => {
+  it('keeps Zouken s2 as a separate canonical provisioning contract', () => {
     const ids = new Set(loaded().authoringArchives.flatMap((archive: any) => archive.cards).map((card: any) => card.id));
     expect(ids.has('master.caules.skill.s1')).toBe(false);
     expect(ids.has('master.shiki-nanaya.skill.s1')).toBe(false);
-    expect(ids.has('master.zouken.skill.s2')).toBe(false);
+    expect(ids.has('master.zouken.skill.s2')).toBe(true);
+    const zouken = loaded().authoringArchives.find((archive: any) => archive.id === 'master.zouken');
+    const s2 = zouken.cards.find((card: any) => card.id === 'master.zouken.skill.s2');
+    expect(rules.isGameStartSkillProvisioningSemantic(rules.loadAuthoringJson(zouken).cards[s2.id]!.abilities[0])).toBe(true);
     expect(ids.has('master.fujino.skill.s2')).toBe(false);
   });
 });

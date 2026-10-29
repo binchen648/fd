@@ -115,6 +115,94 @@
       }
     },
     {
+      "id": "master.zouken.skill.s2",
+      "aliases": [
+        "s2"
+      ],
+      "legacyId": "s2",
+      "name": "五百年的活尸",
+      "cardType": "master_skill",
+      "owner": {
+        "type": "master",
+        "id": "master.zouken"
+      },
+      "printedText": "你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+      "cardFace": {
+        "typeLabel": "被动",
+        "attributes": [],
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "zouken.undead.game-start-provision",
+          "kind": "forced_trigger",
+          "printedClause": "游戏开始时，你是大圣杯的【创造者】并怀揣【五百年的执念】。",
+          "activation": {
+            "trigger": "game_start"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "effects": [
+            {
+              "type": "provision_skill_cards",
+              "player": "controller",
+              "targetDefinitionIds": [
+                "master.zouken.skill.s3",
+                "master.zouken.skill.s4"
+              ],
+              "atomic": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        }
+      ],
+      "phase3Evidence": {
+        "sourceTextSha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3",
+        "sourceReferences": [
+          {
+            "kind": "development-text",
+            "document": "Fate_Domination-开发版/data_masters.js",
+            "locator": "line=19#record=m_zouken.s2",
+            "sha256": "C596AF5730846EF9092375F18C4200B84F032028DC2E8F5483377D8DDCC22825"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版/images/masters/间桐脏砚.png",
+            "locator": "master.zouken/间桐脏砚",
+            "sha256": "4E4F3F5607D7B39BC16F4ACB01831976E4036F38EBC180514C4E6BC28F75C6B9"
+          }
+        ],
+        "clauseSources": [
+          {
+            "locator": "Fate_Domination-开发版/data_masters.js#line=19#record=m_zouken.s2.desc",
+            "sha256": "8b8f4b24424a8600807fd42c0965fad94bd6f9dcdc9917efe10f1bff8b17f3e3"
+          }
+        ],
+        "acceptedContracts": {
+          "derivedSkillProvisioning": "P3-ZOUKEN-S2-GAME-START-DERIVED-SKILLS"
+        }
+      },
+      "verification": {
+        "implementationStatus": "complete"
+      }
+    },
+    {
       "id": "master.zouken.skill.s3",
       "aliases": [
         "s3"
