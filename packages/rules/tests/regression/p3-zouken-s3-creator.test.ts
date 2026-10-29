@@ -248,6 +248,42 @@ describe('P3 Zouken s3 creator', () => {
     expect(Object.keys(restored.state.abilityRuntime!.canonicalBattleScoringReceipts ?? {})).toHaveLength(3);
   });
 
+  it('restores continuous same-source victories across three real rounds', () => {
+    const session = rules.createMatchSession({ seed: 20261029, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
+    const state = session.state;
+    state.players.forEach((entry) => {
+      entry.locationId = entry.id === 'p1' || entry.id === 'p2' ? 'miyama_town' : 'recon';
+      entry.vp = 0;
+      entry.militaryResult = 0;
+    });
+    state.players[0]!.masterCardId = 'master.zouken';
+    state.cards = [{ instanceId: SOURCE, definitionId: S3, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'field', visibility: { scope: 'public' } }];
+    state.abilityRuntime!.cardState[SOURCE] = { active: true, faceDown: false, playedRound: 1 };
+    for (let round = 1; round <= 3; round++) {
+      state.players[0]!.mana = 8;
+      state.round.activePhase = 'action';
+      state.round.prioritySeat = 1;
+      rules.executeAbility(state, context(ACTION, { X: 1 }));
+      state.round.activePhase = 'battle';
+      (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+      if (round < 3) {
+        (session as unknown as { startRound: (nextRound: number) => void }).startRound(round + 1);
+        state.players.forEach((entry) => { entry.locationId = entry.id === 'p1' || entry.id === 'p2' ? 'miyama_town' : 'recon'; });
+      }
+    }
+    const settled = state.abilityRuntime!.events.filter((event) => event.type === 'zouken_s3_victory_points_settled');
+    expect(settled).toHaveLength(3);
+    expect(settled.map((event) => event.triggerEventId)).toEqual([
+      'battle-phase:1:battle:miyama_town:1:result:win:p1',
+      'battle-phase:2:battle:miyama_town:2:result:win:p1',
+      'battle-phase:3:battle:miyama_town:3:result:win:p1',
+    ]);
+    expect(state.ruleOverrides!.zoukenFounderVictorySettledBySource?.[SOURCE]).toBe(3);
+    const restored = rules.restoreMatchSession(session.serializeSession());
+    expect(restored.state.players.find((entry) => entry.id === 'p1')!.vp).toBe(state.players.find((entry) => entry.id === 'p1')!.vp);
+    expect(restored.state.ruleOverrides!.zoukenFounderVictorySettledBySource?.[SOURCE]).toBe(3);
+  });
+
   it('fails closed for inactive/foreign sources and forged restore ledgers', () => {
     const state = setup();
     state.abilityRuntime!.cardState[SOURCE]!.active = false;

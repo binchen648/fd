@@ -3628,16 +3628,17 @@ function zoukenFounderRuntimeProvenanceValidForRestore(s: GameState): boolean {
     if (!powerEntry || powerEntry.sourceCardId !== sourceId || powerEntry.round < round ||
         !runtime(s).events.some((event) => event.type === 'zouken_s3_power_conversion' &&
           event.sourceCardId === sourceId && event.playerId === source.controllerPlayerId)) return false;
-    const victoryEvent = runtime(s).events.find((event) => event.type === 'zouken_s3_victory_points_settled' &&
-      event.sourceCardId === sourceId && event.playerId === source.controllerPlayerId &&
-      event.abilityId === ZOUKEN_S3_WIN_ID && typeof event.triggerEventId === 'string');
     const linkedReceipt = Object.values(runtime(s).canonicalBattleScoringReceipts ?? {}).find((receipt) => {
       const receiptRound = Number(receipt.battlePhaseResolutionId.slice('battle-phase:'.length));
       return receiptRound === round && receipt.winnerPlayerIds.includes(source.controllerPlayerId) &&
-        victoryEvent?.triggerEventId === `${receipt.resultId}:win:${source.controllerPlayerId}` &&
-        runtime(s).processedEvents.includes(receipt.resultId) && runtime(s).processedEvents.includes(victoryEvent.triggerEventId);
+        runtime(s).processedEvents.includes(receipt.resultId) &&
+        runtime(s).processedEvents.includes(`${receipt.resultId}:win:${source.controllerPlayerId}`) &&
+        runtime(s).events.some((event) => event.type === 'zouken_s3_victory_points_settled' &&
+          event.sourceCardId === sourceId && event.playerId === source.controllerPlayerId &&
+          event.abilityId === ZOUKEN_S3_WIN_ID &&
+          event.triggerEventId === `${receipt.resultId}:win:${source.controllerPlayerId}`);
     });
-    if (!victoryEvent || !linkedReceipt) return false;
+    if (!linkedReceipt) return false;
   }
   return true;
 }
