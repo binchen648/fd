@@ -3287,6 +3287,36 @@ Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
 - Fresh reviewer coverage equals A material coverage except `generatedAt`: archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, source fingerprint `3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315`.
 - This acceptance does not promote broad Movement, generic Target Selection, movement costs/conditions/modifiers, forced/third-party movement, reporter taxonomy changes, or any unrelated F1 identity.
 
+## TASK P3-A-ZOUKEN-S2-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-zouken-s2-acceptance-sync-20261029`
+Base: exact accepted Candidate `0f0141eee59e8968533caaaec58891dbf48b1887`
+Read: `docs/reports/2026-10-29-p3-a-zouken-s2-acceptance-synchronization.md`
+
+Result: the independent Reviewer returned `MIGRATION_ACCEPTED` for exactly
+`master.zouken.skill.s2`. The Candidate closes the shared generic retained
+provisioning regression and s2 cardState restore/replay provenance blocker;
+no other Zouken identity or owner is promoted by this sync.
+
+Formal migration accounting advances exactly `174/944 -> 175/944` (`+1`),
+leaving `769`. Duplicate canonical IDs and removals are `0`. The Candidate
+remains unmerged and no credit is assigned to s1, s3, s4, s5, ascension, or
+any unrelated owner.
+
+Reviewer receipt records `77/77` selected tests. An initial concurrent run had
+four 5-second MatchSession timeouts under contention; the isolated rerun
+passed all 26 MatchSession tests without code changes. Typecheck,
+content:validate, generated determinism, and diff-check also passed. FM09's
+`authoringMasterRuleFiles` assertion conflict remains a parent-baseline issue
+and is not changed by this sync.
+
+Reconstruction queue boundary: do not reconstruct or re-credit Zouken s2.
+Future work must begin from the synchronized `175/944` frontier and select a
+separately authorized identity or capability; any remaining Zouken identity
+requires its own exact Candidate and independent review.
+
 ## Prompt Templates
 
 Codex A startup prompt:

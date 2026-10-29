@@ -6,7 +6,43 @@
 - Canonical Source: `docs/rules/FD-Game-Rules-Final.md` plus printed card text in canonical authoring archives
 - Acceptance Source: `docs/plans/fd-rules-conformance-and-acceptance.md`
 - Related Audits: `docs/audits/fd-skill-rule-normalization-audit.md`; `docs/audits/fd-skill-primitive-conformance-matrix.md`
-- Last Verified: 2026-09-08
+- Last Verified: 2026-10-29
+
+## Current-Line Acceptance Overlay — 2026-10-29
+
+The exact `master.zouken.skill.s4` runtime Candidate is independently
+`MIGRATION_ACCEPTED` and is synchronized at formal frozen accounting
+`174/944` (remaining `770`). The accepted route covers only Zouken s4's
+authoritative round mana threshold, true battle winner/loser siphon with
+recon fallback, fixed seven-mana movement, and persistent per-phase battle
+receipt-manifest validation through MatchSession serialize/restore/replay.
+This is an identity-level overlay, not promotion of broader Battle Result,
+Resource Numeric, Movement, Target Selection, Result Binding, or
+Special-Subsystem families.
+
+The accepted Candidate is `19ce83f071aac8e91c835f8c21be1e3f3516428c`; the
+independent Reviewer evidence is
+`E:\\Codex\\FD\\zouken-s4-reviewer-19ce83f\\review.md` with SHA-256
+`054E6AD52FB5D856D229B3688857B553C957B4D337C79671AB10A881C342264C`.
+Zouken s1, s3, s5, s2, ascension, and all other owner identities are not
+credited by this overlay.
+
+The exact `master.zouken.skill.s2` runtime Candidate is independently
+`MIGRATION_ACCEPTED` and is synchronized at formal frozen accounting
+`175/944` (remaining `769`). The accepted route covers only canonical
+game-start atomic/idempotent s3-then-s4 derived skill provisioning,
+same-owner/generatedBy/cardState/card-created provenance, fail-closed
+MatchSession serialize/restore/replay, and the generic retained-target
+regressions required by the source primitive. This is an identity-level
+overlay, not promotion of broader Game Start, Provisioning, Card Zone,
+Ownership, Visibility, Replay, or generic semantic families.
+
+The accepted Candidate is `0f0141eee59e8968533caaaec58891dbf48b1887`; the
+independent Reviewer evidence is
+`E:\\Codex\\FD\\zouken-s2-reviewer-0f0141\\review.md` with SHA-256
+`E157101F8D2DB0FB7D25A67CFB65A09268C7630CBA006C94D140B1AE83915A68`.
+Zouken s1, s3, s4, s5, ascension, and all other owner identities are not
+credited by this overlay.
 
 This matrix is a planning audit, not acceptance evidence. Counts below are broad mechanic-family and risk-summary counts. Multi-family membership is allowed, but the family view must not be used as the source of truth for Trigger Gateway, Lifecycle Policy Gateway, Interaction/Pending Gateway, or Dependency DAG priority.
 
