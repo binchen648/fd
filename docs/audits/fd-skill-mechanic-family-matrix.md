@@ -6,7 +6,24 @@
 - Canonical Source: `docs/rules/FD-Game-Rules-Final.md` plus printed card text in canonical authoring archives
 - Acceptance Source: `docs/plans/fd-rules-conformance-and-acceptance.md`
 - Related Audits: `docs/audits/fd-skill-rule-normalization-audit.md`; `docs/audits/fd-skill-primitive-conformance-matrix.md`
-- Last Verified: 2026-09-08
+- Last Verified: 2026-10-29
+
+## Current-Line Acceptance Overlay — 2026-10-29
+
+The exact `master.zouken.skill.s3` runtime Candidate is independently
+`MIGRATION_ACCEPTED` and is synchronized at formal frozen accounting
+`173/944` (remaining `771`). The accepted route covers only Zouken s3's
+source-bound X payment/power conversion and authoritative scored-victory
+settlement, including source+round+receipt restore provenance. This is an
+identity-level overlay, not promotion of the broader `BATTLE_RESULT`,
+`POWER`, `RESULT_DEPENDENT_COMPOSITION`, or `SPECIAL_SUBSYSTEM` families.
+
+The accepted Candidate is `67bbe571cb460d51b9e0b9a92acc07f841919e32`; the
+independent Reviewer evidence is
+`E:\\Codex\\FD\\zouken-s3-reviewer-67bbe571\\review.md` with SHA-256
+`37BBEB427AC64B86FA30EACAAE79163152A729FDEFF67715CBBF14EBFBC77F80`.
+Zouken s1, s5, s2, ascension, s4, and all other owner identities are not
+credited by this overlay.
 
 This matrix is a planning audit, not acceptance evidence. Counts below are broad mechanic-family and risk-summary counts. Multi-family membership is allowed, but the family view must not be used as the source of truth for Trigger Gateway, Lifecycle Policy Gateway, Interaction/Pending Gateway, or Dependency DAG priority.
 
