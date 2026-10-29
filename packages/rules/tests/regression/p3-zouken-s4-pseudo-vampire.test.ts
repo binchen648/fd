@@ -59,6 +59,43 @@ function appendAuthoritativeBattle(state: GameState): { event: AbilityEvent; bat
   return { event, battleId, resultId };
 }
 
+function realSevenPlayerS4Session(): ReturnType<typeof rules.createMatchSession> {
+  const session = rules.createMatchSession({ seed: 20261029, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const state = session.state;
+  state.eventPlacements = [];
+  state.currentSituationModifiers = [];
+  for (const entry of state.players) {
+    entry.locationId = ['p1', 'p2'].includes(entry.id) ? 'miyama_town' : ['p3', 'p4'].includes(entry.id) ? 'shinto' : 'recon';
+    entry.vp = 0;
+    entry.militaryResult = 0;
+  }
+  state.players[0]!.masterCardId = 'master.zouken';
+  state.players[0]!.mana = 4;
+  state.players[1]!.mana = 5;
+  state.cards.push({
+    instanceId: SOURCE,
+    definitionId: S4,
+    ownerPlayerId: 'p1',
+    controllerPlayerId: 'p1',
+    zone: 'field',
+    visibility: { scope: 'public' },
+  });
+  state.abilityRuntime!.cardState[SOURCE] = { active: true, faceDown: false, playedRound: 1 };
+  for (const [playerId, definitionId] of [
+    ['p1', 'basic.strength.5'], ['p3', 'basic.strength.5'],
+    ['p2', 'basic.strength.2'], ['p4', 'basic.strength.2'],
+  ] as const) {
+    const attack = state.cards.find((card) => card.ownerPlayerId === playerId && ['hand', 'deck'].includes(card.zone));
+    if (!attack) throw new Error(`Missing attack fixture card for ${playerId}`);
+    attack.definitionId = definitionId;
+    attack.zone = 'attack_area';
+    attack.visibility = { scope: 'public' };
+    state.abilityRuntime!.cardState[attack.instanceId] = { active: true, faceDown: false, playedRound: 1 };
+  }
+  state.round.activePhase = 'battle';
+  return session;
+}
+
 describe('P3 Zouken s4 pseudo-vampire current-line contract', () => {
   it('is present in generated content and the live seven-player MatchSession', () => {
     expect(generatedContent.rules.cards[S4]).toBeDefined();
@@ -106,6 +143,36 @@ describe('P3 Zouken s4 pseudo-vampire current-line contract', () => {
     expect(state.players[0]!.mana).toBe(7);
     expect(state.players[1]!.mana).toBe(2);
     expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(structuredClone(state))).toBe(true);
+  });
+
+  it('settles a real seven-player multi-battle terminal from per-battle receipts after scoring clears battleResults', () => {
+    const session = realSevenPlayerS4Session();
+    const state = session.state;
+    (session as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+
+    expect(state.battleResults).toEqual([]);
+    const receipts = Object.values(state.abilityRuntime!.canonicalBattleScoringReceipts ?? {});
+    expect(receipts.map((receipt) => receipt.battleId)).toEqual([
+      'battle-phase:1:battle:miyama_town:1',
+      'battle-phase:1:battle:shinto:2',
+    ]);
+    expect(receipts.map((receipt) => receipt.winnerPlayerIds)).toEqual([['p1'], ['p3']]);
+    expect(state.abilityRuntime!.events).toEqual(expect.arrayContaining([
+      expect.objectContaining({ type: 'zouken_s4_battle_mana_settled', playerId: 'p1', sourcePlayerId: 'p2', battleId: 'battle-phase:1:battle:miyama_town:1' }),
+    ]));
+    expect(state.abilityRuntime!.events.filter((event) => event.type === 'zouken_s4_battle_mana_settled')).toHaveLength(1);
+    expect(state.players.find((player) => player.id === 'p1')!.mana).toBe(7);
+    expect(state.players.find((player) => player.id === 'p2')!.mana).toBe(2);
+
+    const restored = rules.restoreMatchSession(session.serializeSession());
+    expect(restored.state.battleResults).toEqual([]);
+    expect(restored.state.abilityRuntime!.events.filter((event) => event.type === 'zouken_s4_battle_mana_settled')).toHaveLength(1);
+    expect(rules.isDeferredAbilityRuntimeProvenanceValidForRestore(restored.state)).toBe(true);
+
+    const forged = session.serializeSession();
+    const firstResultId = receipts[0]!.resultId;
+    forged.state.abilityRuntime!.canonicalBattleScoringReceipts![firstResultId]!.winnerPlayerIds = ['p2'];
+    expect(() => rules.restoreMatchSession(forged)).toThrow(/Invalid deferred ability runtime provenance/);
   });
 
   it('uses the fixed three-mana fallback when at recon or no legal loser exists', () => {
