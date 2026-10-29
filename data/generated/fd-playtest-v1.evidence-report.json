@@ -1114,13 +1114,26 @@
       ]
     },
     {
+      "entityId": "master.zouken.skill.s4",
+      "displayName": "五百年的执念",
+      "entityKind": "master_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/间桐脏砚.htm",
+      "imagePath": "data/authoring/masters/zouken.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
       "entityId": "master.zouken.skill.s5",
       "displayName": "间桐家的宗主",
       "entityKind": "master_skill",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/间桐脏砚.htm",
       "imagePath": "data/authoring/masters/zouken.png",
-      "imageIndex": 3,
+      "imageIndex": 4,
       "reviewedAgainstImage": true,
       "issueCodes": [
         "SOURCE_ASSET_UNVERIFIED"
@@ -2214,6 +2227,13 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "master.zouken.skill.s3 source image was not verified in this checkout: data/authoring/masters/zouken.png",
       "entityId": "master.zouken.skill.s3",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "master.zouken.skill.s4 source image was not verified in this checkout: data/authoring/masters/zouken.png",
+      "entityId": "master.zouken.skill.s4",
       "field": "source.imagePath",
       "blocking": false
     },
