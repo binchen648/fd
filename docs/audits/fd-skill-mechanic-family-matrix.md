@@ -6,7 +6,26 @@
 - Canonical Source: `docs/rules/FD-Game-Rules-Final.md` plus printed card text in canonical authoring archives
 - Acceptance Source: `docs/plans/fd-rules-conformance-and-acceptance.md`
 - Related Audits: `docs/audits/fd-skill-rule-normalization-audit.md`; `docs/audits/fd-skill-primitive-conformance-matrix.md`
-- Last Verified: 2026-09-08
+- Last Verified: 2026-10-29
+
+## Current-Line Acceptance Overlay — 2026-10-29
+
+The exact `master.zouken.skill.s4` runtime Candidate is independently
+`MIGRATION_ACCEPTED` and is synchronized at formal frozen accounting
+`174/944` (remaining `770`). The accepted route covers only Zouken s4's
+authoritative round mana threshold, true battle winner/loser siphon with
+recon fallback, fixed seven-mana movement, and persistent per-phase battle
+receipt-manifest validation through MatchSession serialize/restore/replay.
+This is an identity-level overlay, not promotion of the broader Battle Result,
+Resource Numeric, Movement, Target Selection, Result Binding, or
+Special-Subsystem families.
+
+The accepted Candidate is `19ce83f071aac8e91c835f8c21be1e3f3516428c`; the
+independent Reviewer evidence is
+`E:\\Codex\\FD\\zouken-s4-reviewer-19ce83f\\review.md` with SHA-256
+`054E6AD52FB5D856D229B3688857B553C957B4D337C79671AB10A881C342264C`.
+Zouken s1, s3, s5, s2, ascension, and all other owner identities are not
+credited by this overlay.
 
 This matrix is a planning audit, not acceptance evidence. Counts below are broad mechanic-family and risk-summary counts. Multi-family membership is allowed, but the family view must not be used as the source of truth for Trigger Gateway, Lifecycle Policy Gateway, Interaction/Pending Gateway, or Dependency DAG priority.
 

@@ -3287,6 +3287,30 @@ Permitted final status: `MIGRATION_ACCEPTED` or `REVIEW_BLOCKED`.
 - Fresh reviewer coverage equals A material coverage except `generatedAt`: archives `39`, cards `71`, abilities `130`, raw `new=12 / legacyExecute=3 / legacyResolve=87 / dual=0 / notClassifiable=28 / taxonomyWarnings=104`, source fingerprint `3e8cc78e550b61c3924f91fcfeb1b6c304c586beed9e07ee18f60403d94eb315`.
 - This acceptance does not promote broad Movement, generic Target Selection, movement costs/conditions/modifiers, forced/third-party movement, reporter taxonomy changes, or any unrelated F1 identity.
 
+## TASK P3-A-ZOUKEN-S4-ACCEPTANCE-SYNC
+
+Owner: Codex A
+Status: `SYNCHRONIZED`
+Branch: `codex/a-p3-zouken-s4-acceptance-sync-20261029`
+Base: exact accepted Candidate `19ce83f071aac8e91c835f8c21be1e3f3516428c`
+Read: `docs/reports/2026-10-29-p3-a-zouken-s4-acceptance-synchronization.md`
+
+Result: the independent Reviewer returned `MIGRATION_ACCEPTED` for exactly
+`master.zouken.skill.s4`. The Candidate closes the terminal multi-battle
+provenance blocker with a persistent ordered phase receipt manifest and
+fail-closed MatchSession serialize/restore/replay validation. No other Zouken
+identity or owner is promoted by this sync.
+
+Formal migration accounting advances exactly `173/944 -> 174/944` (`+1`),
+leaving `770`. Duplicate canonical IDs and removals are `0`. The Candidate
+remains unmerged and no credit is assigned to s1, s3, s5, s2, ascension, or
+any unrelated owner.
+
+Reconstruction queue boundary: do not reconstruct or re-credit Zouken s4.
+Future work must begin from the synchronized `174/944` frontier and select a
+separately authorized identity or capability; any remaining Zouken identity
+requires its own exact Candidate and independent review.
+
 ## Prompt Templates
 
 Codex A startup prompt:
