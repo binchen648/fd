@@ -48,6 +48,16 @@ function appendAuthoritativeBattle(state: GameState): { event: AbilityEvent; bat
     scoringParticipantIds: ['p1', 'p2'], scoringWinnerPlayerIds: ['p1'], battleOrdinal: 1,
   };
   state.abilityRuntime!.canonicalBattleScoringReceipts = { [resultId]: receipt };
+  state.abilityRuntime!.canonicalBattleScoringPhaseManifests = {
+    'battle-phase:1': {
+      battlePhaseResolutionId: 'battle-phase:1',
+      battleIds: [battleId],
+      resultIds: [resultId],
+      scoringReceiptIds: ['battle-phase:1:score:miyama_town'],
+      battleParticipantIds: ['p1', 'p2'],
+      battleOutcomes: [{ battlefieldId: 'miyama_town', winnerPlayerIds: ['p1'] }],
+    },
+  };
   state.abilityRuntime!.processedEvents.push(resultId);
   state.log.push({ type: 'battle_scored', message: resultId, payload: { ...receipt } });
   state.log.push({ type: 'battle_scored_canonical', message: resultId, payload: { ...receipt } });
@@ -94,6 +104,27 @@ function realSevenPlayerS4Session(): ReturnType<typeof rules.createMatchSession>
   }
   state.round.activePhase = 'battle';
   return session;
+}
+
+function replayableTerminal(session: ReturnType<typeof rules.createMatchSession>): { state: GameState; event: AbilityEvent } {
+  const state = structuredClone(session.state);
+  const runtime = state.abilityRuntime!;
+  const manifest = runtime.canonicalBattleScoringPhaseManifests!['battle-phase:1']!;
+  runtime.processedEvents = runtime.processedEvents.filter((id) => id !== 'battle-phase:1:after_battle_ended');
+  runtime.events = runtime.events.filter((entry) => entry.type !== 'zouken_s4_battle_mana_settled');
+  runtime.zoukenS4BattleSettledBySource = {};
+  delete runtime.pendingBattleTerminalEvent;
+  return {
+    state,
+    event: buildBattleTerminalEvent({
+      battlePhaseResolutionId: manifest.battlePhaseResolutionId,
+      battleIds: manifest.battleIds,
+      resultIds: manifest.resultIds,
+      scoringReceiptIds: manifest.scoringReceiptIds,
+      battleParticipantIds: manifest.battleParticipantIds,
+      battleOutcomes: manifest.battleOutcomes,
+    }),
+  };
 }
 
 describe('P3 Zouken s4 pseudo-vampire current-line contract', () => {
@@ -173,6 +204,28 @@ describe('P3 Zouken s4 pseudo-vampire current-line contract', () => {
     const firstResultId = receipts[0]!.resultId;
     forged.state.abilityRuntime!.canonicalBattleScoringReceipts![firstResultId]!.winnerPlayerIds = ['p2'];
     expect(() => rules.restoreMatchSession(forged)).toThrow(/Invalid deferred ability runtime provenance/);
+    const forgedManifest = session.serializeSession();
+    forgedManifest.state.abilityRuntime!.canonicalBattleScoringPhaseManifests!['battle-phase:1']!.resultIds.reverse();
+    expect(() => rules.restoreMatchSession(forgedManifest)).toThrow(/Invalid deferred ability runtime provenance/);
+  });
+
+  it('rejects forged terminal order, subset, extra, duplicate, and cross-phase envelopes before settlement', () => {
+    const source = realSevenPlayerS4Session();
+    (source as unknown as { resolveBattlePhase: () => void }).resolveBattlePhase();
+    const variants = [
+      (event: AbilityEvent) => ({ ...event, battleIds: [...event.battleIds!].reverse(), resultIds: [...event.resultIds!].reverse(), scoringReceiptIds: [...event.scoringReceiptIds!].reverse(), battleOutcomes: [...event.battleOutcomes!].reverse() }),
+      (event: AbilityEvent) => ({ ...event, battleIds: event.battleIds!.slice(0, 1), resultIds: event.resultIds!.slice(0, 1), scoringReceiptIds: event.scoringReceiptIds!.slice(0, 1), battleParticipantIds: ['p1', 'p2'], battleOutcomes: event.battleOutcomes!.slice(0, 1) }),
+      (event: AbilityEvent) => ({ ...event, battleIds: [...event.battleIds!, event.battleIds![0]!], resultIds: [...event.resultIds!, event.resultIds![0]!], scoringReceiptIds: [...event.scoringReceiptIds!, event.scoringReceiptIds![0]!], battleOutcomes: [...event.battleOutcomes!, event.battleOutcomes![0]!] }),
+      (event: AbilityEvent) => ({ ...event, battleIds: [event.battleIds![0]!, event.battleIds![0]!], resultIds: [event.resultIds![0]!, event.resultIds![0]!], scoringReceiptIds: [event.scoringReceiptIds![0]!, event.scoringReceiptIds![0]!], battleOutcomes: [event.battleOutcomes![0]!, event.battleOutcomes![0]!] }),
+      (event: AbilityEvent) => ({ ...event, id: 'battle-phase:2:after_battle_ended', battlePhaseResolutionId: 'battle-phase:2', battleIds: event.battleIds!.map((id) => id.replace('battle-phase:1', 'battle-phase:2')), resultIds: event.resultIds!.map((id) => id.replace('battle-phase:1', 'battle-phase:2')), scoringReceiptIds: event.scoringReceiptIds!.map((id) => id.replace('battle-phase:1', 'battle-phase:2')) }),
+    ];
+    for (const forge of variants) {
+      const { state, event } = replayableTerminal(source);
+      const before = state.players.find((player) => player.id === 'p1')!.mana;
+      expect(() => rules.processAbilityEvent(state, forge(event))).toThrow();
+      expect(state.players.find((player) => player.id === 'p1')!.mana).toBe(before);
+      expect(state.abilityRuntime!.events.some((entry) => entry.type === 'zouken_s4_battle_mana_settled')).toBe(false);
+    }
   });
 
   it('uses the fixed three-mana fallback when at recon or no legal loser exists', () => {

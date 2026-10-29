@@ -225,6 +225,14 @@ export interface CanonicalBattleScoringReceipt {
   scoringWinnerPlayerIds: PlayerId[];
   battleOrdinal: number;
 }
+export interface CanonicalBattleScoringPhaseManifest {
+  battlePhaseResolutionId: string;
+  battleIds: string[];
+  resultIds: string[];
+  scoringReceiptIds: string[];
+  battleParticipantIds: PlayerId[];
+  battleOutcomes: Array<{ battlefieldId: string; winnerPlayerIds: PlayerId[] }>;
+}
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -238,6 +246,8 @@ export interface AbilityRuntime {
   pendingBattleTerminalEvent?: AbilityEvent;
   /** Server-owned receipt committed by MatchSession only after authoritative scoring. */
   canonicalBattleScoringReceipts?: Record<string, CanonicalBattleScoringReceipt>;
+  /** Server-owned complete ordered receipt manifest committed once per scored battle phase. */
+  canonicalBattleScoringPhaseManifests?: Record<string, CanonicalBattleScoringPhaseManifest>;
   /** Source-bound state for the exact Soul Drag -> Return Silence transform family. */
   transformedReturnSilenceSourceCardIds?: string[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];

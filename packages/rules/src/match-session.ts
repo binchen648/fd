@@ -18,6 +18,7 @@ import type {
   ExecutableCharacterDefinition,
   LegalAction,
   CanonicalBattleScoringReceipt,
+  CanonicalBattleScoringPhaseManifest,
 } from './ability/types';
 import type { GameState, PhaseName } from './schema/game';
 import type { CompiledPlaytestContentLibrary } from '@fd/content';
@@ -1378,13 +1379,29 @@ export class MatchSession {
         resultIds,
       });
     }
+    const phaseManifest: CanonicalBattleScoringPhaseManifest = {
+      battlePhaseResolutionId,
+      battleIds: [...battleIds],
+      resultIds: [...resultIds],
+      scoringReceiptIds: battles.map((battle) => `${battlePhaseResolutionId}:score:${battle.battlefieldId}`),
+      battleParticipantIds: [...new Set(battleParticipantIds)],
+      battleOutcomes: battles.map((battle) => ({ battlefieldId: battle.battlefieldId, winnerPlayerIds: [...battle.winnerPlayerIds] })),
+    };
+    if (battles.length > 0) {
+      runtime.canonicalBattleScoringPhaseManifests ??= {};
+      const priorManifest = runtime.canonicalBattleScoringPhaseManifests[battlePhaseResolutionId];
+      if (priorManifest && JSON.stringify(priorManifest) !== JSON.stringify(phaseManifest)) {
+        throw new Error('Battle phase receipt manifest cannot be rewritten');
+      }
+      runtime.canonicalBattleScoringPhaseManifests[battlePhaseResolutionId] ??= structuredClone(phaseManifest);
+    }
     stageBattleTerminalEvent(this.state, {
       battlePhaseResolutionId,
       battleIds,
       resultIds,
-      scoringReceiptIds: battles.map((battle) => `${battlePhaseResolutionId}:score:${battle.battlefieldId}`),
+      scoringReceiptIds: phaseManifest.scoringReceiptIds,
       battleParticipantIds: [...new Set(battleParticipantIds)],
-      battleOutcomes: battles.map((battle) => ({ battlefieldId: battle.battlefieldId, winnerPlayerIds: [...battle.winnerPlayerIds] })),
+      battleOutcomes: phaseManifest.battleOutcomes,
     });
   }
 

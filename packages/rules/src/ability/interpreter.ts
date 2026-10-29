@@ -1737,6 +1737,10 @@ function exactZoukenS4PlayerSet(left: readonly string[], right: readonly string[
   return left.every((id) => expected.has(id));
 }
 
+function exactZoukenS4Sequence(left: readonly string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
 function zoukenS4BattleLosers(battle: GameState['battleResults'][number]): string[] {
   const winners = new Set(battle.winnerPlayerIds);
   if (battle.participantBreakdowns?.length) return battle.participantBreakdowns.map((entry) => entry.playerId).filter((id) => !winners.has(id));
@@ -1756,6 +1760,17 @@ function zoukenS4TerminalBattles(s: GameState, event: AbilityEvent): Array<{ bat
     reject('invalid_event', 'Zouken S4 battle settlement requires the complete terminal battle envelope');
   }
   const receipts = runtime(s).canonicalBattleScoringReceipts ?? {};
+  const manifest = runtime(s).canonicalBattleScoringPhaseManifests?.[event.battlePhaseResolutionId!];
+  if (!manifest || manifest.battlePhaseResolutionId !== event.battlePhaseResolutionId ||
+      !exactZoukenS4Sequence(event.battleIds!, manifest.battleIds) ||
+      !exactZoukenS4Sequence(event.resultIds!, manifest.resultIds) ||
+      !exactZoukenS4Sequence(event.scoringReceiptIds!, manifest.scoringReceiptIds) ||
+      !exactZoukenS4Sequence(event.battleParticipantIds!, manifest.battleParticipantIds) ||
+      event.battleOutcomes!.length !== manifest.battleOutcomes.length ||
+      event.battleOutcomes!.some((outcome, index) => outcome.battlefieldId !== manifest.battleOutcomes[index]!.battlefieldId ||
+        !exactZoukenS4Sequence(outcome.winnerPlayerIds, manifest.battleOutcomes[index]!.winnerPlayerIds))) {
+    reject('invalid_event', 'Zouken S4 terminal envelope does not match the authoritative phase receipt manifest');
+  }
   const entries = event.battleIds!.map((battleId, index) => {
     const outcome = event.battleOutcomes![index]!;
     const prefix = `${event.battlePhaseResolutionId}:battle:${outcome.battlefieldId}:`;
@@ -3775,8 +3790,10 @@ function manaCapRuntimeProvenanceValidForRestore(s: GameState): boolean {
 function canonicalBattleScoringReceiptsValidForRestore(s: GameState): boolean {
   const receipts = runtime(s).canonicalBattleScoringReceipts;
   const canonicalLogs = s.log.filter((entry) => entry.type === 'battle_scored_canonical');
-  if (receipts === undefined) return canonicalLogs.length === 0;
+  const manifests = runtime(s).canonicalBattleScoringPhaseManifests;
+  if (receipts === undefined) return canonicalLogs.length === 0 && (!manifests || Object.keys(manifests).length === 0);
   if (!receipts || typeof receipts !== 'object' || Array.isArray(receipts)) return false;
+  if (!manifests || typeof manifests !== 'object' || Array.isArray(manifests)) return false;
   const pendingIds = new Set((runtime(s).pendingPostBattleEvents ?? []).map((event) => event.id));
   const processedIds = new Set(runtime(s).processedEvents);
   const sameIds = (left: unknown, right: readonly string[]) => Array.isArray(left) && left.length === right.length &&
@@ -3812,6 +3829,29 @@ function canonicalBattleScoringReceiptsValidForRestore(s: GameState): boolean {
           !receipt.scoringParticipantIds.every((id) => s.scoringBreakdown!.some((entry) => entry.playerId === id))))) return false;
   }
   if (canonicalLogs.some((log) => typeof log.payload?.resultId !== 'string' || !Object.prototype.hasOwnProperty.call(receipts, log.payload.resultId))) return false;
+  const phaseIds = new Set(Object.values(receipts).map((receipt) => receipt.battlePhaseResolutionId));
+  if (Object.keys(manifests).some((phaseId) => !/^battle-phase:\d+$/.test(phaseId) || Number(phaseId.slice('battle-phase:'.length)) > s.round.roundNumber ||
+      !phaseIds.has(phaseId) && manifests[phaseId]!.resultIds.length !== 0)) return false;
+  for (const [phaseId, manifest] of Object.entries(manifests)) {
+    if (!manifest || typeof manifest !== 'object' || manifest.battlePhaseResolutionId !== phaseId ||
+        !Array.isArray(manifest.battleIds) || !Array.isArray(manifest.resultIds) || !Array.isArray(manifest.scoringReceiptIds) ||
+        !Array.isArray(manifest.battleParticipantIds) || !Array.isArray(manifest.battleOutcomes) ||
+        manifest.battleIds.length !== manifest.resultIds.length || manifest.battleIds.length !== manifest.scoringReceiptIds.length ||
+        manifest.battleIds.length !== manifest.battleOutcomes.length ||
+        new Set(manifest.battleIds).size !== manifest.battleIds.length || new Set(manifest.resultIds).size !== manifest.resultIds.length ||
+        new Set(manifest.scoringReceiptIds).size !== manifest.scoringReceiptIds.length || new Set(manifest.battleParticipantIds).size !== manifest.battleParticipantIds.length) return false;
+    const phaseReceipts = Object.values(receipts)
+      .filter((receipt) => receipt.battlePhaseResolutionId === phaseId)
+      .sort((left, right) => left.battleOrdinal - right.battleOrdinal);
+    if (!exactZoukenS4Sequence(manifest.resultIds, phaseReceipts.map((receipt) => receipt.resultId))) return false;
+    const canonicalParticipants = [...new Set(phaseReceipts.flatMap((receipt) => receipt.scoringParticipantIds))];
+    if (!exactZoukenS4Sequence(manifest.battleParticipantIds, canonicalParticipants)) return false;
+    for (const [index, receipt] of phaseReceipts.entries()) {
+      const outcome = manifest.battleOutcomes[index];
+      if (!outcome || manifest.battleIds[index] !== receipt.battleId || manifest.scoringReceiptIds[index] !== `${phaseId}:score:${receipt.battlefieldId}` ||
+          outcome.battlefieldId !== receipt.battlefieldId || !exactZoukenS4Sequence(outcome.winnerPlayerIds, receipt.winnerPlayerIds)) return false;
+    }
+  }
   return true;
 }
 
