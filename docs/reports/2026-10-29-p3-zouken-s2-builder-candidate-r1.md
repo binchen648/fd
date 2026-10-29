@@ -15,14 +15,16 @@
 - Added preflight rejection for wrong source/owner, target order, missing/inert/foreign/duplicate/partial targets, non-game-start envelopes, and forged provenance before event/revision mutation.
 - Added serialized-runtime provenance validation requiring generated target card metadata and exactly matching `card_created` evidence for every provisioned target.
 - Runtime provenance now requires a present `cardState` entry with explicit `active: false` and `faceDown: false`; missing, active, or face-down generated s3/s4 state is rejected before replay/restore mutation.
+- Generic retained provisioning now also rejects missing/active/face-down state and forged provenance without creating a replacement target or mutating the state/revision.
 - Added real seven-player MatchSession, replay/idempotence, serialize/restore, and forged envelope regression coverage.
 
 ## Verification
 
 Passing commands:
 
-- `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s2-undead-provisioning.test.ts packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts` — 25/25.
-- `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s1-mana-bootstrap.test.ts packages/rules/tests/regression/p3-zouken-s3-creator.test.ts packages/rules/tests/regression/p3-zouken-s4-pseudo-vampire.test.ts packages/rules/tests/match-session.test.ts` — 48/48.
+- `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s2-undead-provisioning.test.ts packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts` — 29/29.
+- `npm exec -- vitest run packages/rules/tests/regression/p3-zouken-s1-mana-bootstrap.test.ts packages/rules/tests/regression/p3-zouken-s3-creator.test.ts packages/rules/tests/regression/p3-zouken-s4-pseudo-vampire.test.ts` — 22/22.
+- `npm exec -- vitest run packages/rules/tests/match-session.test.ts` — 26/26.
 - `npm run typecheck`.
 - `npm run content:validate` — 14 masters, 7 servants, 20 events, 0 blocking issues.
 - `npm run verify:generated-content` — deterministic hashes: content library `e462a9e0f2096a7378b020e213e4aca3a77447753c17b5457f6a98e48a9003d9`, fixture `fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057`, evidence `b5221adc8b37c5eaa12228bfc7508100f715ad28447676ca51c5b178fa5bb452`.
@@ -33,6 +35,6 @@ The broader pre-existing content display/authoring suite still reports unrelated
 ## Candidate
 
 - Candidate commit: reported in the Builder handoff; this line intentionally avoids a self-referential hash.
-- Parent: `19ce83f071aac8e91c835f8c21be1e3f3516428c`
+- Parent: `3cda587b3ec6031e353dca035839d9133b84fde4`
 - Worktree: `E:\Codex\FD\zouken-s2-builder-19ce83f`
-- Branch: `codex/b-p3-zouken-s2-builder-r1`
+- Branch: `codex/b-p3-zouken-s2-builder-r2`

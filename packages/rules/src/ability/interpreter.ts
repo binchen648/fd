@@ -747,7 +747,9 @@ function provisionedSkillCardIsValid(s: GameState, instance: CardInstance, contr
   return instance.ownerPlayerId === controllerId && instance.controllerPlayerId === controllerId &&
     instance.zone === 'skill' && instance.visibility.scope === 'owner_only' &&
     instance.visibility.ownerPlayerId === controllerId && instance.generatedBy === sourceId &&
-    (!requireRuntimeState || (state !== undefined && state.active === false && state.faceDown === false));
+    state !== undefined && (requireRuntimeState
+      ? state.active === false && state.faceDown === false
+      : state.active !== true && state.faceDown !== true);
 }
 
 function atomicProvisioningTargetOrderIsCanonical(s: GameState, sourceDefinition: ExecutableCardDefinition, targets: string[]): boolean {
@@ -3354,14 +3356,18 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   const r = runtime(s); if (r.processedEvents.includes(event.id)) return;
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   if (event.type === 'game_start') {
+    let invalidGenericProvisioning = false;
     for (const source of s.cards) {
       for (const ability of definition(s, source.instanceId)?.abilities ?? []) {
-        if (isGameStartSkillProvisioningCandidate(ability) && ability.effects.some((effect) => effect.atomic === true) &&
-            (!isGameStartSkillProvisioningSemantic(ability) || !gameStartSkillProvisioningPreflight(s, source.instanceId, ability))) {
+        if (!isGameStartSkillProvisioningCandidate(ability)) continue;
+        const invalid = !isGameStartSkillProvisioningSemantic(ability) || !gameStartSkillProvisioningPreflight(s, source.instanceId, ability);
+        if (ability.effects.some((effect) => effect.atomic === true) && invalid) {
           reject('invalid_event', 'Atomic game-start skill provisioning provenance is invalid');
         }
+        if (!ability.effects.some((effect) => effect.atomic === true) && invalid) invalidGenericProvisioning = true;
       }
     }
+    if (invalidGenericProvisioning) return;
   }
   r.processedEvents.push(event.id);
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
@@ -3401,7 +3407,10 @@ function processEvent(s: GameState, event: AbilityEvent): void {
 /** Trusted backend event hook. Events are not part of AbilityCommand. */
 export function processAbilityEvent(s: GameState, event: AbilityEvent): void {
   if (runtime(s).processedEvents.includes(event.id)) return;
-  const copy = structuredClone(s); processEvent(copy, event); runtime(copy).revision++;
+  const processedEventCount = runtime(s).processedEvents.length;
+  const copy = structuredClone(s); processEvent(copy, event);
+  if (runtime(copy).processedEvents.length === processedEventCount) return;
+  runtime(copy).revision++;
   Object.assign(s, copy);
 }
 /** Trusted backend producer helper. Allocates event identity inside the same cloned transaction. */

@@ -84,6 +84,7 @@ describe('P3-FB2-15 identity-free game-start skill provisioning', () => {
       instanceId: 'retained-target', definitionId: TARGET_ONE, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill',
       visibility: { scope: 'owner_only', ownerPlayerId: 'p1' }, generatedBy: 'source-instance',
     });
+    state.abilityRuntime!.cardState['retained-target'] = { active: false, faceDown: false };
     start(state);
     const beforeReplay = JSON.stringify(state.cards);
     start(state);
@@ -92,6 +93,24 @@ describe('P3-FB2-15 identity-free game-start skill provisioning', () => {
     start(restored, 'restored-game-start');
     expect(provisioned(restored, TARGET_ONE)).toHaveLength(1);
     expect(provisioned(restored, TARGET_TWO)).toHaveLength(1);
+  });
+
+  it.each([
+    ['active state', (state: GameState, id: string) => { state.abilityRuntime!.cardState[id] = { active: true, faceDown: false }; }],
+    ['face-down state', (state: GameState, id: string) => { state.abilityRuntime!.cardState[id] = { active: false, faceDown: true }; }],
+    ['missing state', (_state: GameState, _id: string) => undefined],
+    ['forged provenance', (state: GameState, _id: string) => { state.cards.find((candidate) => candidate.instanceId === 'retained-generic-target')!.generatedBy = 'forged-source'; }],
+  ] as Array<[string, (state: GameState, id: string) => void]>)('rejects an invalid retained target with %s without creating or mutating state', (_label, mutate) => {
+    const state = setup(setupAbility([TARGET_ONE, TARGET_TWO]));
+    state.cards.push({
+      instanceId: 'retained-generic-target', definitionId: TARGET_ONE, ownerPlayerId: 'p1', controllerPlayerId: 'p1', zone: 'skill',
+      visibility: { scope: 'owner_only', ownerPlayerId: 'p1' }, generatedBy: 'source-instance',
+    });
+    mutate(state, 'retained-generic-target');
+    const before = JSON.stringify(state);
+    start(state, `invalid-retained-${_label}`);
+    expect(JSON.stringify(state)).toBe(before);
+    expect(provisioned(state, TARGET_TWO)).toHaveLength(0);
   });
 
   it.each([
