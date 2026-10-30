@@ -68,10 +68,10 @@
   "regressionScopeAddendum": "Three existing regression tests contain superseded military-elimination or truncated-simulation terminal assertions; preserve every loss trigger/resource/reveal/duplicate check, update only replaced canonical expectations after actual fullCI evidence.",
   "integrationMetadataScope": "Permit this exact review attestation only; no added runtime path or agent role",
   "integration": {
-    "candidate": "fb491689ccc69995315072acc81ff5d2fbef5d35",
-    "review": "345100d04152408d2e28dac5795b63be15d53a7f",
+    "candidate": "8c52ed6bac69a03deba9060922c7a50d63a2eaf7",
+    "review": "773e1807a58d8ca2bc7b34a0f5c9db99c8cdf55a",
     "reviewThread": "https://github.com/binchen648/fd/pull/683#issuecomment-6527556540",
-    "fullCi": "PENDING_FINAL_HEAD",
+    "fullCi": "PENDING_NEW_FINAL_HEAD",
     "mergeRequiresUserConsent": true,
     "synchronizationSha": "3a26450ae714ea985403013e6c0815de338bec9d"
   },
