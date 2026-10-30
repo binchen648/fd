@@ -1,7 +1,7 @@
 {
   "schemaVersion": "fd-feature-delivery-task-v1",
   "taskId": "DR-P01",
-  "status": "AUTHORIZED_IMPLEMENTATION",
+  "status": "VERIFIED_SCOPED_PENDING_FINAL_HEAD_CI",
   "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
   "deliveryRole": "Playable Game Delivery Lead",
   "authority": "Latest user instruction: prioritize DR-P01 M1 as sole shared Runtime writer; suspend CB-C02; exclude loader.ts",
@@ -115,5 +115,16 @@
     "sourceWritesAuthorized": false,
     "outputPath": "docs/reviews/phase3/DR-P01-playable-verification.json",
     "binding": "Exact newly frozen M1 candidate SHA supplied by Global Technical Lead before review; implementation evidence validation and technical risk review combined under user approved stable roles"
+  },
+  "integration": {
+    "promotionPr": 682,
+    "phase3PolicyTaskId": "P3-DR-P01-M1",
+    "implementationCandidate": "943e100ea7248e11123fac06575661ff5344c90c",
+    "independentReviewSha": "d20443e8fcdd3552e254c372b1198658ec42e1ca",
+    "githubAcceptanceBridge": "717872aed9b3404e630b1063b935646ba75ae975",
+    "githubAcceptanceStatement": "https://github.com/binchen648/fd/pull/682#issuecomment-6515584452",
+    "newRolesCreated": false,
+    "fullCi": "PENDING_ACTUAL_INTEGRATION_HEAD",
+    "runtimeSourceUnchangedSinceReview": true
   }
 }
