@@ -53,6 +53,7 @@ export default function MatchTable({
         (action) => action.sourceCardInstanceId === inspectedCard.instanceId || action.targetId === inspectedCard.instanceId,
       )
     : [];
+  const actionTurnIncomplete = !!fixture.actionTurn && (fixture.actionTurn.movement === 'pending' || fixture.actionTurn.regularPlay !== 'complete');
   const isWorkbenchFocusWanted = !usingNonPriorityView && (
     activeServerView.availableActions.length > 0 ||
     (fixture.interactionWindows?.length ?? 0) > 0 ||
@@ -375,6 +376,8 @@ export default function MatchTable({
         <aside className='decision-panel'>
           <span className='decision-panel__eyebrow'>CURRENT DECISION</span>
           <h2>{decisionTitle}</h2>
+          {fixture.actionTurn ? <p aria-label='行动回合进度'>{fixture.actionTurn.movement === 'pending' ? '先常规移动或选择不移动' : fixture.actionTurn.regularPlay === 'pending' ? '移动已完成 · 请选择完整常规出牌批次' : '常规出牌已完成 · 可使用阶段能力或结束行动'}</p> : null}
+          {currentPlayer?.totalPower !== undefined ? <p aria-label='当前公开合计威力'>合计威力 {currentPlayer.totalPower}</p> : null}
           <p>检查手牌与技能区。只有规则端返回的操作会出现在卡牌检视层。</p>
           <div className='decision-panel__metric'><span>可用操作</span><strong>{activeServerView.availableActions.length}</strong></div>
           <div className='decision-panel__metric'><span>优先席位</span><strong>SEAT {currentPlayer?.seat ?? '—'}</strong></div>
@@ -635,7 +638,7 @@ export default function MatchTable({
               })}
             </section>
           ) : null}
-          {usingNonPriorityView ? <p className='decision-panel__waiting'>等待当前玩家完成{decisionPhaseLabel}</p> : <button className='decision-panel__confirm' type='button' onClick={endTurn}>{endDecisionLabel}</button>}
+          {usingNonPriorityView ? <p className='decision-panel__waiting'>等待当前玩家完成{decisionPhaseLabel}</p> : <button className='decision-panel__confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete}>{endDecisionLabel}</button>}
         </aside>
       </div>
 
@@ -661,7 +664,7 @@ export default function MatchTable({
       />
 
       {isWorkbenchFocused && !usingNonPriorityView ? (
-        <button className='workbench-confirm' type='button' onClick={endTurn}>
+        <button className='workbench-confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete}>
           <span>CONFIRM</span>
           <strong>{endDecisionLabel}</strong>
         </button>

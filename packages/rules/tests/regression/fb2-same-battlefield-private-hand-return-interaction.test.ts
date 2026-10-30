@@ -267,6 +267,7 @@ describe('P3-FB2-23 same-battlefield private hand return interaction', () => {
     selectPlayer(state, 'p2');
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3'] });
     session.state = structuredClone(state);
+    rules.initializeActionTurns(session.state);
     const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
 
     const controller = restored.getClientProjection('p1').view;

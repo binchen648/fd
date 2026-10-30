@@ -86,6 +86,7 @@ describe('match session gameplay regressions', () => {
     setPriority(state, 'p1', 'action');
     state.players.find((player) => player.id === 'p1')!.mana = 10;
     const [first, second, third] = moveDeckCardsToHand(state, 'p1', 3);
+    expect(session.dispatchPlayerAction('p1', { type: 'skip_normal_move' }).ok).toBe(true);
 
     const staged = session.dispatchPlayerAction('p1', { type: 'stage_attack_card', cardInstanceId: first! });
     expect(staged.ok).toBe(true);
@@ -169,7 +170,12 @@ describe('match session gameplay regressions', () => {
       abilityId: 'basic.surveil.battle-dash',
     }));
 
-    expect(session.dispatchPlayerAction('p1', { type: 'play_card', cardInstanceId: dash!.instanceId }).ok).toBe(true);
+    expect(session.dispatchPlayerAction('p1', { type: 'skip_normal_move' }).ok).toBe(true);
+    expect(session.dispatchPlayerAction('p1', { type: 'stage_attack_card', cardInstanceId: dash!.instanceId }).ok).toBe(true);
+    const supplement = session.getPlayerView('p1').legalActions.find(candidate => candidate.type === 'stage_attack_card');
+    expect(supplement).toBeDefined();
+    expect(session.dispatchPlayerAction('p1', supplement!).ok).toBe(true);
+    expect(session.dispatchPlayerAction('p1', { type: 'confirm_staged_attack' }).ok).toBe(true);
     const action = session.getPlayerView('p1').legalActions.find((candidate) =>
       candidate.type === 'activate_ability' &&
       candidate.cardInstanceId === dash!.instanceId &&

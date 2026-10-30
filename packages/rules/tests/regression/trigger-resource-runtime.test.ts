@@ -183,18 +183,18 @@ describe('P3-TO-11 trigger resource runtime', () => {
       },
     });
 
-    expect(result.nextState.players[0]).toMatchObject({ locationId: 'miyama_town', mana: 4 });
+    expect(result.nextState.players[0]).toMatchObject({ locationId: 'miyama_town', mana: 5 });
     expect(result.nextState.log).toContainEqual(expect.objectContaining({
       type: 'movement',
-      payload: expect.objectContaining({ manaSpent: 2 }),
+      payload: expect.objectContaining({ manaSpent: 1 }),
     }));
     expect(result.nextState.abilityRuntime!.processedEvents.some((eventId) => eventId.startsWith('enter-location-'))).toBe(true);
     expect(result.nextState.abilityRuntime!.events).toContainEqual(expect.objectContaining({
       type: 'mana_adjusted',
       abilityId: 'drain-command.enter-miyama',
       delta: 1,
-      before: 3,
-      after: 4,
+      before: 4,
+      after: 5,
     }));
   });
 

@@ -340,6 +340,7 @@ describe('P3-FB2-27 Ruler seal relationship subsystem', () => {
 
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2', 'p3', 'p4'] });
     session.state = structuredClone(state);
+    rules.initializeActionTurns(session.state);
     const durable = session.serializeSession();
     const restored = restoreTrustedAuthoringFixtureSession(durable);
     expect(restored.state.abilityRuntime!.pendingRulerSealRewards).toEqual(state.abilityRuntime!.pendingRulerSealRewards);

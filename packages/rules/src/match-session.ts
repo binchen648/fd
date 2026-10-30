@@ -2,6 +2,9 @@ import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
   initializeAbilityRuntime,
+  initializeActionTurns,
+  actionTurnProgress,
+  getLegalActions,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
@@ -43,7 +46,7 @@ import type {
 } from './ability/types';
 import type { GameState, PhaseName } from './schema/game';
 import type { CompiledPlaytestContentLibrary } from '@fd/content';
-import { resolveBattlefield } from './core/combat-resolver';
+import { resolveBattlefield, projectCurrentPlayerPowers } from './core/combat-resolver';
 import { applyBattleScoring } from './core/scoring-resolver';
 import { canOccupyLocation, getEnabledLocations } from './core/map-engine';
 import { canViewFaceDownEvents, canViewOpponentDiscard, grantMana, rulerSealMovementLocked } from './core/rule-overrides';
@@ -480,6 +483,8 @@ function isRestoreSafeEvent(value: unknown): boolean {
   for (const key of ['delta','before','after','requestedDelta'] as const) if (value[key] !== undefined && !isRestoreFiniteNumber(value[key])) return false;
   for (const key of ['revision','movedCount'] as const) if (value[key] !== undefined && !isRestoreSafeInteger(value[key])) return false;
   if (value.qualifyingPlayerIds !== undefined && !isRestoreStringArray(value.qualifyingPlayerIds)) return false;
+  if (value.revealedCards !== undefined && (!Array.isArray(value.revealedCards) || !value.revealedCards.every(entry =>
+    isRestoreRecord(entry) && typeof entry.instanceId === 'string' && typeof entry.definitionId === 'string'))) return false;
   return true;
 }
 
@@ -1083,6 +1088,16 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   const restoredState = value as unknown as GameState;
+  const actionTurns = (value.modeState as Record<string, unknown> | undefined)?.actionTurns;
+  if (actionTurns !== undefined) {
+    if (!isRestoreRecord(actionTurns) || actionTurns.version !== 1 || !isRestoreSafeInteger(actionTurns.round, 1) ||
+        (actionTurns.round as number) > (round.roundNumber as number) || !isRestoreRecord(actionTurns.byPlayer) ||
+        !Object.keys(actionTurns).every(key => ['version', 'round', 'byPlayer'].includes(key)) ||
+        !Object.entries(actionTurns.byPlayer).every(([id, progress]) => playerIds.has(id) && isRestoreRecord(progress) &&
+          ['pending', 'moved', 'skipped'].includes(progress.movement as string) && ['pending', 'complete'].includes(progress.regularPlay as string) &&
+          !(progress.movement === 'pending' && progress.regularPlay === 'complete') &&
+          Object.keys(progress).length === 2 && Object.keys(progress).every(key => ['movement', 'regularPlay'].includes(key)))) return false;
+  }
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState)) return false;
   if (restoredState.abilityRuntime?.pendingDecision &&
       !isCanonicalGenericPendingDecisionForRestore(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
@@ -1447,6 +1462,7 @@ function actionFingerprint(state: GameState): string {
     cards: state.cards.map((card) => [card.instanceId, card.zone, card.visibility.scope]).sort(),
     players: state.players.map((player) => [player.id, player.mana, player.vp, player.militaryResult, player.locationId]),
     stagedAttacks: modeStateOf(state).stagedAttacks,
+    actionTurns: modeStateOf(state).actionTurns,
   });
 }
 
@@ -1465,6 +1481,11 @@ function chooseAiAction(actions: LegalAction[]): LegalAction | undefined {
   return actions.find((action) => action.type === 'deploy_player')
     ?? actions.find((action) => action.type === 'choose_target')
     ?? actions.find((action) => action.type === 'decline_this_window')
+    ?? actions.find((action) => action.type === 'skip_normal_move')
+    ?? actions.find((action) => action.type === 'confirm_staged_attack')
+    ?? actions.find((action) => action.type === 'complete_empty_regular_play')
+    ?? actions.find((action) => action.type === 'stage_attack_card' && !action.faceDown)
+    ?? actions.find((action) => action.type === 'stage_attack_card')
     ?? actions.find((action) => action.type === 'play_card' && !action.faceDown)
     ?? actions.find((action) => action.type === 'play_card')
     ?? actions.find((action) => action.type === 'activate_ability' && /mana|command-spell/i.test(action.abilityId));
@@ -1675,23 +1696,36 @@ export class MatchSession {
   }
 
   dispatchPlayerAction(playerId: string, command: AbilityCommand): DispatchResult {
+    if (!command || typeof command !== 'object' || typeof command.type !== 'string') return dispatchAbilityCommand(this.state, playerId, command);
+    if (this.battleSettlementInProgress() && !['choose_target', 'resolve_response', 'decline_this_window', 'pass'].includes(command.type)) {
+      return { ok: false, view: this.projectAbilityView(playerId), events: [], calculations: [],
+        rejection: { code: 'battle_settling', message: 'All battle decisions are complete; resolve the pending battle settlement' } };
+    }
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
     const privateInteractionMutation = command.type === 'choose_target' &&
       this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
+    const beforeEventCount = this.state.abilityRuntime?.events.length ?? 0;
     const result = dispatchAbilityCommand(this.state, playerId, command);
-    if (!result.ok && privateInteractionMutation) return result;
+    if (!result.ok) {
+      if (!privateInteractionMutation) this.record('dispatch_rejected', `${playerId}:${command.type}`, {
+        command: command.type === 'choose_target' || command.type === 'stage_attack_card' || command.type === 'play_card'
+          ? { type: command.type, privateSelection: 'redacted' } : command,
+        rejection: result.rejection,
+      });
+      return { ...result, view: this.projectSessionView(result.view) };
+    }
     this.rejection = result.rejection;
-    const sharedCommand = privateInteractionMutation
-      ? { type: 'choose_target', privateSelection: 'redacted' }
+    const sharedCommand = privateInteractionMutation || command.type === 'stage_attack_card'
+      ? { type: command.type, privateSelection: 'redacted' }
       : command as Record<string, unknown>;
     this.record(result.ok ? 'dispatch_ok' : 'dispatch_rejected', `${playerId}:${command.type}`, {
       command: sharedCommand,
-      ...(result.events.length ? { events: result.events as unknown as Record<string, unknown>[] } : {}),
+      ...(result.events.length ? { events: (this.state.abilityRuntime?.events.slice(beforeEventCount) ?? []) as unknown as Record<string, unknown>[] } : {}),
       rejection: result.rejection,
     });
     this.consumeAppliedDirectives();
     this.checkpoint(`${playerId}:${command.type}`);
-    return result;
+    return { ...result, view: this.projectSessionView(result.view) };
   }
 
   dispatchPlayerCommand(playerId: string, command: AbilityCommand): DispatchResult {
@@ -1759,11 +1793,37 @@ export class MatchSession {
   }
 
   private projectAbilityView(playerId: string): AbilityPlayerView {
-    const view = projectAbilityState(this.state, playerId);
+    const view = this.projectSessionView(projectAbilityState(this.state, playerId));
     const deploymentActions = this.legalDeploymentActions(playerId);
     return deploymentActions.length
       ? { ...view, legalActions: [...deploymentActions, ...view.legalActions] }
       : view;
+  }
+
+  private projectSessionView(view: AbilityPlayerView): AbilityPlayerView {
+    if (this.battleSettlementInProgress()) view.legalActions = view.legalActions.filter(action =>
+      ['choose_target', 'resolve_response', 'decline_this_window'].includes(action.type));
+    if (this.state.round.activePhase === 'action') {
+      const declaredPlayerIds = view.players.filter(player => actionTurnProgress(this.state, player.id)?.regularPlay === 'complete').map(player => player.id);
+      const powers = projectCurrentPlayerPowers(this.state, declaredPlayerIds);
+      for (const projectedPlayer of view.players) {
+        const power = powers[projectedPlayer.id];
+        if (power !== undefined) projectedPlayer.totalPower = power;
+      }
+    }
+    return view;
+  }
+
+  private battleScoringBarrierReached(): boolean {
+    const terminalId = `battle-phase:${this.state.round.roundNumber}:after_battle_ended`;
+    return this.state.abilityRuntime?.pendingBattleTerminalEvent?.id === terminalId ||
+      this.state.abilityRuntime?.processedEvents.includes(terminalId) === true ||
+      this.logs.some(entry => entry.round === this.state.round.roundNumber && entry.type === 'battle_post_scoring_barrier_open');
+  }
+
+  private battleSettlementInProgress(): boolean {
+    return this.state.round.activePhase === 'battle' && (this.battleScoringBarrierReached() ||
+      this.logs.some(entry => entry.round === this.state.round.roundNumber && entry.type === 'battle_decisions_completed'));
   }
 
   private dispatchDeployPlayer(playerId: string, locationId: LocationId): DispatchResult {
@@ -1824,14 +1884,12 @@ export class MatchSession {
   passPriority(playerId: string): DispatchResult {
     const priority = this.priorityPlayer();
     const rejection = (code: string, message: string): DispatchResult => {
-      this.rejection = { code, message };
-      this.record('dispatch_rejected', `${playerId}:pass_priority`, { rejection: this.rejection });
       return {
         ok: false,
         view: projectAbilityState(this.state, playerId),
-        events: this.state.abilityRuntime?.events ?? [],
-        calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [],
-        rejection: this.rejection,
+        events: [],
+        calculations: [],
+        rejection: { code, message },
       };
     };
     if (!priority || priority.id !== playerId) {
@@ -1843,7 +1901,13 @@ export class MatchSession {
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length || this.pendingHostDirectives().length || hasStagedAttacks(this.state, playerId)) {
       return rejection('pending_window', 'Resolve the current interaction window or host directive before ending the decision');
     }
+    if (this.battleSettlementInProgress()) return rejection('battle_settling', 'Battle decisions are complete; continue the pending settlement');
+    const turn = this.state.round.activePhase === 'action' ? actionTurnProgress(this.state, playerId) : undefined;
+    if (turn && (turn.movement === 'pending' || turn.regularPlay !== 'complete')) {
+      return rejection('incomplete_action_turn', 'Complete movement or skip, then the regular attack batch before ending this action turn');
+    }
     this.rejection = undefined;
+    this.state.abilityRuntime!.revision++;
     this.record('player_passed', `${playerId}:ended decision`);
     this.advanceToNextDecision();
     this.checkpoint(`${playerId}:pass_priority`);
@@ -1859,12 +1923,16 @@ export class MatchSession {
     const player = this.state.players.find((candidate) => candidate.id === playerId && candidate.status === 'active');
     if (!player) return undefined;
     let hadAnyAction = false;
-    for (let attempt = 0; attempt < this.maxActionsPerPlayer; attempt++) {
-      const view = this.projectAbilityView(playerId);
-      const actions = view.legalActions.filter((action) => action.type === 'deploy_player' || action.type === 'play_card' || action.type === 'activate_ability');
+    let optionalActions = 0;
+    const actionPhase = this.state.round.activePhase === 'action';
+    for (let attempt = 0; attempt < (actionPhase ? this.state.cards.length + this.maxActionsPerPlayer + 3 : this.maxActionsPerPlayer); attempt++) {
+      const actions = [...this.legalDeploymentActions(playerId), ...getLegalActions(this.state, playerId)].filter((action) => ['deploy_player', 'play_card', 'activate_ability'].includes(action.type) ||
+        actionPhase && ['skip_normal_move', 'stage_attack_card', 'confirm_staged_attack', 'complete_empty_regular_play'].includes(action.type))
+        .filter(action => !actionPhase || optionalActions < this.maxActionsPerPlayer || ['skip_normal_move', 'stage_attack_card', 'confirm_staged_attack', 'complete_empty_regular_play'].includes(action.type));
       hadAnyAction ||= actions.length > 0;
       const action = chooseAiAction(actions);
       if (!action) break;
+      if (!['skip_normal_move', 'stage_attack_card', 'confirm_staged_attack', 'complete_empty_regular_play'].includes(action.type)) optionalActions++;
       this.record('ai_decision', `${playerId}:${action.type}`, action as unknown as Record<string, unknown>);
       const result = this.dispatchPlayerAction(playerId, legalActionToCommand(action));
       if (!result.ok) return this.pause('backend_rejection');
@@ -1884,7 +1952,7 @@ export class MatchSession {
       });
       if (!owner) return undefined;
       if (this.isHumanPlayer(owner.id)) return 'human_input';
-      const action = chooseAiAction(this.projectAbilityView(owner.id).legalActions);
+      const action = chooseAiAction(getLegalActions(this.state, owner.id));
       if (!action) return 'no_legal_action';
       this.record('ai_decision', `${owner.id}:${action.type}`, action as unknown as Record<string, unknown>);
       const result = this.dispatchPlayerAction(owner.id, legalActionToCommand(action));
@@ -1905,6 +1973,10 @@ export class MatchSession {
       if (windowPause) return this.pause(windowPause);
       if (this.state.round.activePhase === 'round_end') return this.pause('round_end');
       if (this.state.round.roundNumber > 11) return this.pause('match_complete');
+      if (this.battleSettlementInProgress()) {
+        this.resolveBattlePhase();
+        continue;
+      }
 
       if (interactivePhases.includes(this.state.round.activePhase)) {
         const priority = this.priorityPlayer();
@@ -1914,9 +1986,14 @@ export class MatchSession {
           continue;
         }
         if (this.isHumanPlayer(priority.id)) return this.pause('human_input');
+        const decisionPhase = this.state.round.activePhase;
         const aiPause = this.runAiTurn(priority.id);
         if (aiPause) return aiPause;
-        this.advanceToNextDecision();
+        // Deployment already advances the authoritative decision. Never skip the following seat.
+        if (this.state.round.activePhase !== decisionPhase || this.priorityPlayer()?.id !== priority.id) continue;
+        if (this.state.round.activePhase === 'action') {
+          if (!this.passPriority(priority.id).ok) return this.pause('no_legal_action');
+        } else this.advanceToNextDecision();
         continue;
       }
 
@@ -1937,10 +2014,10 @@ export class MatchSession {
       if (reason === 'human_input') {
         const player = this.priorityPlayer();
         if (!player || player.id !== this.humanPlayerId) return reason;
-        const action = chooseAiAction(this.projectAbilityView(this.humanPlayerId).legalActions);
+        const action = chooseAiAction([...this.legalDeploymentActions(this.humanPlayerId), ...getLegalActions(this.state, this.humanPlayerId)]);
         if (!action) {
           this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
-          this.advanceToNextDecision();
+          if (!this.passPriority(this.humanPlayerId).ok) return this.pause('no_legal_action');
           continue;
         }
         const result = this.dispatchPlayerAction(this.humanPlayerId, legalActionToCommand(action));
@@ -1972,6 +2049,7 @@ export class MatchSession {
 
   advanceToNextDecision(): void {
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length || this.pendingHostDirectives().length) return;
+    if (this.battleSettlementInProgress()) { this.resolveBattlePhase(); return; }
     if (interactivePhases.includes(this.state.round.activePhase)) {
       if (this.advanceToNextActiveSeat()) return;
       if (this.state.round.activePhase === 'preparation') {
@@ -1989,6 +2067,13 @@ export class MatchSession {
         this.record('phase_started', `round ${this.state.round.roundNumber} action phase`);
         return;
       }
+      if (this.state.round.activePhase === 'action') {
+        this.state.round.prioritySeat = 1;
+        advanceAbilityPhase(this.state, 'battle', this.state.round.roundNumber);
+        this.record('phase_started', `round ${this.state.round.roundNumber} battle phase`);
+        return;
+      }
+      this.record('battle_decisions_completed', `round ${this.state.round.roundNumber} battle decisions completed`);
       this.resolveBattlePhase();
       return;
     }
@@ -1998,6 +2083,13 @@ export class MatchSession {
 
   projectToClientState(playerId = this.humanPlayerId): MatchClientState {
     const view = this.projectAbilityView(playerId);
+    const hiddenEventIds = canViewFaceDownEvents(this.state, playerId) ? [] : this.state.eventPlacements
+      .filter(event => event.visibility.scope !== 'public').map(event => event.eventCardId);
+    const recentReplay = this.replay.slice(-40);
+    const latestLog = this.logs[this.logs.length - 1];
+    const restoredCheckpointId = latestLog?.type === 'replay_restored' ? latestLog.message : undefined;
+    const restoredCheckpoint = this.replay.find(entry => entry.id === restoredCheckpointId);
+    if (restoredCheckpoint && !recentReplay.includes(restoredCheckpoint)) recentReplay.splice(0, 1, restoredCheckpoint);
     return {
       matchId: this.state.id,
       contentPack: {
@@ -2012,15 +2104,54 @@ export class MatchSession {
       priorityPlayerId: this.priorityPlayer()?.id ?? this.humanPlayerId,
       view,
       interactionWindows: projectInteractionWindows(this.state, playerId),
-      directives: this.directiveViews(),
+      directives: this.directiveViews().map(directive => ({ ...directive,
+        ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),
+      })),
       zones: this.projectZones(playerId),
-      logs: this.logs.slice(-80),
-      replay: this.replay.slice(-40),
+      logs: this.logs.slice(-80).map(entry => this.projectLogEntry(entry, playerId)),
+      replay: recentReplay,
       battleBreakdowns: this.battleHistory,
       finalRanking: this.finalRanking(),
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: this.rejection } : {}),
     };
+  }
+
+  private projectLogEntry(entry: MatchSessionLogEntry, viewerId: string): MatchSessionLogEntry {
+    const projected = structuredClone(entry);
+    const hiddenEventIds = canViewFaceDownEvents(this.state, viewerId) ? [] : this.state.eventPlacements
+      .filter(event => event.visibility.scope !== 'public').map(event => event.eventCardId);
+    for (const eventId of hiddenEventIds) projected.message = projected.message.split(eventId).join('hidden-event');
+    let payload = projected.payload;
+    if (!payload) return projected;
+    if (entry.type === 'cards_drawn' && payload.playerId !== viewerId) {
+      payload = { playerId: payload.playerId, handLimit: payload.handLimit,
+        drawCount: Array.isArray(payload.drawn) ? payload.drawn.length : 0 };
+    }
+    if (entry.type === 'session_start' && Array.isArray(payload.pairings)) {
+      payload.pairings = payload.pairings.map((pairing: Record<string, unknown>) =>
+        pairing.playerId === viewerId || this.state.abilityRuntime?.revealedServants.includes(String(pairing.playerId))
+          ? pairing : { playerId: pairing.playerId, master: pairing.master });
+    }
+    if (Array.isArray(payload.events)) payload.events = payload.events.filter((event: Record<string, unknown>) => typeof event.visibility !== 'string' || event.visibility === viewerId);
+    const command = payload.command as Record<string, unknown> | undefined;
+    if (command?.type === 'choose_target' || command?.type === 'stage_attack_card' || command?.type === 'play_card' && command.faceDown === true) {
+      payload.command = { type: command.type, privateSelection: 'redacted' };
+    }
+    projected.payload = this.projectEventPayload(payload, hiddenEventIds) as Record<string, unknown>;
+    return projected;
+  }
+
+  private projectEventPayload(value: unknown, hiddenIds: string[]): unknown {
+    if (typeof value === 'string') return hiddenIds.reduce((text, id) => text.split(id).join('hidden-event'), value);
+    if (Array.isArray(value)) return value.map(entry => this.projectEventPayload(entry, hiddenIds));
+    if (!value || typeof value !== 'object') return value;
+    const record = value as Record<string, unknown>;
+    if (typeof record.eventCardId === 'string' && hiddenIds.includes(record.eventCardId)) {
+      return { ...(record.locationId ? { locationId: record.locationId } : {}), hidden: true,
+        ...(record.visibility ? { visibility: { scope: 'hidden_until_trigger' } } : {}) };
+    }
+    return Object.fromEntries(Object.entries(record).map(([key, child]) => [key, this.projectEventPayload(child, hiddenIds)]));
   }
 
   serializeSession(): MatchSessionSnapshot {
@@ -2089,6 +2220,8 @@ export class MatchSession {
   restoreToCheckpoint(checkpointId: string): boolean {
     const snapshot = this.replaySnapshots.find((candidate) => candidate.checkpointId === checkpointId);
     if (!snapshot) return false;
+    // Legacy action checkpoints have no trustworthy movement / regular-play continuation.
+    if (snapshot.state.round.activePhase === 'action' && !actionTurnProgress(snapshot.state, this.humanPlayerId)) return false;
     if (!verifyDeferredRuntimeStateSeal(
       replayDeferredAuthorityPayload(snapshot),
       snapshot.deferredRuntimeStateSeal,
@@ -2110,6 +2243,7 @@ export class MatchSession {
       checkpointDigest,
     )) return false;
     this.state = candidateState;
+    if (!actionTurnProgress(this.state, this.humanPlayerId)) initializeActionTurns(this.state);
     this.logs = candidateLogs;
     this.battleHistory = candidateBattleHistory;
     this.consumedDirectiveCount = snapshot.consumedDirectiveCount;
@@ -2184,6 +2318,7 @@ export class MatchSession {
       }
     }
     initializeAbilityRuntime(state, pack, { seed: this.seed });
+    initializeActionTurns(state);
     processAbilityEvent(state, { id: 'match-session-game-start', type: 'game_start' });
     this.startRound(1, state);
     return { state, pairings, rawCards };
@@ -2597,16 +2732,20 @@ export class MatchSession {
     if (this.state.round.activePhase !== 'battle') {
       advanceAbilityPhase(this.state, 'battle', this.state.round.roundNumber);
     }
+    const alreadyScored = this.battleScoringBarrierReached();
     this.flushPostScoringBattleEvents();
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
       this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
 
-    const resolvedBattles: GameState['battleResults'] = [];
+    if (alreadyScored) { this.finishBattleRound(); return; }
+
+    const resolvedBattles: GameState['battleResults'] = structuredClone(this.state.battleResults);
     const battlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => !((modeStateOf(this.state).closedLocations as string[] | undefined) ?? []).includes(location.id))
       .filter((location) => location.tags.includes('battlefield') || location.rewardHooks.includes('battle_rewards'));
     for (const battlefield of battlefields) {
       if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) break;
+      if (resolvedBattles.some(battle => battle.battlefieldId === battlefield.id)) continue;
       const before = this.state.battleResults.length;
       Object.assign(this.state, resolveBattlefield(this.state, { battlefieldId: battlefield.id, revealHiddenEvents: true }).nextState);
       if (this.state.battleResults.length > before) {
@@ -2624,12 +2763,16 @@ export class MatchSession {
       this.flushPostScoringBattleEvents();
       if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length ||
         this.state.abilityRuntime?.hostRequests.length || this.state.abilityRuntime?.pendingPostBattleEvents?.length) return;
-      advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
-      this.discardRoundSituationAndEvents();
-      advanceAbilityPhase(this.state, 'round_end', this.state.round.roundNumber);
-      this.record('round_end', `round ${this.state.round.roundNumber} ended`);
-      this.checkpoint(`round ${this.state.round.roundNumber} end`);
+      this.finishBattleRound();
     }
+  }
+
+  private finishBattleRound(): void {
+    advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
+    this.discardRoundSituationAndEvents();
+    advanceAbilityPhase(this.state, 'round_end', this.state.round.roundNumber);
+    this.record('round_end', `round ${this.state.round.roundNumber} ended`);
+    this.checkpoint(`round ${this.state.round.roundNumber} end`);
   }
 
   private projectZones(playerId: string): MatchZoneProjection[] {
@@ -2893,6 +3036,10 @@ export function restoreMatchSession(
     restorePackKind,
   }, false);
   session.state = candidateState;
+  if (!actionTurnProgress(candidateState, session.humanPlayerId)) {
+    if (candidateState.round.activePhase === 'action') throw new Error('Legacy action snapshot has no action-turn continuation; restore a preparation or advance checkpoint');
+    initializeActionTurns(candidateState);
+  }
   session.logs = structuredClone(snapshot.logs);
   session.replay = structuredClone(snapshot.replay);
   session.replaySnapshots = structuredClone(snapshot.replaySnapshots ?? []);

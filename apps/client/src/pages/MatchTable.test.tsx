@@ -506,6 +506,26 @@ const fixture: PlaytestClientFixture = {
   optionalAbilityReminder: '久宇舞弥的支援射击尚未处理',
 };
 
+describe('DR-P01 action-turn projection', () => {
+  it('renders only backend movement actions and keeps ending disabled until the complete batch', async () => {
+    const onAction = vi.fn();
+    const onEndTurn = vi.fn();
+    const movement = { actionId: 'normal:recon', kind: 'move' as const, ownerPlayerId: 'player-1', label: '常规移动至 侦察 · 5 魔力', backendCommand: { type: 'normal_move' as const, locationId: 'recon', manaCost: 5 } };
+    const next = { ...fixture, optionalAbilityReminder: undefined, actionTurn: { movement: 'pending' as const, regularPlay: 'pending' as const }, availableActions: [movement] };
+    const rendered = render(<MatchTable fixture={next} onAction={onAction} onEndTurn={onEndTurn} />);
+    expect(screen.getByLabelText('行动回合进度')).toHaveTextContent('先常规移动');
+    const end = rendered.container.querySelector('.decision-panel__confirm')!;
+    expect(end).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: movement.label }));
+    expect(onAction).toHaveBeenCalledWith(movement);
+    expect(onEndTurn).not.toHaveBeenCalled();
+    rendered.rerender(<MatchTable fixture={{ ...next, actionTurn: { movement: 'moved', regularPlay: 'complete' }, availableActions: [], players: next.players.map(player => player.id === 'player-1' ? { ...player, totalPower: 8 } : player) }} onEndTurn={onEndTurn} />);
+    expect(screen.getByLabelText('行动回合进度')).toHaveTextContent('常规出牌已完成');
+    expect(screen.getByLabelText('当前公开合计威力')).toHaveTextContent('8');
+    expect(rendered.container.querySelector('.decision-panel__confirm')).toBeEnabled();
+  });
+});
+
 describe('MatchTable', () => {
   it('loads the default seven-player authoring reference table without Moon Cancer or Babbage cards', () => {
     render(<MatchTable />);

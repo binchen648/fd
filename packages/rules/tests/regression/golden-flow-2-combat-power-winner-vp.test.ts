@@ -68,6 +68,12 @@ function buildGoldenFlow2Room(roomId = 'golden-flow-2-regression') {
 
   activateAttack(p1Attack, 'basic.strength.5', 'p1');
   activateAttack(p2Attack, 'basic.strength.4', 'p2');
+  // This scoring fixture gives p5 no remaining legal attack source, then completes its ordinary action publicly.
+  for (const card of state.cards.filter(card => card.controllerPlayerId === 'p5' && ['hand', 'skill'].includes(card.zone))) {
+    if (state.abilityRuntime!.pack.cards[card.definitionId]?.playKind === 'attack') card.zone = 'removed_from_game';
+  }
+  expect(session.dispatchPlayerAction('p5', { type: 'skip_normal_move' }).ok).toBe(true);
+  expect(session.dispatchPlayerAction('p5', { type: 'complete_empty_regular_play' }).ok).toBe(true);
 
   return room;
 }
@@ -86,6 +92,8 @@ describe('Golden Flow 2 combat -> power -> winner -> VP', () => {
 
     const result = room.endClientTurn('host-gf2');
     expect(result.ok).toBe(true);
+    expect(session.state.round.activePhase).toBe('battle');
+    expect(room.endClientTurn('host-gf2').ok).toBe(true);
 
     const settled = session.projectToClientState('p5');
     expect(settled.phase).toBe('round_end');

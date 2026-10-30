@@ -328,8 +328,14 @@ function calculateMovementCost(
   config: MatchLocationConfig,
   path: LocationId[],
 ): number {
-  return path.slice(1).reduce((sum, locationId) => {
+  // Final rules 9.1 define costs on arrows, not the legacy map's destination labels.
+  const baseArrowCosts: Record<string, number> = {
+    'magic_workshop:miyama_town': 1,
+    'miyama_town:shinto': 2,
+    'shinto:recon': 2,
+  };
+  return path.slice(1).reduce((sum, locationId, index) => {
     const location = getLocationById(map, config, locationId);
-    return sum + (location?.movementCost ?? 0);
+    return sum + (baseArrowCosts[`${path[index]}:${locationId}`] ?? location?.movementCost ?? 0);
   }, 0);
 }

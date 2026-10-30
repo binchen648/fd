@@ -145,7 +145,12 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     const staff = sessionA.state.cards.find((card) =>
       card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
     expect(staff).toBeTruthy();
-    expect(sessionA.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    expect(sessionA.dispatchPlayerAction('p5', { type: 'skip_normal_move' }).ok).toBe(true);
+    expect(sessionA.dispatchPlayerAction('p5', { type: 'stage_attack_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    const supplement = sessionA.getPlayerView('p5').legalActions.find(action => action.type === 'stage_attack_card');
+    expect(supplement).toBeDefined();
+    expect(sessionA.dispatchPlayerAction('p5', supplement!).ok).toBe(true);
+    expect(sessionA.dispatchPlayerAction('p5', { type: 'confirm_staged_attack' }).ok).toBe(true);
     sessionA.state.round.prioritySeat = 5;
     expect(sessionA.dispatchPlayerAction('p5', {
       type: 'activate_ability',

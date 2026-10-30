@@ -109,5 +109,11 @@
     "packages/rules/src/ability/loader.ts"
   ],
   "publishedControlSha": "f674c00a065878f2fd454ed3820d87d322058114",
-  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030"
+  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030",
+  "independentVerification": {
+    "owner": "Independent Playable Verifier /root/dr_p01_risk_review",
+    "sourceWritesAuthorized": false,
+    "outputPath": "docs/reviews/phase3/DR-P01-playable-verification.json",
+    "binding": "Exact newly frozen M1 candidate SHA supplied by Global Technical Lead before review; implementation evidence validation and technical risk review combined under user approved stable roles"
+  }
 }

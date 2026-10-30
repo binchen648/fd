@@ -229,7 +229,7 @@ describe('P3-FB2-16 required additional-play marker', () => {
     });
   });
 
-  it('fails closed for append-only-only batches and accepted effect-play routing', () => {
+  it('fails closed for append-only-only batches without offering an impossible effect-play activation', () => {
     const appendOnlyBatch = setup();
     const extraA = add(appendOnlyBatch, SUPPORT_ID, 'skill');
     const extraB = add(appendOnlyBatch, SUPPORT_ID, 'skill');
@@ -244,17 +244,16 @@ describe('P3-FB2-16 required additional-play marker', () => {
     add(effectState, DRAW_ID, 'deck');
     const activation = rules.getLegalActions(effectState, 'p1').find((action) =>
       action.type === 'activate_ability' && action.cardInstanceId === source && action.abilityId === 'time-alter.action');
-    expect(activation).toBeDefined();
-    expect(rules.dispatchAbilityCommand(effectState, 'p1', activation!).ok).toBe(true);
-    const pending = rules.projectAbilityState(effectState, 'p1').pendingDecision!;
-    expect(pending.candidates).toContain(marked);
+    expect(activation).toBeUndefined();
     const before = JSON.stringify(effectState);
     const result = rules.dispatchAbilityCommand(effectState, 'p1', {
-      type: 'choose_target', decisionId: pending.id, selectedIds: [marked],
+      type: 'activate_ability', cardInstanceId: source, abilityId: 'time-alter.action',
     });
     expect(result.ok).toBe(false);
-    expect(result.rejection?.code).toBe('append_only');
+    expect(result.rejection?.code).toBe('illegal_action');
     expect(JSON.stringify(effectState)).toBe(before);
+    expect(rules.projectAbilityState(effectState, 'p1').pendingDecision).toBeUndefined();
+    expect(effectState.cards.find((card) => card.instanceId === marked)?.zone).toBe('hand');
   });
 
   it('keeps accepted extra regular-play allowance separate from additional-card accounting', () => {
