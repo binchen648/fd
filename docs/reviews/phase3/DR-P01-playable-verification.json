@@ -5,22 +5,22 @@
   "reviewerRole": "Independent Playable Verifier",
   "githubReviewer": null,
   "reviewThread": null,
-  "reviewedAt": "2026-10-30T08:04:48.751615+00:00",
-  "candidateSha": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-  "reviewedSha": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+  "reviewedAt": "2026-10-30T08:31:12.934293+00:00",
+  "candidateSha": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+  "reviewedSha": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
   "baseSha": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "controlParentSha": "b181c4987ce7710d6bebacc68bed45576f45d11e",
   "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
   "technicalVerdict": "PASS",
-  "acceptanceScope": "DR-P01 M1 with user-authorized F1 affordable-subset exception and F2 local public-power projection, plus original action/battle authority/privacy/recovery",
-  "overallReadiness": "PENDING_NEW_EXACT_HEAD_FULL_CI_GITHUB_BINDING_AND_USER_MERGE_CONSENT",
+  "acceptanceScope": "DR-P01 M1 and F1/F2 plus Node large-snapshot SHA acceleration with byte-identical portable fallback and unchanged signed restore trust",
+  "overallReadiness": "PENDING_NEW_EXACT_PR_HEAD_FULL_CI_GITHUB_BINDING_AND_USER_MERGE_CONSENT",
   "openBlockingFindings": [],
   "authority": {
     "publishedPlannerSha": "f674c00a065878f2fd454ed3820d87d322058114",
     "lane": "DR-P01_ONLY_SHARED_RUNTIME_WRITER",
     "taskManifest": "docs/agents/manifests/tasks/DR-P01.json",
-    "taskManifestBlob": "075d240430d45dd848ab790887bca10fc6f0035d",
-    "taskManifestSha256": "b748fb037fc5f60fa3c8d26b26afa3b370c3bb92bdfb95c767cde0e7c1272ad2",
+    "taskManifestBlob": "78c44527c0bb192304544c17a65e639eaf959bdf",
+    "taskManifestSha256": "d7bd400b83f97ca61602a6b77399f0016695bd750791ec5740d38cc3a193113d",
     "verifierOutputOwnerBound": true,
     "sourceWritesAuthorized": false,
     "onlyAuthorizedOutput": "docs/reviews/phase3/DR-P01-playable-verification.json",
@@ -41,11 +41,25 @@
       ],
       "governanceMachinePolicyModified": false,
       "mergeRequiresUserConsent": true
+    },
+    "ciTimeoutScopeAddendum": {
+      "issuedBy": "Global Technical Lead /root under user authorization to complete fixes on current PR branch",
+      "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
+      "baseSha": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+      "taskId": "DR-P01",
+      "addedPaths": [
+        "packages/rules/src/ability/portable-sha256.ts",
+        "packages/rules/tests/portable-sha256.test.ts"
+      ],
+      "purpose": "Two reproducible full-CI timeout failures; profile measures 38-44% portable SHA self time. Permit feature-detected Node builtin SHA acceleration with byte-identical portable browser fallback. Preserve every seal/checkpoint/restore validation and original test timeouts. No mutable state cache.",
+      "scopePreflight": "D:/fd-validation/dr-p01-m1-timeout-diag-20261030/scope-preflight.json",
+      "ownership": "Same sole Feature Delivery Lead, no transfer/release; loader excluded and CB-C02 remains suspended",
+      "verification": "Native/portable differential UTF8/RFC/long-message vectors; real browser fallback; existing restore/tamper/atomic/privacy regressions; independent verification; exact final-head original CI; user merge consent still required"
     }
   },
   "reviewIsolation": {
     "worktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
-    "requiredReviewCommitParent": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+    "requiredReviewCommitParent": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
     "implementationModifiedByReviewer": false,
     "oldEvidenceModified": false,
     "cleanBeforeReviewOutput": true,
@@ -54,7 +68,7 @@
   },
   "sourceAndScope": {
     "reviewedAgainstExactM1": true,
-    "implementationSourceAndTestCount": 28,
+    "implementationSourceAndTestCount": 30,
     "allPathsAuthorized": true,
     "sourceObjects": [
       {
@@ -109,6 +123,12 @@
         "path": "packages/rules/src/match-session.ts",
         "sha256": "246879410007e0ddf547a5f31a140adb7db7b5683fa7c46bc7d7fe7dec171f83",
         "candidateBlob": "cd4cc0df9a411ce21273a978e4511ad1b973d410",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/ability/portable-sha256.ts",
+        "sha256": "35d5670a2d802b7a01b4f78d72cdc55e81228787d83fea7d26da844c6283a474",
+        "candidateBlob": "475d02330464f4bac817d8716edeae5638f20850",
         "candidateBytesEqualProducerBytes": true
       },
       {
@@ -224,6 +244,12 @@
         "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2",
         "candidateBlob": "49668bb3630e64e4f8ca1165334fc48e91a7dffe",
         "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/portable-sha256.test.ts",
+        "sha256": "bcf2f0bc47c544b81a9dc3de776571a040ea271df8f34dbcefe0e74f94512ba0",
+        "candidateBlob": "da24bc4cdefbe5d72abedb3aeab9302235350650",
+        "candidateBytesEqualProducerBytes": true
       }
     ],
     "loaderPath": "packages/rules/src/ability/loader.ts",
@@ -240,7 +266,7 @@
           "merge-base",
           "--is-ancestor",
           "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
-          "9b00d48bcb9494a70dc8685cb6e339528e36fd40"
+          "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3"
         ],
         "exitCode": 0
       },
@@ -252,7 +278,7 @@
           "merge-base",
           "--is-ancestor",
           "3ec55814b8aca84416fca46dfaf7032a7f115094",
-          "9b00d48bcb9494a70dc8685cb6e339528e36fd40"
+          "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3"
         ],
         "exitCode": 1
       },
@@ -264,7 +290,7 @@
           "merge-base",
           "--is-ancestor",
           "2c50256280ef0ebdb1c1366cb09984530fd868ff",
-          "9b00d48bcb9494a70dc8685cb6e339528e36fd40"
+          "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3"
         ],
         "exitCode": 1
       },
@@ -276,7 +302,7 @@
           "merge-base",
           "--is-ancestor",
           "2d386ddd7d4a0d1d4d51d44a3ad0905668e12f8e",
-          "9b00d48bcb9494a70dc8685cb6e339528e36fd40"
+          "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3"
         ],
         "exitCode": 1
       }
@@ -288,45 +314,43 @@
       "7724bff0d849e13e5b6725c5b05f76dc6c03bce4\trefs/heads/main"
     ],
     "changedPathsFromPriorPrHead": [
-      "apps/client/src/pages/MatchTable.test.tsx",
-      "apps/client/src/state/seven-authoring-smoke-fixture.ts",
       "artifacts/dr-p01-m1-validation.json",
       "docs/reports/2026-10-30-dr-p01-m1-validation.md",
-      "e2e/fd-action-turn-delivery.spec.ts",
-      "packages/rules/src/ability/interpreter.ts",
-      "packages/rules/tests/regression/action-turn-delivery.test.ts"
+      "packages/rules/src/ability/portable-sha256.ts",
+      "packages/rules/tests/portable-sha256.test.ts"
     ],
-    "reviewedRepairRange": "3153618a48e6464625b3d890d33d9d2627bd6467..9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-    "repairPathCount": 7,
-    "allRepairPathsAuthorized": true
+    "reviewedRepairRange": "9560b88956bbbf695a99f4c6af7c0c5c789471d4..a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+    "repairPathCount": 4,
+    "allRepairPathsAuthorized": true,
+    "sessionSigningRestoreAndAuthorityCallsUnchanged": true
   },
   "originalFailureAndClosures": [
     {
       "id": "IR-01",
       "severity": "P1",
       "original": "Hidden Shinto event identity/reward leaked through logs",
-      "currentEvidence": "privacy-batch-9b00d48b.json",
+      "currentEvidence": "privacy-batch-a8387b08.json",
       "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
     },
     {
       "id": "IR-02",
       "severity": "P1",
       "original": "Ordinary insufficient mana disclosed unplayed hand",
-      "currentEvidence": "privacy-batch-9b00d48b.json",
+      "currentEvidence": "privacy-batch-a8387b08.json",
       "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
     },
     {
       "id": "IR-03",
       "severity": "P2",
       "original": "Partial attribute prohibition bypassed by voluntary face-down play",
-      "currentEvidence": "privacy-batch-9b00d48b.json",
+      "currentEvidence": "privacy-batch-a8387b08.json",
       "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
     },
     {
       "id": "IR-04",
       "severity": "P2",
       "original": "Postscoring response restore reopened ended battle ability",
-      "currentEvidence": "battle-continuation-9b00d48b.json",
+      "currentEvidence": "battle-continuation-a8387b08.json",
       "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
     },
     {
@@ -336,8 +360,8 @@
       "status": "CLOSED_EXACT_CANDIDATE_REPROBE_UNDER_USER_RULE_RULING",
       "location": "packages/rules/src/ability/interpreter.ts:1061",
       "currentEvidence": [
-        "f1-cost-boundaries-9b00d48b.json",
-        "f1-subset-ws-9b00d48b.json"
+        "f1-cost-boundaries-a8387b08.json",
+        "f1-subset-ws-a8387b08.json"
       ],
       "redLog": "D:/fd-validation/dr-p01-m1-fixes-20261030/f1-red.log"
     },
@@ -347,31 +371,31 @@
       "original": "Local projection omitted authoritative public totalPower including numeric0",
       "status": "CLOSED_EXACT_CANDIDATE_REPROBE",
       "location": "apps/client/src/state/seven-authoring-smoke-fixture.ts:579",
-      "currentEvidence": "f2-local-ui-9b00d48b.json",
+      "currentEvidence": "f2-local-ui-a8387b08.json",
       "redLog": "D:/fd-validation/dr-p01-m1-fixes-20261030/f2-red.log"
     }
   ],
   "independentValidation": {
-    "actualCandidateSha": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+    "actualCandidateSha": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
     "runs": [
       {
         "command": [
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/privacy-batch-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/privacy-batch-a8387b08.mts"
         ],
         "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-        "startedAt": "2026-10-30T08:00:09.669868+00:00",
-        "endedAt": "2026-10-30T08:00:10.728921+00:00",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:40.869452+00:00",
+        "endedAt": "2026-10-30T08:27:41.626148+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 7,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/privacy-batch-9b00d48b.json",
-        "scriptSha256": "9b15012bb5e618033c5684d5b62b11b46984439d2790090aa0df511e90f1eaa6",
-        "receiptSha256": "871a5a0105d576ae74dd7ae49780ec565392ba3c4503ea7195a47ef5331156b6",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/privacy-batch-a8387b08.json",
+        "scriptSha256": "5a82613771b66a7656f4f747d9bce542bc7087360b61feb85a01d33f03f94de7",
+        "receiptSha256": "7f5721f888662fecfc2b766969f8a5b38eb22b5791d91f00c1a554a06b82d6ae",
         "checkNames": [
           "hidden-event-before-reveal",
           "hidden-event-before-reveal",
@@ -387,19 +411,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/battle-continuation-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/battle-continuation-a8387b08.mts"
         ],
         "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-        "startedAt": "2026-10-30T08:00:10.749510+00:00",
-        "endedAt": "2026-10-30T08:00:17.316011+00:00",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:41.642664+00:00",
+        "endedAt": "2026-10-30T08:27:44.734656+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 6,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/battle-continuation-9b00d48b.json",
-        "scriptSha256": "b8e3e57a985a8ad16df6cc710f880a3bdbbed26d39bb6fa89cd2e860b6a61e3a",
-        "receiptSha256": "5a3c4a3cd239713dbd0e0ede9b7b6984118d49e39db2eace7c97c4407cb8f50c",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/battle-continuation-a8387b08.json",
+        "scriptSha256": "49638a94b64207c7cdf9fbea215e388e5363c914625bdcca0bcbba886576fe2d",
+        "receiptSha256": "78ea009004f2a425a73c86a5d2d919311ede461727780d9684c0ea034d342320",
         "checkNames": [
           "all-seven-action-turns-before-battle-seat1",
           "seven-battle-windows-before-real-postscore-response",
@@ -414,19 +438,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/ws-boundaries-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/ws-boundaries-a8387b08.mts"
         ],
         "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-        "startedAt": "2026-10-30T08:00:17.334070+00:00",
-        "endedAt": "2026-10-30T08:00:18.907667+00:00",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:44.748929+00:00",
+        "endedAt": "2026-10-30T08:27:45.931412+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 8,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/ws-boundaries-9b00d48b.json",
-        "scriptSha256": "f3330befcf3176885f113f4a5af077b5de1d05ba8adb3b1105da7ec50c9579cc",
-        "receiptSha256": "5262989c3528c3f5ea7504a5da84bbdac8b85170fa023760cf97ed51e2a85129",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/ws-boundaries-a8387b08.json",
+        "scriptSha256": "869711390f6ff78b665e7fa2d8afa0c1e27d25f06665e0f63b8e56f90fc3f988",
+        "receiptSha256": "ef336c39d2c686572ad66bb04d693bd057e6d2c5f31fef1340816cd5886ff687",
         "checkNames": [
           "ws-opponent-and-spectator-hide-p1-hand-identities",
           "ws-early-play-wrong-priority-malformed-face-atomic",
@@ -443,19 +467,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/adjacent-runtime-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/adjacent-runtime-a8387b08.mts"
         ],
         "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-        "startedAt": "2026-10-30T08:00:18.927129+00:00",
-        "endedAt": "2026-10-30T08:00:20.134724+00:00",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:45.945282+00:00",
+        "endedAt": "2026-10-30T08:27:46.788289+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 4,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/adjacent-runtime-9b00d48b.json",
-        "scriptSha256": "f6a0f7605944c6d58fd829426e1853a76e4c9efdb9e67a75f8df2bd4b4073318",
-        "receiptSha256": "acc0af2c3e22aa68ac5633e49ceddc5a0c99db316fb4add33a17a24b626b2f7e",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/adjacent-runtime-a8387b08.json",
+        "scriptSha256": "00920a42e4e409775971dfd53ff2e1d0324d22d02df94b17accbecd9e1c24e0e",
+        "receiptSha256": "600f735b54d0ac9aada00b70c6742b015e6fffc95cd579a5e535dd951be1cba9",
         "checkNames": [
           "drake-trigger-draw-replaces-state-without-stale-stage-lock",
           "time-alter-effect-play-retains-ordinary-move-and-play-quotas",
@@ -468,19 +492,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/dynamic-revalidation-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/dynamic-revalidation-a8387b08.mts"
         ],
         "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-        "startedAt": "2026-10-30T08:00:20.153804+00:00",
-        "endedAt": "2026-10-30T08:00:21.843779+00:00",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:46.804861+00:00",
+        "endedAt": "2026-10-30T08:27:47.949814+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 8,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/dynamic-revalidation-9b00d48b.json",
-        "scriptSha256": "8bc1eecbb6b19adad3e9dc791da8a7c4b43ea11acae6282d28ac838646f2d79b",
-        "receiptSha256": "865e7c0dfbac7c5ce827a5b182c0a0e9a3fd9e1b8672fc787628729db4b700fe",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/dynamic-revalidation-a8387b08.json",
+        "scriptSha256": "c0234ef2d91a8bfd8f3944d028e9d2ad825803dcc441fa4e49936d6b83491cb4",
+        "receiptSha256": "2cd7ec2d2f1ff224eed1fc71b9d1eb536500755b14e3950b8dfea2570b7e20dc",
         "checkNames": [
           "read-local-plan-revalidates-aggregate-cost",
           "read-local-plan-revalidates-skill-zone-gate",
@@ -497,16 +521,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/f1-cost-boundaries-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/f1-cost-boundaries-a8387b08.mts"
         ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:47.965841+00:00",
+        "endedAt": "2026-10-30T08:27:49.498753+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 11,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/f1-cost-boundaries-9b00d48b.json",
-        "scriptSha256": "39a639ea17d0d8dc8e98503176a77c90f57fdc8ab312882c6286e17c98029250",
-        "receiptSha256": "756612ef825e1f9cdb3fe770ff415225f740fce962c4c7f70eb60d2283f1f6f3",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/f1-cost-boundaries-a8387b08.json",
+        "scriptSha256": "a5c1d1e50a45a7b903ece3abb30f3aacb77b690c910009447b23a149d8649348",
+        "receiptSha256": "84c439d197646d279e89e41899d1dbcbfc624935879e6fbe4851c82335833ab4",
         "checkNames": [
           "battlefield-1-unaffordable-hand-empty-only-no-leak",
           "workshop-1-free-face-down-prevents-empty",
@@ -526,16 +553,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/f2-local-ui-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/f2-local-ui-a8387b08.mts"
         ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:49.513843+00:00",
+        "endedAt": "2026-10-30T08:27:52.069559+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 2,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/f2-local-ui-9b00d48b.json",
-        "scriptSha256": "83ba752ee27532c86b3c8ca97d5991a9ce1a5881384fab93d750cb6416f17a09",
-        "receiptSha256": "54536f91ff1fa676032f59dac59379a7a19c9241eda5e2e5b2b6681a11e35d4a",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/f2-local-ui-a8387b08.json",
+        "scriptSha256": "4afe48aa3b68e3fdaa098ac66d37a8a710b04e9ab95dedbddbaa5e4015421a11",
+        "receiptSha256": "6f7cb3bed153aafd0b236fad61dcc4fa21bb84f3684dce9b5056c75dd7874e8d",
         "checkNames": [
           "local-session-fixture-ui-retains-positive-four-and-next-seat-privacy",
           "local-session-fixture-ui-retains-zero-and-next-seat-privacy"
@@ -546,16 +576,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/f1-subset-ws-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/f1-subset-ws-a8387b08.mts"
         ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:52.086714+00:00",
+        "endedAt": "2026-10-30T08:27:53.022934+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 2,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/f1-subset-ws-9b00d48b.json",
-        "scriptSha256": "50d87b4b00c7ccf6a3a9934a9d8ad0c400dba47c3145b42ae50ffd5794e3a866",
-        "receiptSha256": "6083f7dfc5ba70fcea4e74e4bae685fd1e79d7d29ea8521d5a4e437943a7e33a",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/f1-subset-ws-a8387b08.json",
+        "scriptSha256": "0367c674756eca29dd10bc9c6fb04c46bd1b14dbf7c4a4ee89780f2f482ec7c6",
+        "receiptSha256": "a1dfcc657ed910e827537b1bb7c54d1d9e4c89cef5adf87b5515c350456b6f34",
         "checkNames": [
           "ws-reduced-batch-stale-confirm-atomic-then-pays-only-legal-subset",
           "ws-reduced-complete-replay-rejects-with-private-unplayed-remainder"
@@ -566,16 +599,19 @@
           "node",
           "--import",
           "tsx",
-          "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/m1-provenance-permission-9b00d48b.mts"
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/m1-provenance-permission-a8387b08.mts"
         ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
         "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "startedAt": "2026-10-30T08:27:53.037178+00:00",
+        "endedAt": "2026-10-30T08:27:54.371049+00:00",
         "exitCode": 0,
         "result": "PASS",
         "assertionGroups": 5,
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/independent/m1-provenance-permission-9b00d48b.json",
-        "scriptSha256": "9ab52a24819426cefaad8648b4471b87bb3e70ad61a1ce8e0611143d14d390cd",
-        "receiptSha256": "56d4ce6c0a7e54ecdca9337a6f7ec9ef76d2d057db53c1f3868999768bb28b3d",
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/m1-provenance-permission-a8387b08.json",
+        "scriptSha256": "a758fcc05c63be61e5b607444ac82a6d02e23583c59041e0a2797c33b32dbb4a",
+        "receiptSha256": "e7f15c7a759b452dd5689f8375762f68be18485554aa7b6f4d0945261d85a94f",
         "checkNames": [
           "m1-is-ancestor-while-unaccepted-a0-old-dr-cb-are-not",
           "m1-loader-and-content-unchanged-no-cb-permission-helper",
@@ -583,322 +619,520 @@
           "no-unaccepted-controller-wide-low-mana-grant-p1",
           "eight-mana-own-cards-work-and-pay-five-but-cross-controller-card-rejects"
         ]
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/native-fallback-parity-a8387b08.mts"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 10,
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/native-fallback-parity-a8387b08.json",
+        "scriptSha256": "9a5633f8b93cb19086ac4c199d450765ea7e3433151a758b2019d599ee5fd719",
+        "receiptSha256": "241113f7a22c9485b7a85e79881c8ae1f487e10a9a248fddb2fadcc5c5c48f69",
+        "checkNames": [
+          "native-and-prior-portable-match-utf8-block-and-4096-character-boundaries",
+          "published-sha-abc-and-million-a-vectors",
+          "rfc4231-and-unicode-long-key-hmac-remain-portable-byte-identical",
+          "real-fallback-browser-no-process",
+          "real-fallback-actual-api-absent",
+          "real-fallback-api-undefined",
+          "real-fallback-builtin-unavailable",
+          "real-fallback-builtin-no-createhash",
+          "backend-capability-only-no-message-or-state-digest-cache",
+          "original-portable-byte-algorithm-and-hmac-source-unchanged"
+        ]
+      },
+      {
+        "command": [
+          "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\independent\\npm-cache\\_npx\\ebaba8b9e55fd0a9\\node_modules\\node\\bin\\node.exe",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/node20-parity-restore-a8387b08.mts",
+          "native"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "nodeExecutableSha256": "56c1520ee33b801e8bdb92fb321cf2e98529735b6d12bd4a2a6dec0ac0bab937",
+        "startedAt": "2026-10-30T08:30:10.058719+00:00",
+        "endedAt": "2026-10-30T08:30:11.063437+00:00",
+        "exitCode": 0,
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/node20-native-a8387b08.json",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "result": "PASS",
+        "assertionGroups": 3,
+        "runtime": "v20.20.2",
+        "scriptSha256": "29fb4788e4fe08a3b84eeded1bc36bdc0424f1da6bba1c973da44bc8c6f96878",
+        "receiptSha256": "bc41625b6b4f983df06c314d0a455aa40ee98b3dd406c99fa0421f80cd03400a",
+        "checkNames": [
+          "real-node20-native-utf8-native-threshold-and-hmac-parity",
+          "real-node20-native-signed-restore-cross-backend-mac-identical",
+          "real-node20-native-tamper-and-missing-seal-fail-closed"
+        ]
+      },
+      {
+        "command": [
+          "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\independent\\npm-cache\\_npx\\ebaba8b9e55fd0a9\\node_modules\\node\\bin\\node.exe",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/node20-parity-restore-a8387b08.mts",
+          "fallback"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "nodeExecutableSha256": "56c1520ee33b801e8bdb92fb321cf2e98529735b6d12bd4a2a6dec0ac0bab937",
+        "startedAt": "2026-10-30T08:30:11.125869+00:00",
+        "endedAt": "2026-10-30T08:30:12.334167+00:00",
+        "exitCode": 0,
+        "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/independent/node20-fallback-a8387b08.json",
+        "sourceHead": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+        "result": "PASS",
+        "assertionGroups": 3,
+        "runtime": "v20.20.2",
+        "scriptSha256": "29fb4788e4fe08a3b84eeded1bc36bdc0424f1da6bba1c973da44bc8c6f96878",
+        "receiptSha256": "88ffccdb165eead4d480e6648a71ab78ac504277fbde00e5a8068b0b21679de6",
+        "checkNames": [
+          "real-node20-fallback-utf8-native-threshold-and-hmac-parity",
+          "real-node20-fallback-signed-restore-cross-backend-mac-identical",
+          "real-node20-fallback-tamper-and-missing-seal-fail-closed"
+        ]
       }
     ],
-    "passingAssertionGroups": 53,
-    "countMeaning": "53 bounded assertion groups across9 independent scripts; not53 Vitest tests or coverage credit",
+    "passingAssertionGroups": 69,
+    "countMeaning": "69 bounded assertion groups across12 executions of11 scripts; not69 Vitest tests or coverage credit",
     "fullCiRun": false,
-    "localUiMethod": "Actual local Session -> local fixture -> MatchTable rendered markup via Vite SSR; numeric4 and0 plus next-seat privacy both asserted",
-    "externalHarnessNote": "Initial F2 probe used an incorrect plugin-react file path and failed before loading product code; original import-error log retained. Package resolver corrected only the external probe; final probe exits0."
+    "node20Runtime": "v20.20.2",
+    "node20BinarySource": "npm node@20 installed only into external ephemeral cache; project package/lock unchanged",
+    "localUiMethod": "Actual local Session -> local fixture -> MatchTable SSR numeric4 and0 plus next-seat privacy",
+    "trueApiAbsence": "VM process={} and actual Node20 delete process.getBuiltinModule are both exercised, distinct from a method returning undefined",
+    "nativeFallbackInterop": "Node20 native-signed persisted Session restored in a separate real fallback process with identical MAC; missing seal, bad MAC, state and action continuation tampering reject",
+    "externalHarnessNote": "Node20 external probe first had a syntax error before loading product code; original log retained. Only probe syntax corrected; final native and fallback executions both exit0."
   },
   "producerEvidenceReviewed": {
     "implementationPacket": "artifacts/dr-p01-m1-validation.json",
-    "packetSha256": "9eaa0c36e3231cac6af8a211e994e2b13e836c40e05d7805788a655c20a82973",
+    "packetSha256": "ef044e4852e6cdd1c1fa4bee8b9f6fdd1a45fb8f218932ee219179e45e4950e7",
     "report": "docs/reports/2026-10-30-dr-p01-m1-validation.md",
-    "reportSha256": "e99a50f8bf690be597bdbc1133a53a180371fec91359fd4657d251a6d3f6392f",
-    "f1Red": {
-      "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/regression/action-turn-delivery.test.ts -t completes-an-empty-batch-or-largest-affordable --maxWorkers=2",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-      "exitCode": 1,
-      "startedAt": "2026-10-30T15:47:30.4524575+08:00",
-      "endedAt": "2026-10-30T15:47:32.9240189+08:00",
-      "log": "D:/fd-validation/dr-p01-m1-fixes-20261030/f1-red.log",
-      "logSha256": "77b97278a81a894c0251950c872497811392d94ddeaf3237c73e2641c53cc20a",
-      "actualFailedTests": 3
+    "reportSha256": "500e9acbddbc59ce68eb1c2e85b398c4ceadce8a392fc16aedd9596a7a59caaa",
+    "performanceRepair": {
+      "change": "13-line synchronous Node large-SHA backend using feature-detected process.getBuiltinModule(node:crypto), for inputs>=4096characters only. Browsers/noAPI preserve original portable implementation; shortSHA and allHMAC unchanged. No state cache, skipped signing, changed payload/schema or removed verification.",
+      "correctness": "10tests cover native route choice, exact Node-vs-portable UTF8 including lone surrogates/long input, actual no-process VM browser fallback, missing builtin API, SHA known vector andRFC4231HMAC. Added native-selection assertion first failed before implementation.",
+      "counts": {
+        "rulesFiles": 16,
+        "rulesTestsPassed": 211,
+        "actionTurnTestsWithinRules": 31,
+        "portableShaTestsWithinRules": 10,
+        "fb249AuthorityTestsWithinRules": 51,
+        "relevantClientFiles": 6,
+        "relevantClientTestsPassed": 44,
+        "serverTestsPassed": 17,
+        "browserTestsPassed": 3
+      },
+      "checks": [
+        {
+          "id": "focused",
+          "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"packages/rules/tests/portable-sha256.test.ts\" \"packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts\" \"--maxWorkers=2\"",
+          "executable": "D:\\nodejs\\node.exe",
+          "args": [
+            "node_modules/vitest/vitest.mjs",
+            "run",
+            "packages/rules/src/__tests__/match-session-regressions.test.ts",
+            "packages/rules/tests/match-room-hub.test.ts",
+            "packages/rules/tests/match-session.test.ts",
+            "packages/rules/tests/regression/action-turn-delivery.test.ts",
+            "packages/rules/tests/regression/card-action-close.test.ts",
+            "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+            "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+            "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+            "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+            "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+            "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+            "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+            "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+            "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+            "packages/rules/tests/portable-sha256.test.ts",
+            "packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts",
+            "--maxWorkers=2"
+          ],
+          "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+          "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+          "exitCode": 0,
+          "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\focused.log",
+          "logSha256": "e2b5fddc2cb0e6593faa52915bbc0b4b80a003618018c56b43f6d1af24bc43d6",
+          "startedAt": "2026-10-30T08:24:29.748Z",
+          "endedAt": "2026-10-30T08:24:53.681Z",
+          "durationMs": 23933,
+          "executedBy": "Feature Delivery Lead",
+          "allRecordedSourceHashesMatchCandidate": true,
+          "executionBinding": "Prefreeze under9560b889 with exact final30 source/test bytes; not executed at later commit SHA",
+          "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/focused-receipt.json",
+          "receiptSha256": "cae9ed767737d68741fc660e24b6a26bc41a3f5660de23b68db4836c9f86f8a2"
+        },
+        {
+          "id": "typecheck",
+          "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"typecheck\"",
+          "executable": "D:\\nodejs\\node.exe",
+          "args": [
+            "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+            "run",
+            "typecheck"
+          ],
+          "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+          "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+          "exitCode": 0,
+          "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\typecheck.log",
+          "logSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4",
+          "startedAt": "2026-10-30T08:24:43.597Z",
+          "endedAt": "2026-10-30T08:24:45.200Z",
+          "durationMs": 1603,
+          "executedBy": "Feature Delivery Lead",
+          "allRecordedSourceHashesMatchCandidate": true,
+          "executionBinding": "Prefreeze under9560b889 with exact final30 source/test bytes; not executed at later commit SHA",
+          "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/typecheck-receipt.json",
+          "receiptSha256": "fa9312f8c59939beafbccd4ada68cceec23fb1c3900e234db68422ef13aee099"
+        },
+        {
+          "id": "build",
+          "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
+          "executable": "D:\\nodejs\\node.exe",
+          "args": [
+            "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+            "run",
+            "build",
+            "--workspace",
+            "@fd/client"
+          ],
+          "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+          "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+          "exitCode": 0,
+          "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\build.log",
+          "logSha256": "c447b31f1a094bd747306784b1f2a56a46a0ae6346605d24c368a6414e0062bb",
+          "startedAt": "2026-10-30T08:25:01.113Z",
+          "endedAt": "2026-10-30T08:25:06.825Z",
+          "durationMs": 5712,
+          "executedBy": "Feature Delivery Lead",
+          "allRecordedSourceHashesMatchCandidate": true,
+          "executionBinding": "Prefreeze under9560b889 with exact final30 source/test bytes; not executed at later commit SHA",
+          "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/build-receipt.json",
+          "receiptSha256": "4039349df8ccb0e1367badcc3b4314ec930da051153ba9b83960f8e4486b8b20"
+        },
+        {
+          "id": "client",
+          "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\" \"src/App.test.tsx\" \"src/pages/MatchTable.test.tsx\" \"src/components/ServantDeckSummary.test.tsx\" \"src/components/CardInspectionOverlay.test.tsx\" \"src/state/engine-bridge.test.ts\" \"src/state/content-library-loader.test.ts\"",
+          "executable": "D:\\nodejs\\node.exe",
+          "args": [
+            "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
+            "run",
+            "src/App.test.tsx",
+            "src/pages/MatchTable.test.tsx",
+            "src/components/ServantDeckSummary.test.tsx",
+            "src/components/CardInspectionOverlay.test.tsx",
+            "src/state/engine-bridge.test.ts",
+            "src/state/content-library-loader.test.ts"
+          ],
+          "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\client",
+          "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+          "exitCode": 0,
+          "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\client.log",
+          "logSha256": "247b3df0a007f71b15520505655ec2ba4d796ca0c80a0678843454bce9e30e90",
+          "startedAt": "2026-10-30T08:25:11.990Z",
+          "endedAt": "2026-10-30T08:25:20.160Z",
+          "durationMs": 8170,
+          "executedBy": "Feature Delivery Lead",
+          "allRecordedSourceHashesMatchCandidate": true,
+          "executionBinding": "Prefreeze under9560b889 with exact final30 source/test bytes; not executed at later commit SHA",
+          "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/client-receipt.json",
+          "receiptSha256": "725fe7734fa87adc4880e4d9320fde27ea6d270c46c8edf0d9ec52ab82793970"
+        },
+        {
+          "id": "server",
+          "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\"",
+          "executable": "D:\\nodejs\\node.exe",
+          "args": [
+            "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
+            "run"
+          ],
+          "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\server",
+          "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+          "exitCode": 0,
+          "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\server.log",
+          "logSha256": "ccce6f682b537823c0b054f779bf3418e56dacda43e28e8112bd6185ce79d15d",
+          "startedAt": "2026-10-30T08:25:20.500Z",
+          "endedAt": "2026-10-30T08:25:25.096Z",
+          "durationMs": 4596,
+          "executedBy": "Feature Delivery Lead",
+          "allRecordedSourceHashesMatchCandidate": true,
+          "executionBinding": "Prefreeze under9560b889 with exact final30 source/test bytes; not executed at later commit SHA",
+          "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/server-receipt.json",
+          "receiptSha256": "73d940749997061b6502c3e20c4942a9b6b1c8d1df7e5eb0343a6d6540d898cc"
+        },
+        {
+          "id": "browser",
+          "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-sha-perf-20261030\\\\playwright.m1.config.mjs\"",
+          "executable": "D:\\nodejs\\node.exe",
+          "args": [
+            "node_modules/@playwright/test/cli.js",
+            "test",
+            "-c",
+            "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\playwright.m1.config.mjs"
+          ],
+          "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+          "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+          "exitCode": 0,
+          "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\browser.log",
+          "logSha256": "164fea5b1bcae6870cbf8711e690663617e731efe25eabae764efa085c91322e",
+          "startedAt": "2026-10-30T08:25:29.003Z",
+          "endedAt": "2026-10-30T08:25:55.592Z",
+          "durationMs": 26589,
+          "executedBy": "Feature Delivery Lead",
+          "allRecordedSourceHashesMatchCandidate": true,
+          "executionBinding": "Prefreeze under9560b889 with exact final30 source/test bytes; not executed at later commit SHA",
+          "receipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/browser-receipt.json",
+          "receiptSha256": "cb2e96bd8e182eb50cc27050c1ef52873532042626b6bc3cbc4ef84738905c7f"
+        }
+      ],
+      "sourceObjects": [
+        {
+          "path": "apps/client/src/pages/MatchTable.tsx",
+          "sha256": "cef3d4ebacb3d3f43b19c928ece9085d8e6ec9cc8802b7053d41d413678d6aa8",
+          "candidateBlob": "05ba7172dd63a2e47182488a5a3ea01bebe9c1fe",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "apps/client/src/state/playtest-fixture-loader.ts",
+          "sha256": "58bec018e58ef9742807e80f214c01fd92e3ae8b6d6260286ccb997920fa421d",
+          "candidateBlob": "ffea9dfbe65abd048d9501dba0689992de365df2",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "apps/client/src/state/remote-room-fixture.ts",
+          "sha256": "8e274d34dd2b46a0aac9811beb31a2b74936c18b79fcaa4d917a733669dfe078",
+          "candidateBlob": "0930ad5f3f9c94d1f29b7f6dbdfa56d56f757fcb",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+          "sha256": "e713e11bfb121b3b1d2f543a70d1691d6c9f012b5bc5de5295c8cc7c62540584",
+          "candidateBlob": "84d52c8619f90b3538e6ede6ef1feaebc388669c",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/ability/interpreter.ts",
+          "sha256": "2600923bcc11c47501349593c21e163da36aa77c3e1a56d6dc10c289de8fcda6",
+          "candidateBlob": "22ab5d878f494c50f171e3a23b5d6f3a89078180",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/ability/types.ts",
+          "sha256": "4afb7b2a2a91d360ce9286331382c89d7f288c18c76128d7928b36fe83e61b98",
+          "candidateBlob": "93fa7a7d4941b3f216d79101155e474f166e2a7e",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/core/combat-resolver.ts",
+          "sha256": "ae29b7c0a92873a86fd444f7c5f882e7a4fde4b6901abf5118657d5112aeb119",
+          "candidateBlob": "0f6cc2bbf6a0e486b7079504a32280237666b3e0",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/core/movement.ts",
+          "sha256": "d2a6fe60961fbabbdb3b25548282d8ac4e134a72f2e797a3b4edbcdba07efdbb",
+          "candidateBlob": "4e1c47dce85b8f64d96805db4170e4c6a5873cc3",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/match-session.ts",
+          "sha256": "246879410007e0ddf547a5f31a140adb7db7b5683fa7c46bc7d7fe7dec171f83",
+          "candidateBlob": "cd4cc0df9a411ce21273a978e4511ad1b973d410",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/ability/portable-sha256.ts",
+          "sha256": "35d5670a2d802b7a01b4f78d72cdc55e81228787d83fea7d26da844c6283a474",
+          "candidateBlob": "475d02330464f4bac817d8716edeae5638f20850",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "apps/client/src/pages/MatchTable.test.tsx",
+          "sha256": "d5134c6e13e6ecd4b7afe051a6336e71a92fefb8c11ed049a16e4ab722e494b6",
+          "candidateBlob": "8f4b798707d8245c90aebe1011b5f195ffbfffd9",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "apps/server/src/match-server.test.ts",
+          "sha256": "69352c0cfcd631be9c746fa0aed3558c46a4a0ede13828ac2e6acb6cce0c7902",
+          "candidateBlob": "03d4bd4a52dffd5735d1282827d95aa2377ee092",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "e2e/fd-action-turn-delivery.spec.ts",
+          "sha256": "372a35c13d992e2fb6152bb66845084fedb3bc1b419b90cca0072ecfdc0149d6",
+          "candidateBlob": "877b9c02c8bf93d17613dbb0065391be0b869fe4",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "e2e/fd-time-alter-core-primitive.spec.ts",
+          "sha256": "0964f78a74e7a740219debe8fa1a6272ef36a5f72d72d86b868b39dd03140970",
+          "candidateBlob": "00a18cd5be71dbef0ca5dd9d61cff8d333275085",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "e2e/support/start-action-turn-fixture-server.ts",
+          "sha256": "dca4e2fc612a81e721548505061aecffcf7e14f0f9e391258a9acc51acd9cc84",
+          "candidateBlob": "dc4c95341b8dfc18246a85be20b00a3a4d23dd26",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+          "sha256": "74aab702b8f6c04f3e2288626b1926e756b06ecb087428f42528900919ded79e",
+          "candidateBlob": "48bdb215b0be2fc402c1c20ae4a09fe299a45caa",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/match-room-hub.test.ts",
+          "sha256": "c6f44fbef0c3f5ea172682fabd46f354daaab9c72e3907ec572aa577cccfc40a",
+          "candidateBlob": "9942ee95a36efcffa72a41c8a6b06e000928c786",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/match-session.test.ts",
+          "sha256": "90cdd9348f053ffde0411563f0a35443db2a2d429387e658a0ecee6fda566bac",
+          "candidateBlob": "9b75e627979cc011347460669a2dce766d329a1c",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/action-turn-delivery.test.ts",
+          "sha256": "236b1bc976edb02a1f04aad39483e58123d5dbba144217a9b3930acdfeecfcca",
+          "candidateBlob": "a7c8f4dcdac29c7b01d65f80a1e228dc518e03a6",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/card-action-close.test.ts",
+          "sha256": "3fd0bf9731ce01a88ba4909137578004ccbb79ab0844862a40bfb041f6a0c494",
+          "candidateBlob": "fd93eac0a36d00b63cfb3f6b44d6ad3d90e7f9fc",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+          "sha256": "1d86aec2a2ea3bc5909c99296a6ed84322e1508153b3e6ad383bc61a70c82a9e",
+          "candidateBlob": "61a7430e7516cec409daa4811c7d7cef4a9221c3",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+          "sha256": "2c63c86092235a2384b14b69548e239b28a6c4b9cc3f2cd6aa5dce888563e0fa",
+          "candidateBlob": "dc069ad61ff1c6493b912a9a084a04fb8588e5c9",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+          "sha256": "cc56b99208d922f0047d45b07155b1749d0e5c39629f9c758142036002d08b1b",
+          "candidateBlob": "91e6a02ffc305603878e8b8cd4413a6c4db742e3",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+          "sha256": "af0cf8b3d12d3d4dff0c7cde5369e0307bbcab750c21973e3c57402842c76ff9",
+          "candidateBlob": "5a9d9006a2b7249bd3a6886c62b3323aeaea10da",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+          "sha256": "d5d7a9f694a174be10d084fd1e32e5db75de4d96419926c7fdc37a47109e051c",
+          "candidateBlob": "b9e2bc28b11a05460748d1c9cd9b35604b66bae8",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+          "sha256": "465e5ca12c36ec2acc90dce8200b75c0706d43148d6a71ee43d3b46a6c505d22",
+          "candidateBlob": "ba591c411c851e71b0a975a12992da332d0a72a0",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+          "sha256": "5bcdb2233645ccaa34da730e4b26fa5b7286b0a939e26f0acda331f0bd630995",
+          "candidateBlob": "39c4e935b9aea87e4b695b7f93cc21920f6ccb86",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+          "sha256": "bad7c9469f8126b9f47c134b6f7698d51d9a26d4533f85092f107163e8693f1f",
+          "candidateBlob": "8ec3a2f063cf06e1d729d0e6628746b4e794f11e",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+          "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2",
+          "candidateBlob": "49668bb3630e64e4f8ca1165334fc48e91a7dffe",
+          "candidateBytesEqualProducerBytes": true
+        },
+        {
+          "path": "packages/rules/tests/portable-sha256.test.ts",
+          "sha256": "bcf2f0bc47c544b81a9dc3de776571a040ea271df8f34dbcefe0e74f94512ba0",
+          "candidateBlob": "da24bc4cdefbe5d72abedb3aeab9302235350650",
+          "candidateBytesEqualProducerBytes": true
+        }
+      ],
+      "readonlyAdditionalTestInputs": [
+        {
+          "path": "packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts",
+          "sha256": "12fe1946d6240f8a096014ff8dd96189e9cbb27a5e0e1522d9e834e7f7420d9f"
+        }
+      ]
     },
-    "f2Red": {
-      "command": "node ../../node_modules/vitest/vitest.mjs run src/pages/MatchTable.test.tsx -t real-local-Session-public-power",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-      "exitCode": 1,
-      "startedAt": "2026-10-30T15:47:37.9019634+08:00",
-      "endedAt": "2026-10-30T15:47:43.2628844+08:00",
-      "log": "D:/fd-validation/dr-p01-m1-fixes-20261030/f2-red.log",
-      "logSha256": "041d842fafa72905369d8304105ae8f629a72c6b0244197c98529090a11eea02",
-      "actualFailedTests": 1
-    },
-    "checks": [
-      {
-        "id": "focused",
-        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"--maxWorkers=2\"",
-        "executable": "D:\\nodejs\\node.exe",
-        "args": [
-          "node_modules/vitest/vitest.mjs",
-          "run",
-          "packages/rules/src/__tests__/match-session-regressions.test.ts",
-          "packages/rules/tests/match-room-hub.test.ts",
-          "packages/rules/tests/match-session.test.ts",
-          "packages/rules/tests/regression/action-turn-delivery.test.ts",
-          "packages/rules/tests/regression/card-action-close.test.ts",
-          "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
-          "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
-          "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
-          "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
-          "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
-          "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
-          "packages/rules/tests/regression/interaction-room-boundary.test.ts",
-          "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
-          "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
-          "--maxWorkers=2"
-        ],
-        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-        "exitCode": 0,
-        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\focused.log",
-        "logSha256": "192b1e2581b62b31d5fce0ac83217b98b767a43b7ea74f0621b79215e8f4aba8",
-        "startedAt": "2026-10-30T07:50:48.766Z",
-        "endedAt": "2026-10-30T07:51:38.288Z",
-        "durationMs": 49522,
-        "relevantSourcePathsBoundToFinalBytes": [
-          "packages/rules/src/ability/interpreter.ts",
-          "packages/rules/src/ability/types.ts",
-          "packages/rules/src/core/combat-resolver.ts",
-          "packages/rules/src/core/movement.ts",
-          "packages/rules/src/match-session.ts",
-          "packages/rules/src/__tests__/match-session-regressions.test.ts",
-          "packages/rules/tests/match-room-hub.test.ts",
-          "packages/rules/tests/match-session.test.ts",
-          "packages/rules/tests/regression/action-turn-delivery.test.ts",
-          "packages/rules/tests/regression/card-action-close.test.ts",
-          "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
-          "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
-          "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
-          "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
-          "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
-          "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
-          "packages/rules/tests/regression/interaction-room-boundary.test.ts",
-          "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
-          "packages/rules/tests/regression/fb2-required-additional-play.test.ts"
-        ],
-        "executedBy": "Feature Delivery Lead",
-        "candidateContentBindingVerifiedByIndependentReview": true,
-        "executionBinding": "Prefreeze under3153618a with exact relevant final bytes; not claimed as executed at later candidate SHA",
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/focused-receipt.json",
-        "receiptSha256": "9e01a92baab11ea60a94742b1af16337e162232d2153b30723ffabbcc9b1a710"
-      },
-      {
-        "id": "typecheck",
-        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"typecheck\"",
-        "executable": "D:\\nodejs\\node.exe",
-        "args": [
-          "D:/nodejs/node_modules/npm/bin/npm-cli.js",
-          "run",
-          "typecheck"
-        ],
-        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-        "exitCode": 0,
-        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\typecheck.log",
-        "logSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4",
-        "startedAt": "2026-10-30T07:52:05.836Z",
-        "endedAt": "2026-10-30T07:52:08.249Z",
-        "durationMs": 2413,
-        "relevantSourcePathsBoundToFinalBytes": [
-          "packages/rules/src/ability/interpreter.ts",
-          "packages/rules/src/ability/types.ts",
-          "packages/rules/src/core/combat-resolver.ts",
-          "packages/rules/src/core/movement.ts",
-          "packages/rules/src/match-session.ts",
-          "apps/client/src/pages/MatchTable.tsx",
-          "apps/client/src/state/playtest-fixture-loader.ts",
-          "apps/client/src/state/remote-room-fixture.ts",
-          "apps/client/src/state/seven-authoring-smoke-fixture.ts"
-        ],
-        "executedBy": "Feature Delivery Lead",
-        "candidateContentBindingVerifiedByIndependentReview": true,
-        "executionBinding": "Prefreeze under3153618a with exact relevant final bytes; not claimed as executed at later candidate SHA",
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/typecheck-receipt.json",
-        "receiptSha256": "8a59e78288723c7eef8404cafac438ca93c0e5a64b579e5fb931f91191adccdc"
-      },
-      {
-        "id": "client-final",
-        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\" \"src/App.test.tsx\" \"src/pages/MatchTable.test.tsx\" \"src/components/ServantDeckSummary.test.tsx\" \"src/components/CardInspectionOverlay.test.tsx\" \"src/state/engine-bridge.test.ts\" \"src/state/content-library-loader.test.ts\"",
-        "executable": "D:\\nodejs\\node.exe",
-        "args": [
-          "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
-          "run",
-          "src/App.test.tsx",
-          "src/pages/MatchTable.test.tsx",
-          "src/components/ServantDeckSummary.test.tsx",
-          "src/components/CardInspectionOverlay.test.tsx",
-          "src/state/engine-bridge.test.ts",
-          "src/state/content-library-loader.test.ts"
-        ],
-        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\client",
-        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-        "exitCode": 0,
-        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\client-final.log",
-        "logSha256": "64e772c8f4048e42248ec7f48321c128a9a130fac02345b049149d2c27113041",
-        "startedAt": "2026-10-30T07:57:32.153Z",
-        "endedAt": "2026-10-30T07:57:40.218Z",
-        "durationMs": 8065,
-        "relevantSourcePathsBoundToFinalBytes": [
-          "packages/rules/src/ability/interpreter.ts",
-          "packages/rules/src/ability/types.ts",
-          "packages/rules/src/core/combat-resolver.ts",
-          "packages/rules/src/core/movement.ts",
-          "packages/rules/src/match-session.ts",
-          "apps/client/src/pages/MatchTable.tsx",
-          "apps/client/src/state/playtest-fixture-loader.ts",
-          "apps/client/src/state/remote-room-fixture.ts",
-          "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-          "apps/client/src/pages/MatchTable.test.tsx"
-        ],
-        "executedBy": "Feature Delivery Lead",
-        "candidateContentBindingVerifiedByIndependentReview": true,
-        "executionBinding": "Prefreeze under3153618a with exact relevant final bytes; not claimed as executed at later candidate SHA",
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/client-final-receipt.json",
-        "receiptSha256": "635be19e98b9e02e088b1282a8d7d8831b84f03329637f9f656267e8c88556fc"
-      },
-      {
-        "id": "build-type-fix",
-        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
-        "executable": "D:\\nodejs\\node.exe",
-        "args": [
-          "D:/nodejs/node_modules/npm/bin/npm-cli.js",
-          "run",
-          "build",
-          "--workspace",
-          "@fd/client"
-        ],
-        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-        "exitCode": 0,
-        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\build-type-fix.log",
-        "logSha256": "68a228abc34eee9ca563799b65212a3f9758bb5279c74074702d17bfddf86817",
-        "startedAt": "2026-10-30T07:52:44.977Z",
-        "endedAt": "2026-10-30T07:52:51.054Z",
-        "durationMs": 6077,
-        "relevantSourcePathsBoundToFinalBytes": [
-          "packages/rules/src/ability/interpreter.ts",
-          "packages/rules/src/ability/types.ts",
-          "packages/rules/src/core/combat-resolver.ts",
-          "packages/rules/src/core/movement.ts",
-          "packages/rules/src/match-session.ts",
-          "apps/client/src/pages/MatchTable.tsx",
-          "apps/client/src/state/playtest-fixture-loader.ts",
-          "apps/client/src/state/remote-room-fixture.ts",
-          "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-          "apps/client/src/pages/MatchTable.test.tsx"
-        ],
-        "executedBy": "Feature Delivery Lead",
-        "candidateContentBindingVerifiedByIndependentReview": true,
-        "executionBinding": "Prefreeze under3153618a with exact relevant final bytes; not claimed as executed at later candidate SHA",
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/build-type-fix-receipt.json",
-        "receiptSha256": "0640cd50d82c7026c1b765948638f5d9755cbddcfa2ca80d260b2358996af18d"
-      },
-      {
-        "id": "server",
-        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\"",
-        "executable": "D:\\nodejs\\node.exe",
-        "args": [
-          "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
-          "run"
-        ],
-        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\server",
-        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-        "exitCode": 0,
-        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\server.log",
-        "logSha256": "2ad941f6968ae0b24623d120cd0e0afdf06c8b90539e146f248af5bf4ec7bdb7",
-        "startedAt": "2026-10-30T07:57:20.444Z",
-        "endedAt": "2026-10-30T07:57:26.640Z",
-        "durationMs": 6196,
-        "relevantSourcePathsBoundToFinalBytes": [
-          "packages/rules/src/ability/interpreter.ts",
-          "packages/rules/src/ability/types.ts",
-          "packages/rules/src/core/combat-resolver.ts",
-          "packages/rules/src/core/movement.ts",
-          "packages/rules/src/match-session.ts",
-          "apps/server/src/match-server.test.ts"
-        ],
-        "executedBy": "Feature Delivery Lead",
-        "candidateContentBindingVerifiedByIndependentReview": true,
-        "executionBinding": "Prefreeze under3153618a with exact relevant final bytes; not claimed as executed at later candidate SHA",
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/server-receipt.json",
-        "receiptSha256": "80a17c332772f535eedd800f889a2c4af8e29d048613c3620c53740a0ed1e619"
-      },
-      {
-        "id": "browser-user-flow",
-        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-fixes-20261030\\\\playwright.user-flow.config.mjs\"",
-        "executable": "D:\\nodejs\\node.exe",
-        "args": [
-          "node_modules/@playwright/test/cli.js",
-          "test",
-          "-c",
-          "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\playwright.user-flow.config.mjs"
-        ],
-        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-        "exitCode": 0,
-        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\browser-user-flow.log",
-        "logSha256": "3f046f7d9ac5f59ce573d0516b4ce15c124a42386e1e4476deb15e0240c53183",
-        "startedAt": "2026-10-30T07:56:38.408Z",
-        "endedAt": "2026-10-30T07:57:09.146Z",
-        "durationMs": 30738,
-        "relevantSourcePathsBoundToFinalBytes": [
-          "packages/rules/src/ability/interpreter.ts",
-          "packages/rules/src/ability/types.ts",
-          "packages/rules/src/core/combat-resolver.ts",
-          "packages/rules/src/core/movement.ts",
-          "packages/rules/src/match-session.ts",
-          "apps/client/src/pages/MatchTable.tsx",
-          "apps/client/src/state/playtest-fixture-loader.ts",
-          "apps/client/src/state/remote-room-fixture.ts",
-          "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-          "e2e/fd-action-turn-delivery.spec.ts",
-          "e2e/fd-time-alter-core-primitive.spec.ts",
-          "e2e/support/start-action-turn-fixture-server.ts"
-        ],
-        "executedBy": "Feature Delivery Lead",
-        "candidateContentBindingVerifiedByIndependentReview": true,
-        "executionBinding": "Prefreeze under3153618a with exact relevant final bytes; not claimed as executed at later candidate SHA",
-        "receipt": "D:/fd-validation/dr-p01-m1-fixes-20261030/browser-user-flow-receipt.json",
-        "receiptSha256": "bfcfea542bacb0f8b19436351b85bc2a56a3d25d2efee13c89e62a7b9a7313c5"
-      }
-    ],
     "scopedCounts": {
-      "rulesFiles": 14,
-      "rulesTestsPassed": 150,
+      "rulesFiles": 16,
+      "rulesTestsPassed": 211,
       "actionTurnTestsWithinRules": 31,
+      "portableShaTestsWithinRules": 10,
+      "fb249AuthorityTestsWithinRules": 51,
       "relevantClientFiles": 6,
       "relevantClientTestsPassed": 44,
       "serverTestsPassed": 17,
       "browserTestsPassed": 3
     },
-    "retainedOriginalFailures": [
+    "originalFullCiFailures": [
       {
-        "path": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\f1-red.log",
-        "sha256": "77b97278a81a894c0251950c872497811392d94ddeaf3237c73e2641c53cc20a"
+        "path": "D:/fd-validation/dr-p01-m1-fixes-20261030/github-test-first-fixed.log",
+        "sha256": "4e5ab805c3848181ddb6d642bb068ba3add034cf62fb1362023f15cce081bed0",
+        "status": "TEST_FAILURE",
+        "passed": 1693,
+        "failed": 2,
+        "skipped": 1,
+        "naturalExitCode": 1,
+        "notRelabeled": true
       },
       {
-        "path": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\f2-red.log",
-        "sha256": "041d842fafa72905369d8304105ae8f629a72c6b0244197c98529090a11eea02"
-      },
-      {
-        "path": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\build.log",
-        "sha256": "0ae8f477500b31af5a931dde236d62f152ce6d69d9b43e4cc0e49426ccae0bad"
-      },
-      {
-        "path": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\browser.log",
-        "sha256": "b04b3bb4359afce380b2873164114db5e72e7bcec7ce63f083acef2c97e42f33"
+        "path": "D:/fd-validation/dr-p01-m1-fixes-20261030/github-test-second-fixed.log",
+        "sha256": "9a95fa9e60c335c0b2c888926169ce03e77841fc2bebf93d40f4ce4640a84f7a",
+        "status": "TEST_FAILURE",
+        "passed": 1693,
+        "failed": 2,
+        "skipped": 1,
+        "naturalExitCode": 1,
+        "notRelabeled": true
       }
     ],
-    "browserResults": "D:/fd-validation/dr-p01-m1-fixes-20261030/browser-user-flow-results.json",
-    "browserResultsSha256": "64163caf3aacde690f476ca9a297d4f049362e28b299f6360155d394564f4dc0",
+    "browserResults": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/browser-results.json",
+    "browserResultsSha256": "baacb96ef134c8ba601fb3bf1ccec0132548b28c86da47078d5fe2ed89ca4e87",
     "browserStats": {
-      "startTime": "2026-10-30T07:56:38.977Z",
-      "duration": 30149.199999999997,
+      "startTime": "2026-10-30T08:25:29.542Z",
+      "duration": 26032.207,
       "expected": 3,
       "skipped": 0,
       "unexpected": 0,
       "flaky": 0
     },
     "browserCases": [
-      "Seven-human remote action-to-battle",
-      "Local actual UI preparation/deploy/two-dark-play/public0/next-seat privacy",
-      "Natural OriginBullet TimeAlter/reconnect/stale"
+      "remote seven-human action-to-battle",
+      "actual browser local portable Session public0/next-seat privacy",
+      "natural OriginBullet TimeAlter/reconnect/stale"
     ],
     "browserExecutionIsContentBoundPrecommit": true,
-    "all28HashesAndSixRelevantRunLogHashesIndependentlyVerified": true,
+    "producerFreezeReceipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/producer-receipts.json",
+    "producerFreezeReceiptSha256": "2a92d381d73e836c5b7fcb58b71a88e0bd177a3d4171026b29881f34332731a0",
     "noInheritedFullCiOrHumanApproval": true
   },
   "implementationAssessment": {
@@ -909,13 +1143,15 @@
     "recovery": "Authenticated action substate, explicit legacy action fail-closed; real postscore durable and replay restore suppress late combat activation, resume existing settlement and do not duplicate history or VP",
     "dynamicRevalidation": "No cross-dispatch cache. Changes in mana, skill gate, forbid, controller, zone, priority, phase and endpoint capacity are revalidated",
     "permissionBoundary": "No CB-C02 controller-scope permission. Existing M1 low-mana gate still rejects p7 and p1 tested cards at5mana;8mana positive pays full5; cross-controller card rejects. Parked capability gap is not silently granted or made a P01 dependency",
-    "localPublicPower": "Local fixture copies authoritative projected totalPower without truthiness filtering; actual local Session->fixture->MatchTable numeric4 and0 output tested; absent before declaration and next undecided seat."
+    "localPublicPower": "Local fixture copies authoritative projected totalPower without truthiness filtering; actual local Session->fixture->MatchTable numeric4 and0 output tested; absent before declaration and next undecided seat.",
+    "shaBackend": "Native createHash selected once only when process.getBuiltinModule is a function and provides createHash; only SHA inputs>=4096characters use it. ShortSHA/allHMAC and original portable byte algorithm unchanged; no digest/state cache. Native/fallback UTF8 including lone surrogates and RFC4231 parity proven.",
+    "restoreTrustAfterOptimization": "Every MatchSession/FB2-49 signing, state binding, clone, checkpoint, replay, MAC and restore caller unchanged. Real Node20 native-signed snapshots restore with true API-absent fallback and identical MAC; deleting seal or tampering state/MAC/action continuation fails closed."
   },
   "nonBlockingObservations": [
     {
       "id": "IR-N01",
       "description": "Synthetic raw phase mutation while staging exists may retain legacy confirm projection, but dispatch rejects illegal_timing atomically; public Session cannot end a turn with staged cards. This predates this reconstruction; not an accepted client path.",
-      "evidence": "dynamic-revalidation-9b00d48b.json"
+      "evidence": "dynamic-revalidation-a8387b08.json"
     },
     {
       "id": "CB-C02-PARKED",
@@ -923,12 +1159,12 @@
     }
   ],
   "limitations": [
-    "No new human merge approval is created or inherited by this report. Previous PR682 acceptance is superseded for changed runtime; current exact final-head CI and user consent remain required.",
-    "Verifier ran9 bounded scripts at exact9b00 candidate. No independent fullCI/build/browser rerun; six latest producer receipts were hash/relevant-byte checked and include rules150/client44/server17/typecheck/build/browser3. They ran prefreeze under3153618a, not at the later commit SHA.",
-    "F2 independent UI check uses actual MatchTable rendered markup via ViteSSR, not interactive browser. Producer actual local browser UI flow was inspected and its3case results/hash retained.",
-    "No full-client-suite green or whole-game11round acceptance; pre-scoring production response fixture not separately executed. Existing synthetic phase/staging projection observation retained with strict dispatch rejection.",
-    "Original RED3+1, initial build type error and missed browser optional reminder failure remain preserved; no test timeout raised, policy removed or source assertion disabled.",
-    "No CB-C02, loader or authoring/generated change; no migration/coverage/release credit or merge permission."
+    "New exact assembled PR-head fullCI/build/policy remains for Root; no blind fullCI rerun by independent verifier. The two original d43 natural fullCI TEST_FAILURE runs remain1693pass/2fail/1skip and are hash-bound above; scoped Node20 checks do not turn them green.",
+    "Producer focused211 includes original150+10SHA+51unchangedFB2-49 authority/tamper/trust tests, plus server17/client44/typecheck/build/browser3. Logs and30source/test bytes were checked, but those producer executions occurred prefreeze under9560b889, not at later a838 commit.",
+    "Independent Node20.20.2 native/fallback semantics and signed restore/tamper were executed; this is bounded runtime compatibility, not a complete Node20 fullCI certification or all historical Node20 patch versions.",
+    "Browser fallback was independently tested in no-process VM; actual browser local portable lifecycle/reload and remote cases are producer browser3 evidence, not an additional independent browser rerun. F2 independent render uses real MatchTable SSR.",
+    "No full-client-suite green, whole-game11round product acceptance or new human approval; user still owns merge consent. No migration/coverage/release credit.",
+    "No loader/CB-C02/authoring/generated changes; prior test/build/browser/harness failures remain preserved; no timeout increase or skip/policy/assertion weakening."
   ],
   "nonClaims": {
     "fullCiPassed": false,
@@ -943,8 +1179,8 @@
     "mergeApproved": false,
     "newHumanApprovalGranted": false
   },
-  "repairParentSha": "3153618a48e6464625b3d890d33d9d2627bd6467",
-  "supersededCandidate": "943e100ea7248e11123fac06575661ff5344c90c",
+  "repairParentSha": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+  "supersededCandidate": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
   "previousApprovalInherited": false,
   "mergeRequiresUserConsent": true,
   "newHumanApprovalGranted": false
