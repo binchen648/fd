@@ -65,5 +65,12 @@
   "migrationCreditDelta": 0,
   "notes": "Legacy core simulation may retain explicitly named military policy; standard product cannot route there. No new generic ability primitive or waiver inferred.",
   "regressionScopeAddendum": "Three existing regression tests contain superseded military-elimination or truncated-simulation terminal assertions; preserve every loss trigger/resource/reveal/duplicate check, update only replaced canonical expectations after actual fullCI evidence.",
-  "integrationMetadataScope": "Permit this exact review attestation only; no added runtime path or agent role"
+  "integrationMetadataScope": "Permit this exact review attestation only; no added runtime path or agent role",
+  "integration": {
+    "candidate": "fb491689ccc69995315072acc81ff5d2fbef5d35",
+    "review": "345100d04152408d2e28dac5795b63be15d53a7f",
+    "reviewThread": "https://github.com/binchen648/fd/pull/683#issuecomment-6527556540",
+    "fullCi": "PENDING_FINAL_HEAD",
+    "mergeRequiresUserConsent": true
+  }
 }
