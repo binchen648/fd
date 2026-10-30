@@ -63,3 +63,25 @@ Actual new evidence (external `D:/fd-validation/dr-p01-m1-fixes-20261030`):
 Local browser uses real UI preparation, deployment, two-card face-down play and normal optional-reminder confirmation; no snapshot injection, force-click or production backdoor. It captures local-zero-public-power.png. First local browser timeout was a missed real optional-ability reminder, preserved in browser.log/results/trace; the corrected flow uses a new artifact directory. Browser port3199 remains strict and never reuses an existing service; existing timeouts are unchanged.
 
 Six new Session tests cover empty completion with1/2unpayable cards, largest affordable subset, costly hand retained privately, legal skill alternatives behind8mana, signed restore and post-offer mana drift. Existing no-mana privacy and partial-attribute-forbid regressions remain active. Command exits/log hashes and final relevant source hashes are in artifacts/dr-p01-m1-validation.json. All scoped checks above ran before freezing the new commit under the recorded base HEAD with the exact implementation bytes; no later-commit execution or new full-CI PASS is fabricated.
+
+## Snapshot SHA performance repair after repeated exact-head Test failures
+
+Both d43d25d976f1191072e7f1cfdaf186e38229e1f0 remote Test runs remain **TEST_FAILURE** (1693pass/2fail/1skip). Their original logs are retained under dr-p01-m1-fixes-20261030/github-test-first-fixed.log and github-test-second-fixed.log. No repeated fullCI run was performed locally and no gate/timeout/assertion was changed.
+
+External CPU sampling showed portable SHA self cost38.3%/43.7% for11round/postscore, versus planner includingoptions5.87%/3.93%. Replay checkpoint trust must still be recorded when the dedicated authority seal is absent; that code and allSession signing/verification calls remain unchanged.
+
+The scoped repair adds13lines to portable-sha256.ts: on Node with process.getBuiltinModule, SHA inputs>=4096characters use the synchronous builtin createHash implementation. ShortSHA, allHMAC, browser and no-API fallback retain the portable implementation. This caches only backend availability, never mutable state or computed message digests. SHA/HMAC bytes and every signed payload/restore check stay unchanged.
+
+The native-selection test first failed(1fail/9pass), then all10correctness tests passed, including Unicode/lone surrogate/long inputs, publishedSHA/RFC4231HMAC vectors, no-processVM browser fallback and no-builtin fallback.
+
+|Check|Actual result|
+|---|---|
+|Same-host selected11round|6792ms before→3526ms after|
+|Same-host selectedpostscore|3852ms before→1753ms after|
+|Full related2worker scope|16files211/211; eleven3329ms, postscore1597ms|
+|FB2-49 unchanged authority/tamper tests|51/51 within211|
+|Typecheck/clientbuild|exit0/exit0|
+|Relevantclient/server|44/44 and17/17|
+|Realbrowser|3/3, including localportable path and remote seven-seat/TimeAlter|
+
+Browser used strictport3200/reusefalse; all original timeouts remain. New evidence is under D:/fd-validation/dr-p01-m1-sha-perf-20261030. All30authorized source/test bytes are hash-bound in the existing artifact. Current scoped runs occurred before freezing under control parent9560b88956bbbf695a99f4c6af7c0c5c789471d4; a later frozen commit is not falsely reported as the executionHEAD. Independent verification and exact new-head remoteCI remain pending, and merging still requires the user.

@@ -3,13 +3,13 @@
   "taskId": "DR-P01",
   "deliveryName": "DR-P01 M1 Reconstruction",
   "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
-  "state": "F1_F2_FIXED_SCOPED_CHECKS_PASSED_NEW_INDEPENDENT_REVIEW_PENDING",
+  "state": "LARGE_SNAPSHOT_SHA_ACCELERATION_SCOPED_PASS_NEW_REVIEW_AND_EXACT_HEAD_CI_PENDING",
   "technicalBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "controlParentSha": "b181c4987ce7710d6bebacc68bed45576f45d11e",
   "plannerPublishedSha": "f674c00a065878f2fd454ed3820d87d322058114",
   "branch": "codex/dr-p01-m1-integration-20261030",
   "worktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
-  "generatedAt": "2026-10-30T07:59:11.576Z",
+  "generatedAt": "2026-10-30T08:26:44.829Z",
   "sourceBindingMethod": "All28 literal production/test paths are content-hash bound before candidate commit; external final source receipt will bind the resulting commit SHA. No self-referential commit claim.",
   "sourceObjects": [
     {
@@ -47,6 +47,10 @@
     {
       "path": "packages/rules/src/match-session.ts",
       "sha256": "246879410007e0ddf547a5f31a140adb7db7b5683fa7c46bc7d7fe7dec171f83"
+    },
+    {
+      "path": "packages/rules/src/ability/portable-sha256.ts",
+      "sha256": "35d5670a2d802b7a01b4f78d72cdc55e81228787d83fea7d26da844c6283a474"
     },
     {
       "path": "apps/client/src/pages/MatchTable.test.tsx",
@@ -123,6 +127,10 @@
     {
       "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
       "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2"
+    },
+    {
+      "path": "packages/rules/tests/portable-sha256.test.ts",
+      "sha256": "bcf2f0bc47c544b81a9dc3de776571a040ea271df8f34dbcefe0e74f94512ba0"
     }
   ],
   "sourceAndTests": {
@@ -175,7 +183,7 @@
   "scopedChecks": [
     {
       "id": "focused",
-      "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"--maxWorkers=2\"",
+      "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"packages/rules/tests/portable-sha256.test.ts\" \"packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts\" \"--maxWorkers=2\"",
       "executable": "D:\\nodejs\\node.exe",
       "args": [
         "node_modules/vitest/vitest.mjs",
@@ -194,37 +202,18 @@
         "packages/rules/tests/regression/interaction-room-boundary.test.ts",
         "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
         "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+        "packages/rules/tests/portable-sha256.test.ts",
+        "packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts",
         "--maxWorkers=2"
       ],
       "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+      "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
       "exitCode": 0,
-      "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\focused.log",
-      "logSha256": "192b1e2581b62b31d5fce0ac83217b98b767a43b7ea74f0621b79215e8f4aba8",
-      "startedAt": "2026-10-30T07:50:48.766Z",
-      "endedAt": "2026-10-30T07:51:38.288Z",
-      "durationMs": 49522,
-      "relevantSourcePathsBoundToFinalBytes": [
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/types.ts",
-        "packages/rules/src/core/combat-resolver.ts",
-        "packages/rules/src/core/movement.ts",
-        "packages/rules/src/match-session.ts",
-        "packages/rules/src/__tests__/match-session-regressions.test.ts",
-        "packages/rules/tests/match-room-hub.test.ts",
-        "packages/rules/tests/match-session.test.ts",
-        "packages/rules/tests/regression/action-turn-delivery.test.ts",
-        "packages/rules/tests/regression/card-action-close.test.ts",
-        "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
-        "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
-        "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
-        "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
-        "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
-        "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
-        "packages/rules/tests/regression/interaction-room-boundary.test.ts",
-        "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
-        "packages/rules/tests/regression/fb2-required-additional-play.test.ts"
-      ]
+      "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\focused.log",
+      "logSha256": "e2b5fddc2cb0e6593faa52915bbc0b4b80a003618018c56b43f6d1af24bc43d6",
+      "startedAt": "2026-10-30T08:24:29.748Z",
+      "endedAt": "2026-10-30T08:24:53.681Z",
+      "durationMs": 23933
     },
     {
       "id": "typecheck",
@@ -236,27 +225,36 @@
         "typecheck"
       ],
       "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+      "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
       "exitCode": 0,
-      "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\typecheck.log",
+      "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\typecheck.log",
       "logSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4",
-      "startedAt": "2026-10-30T07:52:05.836Z",
-      "endedAt": "2026-10-30T07:52:08.249Z",
-      "durationMs": 2413,
-      "relevantSourcePathsBoundToFinalBytes": [
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/types.ts",
-        "packages/rules/src/core/combat-resolver.ts",
-        "packages/rules/src/core/movement.ts",
-        "packages/rules/src/match-session.ts",
-        "apps/client/src/pages/MatchTable.tsx",
-        "apps/client/src/state/playtest-fixture-loader.ts",
-        "apps/client/src/state/remote-room-fixture.ts",
-        "apps/client/src/state/seven-authoring-smoke-fixture.ts"
-      ]
+      "startedAt": "2026-10-30T08:24:43.597Z",
+      "endedAt": "2026-10-30T08:24:45.200Z",
+      "durationMs": 1603
     },
     {
-      "id": "client-final",
+      "id": "build",
+      "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
+      "executable": "D:\\nodejs\\node.exe",
+      "args": [
+        "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "build",
+        "--workspace",
+        "@fd/client"
+      ],
+      "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+      "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+      "exitCode": 0,
+      "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\build.log",
+      "logSha256": "c447b31f1a094bd747306784b1f2a56a46a0ae6346605d24c368a6414e0062bb",
+      "startedAt": "2026-10-30T08:25:01.113Z",
+      "endedAt": "2026-10-30T08:25:06.825Z",
+      "durationMs": 5712
+    },
+    {
+      "id": "client",
       "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\" \"src/App.test.tsx\" \"src/pages/MatchTable.test.tsx\" \"src/components/ServantDeckSummary.test.tsx\" \"src/components/CardInspectionOverlay.test.tsx\" \"src/state/engine-bridge.test.ts\" \"src/state/content-library-loader.test.ts\"",
       "executable": "D:\\nodejs\\node.exe",
       "args": [
@@ -270,57 +268,13 @@
         "src/state/content-library-loader.test.ts"
       ],
       "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\client",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+      "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
       "exitCode": 0,
-      "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\client-final.log",
-      "logSha256": "64e772c8f4048e42248ec7f48321c128a9a130fac02345b049149d2c27113041",
-      "startedAt": "2026-10-30T07:57:32.153Z",
-      "endedAt": "2026-10-30T07:57:40.218Z",
-      "durationMs": 8065,
-      "relevantSourcePathsBoundToFinalBytes": [
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/types.ts",
-        "packages/rules/src/core/combat-resolver.ts",
-        "packages/rules/src/core/movement.ts",
-        "packages/rules/src/match-session.ts",
-        "apps/client/src/pages/MatchTable.tsx",
-        "apps/client/src/state/playtest-fixture-loader.ts",
-        "apps/client/src/state/remote-room-fixture.ts",
-        "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-        "apps/client/src/pages/MatchTable.test.tsx"
-      ]
-    },
-    {
-      "id": "build-type-fix",
-      "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
-      "executable": "D:\\nodejs\\node.exe",
-      "args": [
-        "D:/nodejs/node_modules/npm/bin/npm-cli.js",
-        "run",
-        "build",
-        "--workspace",
-        "@fd/client"
-      ],
-      "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
-      "exitCode": 0,
-      "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\build-type-fix.log",
-      "logSha256": "68a228abc34eee9ca563799b65212a3f9758bb5279c74074702d17bfddf86817",
-      "startedAt": "2026-10-30T07:52:44.977Z",
-      "endedAt": "2026-10-30T07:52:51.054Z",
-      "durationMs": 6077,
-      "relevantSourcePathsBoundToFinalBytes": [
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/types.ts",
-        "packages/rules/src/core/combat-resolver.ts",
-        "packages/rules/src/core/movement.ts",
-        "packages/rules/src/match-session.ts",
-        "apps/client/src/pages/MatchTable.tsx",
-        "apps/client/src/state/playtest-fixture-loader.ts",
-        "apps/client/src/state/remote-room-fixture.ts",
-        "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-        "apps/client/src/pages/MatchTable.test.tsx"
-      ]
+      "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\client.log",
+      "logSha256": "247b3df0a007f71b15520505655ec2ba4d796ca0c80a0678843454bce9e30e90",
+      "startedAt": "2026-10-30T08:25:11.990Z",
+      "endedAt": "2026-10-30T08:25:20.160Z",
+      "durationMs": 8170
     },
     {
       "id": "server",
@@ -331,60 +285,40 @@
         "run"
       ],
       "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\server",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+      "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
       "exitCode": 0,
-      "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\server.log",
-      "logSha256": "2ad941f6968ae0b24623d120cd0e0afdf06c8b90539e146f248af5bf4ec7bdb7",
-      "startedAt": "2026-10-30T07:57:20.444Z",
-      "endedAt": "2026-10-30T07:57:26.640Z",
-      "durationMs": 6196,
-      "relevantSourcePathsBoundToFinalBytes": [
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/types.ts",
-        "packages/rules/src/core/combat-resolver.ts",
-        "packages/rules/src/core/movement.ts",
-        "packages/rules/src/match-session.ts",
-        "apps/server/src/match-server.test.ts"
-      ]
+      "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\server.log",
+      "logSha256": "ccce6f682b537823c0b054f779bf3418e56dacda43e28e8112bd6185ce79d15d",
+      "startedAt": "2026-10-30T08:25:20.500Z",
+      "endedAt": "2026-10-30T08:25:25.096Z",
+      "durationMs": 4596
     },
     {
-      "id": "browser-user-flow",
-      "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-fixes-20261030\\\\playwright.user-flow.config.mjs\"",
+      "id": "browser",
+      "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-sha-perf-20261030\\\\playwright.m1.config.mjs\"",
       "executable": "D:\\nodejs\\node.exe",
       "args": [
         "node_modules/@playwright/test/cli.js",
         "test",
         "-c",
-        "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\playwright.user-flow.config.mjs"
+        "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\playwright.m1.config.mjs"
       ],
       "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
-      "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+      "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
       "exitCode": 0,
-      "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\browser-user-flow.log",
-      "logSha256": "3f046f7d9ac5f59ce573d0516b4ce15c124a42386e1e4476deb15e0240c53183",
-      "startedAt": "2026-10-30T07:56:38.408Z",
-      "endedAt": "2026-10-30T07:57:09.146Z",
-      "durationMs": 30738,
-      "relevantSourcePathsBoundToFinalBytes": [
-        "packages/rules/src/ability/interpreter.ts",
-        "packages/rules/src/ability/types.ts",
-        "packages/rules/src/core/combat-resolver.ts",
-        "packages/rules/src/core/movement.ts",
-        "packages/rules/src/match-session.ts",
-        "apps/client/src/pages/MatchTable.tsx",
-        "apps/client/src/state/playtest-fixture-loader.ts",
-        "apps/client/src/state/remote-room-fixture.ts",
-        "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-        "e2e/fd-action-turn-delivery.spec.ts",
-        "e2e/fd-time-alter-core-primitive.spec.ts",
-        "e2e/support/start-action-turn-fixture-server.ts"
-      ]
+      "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\browser.log",
+      "logSha256": "164fea5b1bcae6870cbf8711e690663617e731efe25eabae764efa085c91322e",
+      "startedAt": "2026-10-30T08:25:29.003Z",
+      "endedAt": "2026-10-30T08:25:55.592Z",
+      "durationMs": 26589
     }
   ],
   "scopedCounts": {
-    "rulesFiles": 14,
-    "rulesTestsPassed": 150,
+    "rulesFiles": 16,
+    "rulesTestsPassed": 211,
     "actionTurnTestsWithinRules": 31,
+    "portableShaTestsWithinRules": 10,
+    "fb249AuthorityTestsWithinRules": 51,
     "relevantClientFiles": 6,
     "relevantClientTestsPassed": 44,
     "serverTestsPassed": 17,
@@ -402,8 +336,8 @@
     "resultsSha256": "894b3ae92937ae8c3913b21a1a8ffcd26c41e72464b1ad44b7c3c8f1c293454b"
   },
   "remainingGates": {
-    "independentVerifierAfterF1F2": "PENDING_NEW_FROZEN_CANDIDATE",
-    "exactHeadRemoteCiAfterFix": "PENDING",
+    "newCandidateIndependentVerification": "PENDING",
+    "newExactHeadRequiredCi": "PENDING",
     "merge": "REQUIRES_EXPLICIT_USER_CONSENT"
   },
   "limitations": [
@@ -1023,5 +957,709 @@
     "fullCiAfterFix": "PENDING_NEW_EXACT_PR_HEAD",
     "independentReviewAfterFix": "PENDING_NEW_CANDIDATE",
     "mergeRequiresUserConsent": true
+  },
+  "previousF1F2RunHistory": {
+    "state": "F1_F2_FIXED_SCOPED_CHECKS_PASSED_NEW_INDEPENDENT_REVIEW_PENDING",
+    "sourceObjects": [
+      {
+        "path": "apps/client/src/pages/MatchTable.tsx",
+        "sha256": "cef3d4ebacb3d3f43b19c928ece9085d8e6ec9cc8802b7053d41d413678d6aa8"
+      },
+      {
+        "path": "apps/client/src/state/playtest-fixture-loader.ts",
+        "sha256": "58bec018e58ef9742807e80f214c01fd92e3ae8b6d6260286ccb997920fa421d"
+      },
+      {
+        "path": "apps/client/src/state/remote-room-fixture.ts",
+        "sha256": "8e274d34dd2b46a0aac9811beb31a2b74936c18b79fcaa4d917a733669dfe078"
+      },
+      {
+        "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+        "sha256": "e713e11bfb121b3b1d2f543a70d1691d6c9f012b5bc5de5295c8cc7c62540584"
+      },
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "2600923bcc11c47501349593c21e163da36aa77c3e1a56d6dc10c289de8fcda6"
+      },
+      {
+        "path": "packages/rules/src/ability/types.ts",
+        "sha256": "4afb7b2a2a91d360ce9286331382c89d7f288c18c76128d7928b36fe83e61b98"
+      },
+      {
+        "path": "packages/rules/src/core/combat-resolver.ts",
+        "sha256": "ae29b7c0a92873a86fd444f7c5f882e7a4fde4b6901abf5118657d5112aeb119"
+      },
+      {
+        "path": "packages/rules/src/core/movement.ts",
+        "sha256": "d2a6fe60961fbabbdb3b25548282d8ac4e134a72f2e797a3b4edbcdba07efdbb"
+      },
+      {
+        "path": "packages/rules/src/match-session.ts",
+        "sha256": "246879410007e0ddf547a5f31a140adb7db7b5683fa7c46bc7d7fe7dec171f83"
+      },
+      {
+        "path": "apps/client/src/pages/MatchTable.test.tsx",
+        "sha256": "d5134c6e13e6ecd4b7afe051a6336e71a92fefb8c11ed049a16e4ab722e494b6"
+      },
+      {
+        "path": "apps/server/src/match-server.test.ts",
+        "sha256": "69352c0cfcd631be9c746fa0aed3558c46a4a0ede13828ac2e6acb6cce0c7902"
+      },
+      {
+        "path": "e2e/fd-action-turn-delivery.spec.ts",
+        "sha256": "372a35c13d992e2fb6152bb66845084fedb3bc1b419b90cca0072ecfdc0149d6"
+      },
+      {
+        "path": "e2e/fd-time-alter-core-primitive.spec.ts",
+        "sha256": "0964f78a74e7a740219debe8fa1a6272ef36a5f72d72d86b868b39dd03140970"
+      },
+      {
+        "path": "e2e/support/start-action-turn-fixture-server.ts",
+        "sha256": "dca4e2fc612a81e721548505061aecffcf7e14f0f9e391258a9acc51acd9cc84"
+      },
+      {
+        "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+        "sha256": "74aab702b8f6c04f3e2288626b1926e756b06ecb087428f42528900919ded79e"
+      },
+      {
+        "path": "packages/rules/tests/match-room-hub.test.ts",
+        "sha256": "c6f44fbef0c3f5ea172682fabd46f354daaab9c72e3907ec572aa577cccfc40a"
+      },
+      {
+        "path": "packages/rules/tests/match-session.test.ts",
+        "sha256": "90cdd9348f053ffde0411563f0a35443db2a2d429387e658a0ecee6fda566bac"
+      },
+      {
+        "path": "packages/rules/tests/regression/action-turn-delivery.test.ts",
+        "sha256": "236b1bc976edb02a1f04aad39483e58123d5dbba144217a9b3930acdfeecfcca"
+      },
+      {
+        "path": "packages/rules/tests/regression/card-action-close.test.ts",
+        "sha256": "3fd0bf9731ce01a88ba4909137578004ccbb79ab0844862a40bfb041f6a0c494"
+      },
+      {
+        "path": "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+        "sha256": "1d86aec2a2ea3bc5909c99296a6ed84322e1508153b3e6ad383bc61a70c82a9e"
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+        "sha256": "2c63c86092235a2384b14b69548e239b28a6c4b9cc3f2cd6aa5dce888563e0fa"
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+        "sha256": "cc56b99208d922f0047d45b07155b1749d0e5c39629f9c758142036002d08b1b"
+      },
+      {
+        "path": "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+        "sha256": "af0cf8b3d12d3d4dff0c7cde5369e0307bbcab750c21973e3c57402842c76ff9"
+      },
+      {
+        "path": "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+        "sha256": "d5d7a9f694a174be10d084fd1e32e5db75de4d96419926c7fdc37a47109e051c"
+      },
+      {
+        "path": "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+        "sha256": "465e5ca12c36ec2acc90dce8200b75c0706d43148d6a71ee43d3b46a6c505d22"
+      },
+      {
+        "path": "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+        "sha256": "5bcdb2233645ccaa34da730e4b26fa5b7286b0a939e26f0acda331f0bd630995"
+      },
+      {
+        "path": "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+        "sha256": "bad7c9469f8126b9f47c134b6f7698d51d9a26d4533f85092f107163e8693f1f"
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+        "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2"
+      }
+    ],
+    "scopedChecks": [
+      {
+        "id": "focused",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"--maxWorkers=2\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "packages/rules/src/__tests__/match-session-regressions.test.ts",
+          "packages/rules/tests/match-room-hub.test.ts",
+          "packages/rules/tests/match-session.test.ts",
+          "packages/rules/tests/regression/action-turn-delivery.test.ts",
+          "packages/rules/tests/regression/card-action-close.test.ts",
+          "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+          "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+          "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+          "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+          "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+          "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+          "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+          "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+          "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+          "--maxWorkers=2"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\focused.log",
+        "logSha256": "192b1e2581b62b31d5fce0ac83217b98b767a43b7ea74f0621b79215e8f4aba8",
+        "startedAt": "2026-10-30T07:50:48.766Z",
+        "endedAt": "2026-10-30T07:51:38.288Z",
+        "durationMs": 49522,
+        "relevantSourcePathsBoundToFinalBytes": [
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/types.ts",
+          "packages/rules/src/core/combat-resolver.ts",
+          "packages/rules/src/core/movement.ts",
+          "packages/rules/src/match-session.ts",
+          "packages/rules/src/__tests__/match-session-regressions.test.ts",
+          "packages/rules/tests/match-room-hub.test.ts",
+          "packages/rules/tests/match-session.test.ts",
+          "packages/rules/tests/regression/action-turn-delivery.test.ts",
+          "packages/rules/tests/regression/card-action-close.test.ts",
+          "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+          "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+          "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+          "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+          "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+          "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+          "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+          "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+          "packages/rules/tests/regression/fb2-required-additional-play.test.ts"
+        ]
+      },
+      {
+        "id": "typecheck",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"typecheck\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+          "run",
+          "typecheck"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\typecheck.log",
+        "logSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4",
+        "startedAt": "2026-10-30T07:52:05.836Z",
+        "endedAt": "2026-10-30T07:52:08.249Z",
+        "durationMs": 2413,
+        "relevantSourcePathsBoundToFinalBytes": [
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/types.ts",
+          "packages/rules/src/core/combat-resolver.ts",
+          "packages/rules/src/core/movement.ts",
+          "packages/rules/src/match-session.ts",
+          "apps/client/src/pages/MatchTable.tsx",
+          "apps/client/src/state/playtest-fixture-loader.ts",
+          "apps/client/src/state/remote-room-fixture.ts",
+          "apps/client/src/state/seven-authoring-smoke-fixture.ts"
+        ]
+      },
+      {
+        "id": "client-final",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\" \"src/App.test.tsx\" \"src/pages/MatchTable.test.tsx\" \"src/components/ServantDeckSummary.test.tsx\" \"src/components/CardInspectionOverlay.test.tsx\" \"src/state/engine-bridge.test.ts\" \"src/state/content-library-loader.test.ts\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "src/App.test.tsx",
+          "src/pages/MatchTable.test.tsx",
+          "src/components/ServantDeckSummary.test.tsx",
+          "src/components/CardInspectionOverlay.test.tsx",
+          "src/state/engine-bridge.test.ts",
+          "src/state/content-library-loader.test.ts"
+        ],
+        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\client",
+        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\client-final.log",
+        "logSha256": "64e772c8f4048e42248ec7f48321c128a9a130fac02345b049149d2c27113041",
+        "startedAt": "2026-10-30T07:57:32.153Z",
+        "endedAt": "2026-10-30T07:57:40.218Z",
+        "durationMs": 8065,
+        "relevantSourcePathsBoundToFinalBytes": [
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/types.ts",
+          "packages/rules/src/core/combat-resolver.ts",
+          "packages/rules/src/core/movement.ts",
+          "packages/rules/src/match-session.ts",
+          "apps/client/src/pages/MatchTable.tsx",
+          "apps/client/src/state/playtest-fixture-loader.ts",
+          "apps/client/src/state/remote-room-fixture.ts",
+          "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+          "apps/client/src/pages/MatchTable.test.tsx"
+        ]
+      },
+      {
+        "id": "build-type-fix",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+          "run",
+          "build",
+          "--workspace",
+          "@fd/client"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\build-type-fix.log",
+        "logSha256": "68a228abc34eee9ca563799b65212a3f9758bb5279c74074702d17bfddf86817",
+        "startedAt": "2026-10-30T07:52:44.977Z",
+        "endedAt": "2026-10-30T07:52:51.054Z",
+        "durationMs": 6077,
+        "relevantSourcePathsBoundToFinalBytes": [
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/types.ts",
+          "packages/rules/src/core/combat-resolver.ts",
+          "packages/rules/src/core/movement.ts",
+          "packages/rules/src/match-session.ts",
+          "apps/client/src/pages/MatchTable.tsx",
+          "apps/client/src/state/playtest-fixture-loader.ts",
+          "apps/client/src/state/remote-room-fixture.ts",
+          "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+          "apps/client/src/pages/MatchTable.test.tsx"
+        ]
+      },
+      {
+        "id": "server",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
+          "run"
+        ],
+        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\server",
+        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\server.log",
+        "logSha256": "2ad941f6968ae0b24623d120cd0e0afdf06c8b90539e146f248af5bf4ec7bdb7",
+        "startedAt": "2026-10-30T07:57:20.444Z",
+        "endedAt": "2026-10-30T07:57:26.640Z",
+        "durationMs": 6196,
+        "relevantSourcePathsBoundToFinalBytes": [
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/types.ts",
+          "packages/rules/src/core/combat-resolver.ts",
+          "packages/rules/src/core/movement.ts",
+          "packages/rules/src/match-session.ts",
+          "apps/server/src/match-server.test.ts"
+        ]
+      },
+      {
+        "id": "browser-user-flow",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-fixes-20261030\\\\playwright.user-flow.config.mjs\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "-c",
+          "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\playwright.user-flow.config.mjs"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "3153618a48e6464625b3d890d33d9d2627bd6467",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-fixes-20261030\\browser-user-flow.log",
+        "logSha256": "3f046f7d9ac5f59ce573d0516b4ce15c124a42386e1e4476deb15e0240c53183",
+        "startedAt": "2026-10-30T07:56:38.408Z",
+        "endedAt": "2026-10-30T07:57:09.146Z",
+        "durationMs": 30738,
+        "relevantSourcePathsBoundToFinalBytes": [
+          "packages/rules/src/ability/interpreter.ts",
+          "packages/rules/src/ability/types.ts",
+          "packages/rules/src/core/combat-resolver.ts",
+          "packages/rules/src/core/movement.ts",
+          "packages/rules/src/match-session.ts",
+          "apps/client/src/pages/MatchTable.tsx",
+          "apps/client/src/state/playtest-fixture-loader.ts",
+          "apps/client/src/state/remote-room-fixture.ts",
+          "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+          "e2e/fd-action-turn-delivery.spec.ts",
+          "e2e/fd-time-alter-core-primitive.spec.ts",
+          "e2e/support/start-action-turn-fixture-server.ts"
+        ]
+      }
+    ],
+    "scopedCounts": {
+      "rulesFiles": 14,
+      "rulesTestsPassed": 150,
+      "actionTurnTestsWithinRules": 31,
+      "relevantClientFiles": 6,
+      "relevantClientTestsPassed": 44,
+      "serverTestsPassed": 17,
+      "browserTestsPassed": 3
+    }
+  },
+  "performanceRepair": {
+    "scopeControlParent": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+    "runtimeReferenceBeforeOptimization": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+    "originalFailures": [
+      {
+        "path": "D:/fd-validation/dr-p01-m1-fixes-20261030/github-test-first-fixed.log",
+        "sha256": "4e5ab805c3848181ddb6d642bb068ba3add034cf62fb1362023f15cce081bed0",
+        "result": "TEST_FAILURE",
+        "candidate": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+        "testsPassed": 1693,
+        "testsFailed": 2,
+        "testsSkipped": 1
+      },
+      {
+        "path": "D:/fd-validation/dr-p01-m1-fixes-20261030/github-test-second-fixed.log",
+        "sha256": "9a95fa9e60c335c0b2c888926169ce03e77841fc2bebf93d40f4ce4640a84f7a",
+        "result": "TEST_FAILURE",
+        "candidate": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+        "testsPassed": 1693,
+        "testsFailed": 2,
+        "testsSkipped": 1
+      }
+    ],
+    "originalTimeoutsPreserved": {
+      "elevenMs": 10000,
+      "postscoreMs": 5000,
+      "maxWorkers": 2
+    },
+    "profiles": {
+      "directory": "D:/fd-validation/dr-p01-m1-timeout-diag-20261030",
+      "categories": {
+        "eleven": {
+          "totalMs": 8430.361,
+          "ms": {
+            "hashSelf": 3229.0300000000025,
+            "cloneSelf": 1721.0709999999992,
+            "plannerIncludingOptions": 495.0349999999997,
+            "checkpointIncludingChildren": 4888.53999999999,
+            "restoreIncludingChildren": 0
+          },
+          "percent": {
+            "hashSelf": 38.30239298174778,
+            "cloneSelf": 20.415151854113947,
+            "plannerIncludingOptions": 5.872049844603329,
+            "checkpointIncludingChildren": 57.987315133954404,
+            "restoreIncludingChildren": 0
+          }
+        },
+        "postscore": {
+          "totalMs": 4890.812,
+          "ms": {
+            "hashSelf": 2135.8329999999983,
+            "cloneSelf": 763.337,
+            "plannerIncludingOptions": 192.31799999999996,
+            "checkpointIncludingChildren": 758.2599999999999,
+            "restoreIncludingChildren": 2410.8150000000023
+          },
+          "percent": {
+            "hashSelf": 43.67031486796054,
+            "cloneSelf": 15.607571912394096,
+            "plannerIncludingOptions": 3.932230476248115,
+            "checkpointIncludingChildren": 15.503765018978442,
+            "restoreIncludingChildren": 49.29273503050214
+          }
+        }
+      },
+      "conclusion": "Large snapshot hashing dominates; planner includingoptions is5.87%/3.93% of sampled11round/postscore cost. Do not remove no-authority replay trust binding."
+    },
+    "change": "13-line synchronous Node large-SHA backend using feature-detected process.getBuiltinModule(node:crypto), for inputs>=4096characters only. Browsers/noAPI preserve original portable implementation; shortSHA and allHMAC unchanged. No state cache, skipped signing, changed payload/schema or removed verification.",
+    "correctness": "10tests cover native route choice, exact Node-vs-portable UTF8 including lone surrogates/long input, actual no-process VM browser fallback, missing builtin API, SHA known vector andRFC4231HMAC. Added native-selection assertion first failed before implementation.",
+    "timings": {
+      "sameHostNode": "24.13.1",
+      "beforeD43SelectedMs": {
+        "eleven": 6792.0893,
+        "postscore": 3852.0348
+      },
+      "afterSelectedMs": {
+        "eleven": 3526,
+        "postscore": 1753
+      },
+      "afterFullFocused2workerMs": {
+        "eleven": 3329,
+        "postscore": 1597
+      },
+      "limitation": "Actual local bounded timings, not claims about future LinuxNode20CI."
+    },
+    "counts": {
+      "rulesFiles": 16,
+      "rulesTestsPassed": 211,
+      "actionTurnTestsWithinRules": 31,
+      "portableShaTestsWithinRules": 10,
+      "fb249AuthorityTestsWithinRules": 51,
+      "relevantClientFiles": 6,
+      "relevantClientTestsPassed": 44,
+      "serverTestsPassed": 17,
+      "browserTestsPassed": 3
+    },
+    "checks": [
+      {
+        "id": "focused",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"packages/rules/tests/portable-sha256.test.ts\" \"packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts\" \"--maxWorkers=2\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "packages/rules/src/__tests__/match-session-regressions.test.ts",
+          "packages/rules/tests/match-room-hub.test.ts",
+          "packages/rules/tests/match-session.test.ts",
+          "packages/rules/tests/regression/action-turn-delivery.test.ts",
+          "packages/rules/tests/regression/card-action-close.test.ts",
+          "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+          "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+          "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+          "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+          "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+          "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+          "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+          "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+          "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+          "packages/rules/tests/portable-sha256.test.ts",
+          "packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts",
+          "--maxWorkers=2"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\focused.log",
+        "logSha256": "e2b5fddc2cb0e6593faa52915bbc0b4b80a003618018c56b43f6d1af24bc43d6",
+        "startedAt": "2026-10-30T08:24:29.748Z",
+        "endedAt": "2026-10-30T08:24:53.681Z",
+        "durationMs": 23933
+      },
+      {
+        "id": "typecheck",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"typecheck\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+          "run",
+          "typecheck"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\typecheck.log",
+        "logSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4",
+        "startedAt": "2026-10-30T08:24:43.597Z",
+        "endedAt": "2026-10-30T08:24:45.200Z",
+        "durationMs": 1603
+      },
+      {
+        "id": "build",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:/nodejs/node_modules/npm/bin/npm-cli.js",
+          "run",
+          "build",
+          "--workspace",
+          "@fd/client"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\build.log",
+        "logSha256": "c447b31f1a094bd747306784b1f2a56a46a0ae6346605d24c368a6414e0062bb",
+        "startedAt": "2026-10-30T08:25:01.113Z",
+        "endedAt": "2026-10-30T08:25:06.825Z",
+        "durationMs": 5712
+      },
+      {
+        "id": "client",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\" \"src/App.test.tsx\" \"src/pages/MatchTable.test.tsx\" \"src/components/ServantDeckSummary.test.tsx\" \"src/components/CardInspectionOverlay.test.tsx\" \"src/state/engine-bridge.test.ts\" \"src/state/content-library-loader.test.ts\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
+          "run",
+          "src/App.test.tsx",
+          "src/pages/MatchTable.test.tsx",
+          "src/components/ServantDeckSummary.test.tsx",
+          "src/components/CardInspectionOverlay.test.tsx",
+          "src/state/engine-bridge.test.ts",
+          "src/state/content-library-loader.test.ts"
+        ],
+        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\client",
+        "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\client.log",
+        "logSha256": "247b3df0a007f71b15520505655ec2ba4d796ca0c80a0678843454bce9e30e90",
+        "startedAt": "2026-10-30T08:25:11.990Z",
+        "endedAt": "2026-10-30T08:25:20.160Z",
+        "durationMs": 8170
+      },
+      {
+        "id": "server",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "D:\\fd-validation\\dr-p01-m1-integration-20261030\\node_modules\\vitest\\vitest.mjs",
+          "run"
+        ],
+        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\server",
+        "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\server.log",
+        "logSha256": "ccce6f682b537823c0b054f779bf3418e56dacda43e28e8112bd6185ce79d15d",
+        "startedAt": "2026-10-30T08:25:20.500Z",
+        "endedAt": "2026-10-30T08:25:25.096Z",
+        "durationMs": 4596
+      },
+      {
+        "id": "browser",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-sha-perf-20261030\\\\playwright.m1.config.mjs\"",
+        "executable": "D:\\nodejs\\node.exe",
+        "args": [
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          "-c",
+          "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\playwright.m1.config.mjs"
+        ],
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHeadAtExecution": "9560b88956bbbf695a99f4c6af7c0c5c789471d4",
+        "exitCode": 0,
+        "log": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\browser.log",
+        "logSha256": "164fea5b1bcae6870cbf8711e690663617e731efe25eabae764efa085c91322e",
+        "startedAt": "2026-10-30T08:25:29.003Z",
+        "endedAt": "2026-10-30T08:25:55.592Z",
+        "durationMs": 26589
+      }
+    ],
+    "sourceObjects": [
+      {
+        "path": "apps/client/src/pages/MatchTable.tsx",
+        "sha256": "cef3d4ebacb3d3f43b19c928ece9085d8e6ec9cc8802b7053d41d413678d6aa8"
+      },
+      {
+        "path": "apps/client/src/state/playtest-fixture-loader.ts",
+        "sha256": "58bec018e58ef9742807e80f214c01fd92e3ae8b6d6260286ccb997920fa421d"
+      },
+      {
+        "path": "apps/client/src/state/remote-room-fixture.ts",
+        "sha256": "8e274d34dd2b46a0aac9811beb31a2b74936c18b79fcaa4d917a733669dfe078"
+      },
+      {
+        "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+        "sha256": "e713e11bfb121b3b1d2f543a70d1691d6c9f012b5bc5de5295c8cc7c62540584"
+      },
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "2600923bcc11c47501349593c21e163da36aa77c3e1a56d6dc10c289de8fcda6"
+      },
+      {
+        "path": "packages/rules/src/ability/types.ts",
+        "sha256": "4afb7b2a2a91d360ce9286331382c89d7f288c18c76128d7928b36fe83e61b98"
+      },
+      {
+        "path": "packages/rules/src/core/combat-resolver.ts",
+        "sha256": "ae29b7c0a92873a86fd444f7c5f882e7a4fde4b6901abf5118657d5112aeb119"
+      },
+      {
+        "path": "packages/rules/src/core/movement.ts",
+        "sha256": "d2a6fe60961fbabbdb3b25548282d8ac4e134a72f2e797a3b4edbcdba07efdbb"
+      },
+      {
+        "path": "packages/rules/src/match-session.ts",
+        "sha256": "246879410007e0ddf547a5f31a140adb7db7b5683fa7c46bc7d7fe7dec171f83"
+      },
+      {
+        "path": "packages/rules/src/ability/portable-sha256.ts",
+        "sha256": "35d5670a2d802b7a01b4f78d72cdc55e81228787d83fea7d26da844c6283a474"
+      },
+      {
+        "path": "apps/client/src/pages/MatchTable.test.tsx",
+        "sha256": "d5134c6e13e6ecd4b7afe051a6336e71a92fefb8c11ed049a16e4ab722e494b6"
+      },
+      {
+        "path": "apps/server/src/match-server.test.ts",
+        "sha256": "69352c0cfcd631be9c746fa0aed3558c46a4a0ede13828ac2e6acb6cce0c7902"
+      },
+      {
+        "path": "e2e/fd-action-turn-delivery.spec.ts",
+        "sha256": "372a35c13d992e2fb6152bb66845084fedb3bc1b419b90cca0072ecfdc0149d6"
+      },
+      {
+        "path": "e2e/fd-time-alter-core-primitive.spec.ts",
+        "sha256": "0964f78a74e7a740219debe8fa1a6272ef36a5f72d72d86b868b39dd03140970"
+      },
+      {
+        "path": "e2e/support/start-action-turn-fixture-server.ts",
+        "sha256": "dca4e2fc612a81e721548505061aecffcf7e14f0f9e391258a9acc51acd9cc84"
+      },
+      {
+        "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+        "sha256": "74aab702b8f6c04f3e2288626b1926e756b06ecb087428f42528900919ded79e"
+      },
+      {
+        "path": "packages/rules/tests/match-room-hub.test.ts",
+        "sha256": "c6f44fbef0c3f5ea172682fabd46f354daaab9c72e3907ec572aa577cccfc40a"
+      },
+      {
+        "path": "packages/rules/tests/match-session.test.ts",
+        "sha256": "90cdd9348f053ffde0411563f0a35443db2a2d429387e658a0ecee6fda566bac"
+      },
+      {
+        "path": "packages/rules/tests/regression/action-turn-delivery.test.ts",
+        "sha256": "236b1bc976edb02a1f04aad39483e58123d5dbba144217a9b3930acdfeecfcca"
+      },
+      {
+        "path": "packages/rules/tests/regression/card-action-close.test.ts",
+        "sha256": "3fd0bf9731ce01a88ba4909137578004ccbb79ab0844862a40bfb041f6a0c494"
+      },
+      {
+        "path": "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+        "sha256": "1d86aec2a2ea3bc5909c99296a6ed84322e1508153b3e6ad383bc61a70c82a9e"
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+        "sha256": "2c63c86092235a2384b14b69548e239b28a6c4b9cc3f2cd6aa5dce888563e0fa"
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+        "sha256": "cc56b99208d922f0047d45b07155b1749d0e5c39629f9c758142036002d08b1b"
+      },
+      {
+        "path": "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+        "sha256": "af0cf8b3d12d3d4dff0c7cde5369e0307bbcab750c21973e3c57402842c76ff9"
+      },
+      {
+        "path": "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+        "sha256": "d5d7a9f694a174be10d084fd1e32e5db75de4d96419926c7fdc37a47109e051c"
+      },
+      {
+        "path": "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+        "sha256": "465e5ca12c36ec2acc90dce8200b75c0706d43148d6a71ee43d3b46a6c505d22"
+      },
+      {
+        "path": "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+        "sha256": "5bcdb2233645ccaa34da730e4b26fa5b7286b0a939e26f0acda331f0bd630995"
+      },
+      {
+        "path": "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+        "sha256": "bad7c9469f8126b9f47c134b6f7698d51d9a26d4533f85092f107163e8693f1f"
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+        "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2"
+      },
+      {
+        "path": "packages/rules/tests/portable-sha256.test.ts",
+        "sha256": "bcf2f0bc47c544b81a9dc3de776571a040ea271df8f34dbcefe0e74f94512ba0"
+      }
+    ],
+    "readonlyAdditionalTestInputs": [
+      {
+        "path": "packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts",
+        "sha256": "12fe1946d6240f8a096014ff8dd96189e9cbb27a5e0e1522d9e834e7f7420d9f"
+      }
+    ],
+    "browser": {
+      "port": 3200,
+      "reuseExistingServer": false,
+      "results": "D:\\fd-validation\\dr-p01-m1-sha-perf-20261030\\browser-results.json",
+      "resultsSha256": "baacb96ef134c8ba601fb3bf1ccec0132548b28c86da47078d5fe2ed89ca4e87",
+      "actualPassed": 3
+    },
+    "newCandidateIndependentVerification": "PENDING",
+    "newCandidateExactHeadCi": "PENDING",
+    "mergeStillRequiresUser": true
   }
 }

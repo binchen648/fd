@@ -88,7 +88,20 @@ function bytesToHex(bytes: Uint8Array): string {
   return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
+function snapshotSha256Backend(): ((input: string) => string) | undefined {
+  // No static Node import: the same rules module also runs in the browser.
+  if (typeof process === 'undefined' || typeof process.getBuiltinModule !== 'function') return undefined;
+  const crypto = process.getBuiltinModule('node:crypto');
+  return typeof crypto?.createHash === 'function'
+    ? input => crypto.createHash('sha256').update(input, 'utf8').digest('hex')
+    : undefined;
+}
+
+const nativeSnapshotSha256 = snapshotSha256Backend();
+
 export function sha256Hex(input: string): string {
+  // Large persisted snapshots dominate Node hashing; preserve portable handling for short messages and browsers.
+  if (nativeSnapshotSha256 && input.length >= 4096) return nativeSnapshotSha256(input);
   return bytesToHex(sha256Bytes(new TextEncoder().encode(input)));
 }
 
