@@ -119,14 +119,18 @@
   "integration": {
     "promotionPr": 682,
     "phase3PolicyTaskId": "P3-DR-P01-M1",
-    "implementationCandidate": "943e100ea7248e11123fac06575661ff5344c90c",
-    "independentReviewSha": "d20443e8fcdd3552e254c372b1198658ec42e1ca",
-    "githubAcceptanceBridge": "717872aed9b3404e630b1063b935646ba75ae975",
-    "githubAcceptanceStatement": "https://github.com/binchen648/fd/pull/682#issuecomment-6515584452",
+    "implementationCandidate": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
+    "independentReviewSha": "048e217dadeb71b0cb1ba0ca1f5d188014c622cf",
+    "githubAcceptanceBridge": "85570a11f14aff933ddc1f01809bc0e4a8e0428c",
+    "githubAcceptanceStatement": "https://github.com/binchen648/fd/pull/682#issuecomment-6518033164",
     "newRolesCreated": false,
-    "fullCi": "PENDING_ACTUAL_INTEGRATION_HEAD",
+    "fullCi": "PENDING_CORRECTED_ACTUAL_HEAD",
     "runtimeSourceUnchangedSinceReview": true,
-    "synchronizationSha": "c8f4322f629f0ee69833fed241af5fc3237e4a53",
-    "assemblyRole": "Global Technical Lead / Integration Owner"
-  }
+    "assemblyRole": "Global Technical Lead / Integration Owner",
+    "mergeRequiresUserConsent": true
+  },
+  "postReviewFixes": [
+    "F1 unaffordable mandatory hand batch maximum legal affordable subset under user rule clarification",
+    "F2 local authoritative public power mapping including zero"
+  ]
 }
