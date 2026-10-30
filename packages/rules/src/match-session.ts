@@ -1,3 +1,4 @@
+import { resolveStandardRoundEnd, type StandardMatchOutcome } from './core/elimination-resolver';
 import {
   advanceAbilityPhase,
   dispatchAbilityCommand,
@@ -168,6 +169,7 @@ export interface MatchClientState {
   logs: MatchSessionLogEntry[];
   replay: Array<{ id: string; round: number; phase: PhaseName; revision: number; label: string }>;
   battleBreakdowns: GameState['battleResults'];
+  outcome?: StandardMatchOutcome;
   finalRanking: Array<{ playerId: string; seat: number; vp: number; militaryResult: number; rank: number }>;
   stopReason?: MatchPauseReason;
   rejection?: DispatchResult['rejection'];
@@ -1696,6 +1698,8 @@ export class MatchSession {
   }
 
   dispatchPlayerAction(playerId: string, command: AbilityCommand): DispatchResult {
+    if (this.standardOutcome()) return { ok:false, view:this.projectAbilityView(playerId), events:[], calculations:[],
+      rejection:{code:'match_complete',message:'The standard match has ended'} };
     if (!command || typeof command !== 'object' || typeof command.type !== 'string') return dispatchAbilityCommand(this.state, playerId, command);
     if (this.battleSettlementInProgress() && !['choose_target', 'resolve_response', 'decline_this_window', 'pass'].includes(command.type)) {
       return { ok: false, view: this.projectAbilityView(playerId), events: [], calculations: [],
@@ -1801,6 +1805,7 @@ export class MatchSession {
   }
 
   private projectSessionView(view: AbilityPlayerView): AbilityPlayerView {
+    if (this.standardOutcome()) return { ...view, legalActions: [] };
     if (this.battleSettlementInProgress()) view.legalActions = view.legalActions.filter(action =>
       ['choose_target', 'resolve_response', 'decline_this_window'].includes(action.type));
     if (this.state.round.activePhase === 'action') {
@@ -1946,10 +1951,11 @@ export class MatchSession {
   autoResolveNonInteractiveWindows(): MatchPauseReason | undefined {
     for (let index = 0; index < 100; index++) {
       if (this.pendingHostDirectives().length) return 'host_directive';
-      const owner = this.state.players.find((player) => {
-        const view = projectAbilityState(this.state, player.id);
-        return view.pendingDecision || view.responseWindow;
-      });
+      // Pending authority already names its owner. Avoid rebuilding all seven legal-action
+      // projections merely to discover that no decision is pending (or which player owns it).
+      const runtime = this.state.abilityRuntime;
+      const ownerId = runtime?.pendingDecision?.controllerId ?? runtime?.responseWindows[0]?.controllerId;
+      const owner = this.state.players.find(player => player.id === ownerId);
       if (!owner) return undefined;
       if (this.isHumanPlayer(owner.id)) return 'human_input';
       const action = chooseAiAction(getLegalActions(this.state, owner.id));
@@ -1971,7 +1977,7 @@ export class MatchSession {
 
       const windowPause = this.autoResolveNonInteractiveWindows();
       if (windowPause) return this.pause(windowPause);
-      if (this.state.round.activePhase === 'round_end') return this.pause('round_end');
+      if (this.state.round.activePhase === 'round_end') { this.finalizeStandardRoundEnd(); return this.pause(this.standardOutcome() ? 'match_complete' : 'round_end'); }
       if (this.state.round.roundNumber > 11) return this.pause('match_complete');
       if (this.battleSettlementInProgress()) {
         this.resolveBattlePhase();
@@ -2026,8 +2032,8 @@ export class MatchSession {
       }
       if (reason === 'round_end') {
         if (this.state.round.roundNumber >= maxRounds) {
-          this.ensureFinalScoring();
-          return this.pause('match_complete');
+          if (this.state.round.roundNumber === 11) { this.ensureFinalScoring(); return this.pause('match_complete'); }
+          return this.pause('round_end');
         }
         this.state.round.roundNumber += 1;
         this.startRound(this.state.round.roundNumber);
@@ -2083,6 +2089,7 @@ export class MatchSession {
 
   projectToClientState(playerId = this.humanPlayerId): MatchClientState {
     const view = this.projectAbilityView(playerId);
+    const outcome = this.standardOutcome();
     const hiddenEventIds = canViewFaceDownEvents(this.state, playerId) ? [] : this.state.eventPlacements
       .filter(event => event.visibility.scope !== 'public').map(event => event.eventCardId);
     const recentReplay = this.replay.slice(-40);
@@ -2111,7 +2118,8 @@ export class MatchSession {
       logs: this.logs.slice(-80).map(entry => this.projectLogEntry(entry, playerId)),
       replay: recentReplay,
       battleBreakdowns: this.battleHistory,
-      finalRanking: this.finalRanking(),
+      finalRanking: this.standardOutcome() ? this.finalRanking() : [],
+      ...(outcome ? { outcome } : {}),
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: this.rejection } : {}),
     };
@@ -2757,7 +2765,7 @@ export class MatchSession {
     }
     if (!this.state.abilityRuntime?.pendingDecision && !this.state.abilityRuntime?.responseWindows.length) {
       const scoringLogStart = this.state.log.length;
-      Object.assign(this.state, applyBattleScoring(this.state).nextState);
+      Object.assign(this.state, applyBattleScoring(this.state, 'standard').nextState);
       const freshScoringLogs = this.state.log.slice(scoringLogStart);
       this.queuePostScoringBattleEvents(resolvedBattles, freshScoringLogs);
       this.flushPostScoringBattleEvents();
@@ -2772,6 +2780,7 @@ export class MatchSession {
     this.discardRoundSituationAndEvents();
     advanceAbilityPhase(this.state, 'round_end', this.state.round.roundNumber);
     this.record('round_end', `round ${this.state.round.roundNumber} ended`);
+    this.finalizeStandardRoundEnd();
     this.checkpoint(`round ${this.state.round.roundNumber} end`);
   }
 
@@ -2851,22 +2860,36 @@ export class MatchSession {
     return this.humanPlayerIds.includes(playerId);
   }
 
+  private standardOutcome(): StandardMatchOutcome | undefined {
+    const receipt = this.logs.find(entry => entry.type === 'standard_round_end_resolved' && entry.round === 11);
+    return receipt?.payload?.outcome ? structuredClone(receipt.payload.outcome) as StandardMatchOutcome : undefined;
+  }
+
+  private finalizeStandardRoundEnd(): void {
+    const runtime = this.state.abilityRuntime;
+    if (this.state.round.activePhase !== 'round_end' || runtime?.pendingDecision || runtime?.responseWindows.length ||
+      runtime?.hostRequests.length || runtime?.pendingPostBattleEvents?.length) return;
+    const round = this.state.round.roundNumber;
+    if (this.logs.some(entry => entry.type === 'standard_round_end_resolved' && entry.round === round)) return;
+    const miyama = this.logs.filter(entry => entry.type === 'battle_resolved' && entry.round === round && entry.message === 'miyama_town').slice(-1)[0];
+    const winners = (miyama?.payload?.winnerPlayerIds ?? []) as string[];
+    const result = resolveStandardRoundEnd(this.state.players, round, winners);
+    for (const player of this.state.players) if (result.eliminatedPlayerIds.includes(player.id)) player.status = 'eliminated';
+    this.record('standard_round_end_resolved', `standard-end:${round}`, result);
+    if (runtime) runtime.revision++;
+    if (result.outcome) this.ensureFinalScoring();
+  }
+
   private ensureFinalScoring(): void {
-    if (this.logs.some((entry) => entry.type === 'final_scoring')) return;
-    this.record('final_scoring', 'match_end', { ranking: this.finalRanking() });
+    if (this.state.round.roundNumber !== 11 || !this.standardOutcome() || this.logs.some(entry => entry.type === 'final_scoring')) return;
+    this.record('final_scoring', 'match_end', { outcome: this.standardOutcome(), ranking: this.finalRanking() });
     this.checkpoint('match end');
   }
 
   private finalRanking(): MatchClientState['finalRanking'] {
-    return this.state.players
-      .map((player) => ({
-        playerId: player.id,
-        seat: player.seat,
-        vp: player.vp,
-        militaryResult: player.militaryResult,
-      }))
-      .sort((left, right) => right.vp - left.vp || right.militaryResult - left.militaryResult || left.seat - right.seat)
-      .map((player, index) => ({ ...player, rank: index + 1 }));
+    const ordered = [...this.state.players].sort((a,b) => b.vp-a.vp);
+    return ordered.map(p => ({playerId:p.id,seat:p.seat,vp:p.vp,militaryResult:p.militaryResult,
+      rank:1+ordered.filter(other=>other.vp>p.vp).length}));
   }
 
   private advanceToNextActiveSeat(): boolean {

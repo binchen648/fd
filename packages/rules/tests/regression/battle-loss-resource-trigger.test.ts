@@ -140,13 +140,13 @@ describe('P3-B13 battle loss resource trigger', () => {
     });
   });
 
-  it('preserves the frozen battle-trigger eligibility when scoring eliminates the losing controller', () => {
+  it('preserves the frozen battle-trigger eligibility when standard scoring keeps the low-military losing controller active', () => {
     const session = twoBattlefieldSession();
     session.state.players.find((player) => player.id === 'p1')!.militaryResult = -7;
 
     resolveBattlePhase(session);
 
-    expect(session.state.players.find((player) => player.id === 'p1')?.status).toBe('eliminated');
+    expect(session.state.players.find((player) => player.id === 'p1')?.status).toBe('active');
     expect(commandSpells(session)).toBe(2);
     expect(session.state.abilityRuntime!.events).toContainEqual(expect.objectContaining({
       type: 'command_seals_adjusted',

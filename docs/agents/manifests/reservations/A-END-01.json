@@ -32,7 +32,10 @@
     "docs/agents/manifests/tasks/A-END-01.json",
     "docs/agents/manifests/reservations/A-END-01.json",
     "docs/plans/2026-10-30-a-end-01-seven-player.md",
-    "docs/reports/2026-10-30-a-end-01-result.md"
+    "docs/reports/2026-10-30-a-end-01-result.md",
+    "packages/rules/tests/regression/battle-loss-servant-reveal.test.ts",
+    "packages/rules/tests/regression/battle-loss-resource-trigger.test.ts",
+    "packages/rules/tests/regression/complex-skills-regression.test.ts"
   ],
   "ForbiddenFiles": [
     "packages/rules/src/ability/interpreter.ts",
@@ -59,5 +62,6 @@
   ],
   "promotion": "One main PR only; user consent still required before merge",
   "migrationCreditDelta": 0,
-  "notes": "Legacy core simulation may retain explicitly named military policy; standard product cannot route there. No new generic ability primitive or waiver inferred."
+  "notes": "Legacy core simulation may retain explicitly named military policy; standard product cannot route there. No new generic ability primitive or waiver inferred.",
+  "regressionScopeAddendum": "Three existing regression tests contain superseded military-elimination or truncated-simulation terminal assertions; preserve every loss trigger/resource/reveal/duplicate check, update only replaced canonical expectations after actual fullCI evidence."
 }

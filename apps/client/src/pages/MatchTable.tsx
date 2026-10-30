@@ -623,6 +623,11 @@ export default function MatchTable({
               </div>
             </section>
           ) : null}
+          {fixture.outcome ? <section aria-label='正式对局结果'>
+            <strong>{fixture.outcome.kind === 'winner' ? '圣杯战争胜者' : '圣杯溢出：全员失败'}</strong>
+            {fixture.outcome.kind === 'winner' ? <p>{fixture.players.find(p => p.id === (fixture.outcome?.kind === 'winner' ? fixture.outcome.winnerPlayerId : undefined))?.name ?? fixture.outcome.winnerPlayerId}</p> : null}
+            <p>{fixture.outcome.reason === 'highest_vp' ? '第11回合最高战果' : fixture.outcome.reason === 'miyama_tiebreak' ? '最高战果同分，由本回合深山町胜利破平' : fixture.outcome.reason === 'no_eligible_player' ? '没有符合条件的存活玩家' : '最高战果同分，深山町未能唯一破平'}</p>
+          </section> : null}
           {finalRanking.length ? (
             <section className='final-ranking' aria-label='最终排名'>
               <header><span>RANKING</span><strong>最终结算</strong></header>
@@ -638,7 +643,7 @@ export default function MatchTable({
               })}
             </section>
           ) : null}
-          {usingNonPriorityView ? <p className='decision-panel__waiting'>等待当前玩家完成{decisionPhaseLabel}</p> : <button className='decision-panel__confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete}>{endDecisionLabel}</button>}
+          {usingNonPriorityView ? <p className='decision-panel__waiting'>等待当前玩家完成{decisionPhaseLabel}</p> : <button className='decision-panel__confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete || !!fixture.outcome}>{endDecisionLabel}</button>}
         </aside>
       </div>
 
@@ -664,7 +669,7 @@ export default function MatchTable({
       />
 
       {isWorkbenchFocused && !usingNonPriorityView ? (
-        <button className='workbench-confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete}>
+        <button className='workbench-confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete || !!fixture.outcome}>
           <span>CONFIRM</span>
           <strong>{endDecisionLabel}</strong>
         </button>
