@@ -176,6 +176,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     })),
     battleEvents: [],
     finalRanking: match.finalRanking,
+    ...(match.outcome ? { outcome: match.outcome } : {}),
     backendRejection: match.rejection ? `${match.rejection.code}: ${match.rejection.message}` : undefined,
   };
 }

@@ -124,7 +124,8 @@ export function applyOccupiedLocationRewards(state: GameState): ResolverResult {
   };
 }
 
-export function applyBattleScoring(state: GameState): ResolverResult {
+/** Legacy core simulation retains military accounting; the product Session explicitly selects standard. */
+export function applyBattleScoring(state: GameState, policy: 'legacy_military' | 'standard' = 'legacy_military'): ResolverResult {
   const scoringBreakdown: PlayerScoringBreakdown[] = [];
   const eliminationCandidates: Array<{ playerId: string; seat: number; militaryResult: number }> = [];
 
@@ -178,7 +179,7 @@ export function applyBattleScoring(state: GameState): ResolverResult {
           label: `${result.battlefieldId}.margin`,
         });
         const militaryResult = nextPlayer.militaryResult + adjustment.delta;
-        const eliminated = militaryResult <= ELIMINATION_MILITARY_THRESHOLD;
+        const eliminated = policy === 'legacy_military' && militaryResult <= ELIMINATION_MILITARY_THRESHOLD;
         const newlyEliminated = eliminated && nextPlayer.status !== "eliminated";
         nextPlayer = {
           ...nextPlayer,

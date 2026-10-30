@@ -301,7 +301,8 @@ describe('MatchSession semi-auto runtime', () => {
     const reason = session.runFullMatch({ maxRounds: 1 });
     const projected = session.projectToClientState('p1');
 
-    expect(reason).toBe('match_complete');
+    expect(reason).toBe('round_end');
+    expect(projected.outcome).toBeUndefined();
     expect(projected.round).toBe(1);
     expect(projected.phase).toBe('round_end');
     expect(projected.logs.some((entry) => entry.type === 'dispatch_ok')).toBe(true);
@@ -321,7 +322,7 @@ describe('MatchSession semi-auto runtime', () => {
 
   it('authenticates gameplay-affecting MatchSession fields outside GameState', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', maxActionsPerPlayer: 2 });
-    expect(session.runFullMatch({ maxRounds: 1 })).toBe('match_complete');
+    expect(session.runFullMatch({ maxRounds: 1 })).toBe('round_end');
     const durable = session.serializeSession();
     expect(durable.battleHistory.length).toBeGreaterThan(0);
 
@@ -631,7 +632,8 @@ describe('MatchSession semi-auto runtime', () => {
     const reason = session.runFullMatch({ maxRounds: 3 });
     const projected = session.projectToClientState('p1');
 
-    expect(reason).toBe('match_complete');
+    expect(reason).toBe('round_end');
+    expect(projected.outcome).toBeUndefined();
     expect(projected.round).toBe(3);
     expect(projected.logs.some((entry) => entry.type === 'battle_resolved')).toBe(true);
     expect(projected.battleBreakdowns.some((battle) =>

@@ -768,6 +768,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       label: entry.label,
     })),
     finalRanking: projected.finalRanking,
+    ...(projected.outcome ? { outcome: projected.outcome } : {}),
     backendRejection: projected.rejection ? `${projected.rejection.code}: ${projected.rejection.message}` : undefined,
     optionalAbilityReminder: currentView.responseWindow
       ? `存在响应窗口：${currentView.responseWindow.id}`

@@ -228,11 +228,11 @@ describe('P3-B16 battle-loss servant reveal', () => {
     expect(session.state.abilityRuntime!.events.some((entry) => entry.type === 'servant_package_revealed' && entry.playerId === 'p3')).toBe(false);
   });
 
-  it('preserves frozen loss-trigger eligibility when scoring eliminates Achilles and does not duplicate on re-entry', () => {
+  it('preserves frozen loss-trigger eligibility when standard scoring keeps low-military Achilles active and does not duplicate on re-entry', () => {
     const session = productionSession();
     session.state.players.find((player) => player.id === 'p3')!.militaryResult = -7;
     resolveProductionBattle(session);
-    expect(session.state.players.find((player) => player.id === 'p3')?.status).toBe('eliminated');
+    expect(session.state.players.find((player) => player.id === 'p3')?.status).toBe('active');
     expect(session.state.abilityRuntime!.revealedServants).toContain('p3');
     const count = () => session.state.abilityRuntime!.events.filter((entry) => entry.type === 'servant_package_revealed' && entry.playerId === 'p3').length;
     expect(count()).toBe(1);

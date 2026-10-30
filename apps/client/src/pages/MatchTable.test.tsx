@@ -913,3 +913,13 @@ describe('MatchTable', () => {
     }));
   });
 });
+
+
+it('shows the authoritative standard outcome through the actual local Session projection, including overflow', () => {
+ const session=createSevenAuthoringMatchSession(); session.state.round={roundNumber:11,activePhase:'round_end',prioritySeat:1};
+ session.state.players.forEach(p=>p.vp=10); session.runUntilHumanInputOrRoundEnd();
+ const projected=projectSevenAuthoringSessionFixture(session);
+ expect(projected.outcome?.kind).toBe('grail_overflow');
+ render(<MatchTable fixture={projected} />);
+ expect(screen.getByLabelText('正式对局结果')).toHaveTextContent('圣杯溢出：全员失败');
+});

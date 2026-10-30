@@ -1,7 +1,7 @@
 {
   "schemaVersion": "fd-feature-delivery-task-v1",
   "taskId": "DR-P01",
-  "status": "VERIFIED_SCOPED_PENDING_FINAL_HEAD_CI",
+  "status": "RELEASED",
   "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
   "deliveryRole": "Playable Game Delivery Lead",
   "authority": "Latest user instruction: prioritize DR-P01 M1 as sole shared Runtime writer; suspend CB-C02; exclude loader.ts",
@@ -165,5 +165,9 @@
     },
     "nativeScope": "Large SHA only; portable browser fallback and all HMAC unchanged; no payload, seal, restore, timeout or skip changes",
     "producerReceipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/producer-receipts.json"
-  }
+  },
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
+  "releasePublishedSha": "6eb58edc01b84a85ac783f0b0a9f3206703dff16"
 }

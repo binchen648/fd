@@ -1547,7 +1547,8 @@ describe('complex master and session regressions', () => {
   it('keeps event and situation modifier sources in three-round MatchSession battle breakdown logs', () => {
     const session = rules.createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
 
-    expect(session.runFullMatch({ maxRounds: 3 })).toBe('match_complete');
+    expect(session.runFullMatch({ maxRounds: 3 })).toBe('round_end');
+    expect(session.projectToClientState('p1').outcome).toBeUndefined();
     const projection = session.projectToClientState('p1');
     expect(projection.logs.some((entry) => entry.type === 'battle_resolved')).toBe(true);
     expect(projection.battleBreakdowns.some((battle) =>

@@ -1,3 +1,5 @@
+import type { MatchClientState } from '@fd/rules/match-session';
+type StandardMatchOutcome = NonNullable<MatchClientState['outcome']>;
 import compiledLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import compiledFixture from '../../../../data/generated/fd-playtest-v1.fixture.json';
 import type { AbilityCommand } from '@fd/rules/ability-client';
@@ -189,6 +191,7 @@ export interface PlaytestClientFixture {
   zones?: ClientZoneGroup[];
   logs?: Array<{ id: string; type: string; message: string }>;
   replay?: ClientReplayCheckpoint[];
+  outcome?: StandardMatchOutcome;
   finalRanking?: Array<{ playerId: string; seat: number; vp: number; militaryResult: number; rank: number }>;
   backendRejection?: string;
   nonPriorityView?: {
