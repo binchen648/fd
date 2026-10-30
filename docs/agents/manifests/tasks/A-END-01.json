@@ -36,10 +36,10 @@
     "packages/rules/tests/regression/battle-loss-servant-reveal.test.ts",
     "packages/rules/tests/regression/battle-loss-resource-trigger.test.ts",
     "packages/rules/tests/regression/complex-skills-regression.test.ts",
-    "docs/reviews/phase3/A-END-01-review-attestation.json"
+    "docs/reviews/phase3/A-END-01-review-attestation.json",
+    "packages/rules/src/ability/interpreter.ts"
   ],
   "ForbiddenFiles": [
-    "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/loader.ts",
     "data/authoring/**",
     "data/phase3/**",
@@ -73,5 +73,14 @@
     "fullCi": "PENDING_FINAL_HEAD",
     "mergeRequiresUserConsent": true,
     "synchronizationSha": "3a26450ae714ea985403013e6c0815de338bec9d"
+  },
+  "queryPerformanceAddendum": {
+    "issuedBy": "Global Technical Lead /root within user-authorized A-END-01 completion; same sole writer, no transfer",
+    "base": "5b35a6a53c7f791112657314bcc9ec98341b7333",
+    "path": "packages/rules/src/ability/interpreter.ts",
+    "scope": "Only early exclusion of off-board source zones in staticWhileActiveSkillUseForbidRules, identical to existing canonical isActiveCardSource predicate. No condition/phase/target/cost/runtime permission semantics altered. No query cache.",
+    "evidence": "Node20 current focused8152ms, prior remote12663ms; profile staticWhileActiveSkillUseForbidRules dominant remaining query overhead",
+    "forbidden": "Any other interpreter delta, loader, B capability implementation or full scope reuse",
+    "reviewRequired": true
   }
 }

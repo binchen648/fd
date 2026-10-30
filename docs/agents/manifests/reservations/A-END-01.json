@@ -36,10 +36,10 @@
     "packages/rules/tests/regression/battle-loss-servant-reveal.test.ts",
     "packages/rules/tests/regression/battle-loss-resource-trigger.test.ts",
     "packages/rules/tests/regression/complex-skills-regression.test.ts",
-    "docs/reviews/phase3/A-END-01-review-attestation.json"
+    "docs/reviews/phase3/A-END-01-review-attestation.json",
+    "packages/rules/src/ability/interpreter.ts"
   ],
   "ForbiddenFiles": [
-    "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/loader.ts",
     "data/authoring/**",
     "data/phase3/**",
@@ -65,5 +65,14 @@
   "migrationCreditDelta": 0,
   "notes": "Legacy core simulation may retain explicitly named military policy; standard product cannot route there. No new generic ability primitive or waiver inferred.",
   "regressionScopeAddendum": "Three existing regression tests contain superseded military-elimination or truncated-simulation terminal assertions; preserve every loss trigger/resource/reveal/duplicate check, update only replaced canonical expectations after actual fullCI evidence.",
-  "integrationMetadataScope": "Permit this exact review attestation only; no added runtime path or agent role"
+  "integrationMetadataScope": "Permit this exact review attestation only; no added runtime path or agent role",
+  "queryPerformanceAddendum": {
+    "issuedBy": "Global Technical Lead /root within user-authorized A-END-01 completion; same sole writer, no transfer",
+    "base": "5b35a6a53c7f791112657314bcc9ec98341b7333",
+    "path": "packages/rules/src/ability/interpreter.ts",
+    "scope": "Only early exclusion of off-board source zones in staticWhileActiveSkillUseForbidRules, identical to existing canonical isActiveCardSource predicate. No condition/phase/target/cost/runtime permission semantics altered. No query cache.",
+    "evidence": "Node20 current focused8152ms, prior remote12663ms; profile staticWhileActiveSkillUseForbidRules dominant remaining query overhead",
+    "forbidden": "Any other interpreter delta, loader, B capability implementation or full scope reuse",
+    "reviewRequired": true
+  }
 }
