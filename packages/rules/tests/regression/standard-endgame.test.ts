@@ -145,3 +145,10 @@ it('suspends the actual round-end trigger, signs/restores its pending window, th
  expect(restored.state.players[4]!.status).toBe('active');
  expect(restored.logs.filter(l=>l.type==='standard_round_end_resolved'&&l.round===8)).toHaveLength(1);
 });
+
+it('returns the same terminal outcome on repeated resume without triggering the loop guard', () => {
+ const session=ending(11);session.runUntilHumanInputOrRoundEnd();
+ const before=session.serializeSession();
+ for(let i=0;i<8;i++)expect(session.runUntilHumanInputOrRoundEnd()).toBe('match_complete');
+ expect(session.serializeSession()).toEqual(before);
+});

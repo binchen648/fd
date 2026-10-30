@@ -1968,6 +1968,7 @@ export class MatchSession {
   }
 
   runUntilHumanInputOrRoundEnd(): MatchPauseReason {
+    if (this.standardOutcome()) { this.stopReason = 'match_complete'; return 'match_complete'; }
     this.stopReason = undefined;
     for (let guard = 0; guard < 300; guard++) {
       const fingerprint = actionFingerprint(this.state);
