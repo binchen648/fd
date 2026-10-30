@@ -127,7 +127,8 @@
     "fullCi": "PENDING_CORRECTED_ACTUAL_HEAD",
     "runtimeSourceUnchangedSinceReview": true,
     "assemblyRole": "Global Technical Lead / Integration Owner",
-    "mergeRequiresUserConsent": true
+    "mergeRequiresUserConsent": true,
+    "synchronizationSha": "e9e32ecd43073e05446a257e63d5f61cb6e8cfcf"
   },
   "postReviewFixes": [
     "F1 unaffordable mandatory hand batch maximum legal affordable subset under user rule clarification",
