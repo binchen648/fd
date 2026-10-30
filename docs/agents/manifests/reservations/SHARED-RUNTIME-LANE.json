@@ -1,71 +1,65 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-30T11:29:40.649965+00:00",
+  "updatedAt": "2026-10-30T11:30:39.987962+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "This published Planner registry and task manifests supersede earlier local/frozen reservation snapshots; frozen evidence is not writer permission",
-  "activeRuntimeTask": null,
-  "owner": null,
-  "binding": null,
-  "requiredBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "precedence": "This current user-authorized successor registry supersedes older pinned Planner grants; P01 fully released, CB-C02 suspended, interpreter/loader not granted",
+  "activeRuntimeTask": "A-END-01",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "binding": {
+    "branch": "codex/a-end-01-seven-player-20261030",
+    "absoluteWorktree": "D:\\fd-validation\\dr-p01-m1-integration-20261030"
+  },
+  "requiredBase": "48eef963fbe66ed652188ca40d56deced4899bd0",
   "resources": [
     {
-      "path": "apps/client/src/pages/MatchTable.tsx",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
+      "path": "packages/rules/src/core/scoring-resolver.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
     },
     {
-      "path": "apps/client/src/state/playtest-fixture-loader.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
+      "path": "packages/rules/src/core/elimination-resolver.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
     },
     {
-      "path": "apps/client/src/state/remote-room-fixture.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
+      "path": "packages/rules/src/core/game-loop.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
     },
     {
-      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
-    },
-    {
-      "path": "packages/rules/src/ability/interpreter.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
-    },
-    {
-      "path": "packages/rules/src/ability/types.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
-    },
-    {
-      "path": "packages/rules/src/core/combat-resolver.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
-    },
-    {
-      "path": "packages/rules/src/core/movement.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
+      "path": "packages/rules/src/schema/game.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
     },
     {
       "path": "packages/rules/src/match-session.ts",
-      "state": "RELEASED",
-      "taskId": "DR-P01",
-      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
+      "state": "GRANTED",
+      "taskId": "A-END-01"
+    },
+    {
+      "path": "apps/client/src/state/playtest-fixture-loader.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
+    },
+    {
+      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
+    },
+    {
+      "path": "apps/client/src/state/remote-room-fixture.ts",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
+    },
+    {
+      "path": "apps/client/src/pages/MatchTable.tsx",
+      "state": "GRANTED",
+      "taskId": "A-END-01"
     }
   ],
   "loader": {
@@ -87,6 +81,10 @@
       "deliveryState": "PARKED_BLOCKED",
       "frozenCandidate": "2d386ddd7d4a0d1d4d51d44a3ad0905668e12f8e",
       "reservation": "docs/agents/manifests/reservations/CB-C02.json"
+    },
+    "A-END-01": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-END-01.json"
     }
   },
   "historicalDirtyInterpreter": {
