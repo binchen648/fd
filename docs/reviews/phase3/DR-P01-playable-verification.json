@@ -1,0 +1,762 @@
+{
+  "schemaVersion": "fd-independent-playable-verification-v1",
+  "taskId": "DR-P01",
+  "reviewer": "Independent Playable Verifier /root/dr_p01_risk_review",
+  "reviewerRole": "Independent Playable Verifier",
+  "githubReviewer": null,
+  "reviewThread": null,
+  "reviewedAt": "2026-10-30T05:16:00.720105+00:00",
+  "candidateSha": "943e100ea7248e11123fac06575661ff5344c90c",
+  "reviewedSha": "943e100ea7248e11123fac06575661ff5344c90c",
+  "baseSha": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "controlParentSha": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "technicalVerdict": "PASS",
+  "acceptanceScope": "DR-P01 complete ordinary action turn on M1 plus seven-seat action-to-battle path and adjacent authority/privacy/recovery risks",
+  "overallReadiness": "PENDING_ACTUAL_GITHUB_BINDING_AND_FINAL_FULL_CI",
+  "openBlockingFindings": [],
+  "authority": {
+    "publishedPlannerSha": "f674c00a065878f2fd454ed3820d87d322058114",
+    "lane": "DR-P01_ONLY_SHARED_RUNTIME_WRITER",
+    "taskManifest": "docs/agents/manifests/tasks/DR-P01.json",
+    "taskManifestBlob": "81769ca7c5bd435fa82e0e4a5ff0211c53f30484",
+    "taskManifestSha256": "5a47a85fc3b6f307c6b0adb229014e57bb843ccde900afa02e16bf036376e469",
+    "verifierOutputOwnerBound": true,
+    "sourceWritesAuthorized": false,
+    "onlyAuthorizedOutput": "docs/reviews/phase3/DR-P01-playable-verification.json",
+    "promotionAuthorized": false,
+    "migrationCreditDelta": 0,
+    "coverageCreditDelta": 0
+  },
+  "reviewIsolation": {
+    "worktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
+    "requiredReviewCommitParent": "943e100ea7248e11123fac06575661ff5344c90c",
+    "implementationModifiedByReviewer": false,
+    "oldEvidenceModified": false,
+    "cleanBeforeReviewOutput": true,
+    "noPrPushMergeByReviewer": true,
+    "heavyTestsExecutedByReviewer": false
+  },
+  "sourceAndScope": {
+    "reviewedAgainstExactM1": true,
+    "changedPathsFromControl": [
+      "apps/client/src/pages/MatchTable.test.tsx",
+      "apps/client/src/pages/MatchTable.tsx",
+      "apps/client/src/state/playtest-fixture-loader.ts",
+      "apps/client/src/state/remote-room-fixture.ts",
+      "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+      "apps/server/src/match-server.test.ts",
+      "artifacts/dr-p01-m1-validation.json",
+      "docs/agents/manifests/tasks/DR-P01.json",
+      "docs/reports/2026-10-30-dr-p01-m1-validation.md",
+      "e2e/fd-action-turn-delivery.spec.ts",
+      "e2e/fd-time-alter-core-primitive.spec.ts",
+      "e2e/support/start-action-turn-fixture-server.ts",
+      "packages/rules/src/__tests__/match-session-regressions.test.ts",
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/ability/types.ts",
+      "packages/rules/src/core/combat-resolver.ts",
+      "packages/rules/src/core/movement.ts",
+      "packages/rules/src/match-session.ts",
+      "packages/rules/tests/match-room-hub.test.ts",
+      "packages/rules/tests/match-session.test.ts",
+      "packages/rules/tests/regression/action-turn-delivery.test.ts",
+      "packages/rules/tests/regression/card-action-close.test.ts",
+      "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+      "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+      "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+      "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+      "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+      "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+      "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+      "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+      "packages/rules/tests/regression/trigger-resource-runtime.test.ts"
+    ],
+    "implementationSourceAndTestCount": 28,
+    "implementationPathCountIncludingTaskAndDeliveryOutputs": 31,
+    "allPathsAuthorized": true,
+    "sourceObjects": [
+      {
+        "path": "apps/client/src/pages/MatchTable.tsx",
+        "sha256": "cef3d4ebacb3d3f43b19c928ece9085d8e6ec9cc8802b7053d41d413678d6aa8",
+        "candidateBlob": "05ba7172dd63a2e47182488a5a3ea01bebe9c1fe",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "apps/client/src/state/playtest-fixture-loader.ts",
+        "sha256": "58bec018e58ef9742807e80f214c01fd92e3ae8b6d6260286ccb997920fa421d",
+        "candidateBlob": "ffea9dfbe65abd048d9501dba0689992de365df2",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "apps/client/src/state/remote-room-fixture.ts",
+        "sha256": "8e274d34dd2b46a0aac9811beb31a2b74936c18b79fcaa4d917a733669dfe078",
+        "candidateBlob": "0930ad5f3f9c94d1f29b7f6dbdfa56d56f757fcb",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+        "sha256": "8af9e6d301d5abfb9f76341008db880274df574b71f2b98657c014e62c112feb",
+        "candidateBlob": "06080be85398f32e45da9631479ffb29131b3e64",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "sha256": "f768f121781fd5a3d4233da98bc687250c7a85cd5a636086abad800d4895c4fc",
+        "candidateBlob": "2f1eb21d9773a44cb8b10dcd5be0fae9d92102fe",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/ability/types.ts",
+        "sha256": "4afb7b2a2a91d360ce9286331382c89d7f288c18c76128d7928b36fe83e61b98",
+        "candidateBlob": "93fa7a7d4941b3f216d79101155e474f166e2a7e",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/core/combat-resolver.ts",
+        "sha256": "ae29b7c0a92873a86fd444f7c5f882e7a4fde4b6901abf5118657d5112aeb119",
+        "candidateBlob": "0f6cc2bbf6a0e486b7079504a32280237666b3e0",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/core/movement.ts",
+        "sha256": "d2a6fe60961fbabbdb3b25548282d8ac4e134a72f2e797a3b4edbcdba07efdbb",
+        "candidateBlob": "4e1c47dce85b8f64d96805db4170e4c6a5873cc3",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/match-session.ts",
+        "sha256": "246879410007e0ddf547a5f31a140adb7db7b5683fa7c46bc7d7fe7dec171f83",
+        "candidateBlob": "cd4cc0df9a411ce21273a978e4511ad1b973d410",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "apps/client/src/pages/MatchTable.test.tsx",
+        "sha256": "4030cff432149d6921230fa6f2f5c03bacd04c2022087c17d4397499ada9d54d",
+        "candidateBlob": "1d916bcec785e7022298a74f6702e712fe676699",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "apps/server/src/match-server.test.ts",
+        "sha256": "69352c0cfcd631be9c746fa0aed3558c46a4a0ede13828ac2e6acb6cce0c7902",
+        "candidateBlob": "03d4bd4a52dffd5735d1282827d95aa2377ee092",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "e2e/fd-action-turn-delivery.spec.ts",
+        "sha256": "ad06cfcdac78b365c871f706b3511d6df33a4e072ea7b7868011c21bdc7f8023",
+        "candidateBlob": "9298817a33bda2c096002b11601260d64a215fb9",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "e2e/fd-time-alter-core-primitive.spec.ts",
+        "sha256": "0964f78a74e7a740219debe8fa1a6272ef36a5f72d72d86b868b39dd03140970",
+        "candidateBlob": "00a18cd5be71dbef0ca5dd9d61cff8d333275085",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "e2e/support/start-action-turn-fixture-server.ts",
+        "sha256": "dca4e2fc612a81e721548505061aecffcf7e14f0f9e391258a9acc51acd9cc84",
+        "candidateBlob": "dc4c95341b8dfc18246a85be20b00a3a4d23dd26",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+        "sha256": "74aab702b8f6c04f3e2288626b1926e756b06ecb087428f42528900919ded79e",
+        "candidateBlob": "48bdb215b0be2fc402c1c20ae4a09fe299a45caa",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/match-room-hub.test.ts",
+        "sha256": "c6f44fbef0c3f5ea172682fabd46f354daaab9c72e3907ec572aa577cccfc40a",
+        "candidateBlob": "9942ee95a36efcffa72a41c8a6b06e000928c786",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/match-session.test.ts",
+        "sha256": "90cdd9348f053ffde0411563f0a35443db2a2d429387e658a0ecee6fda566bac",
+        "candidateBlob": "9b75e627979cc011347460669a2dce766d329a1c",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/action-turn-delivery.test.ts",
+        "sha256": "602e1c7f75c591f949fa3b8205d4f143ec9630caf5b901fb5e6046ac6fd0448d",
+        "candidateBlob": "18d49c0e0c9ed953cf61d738480710ff460ff5b2",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/card-action-close.test.ts",
+        "sha256": "3fd0bf9731ce01a88ba4909137578004ccbb79ab0844862a40bfb041f6a0c494",
+        "candidateBlob": "fd93eac0a36d00b63cfb3f6b44d6ad3d90e7f9fc",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+        "sha256": "1d86aec2a2ea3bc5909c99296a6ed84322e1508153b3e6ad383bc61a70c82a9e",
+        "candidateBlob": "61a7430e7516cec409daa4811c7d7cef4a9221c3",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+        "sha256": "2c63c86092235a2384b14b69548e239b28a6c4b9cc3f2cd6aa5dce888563e0fa",
+        "candidateBlob": "dc069ad61ff1c6493b912a9a084a04fb8588e5c9",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+        "sha256": "cc56b99208d922f0047d45b07155b1749d0e5c39629f9c758142036002d08b1b",
+        "candidateBlob": "91e6a02ffc305603878e8b8cd4413a6c4db742e3",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+        "sha256": "af0cf8b3d12d3d4dff0c7cde5369e0307bbcab750c21973e3c57402842c76ff9",
+        "candidateBlob": "5a9d9006a2b7249bd3a6886c62b3323aeaea10da",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+        "sha256": "d5d7a9f694a174be10d084fd1e32e5db75de4d96419926c7fdc37a47109e051c",
+        "candidateBlob": "b9e2bc28b11a05460748d1c9cd9b35604b66bae8",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+        "sha256": "465e5ca12c36ec2acc90dce8200b75c0706d43148d6a71ee43d3b46a6c505d22",
+        "candidateBlob": "ba591c411c851e71b0a975a12992da332d0a72a0",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+        "sha256": "5bcdb2233645ccaa34da730e4b26fa5b7286b0a939e26f0acda331f0bd630995",
+        "candidateBlob": "39c4e935b9aea87e4b695b7f93cc21920f6ccb86",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+        "sha256": "bad7c9469f8126b9f47c134b6f7698d51d9a26d4533f85092f107163e8693f1f",
+        "candidateBlob": "8ec3a2f063cf06e1d729d0e6628746b4e794f11e",
+        "candidateBytesEqualProducerBytes": true
+      },
+      {
+        "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+        "sha256": "6a7233d7fa00bfa77bf005f8843e2e6230206fe4a9c0f35b72ac10c8e861aeb2",
+        "candidateBlob": "49668bb3630e64e4f8ca1165334fc48e91a7dffe",
+        "candidateBytesEqualProducerBytes": true
+      }
+    ],
+    "loaderPath": "packages/rules/src/ability/loader.ts",
+    "loaderBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+    "loaderUnchangedFromM1": true,
+    "cbC02HelperAbsent": true,
+    "authoringGeneratedUnchangedFromM1": true,
+    "ancestry": [
+      {
+        "sha": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+        "isAncestor": true,
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+          "943e100ea7248e11123fac06575661ff5344c90c"
+        ],
+        "exitCode": 0
+      },
+      {
+        "sha": "3ec55814b8aca84416fca46dfaf7032a7f115094",
+        "isAncestor": false,
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "3ec55814b8aca84416fca46dfaf7032a7f115094",
+          "943e100ea7248e11123fac06575661ff5344c90c"
+        ],
+        "exitCode": 1
+      },
+      {
+        "sha": "2c50256280ef0ebdb1c1366cb09984530fd868ff",
+        "isAncestor": false,
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "2c50256280ef0ebdb1c1366cb09984530fd868ff",
+          "943e100ea7248e11123fac06575661ff5344c90c"
+        ],
+        "exitCode": 1
+      },
+      {
+        "sha": "2d386ddd7d4a0d1d4d51d44a3ad0905668e12f8e",
+        "isAncestor": false,
+        "command": [
+          "git",
+          "merge-base",
+          "--is-ancestor",
+          "2d386ddd7d4a0d1d4d51d44a3ad0905668e12f8e",
+          "943e100ea7248e11123fac06575661ff5344c90c"
+        ],
+        "exitCode": 1
+      }
+    ],
+    "productionSourceBytesSameAsReadOnlyHistoricalReference": true,
+    "historicalAcceptanceInherited": false,
+    "remoteRefsObserved": [
+      "f674c00a065878f2fd454ed3820d87d322058114\trefs/heads/codex/planner-post-dr-p01-recovery-20261030",
+      "7724bff0d849e13e5b6725c5b05f76dc6c03bce4\trefs/heads/main"
+    ]
+  },
+  "originalFailureAndClosures": [
+    {
+      "id": "IR-01",
+      "severity": "P1",
+      "original": "Hidden Shinto event identity/reward leaked through logs",
+      "currentEvidence": "privacy-batch-m1-943e100e.json",
+      "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
+    },
+    {
+      "id": "IR-02",
+      "severity": "P1",
+      "original": "Ordinary insufficient mana disclosed unplayed hand",
+      "currentEvidence": "privacy-batch-m1-943e100e.json",
+      "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
+    },
+    {
+      "id": "IR-03",
+      "severity": "P2",
+      "original": "Partial attribute prohibition bypassed by voluntary face-down play",
+      "currentEvidence": "privacy-batch-m1-943e100e.json",
+      "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
+    },
+    {
+      "id": "IR-04",
+      "severity": "P2",
+      "original": "Postscoring response restore reopened ended battle ability",
+      "currentEvidence": "battle-continuation-m1-943e100e.json",
+      "status": "CLOSED_EXACT_CANDIDATE_REPROBE"
+    }
+  ],
+  "independentValidation": {
+    "actualCandidateSha": "943e100ea7248e11123fac06575661ff5344c90c",
+    "runs": [
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/privacy-batch-m1-943e100e.mts"
+        ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "943e100ea7248e11123fac06575661ff5344c90c",
+        "startedAt": "2026-10-30T05:13:02.939945+00:00",
+        "endedAt": "2026-10-30T05:13:03.878697+00:00",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 7,
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/privacy-batch-m1-943e100e.json",
+        "scriptSha256": "09daeec49210d6a772e9484751742bbec6b4cfb73dfbab6a25cd5c3b0f54531b",
+        "receiptSha256": "1065080dd245ce779020878334129bada1311861eff2ef2c70eabd87b65be5f0",
+        "checkNames": [
+          "hidden-event-before-reveal",
+          "hidden-event-before-reveal",
+          "explicit-view-permission",
+          "event-authorized-public-after-action-start",
+          "normal-zero-mana-never-reveals-unplayed-hand",
+          "partial-attribute-prohibition-cannot-be-bypassed",
+          "all-hand-forbidden-explicit-fallback-remains-playable-and-public"
+        ]
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/battle-continuation-m1-943e100e.mts"
+        ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "943e100ea7248e11123fac06575661ff5344c90c",
+        "startedAt": "2026-10-30T05:13:03.895299+00:00",
+        "endedAt": "2026-10-30T05:13:09.758820+00:00",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 6,
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/battle-continuation-m1-943e100e.json",
+        "scriptSha256": "119655e7b706409c253e71ef1b5663d63f421df5abcaf26554e24168a012ee28",
+        "receiptSha256": "a9b8bc0eca0a7801da96f047c2d151529109ce17aa17dfbcae22f51eeca1c623",
+        "checkNames": [
+          "all-seven-action-turns-before-battle-seat1",
+          "seven-battle-windows-before-real-postscore-response",
+          "signature-rejects-marker-continuation-and-seal-tampering",
+          "durable-response-resumes-settlement-without-late-combat-action-or-double-score",
+          "replay-preserves-settlement-barrier-and-single-scoring",
+          "repeated-run-keeps-history-and-vp-stable"
+        ]
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/ws-boundaries-m1-943e100e.mts"
+        ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "943e100ea7248e11123fac06575661ff5344c90c",
+        "startedAt": "2026-10-30T05:13:09.774321+00:00",
+        "endedAt": "2026-10-30T05:13:11.137473+00:00",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 8,
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/ws-boundaries-m1-943e100e.json",
+        "scriptSha256": "647111e45b9057e27b7362ae7c703722f35183f8a8c23102e652caae54a1e6ae",
+        "receiptSha256": "ca0ea5fcb43f81dc2c4e1c7e5709a49a069c885cef189e24d31f401eaf80d767",
+        "checkNames": [
+          "ws-opponent-and-spectator-hide-p1-hand-identities",
+          "ws-early-play-wrong-priority-malformed-face-atomic",
+          "ws-forged-client-mana-cost-ignored-server-charges-five",
+          "ws-stale-replay-and-repeat-movement-atomic",
+          "ws-unfilled-confirm-and-duplicate-card-preserve-staging",
+          "ws-complete-synchronous-batch-clears-staging-and-consumes-normal-quota",
+          "ws-second-normal-batch-rejected-atomically",
+          "ws-reconnect-preserves-both-completed-normal-steps"
+        ]
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/adjacent-runtime-m1-943e100e.mts"
+        ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "943e100ea7248e11123fac06575661ff5344c90c",
+        "startedAt": "2026-10-30T05:13:11.153583+00:00",
+        "endedAt": "2026-10-30T05:13:12.221592+00:00",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 4,
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/adjacent-runtime-m1-943e100e.json",
+        "scriptSha256": "8d50257654c40e68484430176ea0f10c5c38e34dc244b6a5f5c97ce9f66d7bcc",
+        "receiptSha256": "63b60fe816b169563861c5e1b0c883936ba884c6a3998c6f84f80f633f5f4720",
+        "checkNames": [
+          "drake-trigger-draw-replaces-state-without-stale-stage-lock",
+          "time-alter-effect-play-retains-ordinary-move-and-play-quotas",
+          "conversion-magic-still-discards-pays-exactly-and-preserves-deploy-continuation",
+          "completed-play-public-power-projections-do-not-mutate-authority"
+        ]
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/dynamic-revalidation-m1-943e100e.mts"
+        ],
+        "nodeExecutable": "D:\\nodejs\\node.EXE",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "943e100ea7248e11123fac06575661ff5344c90c",
+        "startedAt": "2026-10-30T05:13:12.236395+00:00",
+        "endedAt": "2026-10-30T05:13:13.743538+00:00",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 8,
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/dynamic-revalidation-m1-943e100e.json",
+        "scriptSha256": "dd8ccb3b974bbbb1f550651f23c62c4943bb1783e7c28517820133f39ea3309a",
+        "receiptSha256": "3b51c7d291d6f23acaec12e8e28363bd81d86a77c880b076f7dea97a52e10bc3",
+        "checkNames": [
+          "read-local-plan-revalidates-aggregate-cost",
+          "read-local-plan-revalidates-skill-zone-gate",
+          "read-local-plan-revalidates-attribute-forbid",
+          "read-local-plan-revalidates-owner-controller-drift",
+          "read-local-plan-revalidates-source-zone-drift",
+          "read-local-plan-revalidates-priority-change",
+          "read-local-plan-revalidates-phase-change",
+          "movement-capacity-revalidated-after-offer"
+        ]
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/m1-provenance-permission-943e100e.mts"
+        ],
+        "nodeExecutable": "D:/nodejs/node.exe",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "sourceHead": "943e100ea7248e11123fac06575661ff5344c90c",
+        "exitCode": 0,
+        "result": "PASS",
+        "assertionGroups": 5,
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/independent/m1-provenance-permission-943e100e.json",
+        "scriptSha256": "957711b005ccd4e706eecfb6e367b813d6de6954c1d4b2f0bf989f67bfae153a",
+        "receiptSha256": "f5324e102f3c05b39ed0e0a048688f6e6bb07267471915bccfdd1fe801457cdf",
+        "checkNames": [
+          "m1-is-ancestor-while-unaccepted-a0-old-dr-cb-are-not",
+          "m1-loader-and-content-unchanged-no-cb-permission-helper",
+          "no-unaccepted-controller-wide-low-mana-grant-p7",
+          "no-unaccepted-controller-wide-low-mana-grant-p1",
+          "eight-mana-own-cards-work-and-pay-five-but-cross-controller-card-rejects"
+        ]
+      }
+    ],
+    "passingAssertionGroups": 38,
+    "countMeaning": "38 bounded assertion groups across6 independent scripts, not38 Vitest tests or coverage credit",
+    "fullCiRun": false
+  },
+  "producerEvidenceReviewed": {
+    "implementationPacket": "artifacts/dr-p01-m1-validation.json",
+    "packetSha256": "bfc5bb91d384aab17e743d7dca734b7f03d9e4e3622c6dc9941c1a3d5d55bbfe",
+    "report": "docs/reports/2026-10-30-dr-p01-m1-validation.md",
+    "reportSha256": "d163eb773e36f34687948d7602a9df4f5a33d224d4c2ec5b433b2badeec47add",
+    "red": {
+      "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/regression/action-turn-delivery.test.ts -t requires-movement --maxWorkers=2",
+      "sourceHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+      "sourceIncludesOnlyNewTest": true,
+      "startedAt": "2026-10-30T13:05:56.2592747+08:00",
+      "endedAt": "2026-10-30T13:05:58.3204627+08:00",
+      "exitCode": 1,
+      "log": "D:/fd-validation/dr-p01-m1-evidence-20261030/action-turn-real-session-red.log",
+      "exactArgs": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "packages/rules/tests/regression/action-turn-delivery.test.ts",
+        "-t",
+        "requires movement or skip before a simultaneous regular attack",
+        "--maxWorkers=2"
+      ],
+      "expectedFailure": "Expected legalActions to contain skip_normal_move; current M1 lacked it",
+      "logSha256": "b45c08e69e077df04b0f2dd9b09bf45d5fb53e93961dbc521a140928847e234d",
+      "actuallyFailedTests": 1,
+      "filteredTests": 24
+    },
+    "checks": [
+      {
+        "id": "typecheck",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"typecheck\"",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "executedBy": "Feature Delivery Lead",
+        "exitCode": 0,
+        "actualExecutionHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+        "candidateContentBinding": "Exact28 source/test SHA256 equal committed candidate; precommit run is not claimed as execution at later SHA",
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/typecheck-receipt.json",
+        "receiptSha256": "9f4ef494c2b0ca4280729467f5501bc30220b52071a4b0a0cd1f1bf34e58af61",
+        "log": "D:\\fd-validation\\dr-p01-m1-evidence-20261030\\typecheck.log",
+        "logSha256": "fe697f3caea6aa3017ce001f09cac853c9f311a09a2c043dc56f82c15f02d1d4"
+      },
+      {
+        "id": "focused",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/vitest/vitest.mjs\" \"run\" \"packages/rules/src/__tests__/match-session-regressions.test.ts\" \"packages/rules/tests/match-room-hub.test.ts\" \"packages/rules/tests/match-session.test.ts\" \"packages/rules/tests/regression/action-turn-delivery.test.ts\" \"packages/rules/tests/regression/card-action-close.test.ts\" \"packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts\" \"packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts\" \"packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts\" \"packages/rules/tests/regression/golden-card-content-pipeline.test.ts\" \"packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts\" \"packages/rules/tests/regression/interaction-private-optional-runtime.test.ts\" \"packages/rules/tests/regression/interaction-room-boundary.test.ts\" \"packages/rules/tests/regression/trigger-resource-runtime.test.ts\" \"packages/rules/tests/regression/fb2-required-additional-play.test.ts\" \"--maxWorkers=2\"",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "executedBy": "Feature Delivery Lead",
+        "exitCode": 0,
+        "actualExecutionHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+        "candidateContentBinding": "Exact28 source/test SHA256 equal committed candidate; precommit run is not claimed as execution at later SHA",
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/focused-receipt.json",
+        "receiptSha256": "dddfe775dbe9b75efa1d3098a483afe2aac96056ce1ac3c54401ad700b50fd5d",
+        "log": "D:\\fd-validation\\dr-p01-m1-evidence-20261030\\focused.log",
+        "logSha256": "fc0b9d8e0f6b5c736de6405a47aa1279fdc8aa4d590ed4bf43fd45a3f3543701"
+      },
+      {
+        "id": "server",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\"",
+        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\server",
+        "executedBy": "Feature Delivery Lead",
+        "exitCode": 0,
+        "actualExecutionHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+        "candidateContentBinding": "Exact28 source/test SHA256 equal committed candidate; precommit run is not claimed as execution at later SHA",
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/server-receipt.json",
+        "receiptSha256": "8fea45ad5120e7fc7516a9f7ae4e4677f4144be3297ab1d4a69073c1b8b99619",
+        "log": "D:\\fd-validation\\dr-p01-m1-evidence-20261030\\server.log",
+        "logSha256": "2064f3a5855cff4a3c13789349fcce746b6f9108a9901caf3a3fe46902b28f4d"
+      },
+      {
+        "id": "client",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:\\\\fd-validation\\\\dr-p01-m1-integration-20261030\\\\node_modules\\\\vitest\\\\vitest.mjs\" \"run\" \"src/App.test.tsx\" \"src/pages/MatchTable.test.tsx\" \"src/components/ServantDeckSummary.test.tsx\" \"src/components/CardInspectionOverlay.test.tsx\" \"src/state/engine-bridge.test.ts\" \"src/state/content-library-loader.test.ts\"",
+        "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030\\apps\\client",
+        "executedBy": "Feature Delivery Lead",
+        "exitCode": 0,
+        "actualExecutionHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+        "candidateContentBinding": "Exact28 source/test SHA256 equal committed candidate; precommit run is not claimed as execution at later SHA",
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/client-receipt.json",
+        "receiptSha256": "a41e44fc065388ee8d86a6cc36d4f9956157e31f08079d79e8849029220a038a",
+        "log": "D:\\fd-validation\\dr-p01-m1-evidence-20261030\\client.log",
+        "logSha256": "7288476fd1b5f191e613450798af90c6832316f70c23d90afee3c267469cd213"
+      },
+      {
+        "id": "build",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"D:/nodejs/node_modules/npm/bin/npm-cli.js\" \"run\" \"build\" \"--workspace\" \"@fd/client\"",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "executedBy": "Feature Delivery Lead",
+        "exitCode": 0,
+        "actualExecutionHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+        "candidateContentBinding": "Exact28 source/test SHA256 equal committed candidate; precommit run is not claimed as execution at later SHA",
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/build-receipt.json",
+        "receiptSha256": "d999c75f9e05935f3fcbcc1b6d463cc1b9fc016d59a862dba8790cd49202a1c3",
+        "log": "D:\\fd-validation\\dr-p01-m1-evidence-20261030\\build.log",
+        "logSha256": "05b6627c279d3f1d7e0fd4779d2c5367b7fe3fe2cfde97c3f9697a7bd852cc98"
+      },
+      {
+        "id": "browser",
+        "command": "\"D:\\\\nodejs\\\\node.exe\" \"node_modules/@playwright/test/cli.js\" \"test\" \"-c\" \"D:\\\\fd-validation\\\\dr-p01-m1-evidence-20261030\\\\playwright.m1.config.mjs\"",
+        "cwd": "D:/fd-validation/dr-p01-m1-integration-20261030",
+        "executedBy": "Feature Delivery Lead",
+        "exitCode": 0,
+        "actualExecutionHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+        "candidateContentBinding": "Exact28 source/test SHA256 equal committed candidate; precommit run is not claimed as execution at later SHA",
+        "receipt": "D:/fd-validation/dr-p01-m1-evidence-20261030/browser-receipt.json",
+        "receiptSha256": "b39db3a205236f8c5b91506114b2406adb4ba57902369f404dac2df4929a3165",
+        "log": "D:\\fd-validation\\dr-p01-m1-evidence-20261030\\browser.log",
+        "logSha256": "c014375e8e49626375e656a611a94e15171cce01988d40663a15272f36e10bca"
+      }
+    ],
+    "scopedCounts": {
+      "rulesFiles": 14,
+      "rulesTestsPassed": 144,
+      "actionTurnTestsWithinRules": 25,
+      "originBulletTestsWithinRules": 14,
+      "serverTestsPassed": 17,
+      "relevantClientFiles": 6,
+      "relevantClientTestsPassed": 43,
+      "browserTestsPassed": 2,
+      "browserTestsUnexpected": 0
+    },
+    "browserResultsSha256": "894b3ae92937ae8c3913b21a1a8ffcd26c41e72464b1ad44b7c3c8f1c293454b",
+    "browserStats": {
+      "startTime": "2026-10-30T05:10:15.506Z",
+      "duration": 21764.024,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "browserCases": [
+      {
+        "title": "seven human seats finish authoritative move/skip and simultaneous play through browser and WS",
+        "status": "expected"
+      },
+      {
+        "title": "plays a genuinely replaced and drawn Origin Bullet through browser, reconnect, and stale rejection",
+        "status": "expected"
+      }
+    ],
+    "serviceIdentityWithoutCredentials": {
+      "cwd": "D:\\fd-validation\\dr-p01-m1-integration-20261030",
+      "sourceHead": "b181c4987ce7710d6bebacc68bed45576f45d11e",
+      "pid": 10832,
+      "roomId": "dr-p01-10832",
+      "httpBase": "http://127.0.0.1:58184",
+      "wsBase": "ws://127.0.0.1:58184",
+      "credentialValuesOmitted": true
+    },
+    "sevenSeatResults": [
+      {
+        "seat": 1,
+        "revision": 21,
+        "actionTurn": {
+          "movement": "moved",
+          "regularPlay": "complete"
+        },
+        "power": 7
+      },
+      {
+        "seat": 2,
+        "revision": 26,
+        "actionTurn": {
+          "movement": "skipped",
+          "regularPlay": "complete"
+        },
+        "power": 11
+      },
+      {
+        "seat": 3,
+        "revision": 31,
+        "actionTurn": {
+          "movement": "skipped",
+          "regularPlay": "complete"
+        },
+        "power": 13
+      },
+      {
+        "seat": 4,
+        "revision": 36,
+        "actionTurn": {
+          "movement": "skipped",
+          "regularPlay": "complete"
+        },
+        "power": 6
+      },
+      {
+        "seat": 5,
+        "revision": 41,
+        "actionTurn": {
+          "movement": "skipped",
+          "regularPlay": "complete"
+        },
+        "power": 8
+      },
+      {
+        "seat": 6,
+        "revision": 46,
+        "actionTurn": {
+          "movement": "skipped",
+          "regularPlay": "complete"
+        },
+        "power": 22
+      },
+      {
+        "seat": 7,
+        "revision": 51,
+        "actionTurn": {
+          "movement": "skipped",
+          "regularPlay": "complete"
+        },
+        "power": 3
+      }
+    ],
+    "browserExecutionIsContentBoundPrecommit": true,
+    "all28HashesAndSixLogHashesIndependentlyVerified": true
+  },
+  "implementationAssessment": {
+    "reuse": "Existing interpreter, movement, Session, room protocol and client availableActions; no second flow engine",
+    "regularMoveAndBatch": "Move/skip before mandatory simultaneous complete normal batch, single movement quota, prebatch8mana gate and aggregate payment; precise forbidden-hand reveal fallback",
+    "atomicity": "Bounded actual WS and Session rejection probes preserve GameState, rules events and revision; hub version unchanged for WS negatives. Audit rejection logs are separate",
+    "effectQuotas": "Real Time Alter effect play preserves normal quotas; Conversion Magic retains deployment continuation; Drake state-replacing trigger clears current staging",
+    "recovery": "Authenticated action substate, explicit legacy action fail-closed; real postscore durable and replay restore suppress late combat activation, resume existing settlement and do not duplicate history or VP",
+    "dynamicRevalidation": "No cross-dispatch cache. Changes in mana, skill gate, forbid, controller, zone, priority, phase and endpoint capacity are revalidated",
+    "permissionBoundary": "No CB-C02 controller-scope permission. Existing M1 low-mana gate still rejects p7 and p1 tested cards at5mana;8mana positive pays full5; cross-controller card rejects. Parked capability gap is not silently granted or made a P01 dependency"
+  },
+  "nonBlockingObservations": [
+    {
+      "id": "IR-N01",
+      "description": "Synthetic raw phase mutation while staging exists may retain legacy confirm projection, but dispatch rejects illegal_timing atomically; public Session cannot end a turn with staged cards. This predates this reconstruction; not an accepted client path.",
+      "evidence": "dynamic-revalidation-m1-943e100e.json"
+    },
+    {
+      "id": "CB-C02-PARKED",
+      "description": "User-reported separate CB-C02 condition/phase/controller scope concerns were inspected read-only in excluded helper; no independent vulnerability reproduction is claimed here, and no B-line fix is required for DR-P01."
+    }
+  ],
+  "limitations": [
+    "Verifier did not execute final fullCI/build/browser; six producer receipts are independently hash-checked and all28 candidate source/test blobs match their precommit bytes. These runs must not be described as having executed at a later commit SHA.",
+    "Independent browser UI execution was not repeated; actual seven-human browser and OriginBullet browser logs/results/service identity were reviewed. Independent real WS and real seven-seat Session path were executed at exact candidate.",
+    "No full-client-suite green claim; producer relevant6files43 only. No whole11round full-game product acceptance.",
+    "Pre-scoring power-response fixture not independently executed; real postscoring response durable/replay continuation was executed. Other full restriction matrices rely on reviewed source and producer focused tests beyond bounded probes.",
+    "Old2c/A0/CB acceptance, fullCI outcomes and migration evidence are not inherited; loader/authoring/generated unchanged from M1.",
+    "Actual GitHub reviewer/thread binding and original fullCI required checks remain external gates; this report grants no merge/release/credit authority."
+  ],
+  "nonClaims": {
+    "fullCiPassed": false,
+    "mainIntegrated": false,
+    "releaseReady": false,
+    "wholeGameAccepted": false,
+    "promotionAuthorized": false,
+    "migrationCreditDelta": 0,
+    "coverageCreditDelta": 0,
+    "cbC02Accepted": false,
+    "githubAttestationBindingComplete": false
+  }
+}
