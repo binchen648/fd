@@ -1,3 +1,4 @@
+import { createHash, createHmac } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { loadAuthoringJson } from '../../src/index';
 import { describe, expect, it } from 'vitest';
@@ -151,4 +152,24 @@ it('returns the same terminal outcome on repeated resume without triggering the 
  const before=session.serializeSession();
  for(let i=0;i<8;i++)expect(session.runUntilHumanInputOrRoundEnd()).toBe('match_complete');
  expect(session.serializeSession()).toEqual(before);
+});
+
+
+it('keeps checkpoint SHA and HMAC bytes compatible with ordinary JSON serialization', () => {
+ const secret='0123456789abcdef0123456789abcdef',scope='standard-endgame-checkpoint-parity';
+ const s=createMatchSession({seed:20260904,persistenceSecret:secret,persistenceScope:scope});
+ s.logs.push({round:1,phase:'preparation',type:'fixture_unicode',message:'中文😀\ud800',payload:{text:'quote"slash\\newline\n',absent:undefined}});
+ for(const optional of [false,true]) {
+  if(optional){ s.stopReason='human_input';s.rejection={code:'fixture',message:'测试\n😀'}; }
+  (s as any).checkpoint('parity');
+  const snap=s.replaySnapshots[s.replaySnapshots.length-1]!;
+  const payload={checkpointId:snap.checkpointId,state:snap.state,logs:snap.logs,battleHistory:snap.battleHistory,consumedDirectiveCount:snap.consumedDirectiveCount,stopReason:snap.stopReason??null,rejection:snap.rejection??null};
+  const digest=createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+  expect(snap.deferredRuntimeStateSeal!.authorityDigest).toBe(digest);
+  expect(snap.deferredRuntimeStateSeal!.mac).toBe(createHmac('sha256',secret).update(`fd-deferred-runtime-state-v2\n${scope}\n${snap.checkpointId}\n${digest}`).digest('hex'));
+  const frozenBytes=JSON.stringify(snap);
+  s.state.players[0]!.mana=1;s.logs.push({round:1,phase:'preparation',type:'live_only',message:'must not alter checkpoint'});s.battleHistory=[];
+  expect(JSON.stringify(snap)).toBe(frozenBytes);
+  expect(s.restoreToCheckpoint(snap.checkpointId)).toBe(true);
+ }
 });

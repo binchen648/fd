@@ -250,9 +250,10 @@ function persistDeferredRuntimeStateSeal(
   persistenceSecret: string,
   persistenceScope: string,
   checkpointId?: string,
+  serializedPayload?: string,
 ): { deferredRuntimeStateSeal: DeferredRuntimeStateSeal } {
   const normalizedCheckpointId = checkpointId ?? null;
-  const authorityDigest = sha256Hex(JSON.stringify(authorityPayload));
+  const authorityDigest = sha256Hex(serializedPayload ?? JSON.stringify(authorityPayload));
   const mac = hmacSha256Hex(
     persistenceSecret,
     deferredRuntimeStateSealPayload(persistenceScope, normalizedCheckpointId, authorityDigest),
@@ -316,8 +317,8 @@ function replayDeferredAuthorityPayload(input: Pick<MatchReplayStateSnapshot,
   };
 }
 
-function replayCheckpointDigest(snapshot: MatchReplayStateSnapshot): string {
-  return sha256Hex(JSON.stringify(snapshot));
+function replayCheckpointDigest(snapshot: MatchReplayStateSnapshot, serializedSnapshot?: string): string {
+  return sha256Hex(serializedSnapshot ?? JSON.stringify(snapshot));
 }
 
 function replayManifestEntries(snapshots: readonly MatchReplayStateSnapshot[]): OpponentCloseToOneReplayManifestEntry[] {
@@ -2942,20 +2943,33 @@ export class MatchSession {
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
     };
+    // These fragments belong only to this already-cloned checkpoint. The authority
+    // payload and full replay snapshot share the same large values, but keep distinct hashes.
+    const fragments = new Map<unknown, string>([
+      [replaySnapshotBase.state, JSON.stringify(replaySnapshotBase.state)],
+      [replaySnapshotBase.logs, JSON.stringify(replaySnapshotBase.logs)],
+      [replaySnapshotBase.battleHistory, JSON.stringify(replaySnapshotBase.battleHistory)],
+    ]);
+    const serializeCheckpointObject = (value: object) => '{' + Object.entries(value).flatMap(([key, child]) => {
+      const encoded = fragments.get(child) ?? JSON.stringify(child);
+      return encoded === undefined ? [] : [JSON.stringify(key) + ':' + encoded];
+    }).join(',') + '}';
+    const authorityPayload = replayDeferredAuthorityPayload(replaySnapshotBase);
     const replaySnapshot: MatchReplayStateSnapshot = {
       ...replaySnapshotBase,
       ...persistDeferredRuntimeStateSeal(
-        replayDeferredAuthorityPayload(replaySnapshotBase),
+        authorityPayload,
         this.persistenceSecret,
         this.persistenceScope,
         checkpoint.id,
+        serializeCheckpointObject(authorityPayload as object),
       ),
     };
     this.replaySnapshots.push(replaySnapshot);
     rememberOpponentCloseToOneTrustedReplayCheckpoint(
       this.persistenceScope,
       checkpoint.id,
-      replayCheckpointDigest(replaySnapshot),
+      replayCheckpointDigest(replaySnapshot, serializeCheckpointObject(replaySnapshot)),
       replaySnapshot.opponentCloseToOneServerAuthority,
     );
     pruneOpponentCloseToOneTrustedReplayTransactions(
