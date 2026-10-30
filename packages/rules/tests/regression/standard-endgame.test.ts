@@ -173,3 +173,14 @@ it('keeps checkpoint SHA and HMAC bytes compatible with ordinary JSON serializat
   expect(s.restoreToCheckpoint(snap.checkpointId)).toBe(true);
  }
 });
+
+
+it('takes isolated checkpoints in the existing persisted-JSON data representation', () => {
+ const s=createMatchSession({seed:20260904});
+ s.logs.push({round:1,phase:'preparation',type:'json-boundary',message:'wire normalization',payload:{missing:undefined,array:[undefined,'中文😀'],date:new Date('2026-01-01T00:00:00Z')}});
+ const expected=JSON.parse(JSON.stringify({state:s.state,logs:s.logs,battleHistory:s.battleHistory}));
+ (s as any).checkpoint('json-parity'); const snap=s.replaySnapshots[s.replaySnapshots.length-1]!;
+ expect({state:snap.state,logs:snap.logs,battleHistory:snap.battleHistory}).toEqual(expected);
+ expect(s.logs[s.logs.length-1]!.payload!.date).toBeInstanceOf(Date);
+ expect(s.restoreToCheckpoint(snap.checkpointId)).toBe(true);
+});

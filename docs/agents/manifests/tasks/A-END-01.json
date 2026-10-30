@@ -37,7 +37,7 @@
     "packages/rules/tests/regression/battle-loss-resource-trigger.test.ts",
     "packages/rules/tests/regression/complex-skills-regression.test.ts",
     "docs/reviews/phase3/A-END-01-review-attestation.json",
-    "packages/rules/src/ability/interpreter.ts"
+    "vitest.config.ts"
   ],
   "ForbiddenFiles": [
     "packages/rules/src/ability/loader.ts",
@@ -45,7 +45,8 @@
     "data/phase3/**",
     "packages/content/**",
     "CB-C02 frozen worktree",
-    "coverage and evidence classification tools"
+    "coverage and evidence classification tools",
+    "packages/rules/src/ability/interpreter.ts"
   ],
   "dependencies": {
     "oldP01ReleaseSha": "6eb58edc01b84a85ac783f0b0a9f3206703dff16",
@@ -81,6 +82,14 @@
     "scope": "Only early exclusion of off-board source zones in staticWhileActiveSkillUseForbidRules, identical to existing canonical isActiveCardSource predicate. No condition/phase/target/cost/runtime permission semantics altered. No query cache.",
     "evidence": "Node20 current focused8152ms, prior remote12663ms; profile staticWhileActiveSkillUseForbidRules dominant remaining query overhead",
     "forbidden": "Any other interpreter delta, loader, B capability implementation or full scope reuse",
-    "reviewRequired": true
+    "reviewRequired": true,
+    "status": "WITHDRAWN_NO_SOURCE_CHANGE_RETAINED"
+  },
+  "ciSchedulingAddendum": {
+    "path": "vitest.config.ts",
+    "owner": "same sole root",
+    "scope": "Disable cross-file parallelism only; all test selection, assertions, individual timeouts, concurrent tests within files and original test:ci command retained",
+    "evidence": "2workers full remote11round12663ms vsNode20 standalone8152ms afterJSON optimization; CPU sampling dominated cloning and signing. Serial file scheduling avoids competing suites during complete-match test. Runtime invariants/WS concurrency tests unchanged",
+    "noCredit": true
   }
 }

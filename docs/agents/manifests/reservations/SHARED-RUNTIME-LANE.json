@@ -60,12 +60,6 @@
       "path": "apps/client/src/pages/MatchTable.tsx",
       "state": "GRANTED",
       "taskId": "A-END-01"
-    },
-    {
-      "path": "packages/rules/src/ability/interpreter.ts",
-      "state": "GRANTED",
-      "taskId": "A-END-01",
-      "scope": "Only queryPerformanceAddendum staticWhileActive off-board fast exclusion"
     }
   ],
   "loader": {

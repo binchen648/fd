@@ -2933,12 +2933,17 @@ export class MatchSession {
       label,
     };
     this.replay.push(checkpoint);
+    // Checkpoints persist JSON data. Build independent snapshots from those exact wire
+    // bytes instead of cloning the entire graph and then serializing it again.
+    const stateJson = JSON.stringify(state);
+    const logsJson = JSON.stringify(this.logs);
+    const battleHistoryJson = JSON.stringify(this.battleHistory);
     const replaySnapshotBase: MatchReplayStateSnapshot = {
       checkpointId: checkpoint.id,
-      state: structuredClone(state),
+      state: JSON.parse(stateJson) as GameState,
       ...persistedOpponentCloseToOneAuthorityField(state, this.persistenceSecret, this.persistenceScope, checkpoint.id),
-      logs: structuredClone(this.logs),
-      battleHistory: structuredClone(this.battleHistory),
+      logs: JSON.parse(logsJson) as MatchSessionLogEntry[],
+      battleHistory: JSON.parse(battleHistoryJson) as GameState['battleResults'],
       consumedDirectiveCount: this.consumedDirectiveCount,
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
@@ -2946,9 +2951,9 @@ export class MatchSession {
     // These fragments belong only to this already-cloned checkpoint. The authority
     // payload and full replay snapshot share the same large values, but keep distinct hashes.
     const fragments = new Map<unknown, string>([
-      [replaySnapshotBase.state, JSON.stringify(replaySnapshotBase.state)],
-      [replaySnapshotBase.logs, JSON.stringify(replaySnapshotBase.logs)],
-      [replaySnapshotBase.battleHistory, JSON.stringify(replaySnapshotBase.battleHistory)],
+      [replaySnapshotBase.state, stateJson],
+      [replaySnapshotBase.logs, logsJson],
+      [replaySnapshotBase.battleHistory, battleHistoryJson],
     ]);
     const serializeCheckpointObject = (value: object) => '{' + Object.entries(value).flatMap(([key, child]) => {
       const encoded = fragments.get(child) ?? JSON.stringify(child);
