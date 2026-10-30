@@ -71,6 +71,7 @@
     "review": "345100d04152408d2e28dac5795b63be15d53a7f",
     "reviewThread": "https://github.com/binchen648/fd/pull/683#issuecomment-6527556540",
     "fullCi": "PENDING_FINAL_HEAD",
-    "mergeRequiresUserConsent": true
+    "mergeRequiresUserConsent": true,
+    "synchronizationSha": "3a26450ae714ea985403013e6c0815de338bec9d"
   }
 }
