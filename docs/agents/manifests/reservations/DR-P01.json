@@ -42,7 +42,9 @@
     "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
     "packages/rules/tests/regression/interaction-room-boundary.test.ts",
     "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
-    "packages/rules/tests/regression/fb2-required-additional-play.test.ts"
+    "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+    "packages/rules/src/ability/portable-sha256.ts",
+    "packages/rules/tests/portable-sha256.test.ts"
   ],
   "manifestPaths": [
     "docs/agents/manifests/reservations/DR-P01.json",
@@ -82,5 +84,19 @@
     "packages/rules/src/ability/loader.ts"
   ],
   "publishedControlSha": "f674c00a065878f2fd454ed3820d87d322058114",
-  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030"
+  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030",
+  "ciTimeoutScopeAddendum": {
+    "issuedBy": "Global Technical Lead /root under user authorization to complete fixes on current PR branch",
+    "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
+    "baseSha": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+    "taskId": "DR-P01",
+    "addedPaths": [
+      "packages/rules/src/ability/portable-sha256.ts",
+      "packages/rules/tests/portable-sha256.test.ts"
+    ],
+    "purpose": "Two reproducible full-CI timeout failures; profile measures 38-44% portable SHA self time. Permit feature-detected Node builtin SHA acceleration with byte-identical portable browser fallback. Preserve every seal/checkpoint/restore validation and original test timeouts. No mutable state cache.",
+    "scopePreflight": "D:/fd-validation/dr-p01-m1-timeout-diag-20261030/scope-preflight.json",
+    "ownership": "Same sole Feature Delivery Lead, no transfer/release; loader excluded and CB-C02 remains suspended",
+    "verification": "Native/portable differential UTF8/RFC/long-message vectors; real browser fallback; existing restore/tamper/atomic/privacy regressions; independent verification; exact final-head original CI; user merge consent still required"
+  }
 }
