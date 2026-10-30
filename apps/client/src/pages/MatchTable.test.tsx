@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import MatchTable from './MatchTable';
 import type { PlaytestClientFixture } from '../state/playtest-fixture-loader';
+import { createSevenAuthoringMatchSession, projectSevenAuthoringSessionFixture } from '../state/seven-authoring-smoke-fixture';
 
 const fixture: PlaytestClientFixture = {
   match: { round: 4, phase: '行动阶段', priorityPlayerId: 'player-1' },
@@ -505,6 +506,59 @@ const fixture: PlaytestClientFixture = {
   backendRejection: 'illegal_target: Selected targets are not legal',
   optionalAbilityReminder: '久宇舞弥的支援射击尚未处理',
 };
+
+describe('DR-P01 action-turn projection', () => {
+  it('shows the real local Session public power including zero only after ordinary play completes', () => {
+    const session = createSevenAuthoringMatchSession();
+    session.state.round.activePhase = 'action';
+    session.state.round.prioritySeat = 1;
+    session.state.players[0]!.locationId = 'magic_workshop';
+    session.state.currentSituationModifiers = [];
+    session.state.eventPlacements = [];
+    const before = projectSevenAuthoringSessionFixture(session);
+    const rendered = render(<MatchTable fixture={before} />);
+    expect(before.players.find(player => player.id === 'p1')?.totalPower).toBeUndefined();
+    expect(screen.queryByLabelText('当前公开合计威力')).not.toBeInTheDocument();
+    expect(session.dispatchPlayerCommand('p1', { type: 'skip_normal_move' }).ok).toBe(true);
+    for (let index = 0; index < 2; index++) {
+      const action = session.getPlayerView('p1').legalActions.find(action => action.type === 'stage_attack_card' && action.faceDown)!;
+      expect(action).toBeDefined();
+      if (action.type !== 'stage_attack_card') throw new Error('Expected a legal staged attack');
+      expect(session.dispatchPlayerCommand('p1', action).ok).toBe(true);
+    }
+    expect(session.dispatchPlayerCommand('p1', { type: 'confirm_staged_attack' }).ok).toBe(true);
+    const serverPower = session.getPlayerView('p1').players.find(player => player.id === 'p1')!.totalPower;
+    expect(serverPower).toBe(0);
+    const after = projectSevenAuthoringSessionFixture(session);
+    expect(after.players.find(player => player.id === 'p1')?.totalPower).toBe(serverPower);
+    rendered.rerender(<MatchTable fixture={after} />);
+    expect(screen.getByLabelText('当前公开合计威力')).toHaveTextContent('合计威力 0');
+    expect(session.passPriority('p1').ok).toBe(true);
+    const next = projectSevenAuthoringSessionFixture(session, 'p2');
+    expect(next.players.find(player => player.id === 'p1')?.totalPower).toBe(0);
+    expect(next.players.find(player => player.id === 'p2')?.totalPower).toBeUndefined();
+    rendered.rerender(<MatchTable fixture={next} />);
+    expect(screen.queryByLabelText('当前公开合计威力')).not.toBeInTheDocument();
+  });
+
+  it('renders only backend movement actions and keeps ending disabled until the complete batch', async () => {
+    const onAction = vi.fn();
+    const onEndTurn = vi.fn();
+    const movement = { actionId: 'normal:recon', kind: 'move' as const, ownerPlayerId: 'player-1', label: '常规移动至 侦察 · 5 魔力', backendCommand: { type: 'normal_move' as const, locationId: 'recon', manaCost: 5 } };
+    const next = { ...fixture, optionalAbilityReminder: undefined, actionTurn: { movement: 'pending' as const, regularPlay: 'pending' as const }, availableActions: [movement] };
+    const rendered = render(<MatchTable fixture={next} onAction={onAction} onEndTurn={onEndTurn} />);
+    expect(screen.getByLabelText('行动回合进度')).toHaveTextContent('先常规移动');
+    const end = rendered.container.querySelector('.decision-panel__confirm')!;
+    expect(end).toBeDisabled();
+    await userEvent.click(screen.getByRole('button', { name: movement.label }));
+    expect(onAction).toHaveBeenCalledWith(movement);
+    expect(onEndTurn).not.toHaveBeenCalled();
+    rendered.rerender(<MatchTable fixture={{ ...next, actionTurn: { movement: 'moved', regularPlay: 'complete' }, availableActions: [], players: next.players.map(player => player.id === 'player-1' ? { ...player, totalPower: 8 } : player) }} onEndTurn={onEndTurn} />);
+    expect(screen.getByLabelText('行动回合进度')).toHaveTextContent('常规出牌已完成');
+    expect(screen.getByLabelText('当前公开合计威力')).toHaveTextContent('8');
+    expect(rendered.container.querySelector('.decision-panel__confirm')).toBeEnabled();
+  });
+});
 
 describe('MatchTable', () => {
   it('loads the default seven-player authoring reference table without Moon Cancer or Babbage cards', () => {

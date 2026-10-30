@@ -113,6 +113,7 @@ export interface ClientPhaseStep {
 }
 
 export interface PlaytestClientFixture {
+  actionTurn?: { movement: 'pending' | 'moved' | 'skipped'; regularPlay: 'pending' | 'complete' };
   match: { round: number; phase: string; priorityPlayerId: string };
   phaseTrack?: ClientPhaseStep[];
   players: Array<{
@@ -124,6 +125,7 @@ export interface PlaytestClientFixture {
     location: string;
     vp: number;
     mana: number;
+    totalPower?: number;
     commandSpells: number;
     isSelf: boolean;
     masterImageUrl?: string;

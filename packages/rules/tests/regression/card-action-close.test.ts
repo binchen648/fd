@@ -4,20 +4,28 @@ import { createMatchSession } from '../../src/match-session';
 import { isCloseSourceCardOnPlayedTrigger, processAbilityEvent } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
 
-function prepareCurse() {
+function prepareCurse(withNoble = false) {
   const session = createMatchSession({ seed: 20260907, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
   const curse = session.state.cards.find((candidate) => candidate.definitionId === 'servant.artoria-alt.skill.sc-artoria-alt-2')!;
   expect(curse).toBeTruthy();
   const player = session.state.players.find((candidate) => candidate.id === curse.controllerPlayerId)!;
   session.state.round.activePhase = 'action';
   session.state.round.prioritySeat = player.seat;
-  player.mana = 0;
+  player.mana = withNoble ? 12 : 0;
   player.locationId = 'miyama_town';
   session.state.abilityRuntime!.hostRequests = [];
   session.state.abilityRuntime!.responseWindows = [];
   delete session.state.abilityRuntime!.pendingDecision;
-  expect(session.dispatchPlayerAction(player.id, { type: 'play_card', cardInstanceId: curse.instanceId }).ok).toBe(true);
-  return { session, playerId: player.id, curseId: curse.instanceId };
+  expect(session.dispatchPlayerAction(player.id, { type: 'skip_normal_move' }).ok).toBe(true);
+  expect(session.dispatchPlayerAction(player.id, { type: 'stage_attack_card', cardInstanceId: curse.instanceId }).ok).toBe(true);
+  const supplement = withNoble
+    ? { type: 'stage_attack_card' as const, cardInstanceId: nobleCard(session, player.id).instanceId }
+    : session.getPlayerView(player.id).legalActions.find(action => action.type === 'stage_attack_card' && !action.faceDown);
+  expect(supplement).toBeDefined();
+  expect(session.dispatchPlayerAction(player.id, supplement!).ok).toBe(true);
+  const playedResult = session.dispatchPlayerAction(player.id, { type: 'confirm_staged_attack' });
+  expect(playedResult.ok).toBe(true);
+  return { session, playerId: player.id, curseId: curse.instanceId, playedResult };
 }
 
 function nobleCard(session: ReturnType<typeof createMatchSession>, playerId: string) {
@@ -28,11 +36,7 @@ function nobleCard(session: ReturnType<typeof createMatchSession>, playerId: str
 
 describe('CARD_ACTION_SEMANTICS_MINIMAL_CLOSE recovery', () => {
   it('closes active Artoria Alter source through typed data-flow after a real noble-phantasm play', () => {
-    const { session, playerId, curseId } = prepareCurse();
-    const noble = nobleCard(session, playerId);
-    session.state.players.find((candidate) => candidate.id === playerId)!.mana = 12;
-
-    const result = session.dispatchPlayerAction(playerId, { type: 'play_card', cardInstanceId: noble.instanceId });
+    const { session, playerId, curseId, playedResult: result } = prepareCurse(true);
 
     expect(result.ok).toBe(true);
     expect(session.state.cards.find((candidate) => candidate.instanceId === curseId)).toMatchObject({

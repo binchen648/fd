@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-v1",
+  "reservationId": "DR-P01",
+  "ownerTask": "DR-P01",
+  "ownerRole": "Feature Delivery Lead /root/dr_p01_delivery_lead",
+  "issuerRole": "Global Technical Lead /root under latest explicit user scheduling instruction",
+  "status": "GRANTED",
+  "requiredBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "observedRemoteMain": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "taskManifestPath": "docs/agents/manifests/tasks/DR-P01.json",
+  "addendumPath": "docs/agents/manifests/reservations/DR-P01-M1-SAME-OWNER-TRANSFER.json",
+  "ownerBinding": {
+    "branch": "codex/dr-p01-m1-integration-20261030",
+    "absoluteWorktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
+    "acknowledgement": "BOUND_BY_EXPLICIT_SAME_OWNER_TRANSFER; OWNER_REACK_REQUIRED_BEFORE_REPLAY"
+  },
+  "sourceAndTestPaths": [
+    "apps/client/src/pages/MatchTable.tsx",
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/types.ts",
+    "packages/rules/src/core/combat-resolver.ts",
+    "packages/rules/src/core/movement.ts",
+    "packages/rules/src/match-session.ts",
+    "apps/client/src/pages/MatchTable.test.tsx",
+    "apps/server/src/match-server.test.ts",
+    "e2e/fd-action-turn-delivery.spec.ts",
+    "e2e/fd-time-alter-core-primitive.spec.ts",
+    "e2e/support/start-action-turn-fixture-server.ts",
+    "packages/rules/src/__tests__/match-session-regressions.test.ts",
+    "packages/rules/tests/match-room-hub.test.ts",
+    "packages/rules/tests/match-session.test.ts",
+    "packages/rules/tests/regression/action-turn-delivery.test.ts",
+    "packages/rules/tests/regression/card-action-close.test.ts",
+    "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+    "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+    "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+    "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+    "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+    "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+    "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+    "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+    "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+    "packages/rules/src/ability/portable-sha256.ts",
+    "packages/rules/tests/portable-sha256.test.ts"
+  ],
+  "manifestPaths": [
+    "docs/agents/manifests/reservations/DR-P01.json",
+    "docs/agents/manifests/tasks/DR-P01.json"
+  ],
+  "prestartRecordPaths": [
+    "docs/agents/manifests/reservations/DR-P01-M1-SAME-OWNER-TRANSFER.json",
+    "artifacts/dr-p01-m1-prestart-path-audit.json",
+    "docs/reports/2026-10-30-dr-p01-m1-prestart.md"
+  ],
+  "futureDeliveryOutputPaths": [
+    "artifacts/dr-p01-m1-validation.json",
+    "docs/reports/2026-10-30-dr-p01-m1-validation.md"
+  ],
+  "originalBinding": {
+    "branch": "codex/dr-p01-action-turn-20261029",
+    "absoluteWorktree": "D:/fd-validation/dr-p01-action-turn-20261029",
+    "requiredBase": "f70120e48284a2c5409320fa02b8cadce1e7899a",
+    "frozenCandidate": "2c50256280ef0ebdb1c1366cb09984530fd868ff",
+    "reservationBlob": "d521bb15e44c34efb5fda77a0eac72a4946618e9",
+    "taskBlob": "a7f08aebdd932e1506b7838ee4ef5c0ef663a28a",
+    "disposition": "FROZEN_REFERENCE_ONLY_NO_CONCURRENT_WRITE_GRANT"
+  },
+  "excludedHistoricalPaths": [
+    "artifacts/phase3-cb-a0-time-alter-play-legality-repair.json",
+    "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
+    "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md"
+  ],
+  "productionWriteAuthorized": true,
+  "sharedRuntimeWriteAuthorized": true,
+  "testWindowExclusive": false,
+  "promotionAuthorized": false,
+  "creditDelta": 0,
+  "release": "No successor grant; original branch remains frozen; report any new writer conflict before replay.",
+  "authorityRegistry": "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+  "excludedWritePaths": [
+    "packages/rules/src/ability/loader.ts"
+  ],
+  "publishedControlSha": "f674c00a065878f2fd454ed3820d87d322058114",
+  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030",
+  "ciTimeoutScopeAddendum": {
+    "issuedBy": "Global Technical Lead /root under user authorization to complete fixes on current PR branch",
+    "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
+    "baseSha": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+    "taskId": "DR-P01",
+    "addedPaths": [
+      "packages/rules/src/ability/portable-sha256.ts",
+      "packages/rules/tests/portable-sha256.test.ts"
+    ],
+    "purpose": "Two reproducible full-CI timeout failures; profile measures 38-44% portable SHA self time. Permit feature-detected Node builtin SHA acceleration with byte-identical portable browser fallback. Preserve every seal/checkpoint/restore validation and original test timeouts. No mutable state cache.",
+    "scopePreflight": "D:/fd-validation/dr-p01-m1-timeout-diag-20261030/scope-preflight.json",
+    "ownership": "Same sole Feature Delivery Lead, no transfer/release; loader excluded and CB-C02 remains suspended",
+    "verification": "Native/portable differential UTF8/RFC/long-message vectors; real browser fallback; existing restore/tamper/atomic/privacy regressions; independent verification; exact final-head original CI; user merge consent still required"
+  }
+}

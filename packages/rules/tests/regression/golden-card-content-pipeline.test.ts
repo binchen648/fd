@@ -28,8 +28,18 @@ function prepareGoldenCard(cardId: GoldenCardId, mana: number) {
   runtime.hostRequests = [];
   runtime.responseWindows = [];
   delete runtime.pendingDecision;
+  expect(session.dispatchPlayerAction(player.id, { type: 'skip_normal_move' }).ok).toBe(true);
 
-  return { session, card, player, runtime };
+  return { session, card, player: session.state.players.find(candidate => candidate.id === player.id)!, runtime: session.state.abilityRuntime! };
+}
+
+function confirmWithSupplement(fixture: ReturnType<typeof prepareGoldenCard>, secondCardId?: string) {
+  expect(fixture.session.dispatchPlayerAction(fixture.player.id, { type: 'stage_attack_card', cardInstanceId: fixture.card.instanceId }).ok).toBe(true);
+  const second = secondCardId ? { type: 'stage_attack_card' as const, cardInstanceId: secondCardId }
+    : fixture.session.getPlayerView(fixture.player.id).legalActions.find(action => action.type === 'stage_attack_card' && !action.faceDown);
+  expect(second).toBeDefined();
+  expect(fixture.session.dispatchPlayerAction(fixture.player.id, second!).ok).toBe(true);
+  return fixture.session.dispatchPlayerAction(fixture.player.id, { type: 'confirm_staged_attack' });
 }
 
 describe('Phase 2 golden-card compiled-content pipeline', () => {
@@ -88,16 +98,13 @@ describe('Phase 2 golden-card compiled-content pipeline', () => {
   it('consumes requirements, offers, effects, and lifecycle through MatchSession', () => {
     const sword = prepareGoldenCard('servant.artoriac.skill.sc-artoriac-1', 7);
     expect(sword.session.getPlayerView(sword.player.id).legalActions).not.toContainEqual(
-      expect.objectContaining({ type: 'play_card', cardInstanceId: sword.card.instanceId }),
+      expect.objectContaining({ type: 'stage_attack_card', cardInstanceId: sword.card.instanceId }),
     );
     sword.player.mana = 8;
     expect(sword.session.getPlayerView(sword.player.id).legalActions).toContainEqual(
-      expect.objectContaining({ type: 'play_card', cardInstanceId: sword.card.instanceId }),
+      expect.objectContaining({ type: 'stage_attack_card', cardInstanceId: sword.card.instanceId }),
     );
-    expect(sword.session.dispatchPlayerAction(sword.player.id, {
-      type: 'play_card',
-      cardInstanceId: sword.card.instanceId,
-    }).ok).toBe(true);
+    expect(confirmWithSupplement(sword).ok).toBe(true);
     expect(sword.session.state.abilityRuntime?.ongoingEffects).toContainEqual(expect.objectContaining({
       abilityId: 'sc-artoriac-1.residual-special-power-bonus',
       duration: 'round_count',
@@ -106,32 +113,22 @@ describe('Phase 2 golden-card compiled-content pipeline', () => {
 
     const protection = prepareGoldenCard('servant.ereshkigal.skill.sc-ereshkigal-2', 8);
     expect(protection.session.getPlayerView(protection.player.id).legalActions).toContainEqual(
-      expect.objectContaining({ type: 'play_card', cardInstanceId: protection.card.instanceId }),
+      expect.objectContaining({ type: 'stage_attack_card', cardInstanceId: protection.card.instanceId }),
     );
-    expect(protection.session.dispatchPlayerAction(protection.player.id, {
-      type: 'play_card',
-      cardInstanceId: protection.card.instanceId,
-    }).ok).toBe(true);
+    expect(confirmWithSupplement(protection).ok).toBe(true);
     expect((protection.session.state as unknown as {
       modeState?: { reversedModifierLocations?: Array<{ locationId: string }> };
     }).modeState?.reversedModifierLocations).toContainEqual(expect.objectContaining({ locationId: 'miyama_town' }));
 
     const curse = prepareGoldenCard('servant.artoria-alt.skill.sc-artoria-alt-2', 0);
     expect(curse.session.getPlayerView(curse.player.id).legalActions).toContainEqual(
-      expect.objectContaining({ type: 'play_card', cardInstanceId: curse.card.instanceId }),
+      expect.objectContaining({ type: 'stage_attack_card', cardInstanceId: curse.card.instanceId }),
     );
-    expect(curse.session.dispatchPlayerAction(curse.player.id, {
-      type: 'play_card',
-      cardInstanceId: curse.card.instanceId,
-    }).ok).toBe(true);
     const noble = curse.session.state.cards.find((candidate) =>
       candidate.controllerPlayerId === curse.player.id &&
       candidate.definitionId === 'servant.artoria-alt.skill.sc-artoria-alt-1')!;
     curse.session.state.players.find((candidate) => candidate.id === curse.player.id)!.mana = 12;
-    expect(curse.session.dispatchPlayerAction(curse.player.id, {
-      type: 'play_card',
-      cardInstanceId: noble.instanceId,
-    }).ok).toBe(true);
+    expect(confirmWithSupplement(curse, noble.instanceId).ok).toBe(true);
     expect(curse.session.state.cards.find((candidate) => candidate.instanceId === curse.card.instanceId)?.zone).toBe('skill');
   });
 });

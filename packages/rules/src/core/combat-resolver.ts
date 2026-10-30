@@ -356,6 +356,18 @@ export function deriveBattleParticipantsFromState(
     });
 }
 
+/** Current public power only; never runs battle events, scoring, or winner determination. */
+export function projectCurrentPlayerPowers(state: GameState, playerIds: string[]): Record<string, number> {
+  const powers: Record<string, number> = {};
+  const locations = new Set(state.players.filter(player => playerIds.includes(player.id)).flatMap(player => player.locationId ? [player.locationId] : []));
+  for (const locationId of locations) {
+    for (const participant of deriveBattleParticipantsFromState(state, locationId)) {
+      if (playerIds.includes(participant.playerId)) powers[participant.playerId] = buildParticipantBreakdown(state, locationId, participant).effectivePower;
+    }
+  }
+  return powers;
+}
+
 function buildDefaultVpAdjustments(
   location: LocationDefinition | undefined,
   battlefieldId: CombatResolutionInput["battlefieldId"],

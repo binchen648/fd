@@ -57,6 +57,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
   const activePhaseIndex = phaseOrder.indexOf(match.phase);
 
   return {
+    ...(match.view.actionTurn ? { actionTurn: match.view.actionTurn } : {}),
     match: {
       round: match.round,
       phase: `${phaseLabels[match.phase] ?? match.phase} · 远程同步`,
@@ -78,6 +79,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         location: player.locationId ? locationLabels[player.locationId] ?? player.locationId : '未部署',
         vp: player.vp,
         mana: player.mana,
+        totalPower: player.totalPower,
         commandSpells: player.commandSpells ?? 3,
         isSelf: player.id === viewerId,
         publicMasterCardId: undefined,
@@ -109,11 +111,14 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     publicCardIds,
     availableActions: match.view.legalActions.map((action, index) => ({
       actionId: `${action.type}:${index}`,
-      kind: action.type === 'play_card' || action.type === 'stage_attack_card' || action.type === 'activate_ability' ? 'play_card'
+      kind: action.type === 'normal_move' ? 'move' : action.type === 'play_card' || action.type === 'stage_attack_card' || action.type === 'activate_ability' ? 'play_card'
         : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack' ? 'pass'
           : 'respond',
       ownerPlayerId: viewerId ?? '',
-      label: action.type === 'stage_attack_card' ? '加入待确认攻击'
+      label: action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
+        : action.type === 'skip_normal_move' ? '不进行常规移动'
+        : action.type === 'complete_empty_regular_play' ? '无合法攻击牌 · 完成常规出牌'
+        : action.type === 'stage_attack_card' ? action.faceDown ? '加入待确认盖放' : '加入待确认攻击'
         : action.type === 'confirm_staged_attack' ? '确认打出攻击区'
           : action.type === 'cancel_staged_attack' ? '取消待确认攻击'
             : action.type === 'activate_ability' ? `发动能力 ${action.abilityId}`

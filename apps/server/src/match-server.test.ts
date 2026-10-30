@@ -168,6 +168,62 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('preserves DR-P01 authority through raw WS rejection, replay and authenticated durable restore', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen(0);
+    const hub = serverHandle.hub;
+    hub.createRoom({ roomId: 'dr-p01-transport', hostClientId: 'host', seed: 20260904 });
+    hub.selectSeat('dr-p01-transport', 'host', 1);
+    for (let seat = 2; seat <= 7; seat++) {
+      hub.joinRoom('dr-p01-transport', { clientId: `human-${seat}`, displayName: `Human ${seat}`, role: 'player' });
+      hub.selectSeat('dr-p01-transport', `human-${seat}`, seat);
+    }
+    hub.startMatch('dr-p01-transport', 'host');
+    const room = hub.getRoom('dr-p01-transport');
+    const session = room.session!;
+    session.state.round.activePhase = 'action';
+    session.state.round.prioritySeat = 1;
+    for (const player of session.state.players) player.locationId = 'magic_workshop';
+    session.state.players[0]!.mana = 10;
+    const state = session.state as any;
+    state.modeState.cardPlayForbids = [];
+    state.modeState.closedLocations = [];
+    const wsUrl = `ws://127.0.0.1:${port}/rooms/${room.roomId}?clientId=host&reconnectToken=${room.getIssuedCredential('host')}`;
+    const inbox = await connectSocket(wsUrl);
+    await inbox.next(message => message.type === 'server:projection');
+    const revision = session.getPlayerView('p1').revision;
+    for (const [index, invalid] of [null, { type: 'normal_move', locationId: 'magic_workshop' }, { type: 'confirm_staged_attack' }, { type: 'normal_move', locationId: 'invented' }].entries()) {
+      const before = session.getState();
+      const version = hub.version(room.roomId);
+      const requestId = `invalid-${index}`;
+      inbox.socket.send(JSON.stringify({ type: 'client:dispatch_command', requestId, expectedRevision: revision, command: invalid }));
+      await inbox.next(message => message.type === 'server:error' && message.requestId === requestId);
+      expect(session.getState()).toEqual(before);
+      expect(hub.version(room.roomId)).toBe(version);
+    }
+    const move = { type: 'client:dispatch_command', requestId: 'move', expectedRevision: revision, command: { type: 'normal_move', locationId: 'recon', manaCost: 0 } };
+    inbox.socket.send(JSON.stringify(move));
+    await inbox.next(message => message.type === 'server:projection' && message.projection.match?.view.actionTurn?.movement === 'moved');
+    expect(session.state.players[0]!.mana).toBe(5);
+    const stable = session.getState();
+    inbox.socket.send(JSON.stringify({ ...move, requestId: 'replayed-move' }));
+    await inbox.next(message => message.type === 'server:error' && message.requestId === 'replayed-move');
+    expect(session.getState()).toEqual(stable);
+    const snapshot = room.serializeRoom();
+    const forged: any = structuredClone(snapshot);
+    forged.session.state.modeState.actionTurns.byPlayer.p1.movement = 'pending';
+    const base = `http://127.0.0.1:${port}/rooms/${room.roomId}/restore`;
+    const rejected = await fetch(base, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(restoreRequest(forged)) });
+    expect(rejected.status).toBe(400);
+    expect(hub.getRoom(room.roomId)).toBe(room);
+    const restored = await postJson<RoomHttpResponse>(base, restoreRequest(snapshot));
+    expect(restored.projection.match?.view.actionTurn).toEqual({ movement: 'moved', regularPlay: 'pending' });
+    const reconnected = await connectSocket(wsUrl);
+    const projected = await reconnected.next(message => message.type === 'server:projection');
+    expect(projected.type === 'server:projection' && projected.projection.match?.view.legalActions.some(action => action.type === 'normal_move')).toBe(false);
+    inbox.socket.close();
+    reconnected.socket.close();
+  });
   it('rejects empty/default/invalid HTTP room IDs without replacing the running default room', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();

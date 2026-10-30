@@ -2,6 +2,7 @@ import type { GameState, PhaseName } from '../schema/game';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
 import { canOccupyLocation, getEnabledLocations } from '../core/map-engine';
+import { movePlayer } from '../core/movement';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID, evaluateCardSourceValidity, isActiveCardSource } from '../core/card-source-state';
 import {
   isPrivateOptionalHandPlayInteractionCandidate, isPrivateOptionalHandPlayInteractionSemantic,
@@ -87,6 +88,7 @@ import type {
   LegalAction, OngoingEffect, PendingDecision, PendingOpponentCloseToOne, RuleNode, TriggeredAbility,
   AbilityInteractionClassification,
   PlayCardAction,
+  ActionTurnState, ActionTurnProgress,
 } from './types';
 
 class RuleRejection extends Error {
@@ -106,6 +108,31 @@ function stagedAttacks(s: GameState): Record<string, PlayCardAction[]> {
   const store = modeState(s);
   store.stagedAttacks ??= {};
   return store.stagedAttacks;
+}
+/** Session-owned continuation, carried by the existing authenticated state envelope. */
+export function initializeActionTurns(s: GameState): void {
+  modeState(s).actionTurns = { version: 1, round: s.round.roundNumber, byPlayer: {} } satisfies ActionTurnState;
+}
+export function actionTurnProgress(s: GameState, playerId: string): ActionTurnProgress | undefined {
+  const turns = modeState(s).actionTurns as ActionTurnState | undefined;
+  if (!turns) return undefined;
+  return turns.round === s.round.roundNumber && turns.byPlayer[playerId]
+    ? { ...turns.byPlayer[playerId]! } : { movement: 'pending', regularPlay: 'pending' };
+}
+function writeActionTurn(s: GameState, playerId: string, progress: ActionTurnProgress): void {
+  const turns = modeState(s).actionTurns as ActionTurnState;
+  if (turns.round !== s.round.roundNumber) { turns.round = s.round.roundNumber; turns.byPlayer = {}; }
+  turns.byPlayer[playerId] = progress;
+}
+function regularTurn(s: GameState, playerId: string): ActionTurnProgress | undefined {
+  return s.round.activePhase === 'action' ? actionTurnProgress(s, playerId) : undefined;
+}
+function normalMovementResult(s: GameState, playerId: string, locationId: string) {
+  const from = player(s, playerId).locationId;
+  const locked = lockedBattlefieldIdsForMovement(s, playerId);
+  if (from && locked.has(from) || locked.has(locationId) || from === locationId || (modeState(s).closedLocations as string[] | undefined)?.includes(locationId) ||
+      s.battleResults.some(result => result.battlefieldId === locationId)) return undefined;
+  return movePlayer(s, { playerId, to: locationId as LocationId, movementKind: 'normal' });
 }
 function pushModeDirective(s: GameState, entry: Record<string, unknown>): void {
   const store = modeState(s);
@@ -135,7 +162,7 @@ function active(s: GameState, id: string): boolean {
 }
 function phase(s: GameState): string { return s.round.activePhase === 'battle' ? 'combat' : s.round.activePhase; }
 function isAttack(d: AuthoringCard | undefined): boolean {
-  return !!d && ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack'].includes(d.cardType);
+  return !!d && ['servant_skill', 'servant_deck_card', 'servant_attack', 'basic_attack', 'master_deck_card'].includes(d.cardType);
 }
 function legacyCardPlayClassification(d: AuthoringCard | undefined): CardPlayClassification {
   if (!d) return { playKind: 'support', destinationZone: 'field' };
@@ -589,12 +616,15 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
   }
   const scope = node(target.scope); const zone = scope.zone === 'battle_area' ? 'attack_area' : scope.zone;
   const alreadySelected = new Set(Object.values(ctx.selections).flat());
+  const ability = definition(s, ctx.sourceCardId)?.abilities.find((entry) => entry.id === ctx.abilityId);
+  const faceDownEffectTarget = !!ability && isPlayActionRouteCandidate(ability) && str(ability.effects[0]?.target) === str(target.id);
   return s.cards.filter(c =>
     !alreadySelected.has(c.instanceId) &&
     (scope.controller === 'any' || c.controllerPlayerId === ctx.controllerId) &&
     (scope.owner === 'any' || c.ownerPlayerId === ctx.controllerId || !scope.owner) &&
     c.zone === zone &&
-    nodes(target.constraints).every(x => constraint(s, ctx, c, x))).map(c => c.instanceId);
+    nodes(target.constraints).every(x => constraint(s, ctx, c, x)) &&
+    (!faceDownEffectTarget || faceDownEffectPlayFailure(s, ctx.controllerId, c.instanceId) === undefined)).map(c => c.instanceId);
 }
 function trustedBattlePowerSnapshot(event: AbilityEvent | undefined): { participantIds: string[]; powers: Record<string, number> } | undefined {
   const participantIds = event?.battleParticipantIds;
@@ -987,6 +1017,14 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean
       isActivateCardByIdTrigger(ability) &&
       ability.effects.some((effect) => effect.type === 'activate_card_by_id' && effect.definitionId === definitionId)));
 }
+function allHandFaceUpForbiddenByEffect(s: GameState, playerId: string): boolean {
+  const hand = s.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand' && entersAttackArea(s, c.instanceId));
+  return hand.length > 0 && hand.every(c => {
+    const d = definition(s, c.instanceId);
+    return !!d && (faceUpCardPlayLimitReached(s, playerId) || ongoingCardPlayForbidRules(s, playerId, c.instanceId).some(rule =>
+      ['situation_restrictions', 'situation_play_forbid', 'play_card_attribute'].includes(rule) && !hasPlayRuleException(d, rule)));
+  });
+}
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
@@ -998,7 +1036,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
-  if (forbidRules.some(rule => !hasPlayRuleException(d, rule))) return 'play_forbidden';
+  const faceDownAttributeException = faceDown && !ignoreTiming && !!regularTurn(s, p) && c.zone === 'hand' && allHandFaceUpForbiddenByEffect(s, p);
+  if (forbidRules.some(rule => !hasPlayRuleException(d, rule) &&
+    !(faceDownAttributeException && ['situation_restrictions', 'situation_play_forbid', 'play_card_attribute'].includes(rule)))) return 'play_forbidden';
   if (!faceDown && faceUpCardPlayLimitReached(s, p)) return 'face_up_card_play_limit_reached';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
@@ -1012,6 +1052,80 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
     const blocked = d.abilities.find(a => a.execution.mode !== 'automatic'); if (blocked) return blocked.execution.mode;
+  }
+  return undefined;
+}
+function faceDownEffectPlayFailure(s: GameState, playerId: string, cardId: string): string | undefined {
+  return playFailure(s, playerId, cardId, true, true, true, true);
+}
+function regularAttackOptions(s: GameState, playerId: string): PlayCardAction[][] {
+  return s.cards.filter(c => c.controllerPlayerId === playerId && ['hand', 'skill'].includes(c.zone) &&
+    entersAttackArea(s, c.instanceId) && !isRequiredAdditionalPlayCard(s, c.instanceId)).flatMap(c => {
+    const options = [false, true].filter(faceDown =>
+      // Keep only payment as a planning constraint; all timing, source and effect restrictions still apply.
+      !playFailure(s, playerId, c.instanceId, faceDown, true, true, false, false, true)).map(faceDown =>
+      ({ type: 'play_card' as const, cardInstanceId: c.instanceId, ...(faceDown ? { faceDown: true } : {}) }));
+    return options.length ? [options] : [];
+  });
+}
+/** Find a complete legal simultaneous batch without executing triggers or paying any costs. */
+function regularAttackPlanContext(s: GameState, playerId: string) {
+  const groups = regularAttackOptions(s, playerId);
+  const hand = s.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand' && entersAttackArea(s, c.instanceId) && !isRequiredAdditionalPlayCard(s, c.instanceId));
+  const mandatory = hand.length <= 2 ? hand.filter(c => groups.some(group => group[0]!.cardInstanceId === c.instanceId)).map(c => c.instanceId) : [];
+  const mana = player(s, playerId).mana;
+  const battlefield = isBattlefield(s, player(s, playerId).locationId);
+  const requireFaceUp = battlefield && !allHandFaceUpForbiddenByEffect(s, playerId);
+  const allowance = Math.max(0, attackPlayAllowance(s, playerId) - attacksDeclaredThisRound(s, playerId));
+  return { groups, mandatory, mana, requireFaceUp, allowance };
+}
+function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAction[] = [], exact = false,
+  planContext = regularAttackPlanContext(s, playerId)): PlayCardAction[] | undefined {
+  const { groups, mandatory, mana, requireFaceUp, allowance } = planContext;
+  const ordinaryRequired = required.filter(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId));
+  if (new Set(required.map(choice => choice.cardInstanceId)).size !== required.length) return undefined;
+  if (ordinaryRequired.some(choice => !groups.some(group => group.some(option =>
+    option.cardInstanceId === choice.cardInstanceId && !!option.faceDown === !!choice.faceDown)))) return undefined;
+  const costOf = (choice: PlayCardAction) => choice.faceDown ? 0 : Number(definition(s, choice.cardInstanceId)?.cardFace.cost ?? 0);
+  const extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).reduce((sum, choice) => sum + costOf(choice), 0);
+  const find = (target: number, fixed: PlayCardAction[], additionalCost = 0, budget = mana): PlayCardAction[] | undefined => {
+    const fixedIds = new Set(fixed.map(choice => choice.cardInstanceId));
+    const remaining = groups.filter(group => !fixedIds.has(group[0]!.cardInstanceId));
+    const visit = (index: number, picked: PlayCardAction[], cost: number): PlayCardAction[] | undefined => {
+      if (cost > budget || picked.length > target || picked.length + remaining.length - index < target) return undefined;
+      if (picked.length === target) {
+        if (mandatory.some(id => !picked.some(choice => choice.cardInstanceId === id))) return undefined;
+        const faceUpCount = picked.filter(choice => !choice.faceDown).length + required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId) && !choice.faceDown).length;
+        if (requireFaceUp && picked.length > 0 && !faceUpCount || faceUpCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpCount)) return undefined;
+        return picked;
+      }
+      const group = remaining[index];
+      if (!group) return undefined;
+      for (const choice of group) {
+        const found = visit(index + 1, [...picked, choice], cost + costOf(choice));
+        if (found) return found;
+      }
+      return mandatory.includes(group[0]!.cardInstanceId) ? undefined : visit(index + 1, picked, cost);
+    };
+    return visit(0, fixed, fixed.reduce((sum, choice) => sum + costOf(choice), additionalCost));
+  };
+  for (let target = Math.min(allowance, groups.length); target >= 0; target--) {
+    // The number due is determined from the pre-batch state, never from a selected underfilled batch.
+    if (!find(target, [])) continue;
+    if (exact && ordinaryRequired.length !== target) return undefined;
+    const found = find(target, ordinaryRequired, extraCost);
+    if (found && required.every(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId) ||
+      !playFailure(s, playerId, choice.cardInstanceId, !!choice.faceDown, true, true, false, found.length > 0))) return found;
+    return undefined;
+  }
+  // User cost exception: only an otherwise legal but unaffordable mandatory hand batch may be reduced.
+  // Re-run the same maximum-batch search without mandatory inclusion; zero-cost face-down options remain legal.
+  if (mandatory.length) {
+    for (let target = Math.min(allowance, groups.length); target > 0; target--) {
+      if (find(target, [], 0, Infinity)) {
+        return regularAttackPlan(s, playerId, required, exact, { ...planContext, mandatory: [] });
+      }
+    }
   }
   return undefined;
 }
@@ -1033,33 +1147,52 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   if (r.hostRequests.length) return [];
   const result: LegalAction[] = [];
   const staged = stagedAttacks(s)[playerId] ?? [];
+  const turn = regularTurn(s, playerId);
+  // This memo is scoped to this read only. Every command and confirmation rebuilds from authoritative state.
+  const planContext = turn && turn.movement !== 'pending' && turn.regularPlay === 'pending'
+    ? regularAttackPlanContext(s, playerId) : undefined;
+  if (turn && s.round.prioritySeat === p.seat && turn.movement === 'pending' && !staged.length) {
+    result.push({ type: 'skip_normal_move' });
+    for (const location of getEnabledLocations(s.map, s.locationConfig)) {
+      const moved = normalMovementResult(s, playerId, location.id);
+      if (moved?.moved) result.push({ type: 'normal_move', locationId: location.id, manaCost: moved.manaSpent });
+    }
+  }
   if (staged.length && s.round.prioritySeat === p.seat) {
-    result.push({ type: 'confirm_staged_attack' }, { type: 'cancel_staged_attack' });
+    if (!turn || regularAttackPlan(s, playerId, staged, true, planContext)) result.push({ type: 'confirm_staged_attack' });
+    result.push({ type: 'cancel_staged_attack' });
     const hasOrdinaryStagedAttack = staged.some((entry) =>
       entersAttackArea(s, entry.cardInstanceId) && !isRequiredAdditionalPlayCard(s, entry.cardInstanceId));
     for (const c of s.cards.filter(c => c.controllerPlayerId === playerId && !staged.some(entry => entry.cardInstanceId === c.instanceId))) {
       const allowRequiredAdditional = hasOrdinaryStagedAttack && isRequiredAdditionalPlayCard(s, c.instanceId);
-      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      if (!playFailure(s, playerId, c.instanceId, false, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId) &&
+          (!turn || regularAttackPlan(s, playerId, [...staged, { type: 'play_card', cardInstanceId: c.instanceId }], false, planContext))) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
-      if (!playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId)) {
+      if (!playFailure(s, playerId, c.instanceId, true, false, false, false, allowRequiredAdditional) && entersAttackArea(s, c.instanceId) &&
+          (!turn || regularAttackPlan(s, playerId, [...staged, { type: 'play_card', cardInstanceId: c.instanceId, faceDown: true }], false, planContext))) {
         result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
     return result;
   }
+  if (turn && turn.movement !== 'pending' && turn.regularPlay === 'pending' && s.round.prioritySeat === p.seat && regularAttackPlan(s, playerId, [], true, planContext)) {
+    result.push({ type: 'complete_empty_regular_play' });
+  }
   for (const c of s.cards.filter(c => c.controllerPlayerId === playerId)) {
     const alreadyStaged = staged.some((entry) => entry.cardInstanceId === c.instanceId);
-    if (!alreadyStaged && !playFailure(s, playerId, c.instanceId)) {
-      result.push({ type: 'play_card', cardInstanceId: c.instanceId });
+    const attack = entersAttackArea(s, c.instanceId);
+    const canRegularPlay = !turn || !attack || turn.movement !== 'pending' && turn.regularPlay === 'pending';
+    if (canRegularPlay && !alreadyStaged && !playFailure(s, playerId, c.instanceId)) {
+      if (!turn || !attack || regularAttackPlan(s, playerId, [{ type: 'play_card', cardInstanceId: c.instanceId }], true, planContext)) result.push({ type: 'play_card', cardInstanceId: c.instanceId });
       if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
-        result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
+        if (!turn || regularAttackPlan(s, playerId, [{ type: 'play_card', cardInstanceId: c.instanceId }], false, planContext)) result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
     }
-    if (!alreadyStaged && !playFailure(s, playerId, c.instanceId, true)) {
-      result.push({ type: 'play_card', cardInstanceId: c.instanceId, faceDown: true });
+    if (canRegularPlay && !alreadyStaged && !playFailure(s, playerId, c.instanceId, true)) {
+      if (!turn || regularAttackPlan(s, playerId, [{ type: 'play_card', cardInstanceId: c.instanceId, faceDown: true }], true, planContext)) result.push({ type: 'play_card', cardInstanceId: c.instanceId, faceDown: true });
       if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && entry.faceDown === true)) {
-        result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
+        if (!turn || regularAttackPlan(s, playerId, [{ type: 'play_card', cardInstanceId: c.instanceId, faceDown: true }], false, planContext)) result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId, faceDown: true });
       }
     }
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
@@ -1249,7 +1382,7 @@ function shortestPath(s: GameState, from: string, to: string): string[] {
   }
   return [from, to];
 }
-function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: string | undefined, to: string | undefined): void {
+function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: string | undefined, to: string | undefined, movementAlreadyLogged = false): void {
   if (!from || !to || from === to) return;
   const path = shortestPath(s, from, to);
   const distance = Math.max(0, path.length - 1);
@@ -1257,7 +1390,7 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s
   r.movementDistanceThisRound[playerId] = (r.movementDistanceThisRound[playerId] ?? 0) + distance;
   const battlefields = path.slice(1).filter(locationId => isBattlefield(s, locationId)).length;
   r.battlefieldsPassedOrStayedThisRound[playerId] = (r.battlefieldsPassedOrStayedThisRound[playerId] ?? 0) + battlefields;
-  s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
+  if (!movementAlreadyLogged) s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
 }
 function lifecycleTransitions(s: GameState) {
   const r = runtime(s);
@@ -4129,10 +4262,11 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
 export function projectAbilityState(s: GameState, viewerId: string): AbilityPlayerView {
   const r = runtime(s); const ongoing = liveOngoing(s); const exists = s.players.some(p => p.id === viewerId);
   const staged = Object.entries(stagedAttacks(s))
-    .filter(([playerId]) => playerId === viewerId || s.cards.some((card) => card.controllerPlayerId === playerId && card.zone === 'attack_area' && card.visibility.scope === 'public'))
+    .filter(([playerId]) => playerId === viewerId)
     .map(([playerId, cards]) => ({ playerId, cards: cards.map((entry) => ({ ...entry })) }));
   const view: AbilityPlayerView = { revision: r.revision, phase: s.round.activePhase, round: s.round.roundNumber,
     legalActions: exists ? getLegalActions(s, viewerId) : [],
+    ...(exists && regularTurn(s, viewerId) ? { actionTurn: regularTurn(s, viewerId)! } : {}),
     players: s.players.map(p => {
       const character = r.pack.characters?.[p.servantCardId];
       const servantPackage = character ? {
@@ -4209,7 +4343,31 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
 function dispatch(s: GameState, playerId: string, command: AbilityCommand): void {
   const r = runtime(s); const legal = getLegalActions(s, playerId);
   if (!command || typeof command !== 'object') reject('illegal_action', 'Invalid command');
+  if ('faceDown' in command && typeof command.faceDown !== 'boolean') reject('illegal_action', 'Invalid card face');
   switch (command.type) {
+    case 'normal_move':
+    case 'skip_normal_move':
+    case 'complete_empty_regular_play': {
+      if (!legal.some(action => action.type === command.type &&
+        (action.type !== 'normal_move' || command.type === 'normal_move' && action.locationId === command.locationId))) {
+        reject('illegal_action_turn', 'The action-turn step is not available');
+      }
+      const turn = regularTurn(s, playerId)!;
+      if (command.type === 'normal_move') {
+        const moved = normalMovementResult(s, playerId, command.locationId);
+        if (!moved?.moved) reject('illegal_movement', 'The movement destination is not legal');
+        const from = player(s, playerId).locationId;
+        Object.assign(s, moved.nextState);
+        writeActionTurn(s, playerId, { ...turn, movement: 'moved' });
+        recordMovementForAbilityRuntime(s, playerId, from, command.locationId, true);
+        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId, locationId: command.locationId });
+      } else if (command.type === 'skip_normal_move') {
+        writeActionTurn(s, playerId, { ...turn, movement: 'skipped' });
+      } else {
+        writeActionTurn(s, playerId, { ...turn, regularPlay: 'complete' });
+      }
+      break;
+    }
     case 'play_card': {
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');
@@ -4238,7 +4396,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const choices = staged[playerId] ?? [];
       if (!choices.length || !legal.some(a => a.type === 'confirm_staged_attack')) reject('illegal_action', 'No staged attack can be confirmed');
       playBatch(s, playerId, choices);
-      delete staged[playerId];
+      // Triggered effects may replace the transactional modeState while the batch resolves.
+      delete stagedAttacks(s)[playerId];
       break;
     }
     case 'cancel_staged_attack': {
@@ -4540,6 +4699,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     .map(c => c.cardInstanceId));
   const regularAttackChoices = choices.filter(c =>
     entersAttackArea(s, c.cardInstanceId) && !requiredAdditionalIds.has(c.cardInstanceId)).length;
+  const turn = regularTurn(s, playerId);
+  if (turn && quota === 'regular' && regularAttackChoices > 0) {
+    if (turn.movement === 'pending' || turn.regularPlay !== 'pending' || !regularAttackPlan(s, playerId, choices, true)) {
+      reject('illegal_regular_batch', 'Complete movement first and submit the entire legal regular attack batch');
+    }
+  }
   if (quota === 'regular' && requiredAdditionalIds.size > 0 && regularAttackChoices === 0) {
     reject('append_only', 'Required additional-play cards need a regular attack in the same batch');
   }
@@ -4550,7 +4715,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   const paidManaByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
-    const failure = playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
+    const failure = quota === 'effect' && c.faceDown === true
+      ? faceDownEffectPlayFailure(s, playerId, c.cardInstanceId)
+      : playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
     if (failure) reject(failure, 'Card cannot be played in this batch');
     const paidMana = !waiveManaCost && !c.faceDown ? Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0) : 0;
     if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
@@ -4558,9 +4725,17 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     cost += paidMana;
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
+  if (turn && quota === 'regular' && regularAttackChoices > 0) {
+    const hand = s.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand');
+    if (allHandFaceUpForbiddenByEffect(s, playerId)) {
+      runtime(s).events.push({ type: 'hand_revealed_for_regular_play', playerId,
+        revealedCards: hand.map(c => ({ instanceId: c.instanceId, definitionId: c.definitionId })) });
+    }
+  }
   const playedCards = choices.map(c => ({ instanceId: c.cardInstanceId, controllerId: playerId,
     cardType: definition(s, c.cardInstanceId)!.cardType, faceDown: !!c.faceDown }));
   player(s, playerId).mana -= cost;
+  if (turn && quota === 'regular' && regularAttackChoices > 0) writeActionTurn(s, playerId, { ...turn, regularPlay: 'complete' });
   for (const c of choices) {
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);

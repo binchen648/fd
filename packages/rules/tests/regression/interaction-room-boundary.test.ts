@@ -51,13 +51,21 @@ function setupHub() {
   add(sourceCardId, 'servant.drake.skill.sc-drake-1', 'skill');
   add(lowCardId, 'basic.preparation', 'hand');
   add(highCardId, 'basic.luck', 'hand');
+  add('p1-batch-supplement-boundary', 'basic.strength.3', 'hand');
 
   let revision = hub.project(roomId, hostClientId).match!.view.revision;
-  expect(hub.dispatchCommand(roomId, hostClientId, { type: 'play_card', cardInstanceId: sourceCardId }, revision).result.ok).toBe(true);
+  for (const command of [{ type: 'skip_normal_move' } as const,
+    { type: 'stage_attack_card', cardInstanceId: sourceCardId } as const,
+    { type: 'stage_attack_card', cardInstanceId: 'p1-batch-supplement-boundary' } as const,
+    { type: 'confirm_staged_attack' } as const]) {
+    expect(hub.dispatchCommand(roomId, hostClientId, command, revision).result.ok).toBe(true);
+    revision = hub.project(roomId, hostClientId).match!.view.revision;
+  }
   revision = hub.project(roomId, hostClientId).match!.view.revision;
-  expect(hub.dispatchCommand(roomId, hostClientId, {
+  const activationResult = hub.dispatchCommand(roomId, hostClientId, {
     type: 'activate_ability', cardInstanceId: sourceCardId, abilityId,
-  }, revision).result.ok).toBe(true);
+  }, revision).result;
+  expect(activationResult.ok, JSON.stringify(activationResult.rejection)).toBe(true);
   const owner = hub.project(roomId, hostClientId).match!;
   const interaction = owner.interactionWindows.find((window) => window.kind === 'target' && window.abilityId === abilityId)!;
   return { hub, interaction };

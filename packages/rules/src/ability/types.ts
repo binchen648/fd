@@ -253,6 +253,7 @@ export interface SafeEvent {
   fromZone?: string;
   toZone?: string;
   movedCount?: number;
+  revealedCards?: { instanceId: string; definitionId: string }[];
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
@@ -345,14 +346,25 @@ export interface ChooseTargetAction { type: 'choose_target'; decisionId: string;
 export interface ResolveResponseAction { type: 'resolve_response'; windowId: string; cardInstanceId: string; abilityId: string }
 export interface DeclineWindowAction { type: 'decline_this_window'; windowId: string }
 export interface DeployPlayerAction { type: 'deploy_player'; locationId: string }
+export interface NormalMoveAction { type: 'normal_move'; locationId: string; manaCost?: number }
+export interface SkipNormalMoveAction { type: 'skip_normal_move' }
+export interface CompleteEmptyRegularPlayAction { type: 'complete_empty_regular_play' }
+export interface ActionTurnProgress {
+  movement: 'pending' | 'moved' | 'skipped';
+  regularPlay: 'pending' | 'complete';
+}
+export interface ActionTurnState { version: 1; round: number; byPlayer: Record<string, ActionTurnProgress> }
 export type LegalAction = PlayCardAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
-  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction;
+  ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction |
+  NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction;
 export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variables?: Record<string, number> }) |
   { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
-  { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction;
+  { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
+  NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction;
 export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
-  players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
+  actionTurn?: ActionTurnProgress;
+  players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
   cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {

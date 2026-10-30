@@ -6,6 +6,15 @@ import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpr
 import { resolveBattlefield } from '../src/core/combat-resolver';
 import { applyBattleScoring } from '../src/core/scoring-resolver';
 
+function playInRegularBatch(session: ReturnType<typeof createMatchSession>, playerId: string, cardInstanceId: string): void {
+  expect(session.dispatchPlayerAction(playerId, { type: 'skip_normal_move' }).ok).toBe(true);
+  expect(session.dispatchPlayerAction(playerId, { type: 'stage_attack_card', cardInstanceId }).ok).toBe(true);
+  const supplement = session.getPlayerView(playerId).legalActions.find(action => action.type === 'stage_attack_card');
+  expect(supplement).toBeDefined();
+  expect(session.dispatchPlayerAction(playerId, supplement!).ok).toBe(true);
+  expect(session.dispatchPlayerAction(playerId, { type: 'confirm_staged_attack' }).ok).toBe(true);
+}
+
 describe('MatchSession semi-auto runtime', () => {
   it('starts a 7-player match and exposes the first human decision', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
@@ -527,7 +536,7 @@ describe('MatchSession semi-auto runtime', () => {
     const staff = session.state.cards.find((card) =>
       card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-2')!;
     expect(staff).toBeTruthy();
-    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: staff.instanceId }).ok).toBe(true);
+    playInRegularBatch(session, 'p5', staff.instanceId);
     session.state.round.prioritySeat = 5;
     expect(session.dispatchPlayerAction('p5', {
       type: 'activate_ability',
@@ -579,7 +588,7 @@ describe('MatchSession semi-auto runtime', () => {
     const source = session.state.cards.find((card) =>
       card.ownerPlayerId === 'p5' && card.definitionId === 'servant.artoriac.skill.sc-artoriac-4')!;
     expect(source).toBeTruthy();
-    expect(session.dispatchPlayerAction('p5', { type: 'play_card', cardInstanceId: source.instanceId }).ok).toBe(true);
+    playInRegularBatch(session, 'p5', source.instanceId);
     session.state.round.prioritySeat = 5;
     expect(session.dispatchPlayerAction('p5', {
       type: 'activate_ability',

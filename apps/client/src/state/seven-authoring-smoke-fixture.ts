@@ -406,6 +406,9 @@ function buildServantDeckView(
 }
 
 function actionLabel(action: LegalAction, rawCards?: MatchSession['rawCards'], state?: RulesGameState): string {
+  if (action.type === 'normal_move') return `常规移动至 ${locationLabels[action.locationId as keyof typeof locationLabels] ?? action.locationId} · ${action.manaCost} 魔力`;
+  if (action.type === 'skip_normal_move') return '不进行常规移动';
+  if (action.type === 'complete_empty_regular_play') return '无合法攻击牌 · 完成常规出牌';
   if (action.type === 'deploy_player') return `部署到 ${locationLabels[action.locationId as keyof typeof locationLabels] ?? action.locationId}`;
   if (action.type === 'stage_attack_card') return action.faceDown ? '加入待确认盖放' : '加入待确认攻击';
   if (action.type === 'confirm_staged_attack') return '确认打出攻击区';
@@ -433,7 +436,7 @@ function mapLegalAction(action: LegalAction, index: number, ownerPlayerId: strin
     : undefined;
   return {
     actionId: `${action.type}:${index}`,
-    kind: action.type === 'deploy_player'
+    kind: action.type === 'normal_move' ? 'move' : action.type === 'deploy_player'
       ? 'deploy'
       : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack'
         ? 'pass'
@@ -573,6 +576,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       location: player.locationId ? locationLabels[player.locationId] : '未部署',
       vp: player.vp,
       mana: player.mana,
+      totalPower: currentView.players.find(projectedPlayer => projectedPlayer.id === player.id)?.totalPower,
       commandSpells: (player as { commandSpells?: number }).commandSpells ?? 3,
       isSelf: player.id === viewerId,
       masterImageUrl: resolveEntityImageUrl('master', pairing.master.id),
@@ -724,6 +728,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
           ],
         }
       : undefined,
+    ...(currentView.actionTurn ? { actionTurn: currentView.actionTurn } : {}),
     availableActions: currentView.legalActions.map((action, index) => mapLegalAction(action, index, currentPlayerId, rawCards, state)),
     interactionWindows: projected.interactionWindows.map((window) => ({
       id: window.id,

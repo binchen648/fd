@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-DR-P01-M1",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/682#issuecomment-6518033164",
+  "candidateSha": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE"
+}

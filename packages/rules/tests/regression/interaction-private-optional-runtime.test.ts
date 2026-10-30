@@ -115,6 +115,7 @@ describe('P3-TO-13 private optional target interaction gateway', () => {
     const ownerBefore = rules.projectAbilityState(state, 'p1').pendingDecision!;
     const session = new MatchSession({ humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     session.state = structuredClone(state);
+    rules.initializeActionTurns(session.state);
     const restored = restoreTrustedAuthoringFixtureSession(session.serializeSession());
     const ownerAfter = restored.getClientProjection('p1');
     const observerAfter = restored.getClientProjection('p2');
