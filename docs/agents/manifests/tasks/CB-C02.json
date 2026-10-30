@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "fd-capability-batch-task-v1",
+  "taskId": "CB-C02",
+  "title": "Controller-scope low-mana skill permission (Kayneth pilot)",
+  "status": "PARKED_BLOCKED",
+  "owner": "Capability Batch Delivery Lead (capability line B)",
+  "authority": "User capability-line assignment 2026-10-29; P01 freeze declared by the user on 2026-10-30 enabling the shared-runtime write window; delivery reset docs/agents/delivery-reset/03-capability-delivery-lead.md",
+  "remoteMainSha": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "remoteMainVerifiedBy": "git ls-remote origin refs/heads/main (2026-10-30; PR #561 merged into main)",
+  "exactBaseSha": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "baseKind": "REMOTE_MAIN",
+  "branch": "codex/cb-c02-controller-low-mana",
+  "absoluteWorktree": "D:/fd-validation/cb-c02-controller-low-mana",
+  "capabilityFamily": "CONTROLLER_SCOPE_PLAY_PERMISSION",
+  "semanticContracts": [
+    "CONTROLLER_SCOPE_SKILL_ZONE_MANA_EXCEPTION"
+  ],
+  "selectedIdentities": [
+    "master.kayneth.skill.s1"
+  ],
+  "productBinding": {
+    "definitionId": "master.kayneth.skill.double-master",
+    "abilityId": "double-master.passive",
+    "printedClause": "双重御主-你拥有的魔力少于8点也可以使用技能牌。",
+    "authoringPath": "data/authoring/masters/master.kayneth.json",
+    "authoredScopeBefore": {
+      "object": "this_card"
+    },
+    "authoredScopeAfter": {
+      "object": "controller_skill_cards"
+    },
+    "bindingState": "BOUND_AND_EXECUTED_IN_PRODUCTION"
+  },
+  "productionConsumers": [
+    {
+      "definitionId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "requires": {
+        "type": "skill_zone_mana_at_least",
+        "value": 8
+      },
+      "printedCost": 2,
+      "controller": "p7 (master.kayneth + servant.artoria-alt)"
+    },
+    {
+      "definitionId": "servant.artoria-alt.skill.sc-artoria-alt-3",
+      "requires": {
+        "type": "skill_zone_mana_at_least",
+        "value": 8
+      },
+      "printedCost": 3,
+      "controller": "p7 (master.kayneth + servant.artoria-alt)"
+    }
+  ],
+  "negativeControlConsumer": {
+    "definitionId": "servant.achilles.skill.sc-achilles-1",
+    "controller": "p3 (master.maiya + servant.achilles)",
+    "purpose": "a non-Kayneth controller keeps the ordinary 8-mana gate"
+  },
+  "ruleSources": [
+    "docs/rules/FD-Game-Rules-Final.md:332 (9.4 skill-zone play gate)",
+    "docs/rules/FD-Game-Rules-Final.md:129 (passives effective from hand/skill zone)",
+    "data/authoring/masters/master.kayneth.json (printed clause and rule modifier)"
+  ],
+  "sourceEvidenceShas": {
+    "normalizedSourceF1": "fefc34550cf2f71797e724d7170803f9c24e6221",
+    "independentSourceReview": "59f145434695d29bdd17e4cb3adc887e84182377"
+  },
+  "reusedPriorDelivery": {
+    "c01SetupCreateToSkill": "fcd0c994838e4108448157ce14dbe8c985cdec0e"
+  },
+  "runtimeDomains": [
+    "ability-play-legality"
+  ],
+  "productionPathsWritten": [
+    "packages/rules/src/ability/controller-play-permission.ts (new module)",
+    "packages/rules/src/ability/interpreter.ts (import, playRuleExceptionApplies helper, condition case, requirements filter)",
+    "packages/rules/src/ability/loader.ts (controller scope vocabulary with narrow validation)",
+    "data/authoring/masters/master.kayneth.json (rule modifier scope)",
+    "data/generated/fd-playtest-v1.content-library.json (deterministic regeneration)"
+  ],
+  "testPaths": [
+    "packages/rules/tests/regression/controller-low-mana-skill-permission.test.ts",
+    "packages/rules/tests/kayneth-s3-consumer-migration.test.ts (pinned archive hash re-bound under CB-C02-SCOPE-01)"
+  ],
+  "evidencePaths": [
+    "artifacts/cb-c02-controller-low-mana-permission.json",
+    "docs/reports/2026-10-29-cb-c02-controller-low-mana-permission.md",
+    "docs/agents/manifests/tasks/CB-C02.json",
+    "docs/agents/manifests/reservations/CB-C02.json"
+  ],
+  "scopeRule": "Only the listed production, authoring, generated and test paths. No MatchSession, match-room, movement, combat-resolver, apps, e2e or pack-source writes.",
+  "scopeAddenda": [
+    {
+      "id": "CB-C02-SCOPE-01",
+      "path": "packages/rules/tests/kayneth-s3-consumer-migration.test.ts",
+      "reason": "The test pins the full-text sha256 of data/authoring/masters/master.kayneth.json (REGISTERED_ARCHIVE_SHA) as a content-integrity guard. The reviewed provider change moves only the double-master rule modifier scope; the constant is re-bound to the new archive hash with an inline justification.",
+      "constraints": [
+        "only the pinned constant and its justification comment change",
+        "no assertion removed, weakened or skipped",
+        "printed text, card list, s3 material and lineage assertions stay intact"
+      ],
+      "hashBefore": "8047edd19f83c733e72c2b25c6c9bdf76e36a0d8005d358bbe6a2e6df4304c20",
+      "hashAfter": "518a1b63602ab89e8baa5592904fac37fa625f262b2c3672ad832d6da129fc09"
+    }
+  ],
+  "enablerImplementation": {
+    "contract": "CONTROLLER_SCOPE_SKILL_ZONE_MANA_EXCEPTION",
+    "derivation": "controllerSkillZoneManaExceptions(s, controllerId) scans cards controlled by the player that sit in an effective passive zone (hand, skill, attack_area, field) and carry an automatic passive whose ruleModifiers ignore skill_zone_mana_at_least / skill_zone_mana_requirement with scope.object = controller_skill_cards",
+    "callSites": [
+      "interpreter.ts condition('skill_zone_mana_at_least')",
+      "interpreter.ts playFailure requirements filter"
+    ],
+    "typedBoundary": "loader accepts controller_skill_cards only for ignore on the two skill-zone mana rules; any other rule or operation is reported as ruleModifiers.scope.object and the ability becomes unsupported",
+    "noCardBranches": "no branch on master.kayneth, card id, ability id or archive id anywhere in the runtime"
+  },
+  "acceptancePlan": {
+    "focused": "controller-low-mana-skill-permission.test.ts (production session, registered pack, real commands)",
+    "negative": [
+      "non-Kayneth controller keeps the 8-mana gate",
+      "payment insufficient after the exemption",
+      "wrong priority / foreign controller / forged instance rejected atomically",
+      "stale replay rejected without double payment",
+      "carrier in discard loses the exemption",
+      "controller scope rejected on any non-mana rule",
+      "no cross-player leak; legality stable across serialize/restore"
+    ],
+    "regression": "full repository suite compared against a clean 7724bff0 baseline worktree"
+  },
+  "actualResults": {
+    "focused": {
+      "tests": 10,
+      "passed": 10,
+      "failed": 0
+    },
+    "typecheck": "npx tsc -b packages/game-contracts packages/rules -> exit 0",
+    "contentCompile": "npm run content:compile -> 7 masters, 7 servants, 20 events, 0 blocking issues; generated library diff is 3 insertions / 3 deletions",
+    "fullSuiteCandidate": {
+      "files": 218,
+      "tests": 1802,
+      "failed": 13,
+      "note": "9 failures are load timeouts in git-backed script tests, all pass in isolation"
+    },
+    "fullSuiteBaseline": {
+      "files": 217,
+      "tests": 1792,
+      "failed": 7,
+      "note": "pre-existing failures: content image evidence x2, kintoki authoring x2, FM01 archive-scope x1, plus load timeouts"
+    },
+    "parity": "candidate-only logic failures: 0. The only new candidate-side diffs were 30s/15s/5s load timeouts; scripts/tests/phase3-e06-post-merge-recount.test.ts, phase3-e08-b11-coverage-sync.test.ts, phase3-readiness-preflight.test.ts and phase3-efp-k03-evidence-contract.test.ts, engineering-failure-preflight.test.ts pass 92/92 when run in isolation on the candidate"
+  },
+  "conflicts": {
+    "drP01": {
+      "state": "FROZEN by user on 2026-10-30; worktree clean at 2c502562; its reservation file still reads GRANTED_BOUND and carries no release record",
+      "fileOverlap": "interpreter.ts and loader.ts are shared with DR-P01 productionPaths; this candidate writes both functions DR-P01 touched only partially (playFailure forbid branch at a different hunk, getLegalActions)",
+      "mergeRisk": "textual conflict unlikely (different hunks) but DR-P01's action-turn gating changes play_card legality windows; after P01 merges, this regression must be re-run on the merged base and its phase/priority fixture adapted to the action-turn contract if needed"
+    },
+    "pr561": "merged into main by its owner on 2026-10-30; not merged or closed by this task"
+  },
+  "credit": {
+    "migrationCreditDelta": 0,
+    "coverageCreditDelta": 0,
+    "formalPass": false,
+    "reason": "rule repair for an already registered identity; no new identity was admitted and no independent verification has happened yet",
+    "acceptedIdentities": "111/944 unchanged"
+  },
+  "unverifiedRisks": [
+    "Scope adjudication: whether the clause covers every skill card the controller owns or only skill attacks played from the skill zone. This candidate implements the broader reading and marks it for source review.",
+    "Passive effectiveness while a master skill sits in the skill zone is taken from rules line 129; production has no prior master-skill example.",
+    "Interaction with skill-use forbids, card-play forbids, face-up limits and phase/priority is inherited unchanged but not exhaustively re-proven for every forbid combination.",
+    "controllerSkillZoneManaExceptions scans the controller's cards on each requirement evaluation; no cache. Measured cost is negligible at seven-player scale but unbenchmarked.",
+    "Only one identity in the 127-archive corpus carries this controller-scope clause; the batch stays a singleton pilot.",
+    "Independent technical verification has not happened; this candidate must not self-declare PASS or merge."
+  ],
+  "promotionAuthorized": false,
+  "independentVerificationRequired": true,
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "authorityRegistry": "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json"
+}

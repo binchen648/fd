@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "fd-shared-runtime-lane-v1",
+  "updatedAt": "2026-10-30T05:03:59.108656+00:00",
+  "authority": "Explicit latest user Global Technical Lead single-writer instruction",
+  "allowedWriterStates": [
+    "GRANTED",
+    "SUSPENDED",
+    "RELEASED"
+  ],
+  "precedence": "This published Planner registry and task manifests supersede earlier local/frozen reservation snapshots; frozen evidence is not writer permission",
+  "activeRuntimeTask": "DR-P01",
+  "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
+  "binding": {
+    "branch": "codex/dr-p01-m1-integration-20261030",
+    "absoluteWorktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
+    "acknowledgement": "BOUND_BY_EXPLICIT_SAME_OWNER_TRANSFER; OWNER_REACK_REQUIRED_BEFORE_REPLAY"
+  },
+  "requiredBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "resources": [
+    {
+      "path": "apps/client/src/pages/MatchTable.tsx",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "apps/client/src/state/playtest-fixture-loader.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "apps/client/src/state/remote-room-fixture.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "packages/rules/src/ability/types.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "packages/rules/src/core/combat-resolver.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "packages/rules/src/core/movement.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    },
+    {
+      "path": "packages/rules/src/match-session.ts",
+      "state": "GRANTED",
+      "taskId": "DR-P01"
+    }
+  ],
+  "loader": {
+    "path": "packages/rules/src/ability/loader.ts",
+    "state": "RELEASED",
+    "activeWriter": null,
+    "note": "Excluded from P01; CB-C02 suspended; any future write requires new explicit grant"
+  },
+  "tasks": {
+    "DR-P01": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/DR-P01.json",
+      "oldBindingState": "SUSPENDED",
+      "oldFrozenCandidate": "2c50256280ef0ebdb1c1366cb09984530fd868ff"
+    },
+    "CB-C02": {
+      "state": "SUSPENDED",
+      "deliveryState": "PARKED_BLOCKED",
+      "frozenCandidate": "2d386ddd7d4a0d1d4d51d44a3ad0905668e12f8e",
+      "reservation": "docs/agents/manifests/reservations/CB-C02.json"
+    }
+  },
+  "historicalDirtyInterpreter": {
+    "path": "D:/f49-26/packages/rules/src/ability/interpreter.ts",
+    "state": "SUSPENDED",
+    "sha256": "e5a35900cee8b5964526afbb96a62eb23b869f5d7cce65acd17717411ae7b2de",
+    "authority": "a02a74fa3ecfb08a11f22f92408082a759830a7d existing frozen-history disposition"
+  },
+  "limitations": [
+    "Owner of CB-C02 not impersonated; suspension issued by user-authorized Global Technical Lead",
+    "No acceptance/promotion/credit granted",
+    "No source in frozen worktrees changed"
+  ]
+}
