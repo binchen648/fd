@@ -125,6 +125,8 @@
     "githubAcceptanceStatement": "https://github.com/binchen648/fd/pull/682#issuecomment-6515584452",
     "newRolesCreated": false,
     "fullCi": "PENDING_ACTUAL_INTEGRATION_HEAD",
-    "runtimeSourceUnchangedSinceReview": true
+    "runtimeSourceUnchangedSinceReview": true,
+    "synchronizationSha": "c8f4322f629f0ee69833fed241af5fc3237e4a53",
+    "assemblyRole": "Global Technical Lead / Integration Owner"
   }
 }
