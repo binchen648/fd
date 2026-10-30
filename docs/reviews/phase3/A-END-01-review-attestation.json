@@ -3,57 +3,60 @@
   "taskId": "P3-A-END-01",
   "reviewer": "github:binchen648",
   "reviewThread": "https://github.com/binchen648/fd/pull/683#issuecomment-6527556540",
-  "candidateSha": "fb491689ccc69995315072acc81ff5d2fbef5d35",
+  "candidateSha": "8c52ed6bac69a03deba9060922c7a50d63a2eaf7",
   "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
   "independentVerification": {
-    "candidate": "fb491689ccc69995315072acc81ff5d2fbef5d35",
+    "reviewedCandidateSha": "8c52ed6bac69a03deba9060922c7a50d63a2eaf7",
+    "candidate": "8c52ed6bac69a03deba9060922c7a50d63a2eaf7",
     "reviewer": "/root/a_end_01_independent",
-    "verifiedAt": "2026-10-30T16:14:02.948321+00:00",
-    "cleanBeforeAndAfter": true,
-    "probeExitCode": 0,
-    "probeGroupsPassed": 10,
-    "boundedSuiteExitCode": 0,
-    "boundedSuiteTestsPassed": 71,
-    "ordinaryJsonCasesPassed": 4,
-    "jsonProbeExitCode": 0,
-    "withAndWithoutLiveAuthority": true,
+    "verifiedAt": "2026-10-30T16:24:16.240734+00:00",
     "technicalVerdict": "PASS",
-    "integrationAllowed": "NO_PENDING_FULL_CI",
-    "originalR1FailureAndPriorFullCiRetained": true,
-    "harnessFailure": "Firstscopeformatincorrect;originalrejectionlogpreserved;correctedexternalonly",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "acceptanceScope": "Bounded seven-player A-END-01 terminal implementation; persisted-JSON checkpoint isolation and compatibility; cross-file scheduling preserves selected tests and individual timeouts",
+    "integrationAllowed": "NO_PENDING_FINAL_HEAD_FULL_CI",
+    "githubReviewer": null,
+    "reviewThread": null,
+    "cleanBeforeAndAfter": true,
+    "terminalProbe": {
+      "groupsPassed": 10,
+      "exitCode": 0
+    },
+    "ordinaryJsonAuthorityProbe": {
+      "casesPassed": 4,
+      "exitCode": 0
+    },
+    "boundedSuite": {
+      "terminalTests": 21,
+      "originalAuthorityTests": 51,
+      "totalPassed": 72,
+      "exitCode": 0
+    },
+    "configReview": {
+      "fileParallelism": false,
+      "testSelectionChanged": false,
+      "testCiCommandChanged": false,
+      "individualTimeoutsChanged": false,
+      "withinFileConcurrentChanged": false,
+      "interpreterLoaderDiffEmpty": true
+    },
+    "jsonBoundary": "Existing persisted-JSON representation; not arbitrary structuredClone equivalence; live state unchanged and live authority retained",
+    "oldFailuresRetained": true,
     "sourceModifiedByReviewer": false,
     "evidence": [
       {
-        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-probe.mts",
-        "sha256": "a326459c6c5f4eef4eb2a4fe32fcc7f1763b5bf89b3e7addf59d5e110ec9f5b1"
-      },
-      {
-        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-probe-fb491689.log",
+        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-probe-8c52ed6b.log",
         "sha256": "ef68d164c512f75f2710524f3a138f8420c8d09bac1f4817c2f338db8d2bc9b2"
       },
       {
-        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-suite-fb491689.log",
-        "sha256": "76dbe31f0cda3b4539c1529696cb758b405304180dff128ad22272239bd55526"
-      },
-      {
-        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-json-fb491689.mts",
-        "sha256": "a14ae319d7945774470b014c1c6e2c044855855bae0565c59f9b1682540a538f"
-      },
-      {
-        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-json-fb491689.log",
-        "sha256": "f42f0bd731d88d165e966f621c796baa23cc98f97684047410e9559e8e76e1f7"
-      },
-      {
-        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-json-fb491689-corrected.log",
+        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-json-8c52ed6b.log",
         "sha256": "1650e2cfd50ee7b515cd08d7b4cf42c473ca16a7647656dc80e180f07945cce1"
+      },
+      {
+        "path": "D:\\fd-validation\\a-end-01-20261030\\independent-suite-8c52ed6b.log",
+        "sha256": "a0c0275db8979fb7fe501437d60e48336d8ecb8283c84d0961833dbeedac23de"
       }
-    ],
-    "reviewedCandidateSha": "fb491689ccc69995315072acc81ff5d2fbef5d35",
-    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
-    "acceptanceScope": "Bounded technical A-END-01 seven-player standard terminal implementation and checkpoint serialization compatibility; not full-game or merge acceptance",
-    "githubReviewer": null,
-    "reviewThread": null
+    ]
   },
-  "independentVerificationRawSha256": "f589a6ea01d9bf448d794c39cdb8a19a711a4d9a02860b3d6964090dc87c716c",
+  "independentVerificationRawSha256": "91f1ef1588e7dab4ee74a189418d80aa931d93493f2ab12f320977a6382213db",
   "accountBinding": "Global lead records external independent acceptance; no impersonation or merge authorization"
 }
