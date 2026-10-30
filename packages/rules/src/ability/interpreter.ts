@@ -1062,7 +1062,8 @@ function regularAttackOptions(s: GameState, playerId: string): PlayCardAction[][
   return s.cards.filter(c => c.controllerPlayerId === playerId && ['hand', 'skill'].includes(c.zone) &&
     entersAttackArea(s, c.instanceId) && !isRequiredAdditionalPlayCard(s, c.instanceId)).flatMap(c => {
     const options = [false, true].filter(faceDown =>
-      !playFailure(s, playerId, c.instanceId, faceDown, true, true)).map(faceDown =>
+      // Keep only payment as a planning constraint; all timing, source and effect restrictions still apply.
+      !playFailure(s, playerId, c.instanceId, faceDown, true, true, false, false, true)).map(faceDown =>
       ({ type: 'play_card' as const, cardInstanceId: c.instanceId, ...(faceDown ? { faceDown: true } : {}) }));
     return options.length ? [options] : [];
   });
@@ -1087,11 +1088,11 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
     option.cardInstanceId === choice.cardInstanceId && !!option.faceDown === !!choice.faceDown)))) return undefined;
   const costOf = (choice: PlayCardAction) => choice.faceDown ? 0 : Number(definition(s, choice.cardInstanceId)?.cardFace.cost ?? 0);
   const extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).reduce((sum, choice) => sum + costOf(choice), 0);
-  const find = (target: number, fixed: PlayCardAction[], additionalCost = 0): PlayCardAction[] | undefined => {
+  const find = (target: number, fixed: PlayCardAction[], additionalCost = 0, budget = mana): PlayCardAction[] | undefined => {
     const fixedIds = new Set(fixed.map(choice => choice.cardInstanceId));
     const remaining = groups.filter(group => !fixedIds.has(group[0]!.cardInstanceId));
     const visit = (index: number, picked: PlayCardAction[], cost: number): PlayCardAction[] | undefined => {
-      if (cost > mana || picked.length > target || picked.length + remaining.length - index < target) return undefined;
+      if (cost > budget || picked.length > target || picked.length + remaining.length - index < target) return undefined;
       if (picked.length === target) {
         if (mandatory.some(id => !picked.some(choice => choice.cardInstanceId === id))) return undefined;
         const faceUpCount = picked.filter(choice => !choice.faceDown).length + required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId) && !choice.faceDown).length;
@@ -1116,6 +1117,15 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
     if (found && required.every(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId) ||
       !playFailure(s, playerId, choice.cardInstanceId, !!choice.faceDown, true, true, false, found.length > 0))) return found;
     return undefined;
+  }
+  // User cost exception: only an otherwise legal but unaffordable mandatory hand batch may be reduced.
+  // Re-run the same maximum-batch search without mandatory inclusion; zero-cost face-down options remain legal.
+  if (mandatory.length) {
+    for (let target = Math.min(allowance, groups.length); target > 0; target--) {
+      if (find(target, [], 0, Infinity)) {
+        return regularAttackPlan(s, playerId, required, exact, { ...planContext, mandatory: [] });
+      }
+    }
   }
   return undefined;
 }

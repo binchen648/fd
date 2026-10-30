@@ -576,6 +576,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       location: player.locationId ? locationLabels[player.locationId] : '未部署',
       vp: player.vp,
       mana: player.mana,
+      totalPower: currentView.players.find(projectedPlayer => projectedPlayer.id === player.id)?.totalPower,
       commandSpells: (player as { commandSpells?: number }).commandSpells ?? 3,
       isSelf: player.id === viewerId,
       masterImageUrl: resolveEntityImageUrl('master', pairing.master.id),

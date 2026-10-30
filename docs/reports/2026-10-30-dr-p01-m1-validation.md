@@ -38,3 +38,28 @@ These scoped runs used the implementation bytes under the control parent and are
 ## Remaining gates
 
 Independent technical verification and the original full CI script against the final candidate are pending. No full client all-green, old-CI inheritance, promotion, coverage/migration credit, release readiness or whole-game acceptance is claimed. Original30-path prestart audit is preserved.
+
+## Post-review F1/F2 corrections — user cost ruling,2026-10-30
+
+Base before these fixes: `3153618a48e6464625b3d890d33d9d2627bd6467` on the existing PR682 branch. The previous independent review and old-head green checks do not accept this changed runtime; new exact-candidate verification and remote checks remain required. The user retains merge approval.
+
+F1 reproduced in a real Session: the planner kept one/two hand cards mandatory even when no complete payable batch could contain them, preventing both ordinary staging and empty completion. Examples were mana0 at a battlefield with cost1 basics, and two hand skills costing3+4 against mana5. Original RED:3 real failures.
+
+The user clarified “魔力小于打出手牌的魔力就不打出手牌”. This implementation interprets that narrowly: keep mandatory hand inclusion if a complete payable legal mandatory batch exists; if none exists but the same mandatory batch is otherwise legal with payment ignored, remove the mandatory condition and choose the maximum-size payable legal subset. Ordinary free face-down attacks still count as playable. Battlefield face-up, skill face-down prohibition, pre-batch8mana gate, all other forbids and aggregate payment remain enforced. Empty completion is allowed only when no positive complete payable legal batch exists. Ordinary mana shortage never reveals the hand or broadens the attribute exception.
+
+F2 reproduced in the full local Session→fixture→MatchTable chain: server totalPower was0 but the local fixture returned undefined. The local projection now copies the existing authoritative totalPower including0. Before ordinary play it remains undefined; the next undeclared player's current-power label remains hidden. MatchTable's existing !==undefined display condition is retained. Original RED:1 real failure.
+
+Actual new evidence (external `D:/fd-validation/dr-p01-m1-fixes-20261030`):
+
+|Check|Result after correction|
+|---|---|
+|Rules+adjacent regressions|14files150/150, including31action tests|
+|Relevant client|6files44/44; new real-Session projection/UI assertion|
+|Server/WS|17/17|
+|Typecheck|exit0|
+|Client production build|exit0 after explicit test type-narrowing fix; original exit2 preserved|
+|Browser|3/3: remote seven-seat action phase, real local public0/next-seat privacy, natural OriginBullet/TimeAlter|
+
+Local browser uses real UI preparation, deployment, two-card face-down play and normal optional-reminder confirmation; no snapshot injection, force-click or production backdoor. It captures local-zero-public-power.png. First local browser timeout was a missed real optional-ability reminder, preserved in browser.log/results/trace; the corrected flow uses a new artifact directory. Browser port3199 remains strict and never reuses an existing service; existing timeouts are unchanged.
+
+Six new Session tests cover empty completion with1/2unpayable cards, largest affordable subset, costly hand retained privately, legal skill alternatives behind8mana, signed restore and post-offer mana drift. Existing no-mana privacy and partial-attribute-forbid regressions remain active. Command exits/log hashes and final relevant source hashes are in artifacts/dr-p01-m1-validation.json. All scoped checks above ran before freezing the new commit under the recorded base HEAD with the exact implementation bytes; no later-commit execution or new full-CI PASS is fabricated.

@@ -91,6 +91,59 @@ async function openRoom(page: Page, fixture: Fixture, seat: number) {
   await page.goto(`/?${params}`);
   await expect(page.getByLabel('远程对局房间')).toContainText('running');
 }
+
+test('local room shows public zero power after ordinary play and keeps the next undecided player private', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const roomStrip = page.getByLabel('对局房间', { exact: true });
+  await expect(roomStrip).toContainText('实战进行中');
+  const saveState = async () => {
+    await roomStrip.getByRole('button', { name: '保存', exact: true }).click();
+    return page.evaluate(() => JSON.parse(localStorage.getItem('fd.local.match-room.snapshot')!).session.state);
+  };
+  const endDecision = async () => {
+    await expect(page.locator('.decision-panel__confirm')).toBeEnabled();
+    await page.locator('.decision-panel__confirm').click();
+    const reminder = page.getByRole('alertdialog', { name: '可选能力提醒' });
+    if (await reminder.isVisible()) await reminder.getByRole('button', { name: '仍然结束', exact: true }).click();
+    await expect(reminder).toHaveCount(0);
+  };
+  let state = await saveState();
+  for (let step = 0; step < 30 && state.round.activePhase !== 'action'; step++) {
+    const phase = state.round.activePhase;
+    expect(['preparation', 'advance']).toContain(phase);
+    const current = state.players.find((player: { seat: number }) => player.seat === state.round.prioritySeat);
+    if (phase === 'advance' && !current.locationId) {
+      const name = current.seat === 1 ? '部署到 魔术工房' : '部署到 深山町';
+      await page.getByRole('button', { name, exact: true }).click();
+    } else {
+      await endDecision();
+    }
+    const next = await saveState();
+    expect(JSON.stringify([next.round.activePhase, next.round.prioritySeat, next.players.map((player: { locationId?: string }) => player.locationId)])).not.toBe(
+      JSON.stringify([state.round.activePhase, state.round.prioritySeat, state.players.map((player: { locationId?: string }) => player.locationId)]),
+    );
+    state = next;
+  }
+  expect(state.round).toMatchObject({ activePhase: 'action', prioritySeat: 1 });
+  await expect(page.getByLabel('行动回合进度')).toContainText('先常规移动');
+  await expect(page.getByLabel('当前公开合计威力')).toHaveCount(0);
+  await page.getByRole('button', { name: '不进行常规移动', exact: true }).click();
+  for (let index = 0; index < 2; index++) {
+    await page.locator('.workbench__zone--hand').getByRole('button').first().click();
+    await page.getByRole('button', { name: '加入待确认盖放', exact: true }).click();
+    await page.getByRole('button', { name: '关闭卡牌检视', exact: true }).click();
+  }
+  await page.getByRole('button', { name: '确认打出攻击区', exact: true }).click();
+  await expect(page.getByLabel('行动回合进度')).toContainText('常规出牌已完成');
+  await expect(page.getByLabel('当前公开合计威力')).toHaveText('合计威力 0');
+  await page.screenshot({ path: testInfo.outputPath('local-zero-public-power.png'), fullPage: true });
+  await endDecision();
+  await expect(page.getByLabel('行动回合进度')).toContainText('先常规移动');
+  await expect(page.getByLabel('当前公开合计威力')).toHaveCount(0);
+  state = await saveState();
+  expect(state.round).toMatchObject({ activePhase: 'action', prioritySeat: 2 });
+  await testInfo.attach('local-browser-evidence', { body: JSON.stringify({ localRoom: true, priorPlayerPublicPower: 0, currentSeat: state.round.prioritySeat, usedRemoteTransport: false }), contentType: 'application/json' });
+});
 async function sendRaw(page: Page, fixture: Fixture, seat: number, message: ClientRoomMessage) {
   await page.evaluate(async ({ fixture, seat, message }) => {
     const client = fixture.clients[seat - 1]!;

@@ -150,6 +150,102 @@ describe('DR-P01 authoritative action turn', () => {
     expect(session.getPlayerView('p1').players.find(p => p.id === 'p1')?.totalPower).toEqual(expect.any(Number));
   });
 
+  it.each([1, 2])('completes an empty batch when %i remaining hand cards cannot fund any legal battlefield batch', count => {
+    const session = actionSession();
+    const hand = session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand');
+    hand.forEach((card, index) => { card.definitionId = 'basic.preparation'; if (index >= count) card.zone = 'deck'; });
+    session.state.players[0]!.mana = 0;
+    session.state.players[0]!.locationId = 'miyama_town';
+    expect(command(session, { type: 'skip_normal_move' }).ok).toBe(true);
+    const actions = session.getPlayerView('p1').legalActions;
+    expect(actions).toContainEqual({ type: 'complete_empty_regular_play' });
+    expect(actions.some(action => action.type === 'stage_attack_card')).toBe(false);
+    expect(command(session, { type: 'complete_empty_regular_play' }).ok).toBe(true);
+    expect(session.state.players[0]!.mana).toBe(0);
+    expect(session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand')).toHaveLength(count);
+    expect(session.state.abilityRuntime!.events.some(event => event.type === 'hand_revealed_for_regular_play')).toBe(false);
+    for (const card of hand.slice(0, count)) expect(JSON.stringify(session.projectToClientState('p2'))).not.toContain(card.instanceId);
+    expect(session.passPriority('p1').ok).toBe(true);
+  });
+
+  it('plays the largest affordable hand subset when individually affordable mandatory cards cost too much together', () => {
+    const session = actionSession();
+    const hand = session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand');
+    hand[0]!.definitionId = 'servant.tomoe.skill.sc-tomoe-2';
+    hand[1]!.definitionId = 'servant.tomoe.skill.sc-tomoe-3';
+    hand.slice(2).forEach(card => { card.zone = 'deck'; });
+    session.state.players[0]!.mana = 5;
+    expect(command(session, { type: 'skip_normal_move' }).ok).toBe(true);
+    rejectAtomically(session, { type: 'complete_empty_regular_play' });
+    expect(session.getPlayerView('p1').legalActions).toContainEqual({ type: 'stage_attack_card', cardInstanceId: hand[0]!.instanceId });
+    expect(command(session, { type: 'stage_attack_card', cardInstanceId: hand[0]!.instanceId }).ok).toBe(true);
+    rejectAtomically(session, { type: 'stage_attack_card', cardInstanceId: hand[1]!.instanceId });
+    expect(command(session, { type: 'confirm_staged_attack' }).ok).toBe(true);
+    expect(session.state.players[0]!.mana).toBe(2);
+    expect(session.state.cards.find(card => card.instanceId === hand[1]!.instanceId)?.zone).toBe('hand');
+    expect(session.state.abilityRuntime!.events.some(event => event.type === 'hand_revealed_for_regular_play')).toBe(false);
+    expect(JSON.stringify(session.projectToClientState('p2'))).not.toContain(hand[1]!.instanceId);
+    expect(session.passPriority('p1').ok).toBe(true);
+  });
+
+  it('leaves an individually unaffordable skill hand card private while playing the affordable basic hand card', () => {
+    const session = actionSession();
+    const hand = session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand');
+    hand[0]!.definitionId = 'servant.tomoe.skill.sc-tomoe-3';
+    hand[1]!.definitionId = 'basic.magecraft.2';
+    hand.slice(2).forEach(card => { card.zone = 'deck'; });
+    session.state.players[0]!.mana = 1;
+    expect(command(session, { type: 'skip_normal_move' }).ok).toBe(true);
+    rejectAtomically(session, { type: 'complete_empty_regular_play' });
+    rejectAtomically(session, { type: 'stage_attack_card', cardInstanceId: hand[0]!.instanceId, faceDown: true });
+    expect(command(session, { type: 'stage_attack_card', cardInstanceId: hand[1]!.instanceId }).ok).toBe(true);
+    expect(command(session, { type: 'confirm_staged_attack' }).ok).toBe(true);
+    expect(session.state.players[0]!.mana).toBe(1);
+    expect(session.state.cards.find(card => card.instanceId === hand[0]!.instanceId)?.zone).toBe('hand');
+    expect(JSON.stringify(session.projectToClientState('p2'))).not.toContain(hand[0]!.instanceId);
+    expect(session.passPriority('p1').ok).toBe(true);
+  });
+
+  it('uses affordable skill sources only behind the unchanged eight-mana gate when the mandatory hand batch is too expensive', () => {
+    const session = actionSession();
+    const hand = session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand');
+    hand.forEach((card, index) => { card.definitionId = 'servant.ereshkigal.skill.sc-ereshkigal-3'; if (index > 1) card.zone = 'deck'; });
+    session.state.players[0]!.mana = 8;
+    expect(command(session, { type: 'skip_normal_move' }).ok).toBe(true);
+    rejectAtomically(session, { type: 'complete_empty_regular_play' });
+    for (const id of ['p1-servant.tomoe.skill.sc-tomoe-2', 'p1-servant.tomoe.skill.sc-tomoe-3']) {
+      expect(command(session, { type: 'stage_attack_card', cardInstanceId: id }).ok).toBe(true);
+    }
+    expect(command(session, { type: 'confirm_staged_attack' }).ok).toBe(true);
+    expect(session.state.players[0]!.mana).toBe(1);
+    expect(session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand')).toHaveLength(2);
+    expect(session.state.abilityRuntime!.events.some(event => event.type === 'hand_revealed_for_regular_play')).toBe(false);
+    const belowGate = actionSession();
+    belowGate.state.players[0]!.mana = 7;
+    expect(command(belowGate, { type: 'skip_normal_move' }).ok).toBe(true);
+    rejectAtomically(belowGate, { type: 'stage_attack_card', cardInstanceId: 'p1-servant.tomoe.skill.sc-tomoe-2' });
+  });
+
+  it('restores an affordable reduced batch and revalidates changed mana before confirmation', () => {
+    let session = actionSession();
+    const hand = session.state.cards.filter(card => card.ownerPlayerId === 'p1' && card.zone === 'hand');
+    hand[0]!.definitionId = 'servant.tomoe.skill.sc-tomoe-2';
+    hand[1]!.definitionId = 'servant.tomoe.skill.sc-tomoe-3';
+    hand.slice(2).forEach(card => { card.zone = 'deck'; });
+    session.state.players[0]!.mana = 5;
+    expect(command(session, { type: 'skip_normal_move' }).ok).toBe(true);
+    expect(command(session, { type: 'stage_attack_card', cardInstanceId: hand[0]!.instanceId }).ok).toBe(true);
+    const before = session.getPlayerView('p1');
+    session = restoreMatchSession(session.serializeSession());
+    expect(session.getPlayerView('p1')).toEqual(before);
+    session.state.players[0]!.mana = 2;
+    rejectAtomically(session, { type: 'confirm_staged_attack' });
+    session.state.players[0]!.mana = 5;
+    expect(command(session, { type: 'confirm_staged_attack' }).ok).toBe(true);
+    expect(session.state.players[0]!.mana).toBe(2);
+    expect(session.passPriority('p1').ok).toBe(true);
+  });
+
   it('restores exactly before move, after move, while staged and after regular play; rejects erased or forged continuation', () => {
     let session = actionSession();
     for (const step of ['before', 'moved', 'staged', 'complete']) {
