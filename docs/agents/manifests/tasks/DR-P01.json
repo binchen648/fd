@@ -121,12 +121,12 @@
   "integration": {
     "promotionPr": 682,
     "phase3PolicyTaskId": "P3-DR-P01-M1",
-    "implementationCandidate": "9b00d48bcb9494a70dc8685cb6e339528e36fd40",
-    "independentReviewSha": "048e217dadeb71b0cb1ba0ca1f5d188014c622cf",
-    "githubAcceptanceBridge": "85570a11f14aff933ddc1f01809bc0e4a8e0428c",
+    "implementationCandidate": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+    "independentReviewSha": "baf90a57d4d98563546d9f288aee85cf011a3887",
+    "githubAcceptanceBridge": "6ee075f9b09b397e951aec9f593eeee2ff3fda40",
     "githubAcceptanceStatement": "https://github.com/binchen648/fd/pull/682#issuecomment-6518033164",
     "newRolesCreated": false,
-    "fullCi": "PENDING_CORRECTED_ACTUAL_HEAD",
+    "fullCi": "PENDING_NEW_FINAL_HEAD_AFTER_DIGEST_PERFORMANCE_REPAIR",
     "runtimeSourceUnchangedSinceReview": true,
     "assemblyRole": "Global Technical Lead / Integration Owner",
     "mergeRequiresUserConsent": true,
@@ -149,5 +149,21 @@
     "scopePreflight": "D:/fd-validation/dr-p01-m1-timeout-diag-20261030/scope-preflight.json",
     "ownership": "Same sole Feature Delivery Lead, no transfer/release; loader excluded and CB-C02 remains suspended",
     "verification": "Native/portable differential UTF8/RFC/long-message vectors; real browser fallback; existing restore/tamper/atomic/privacy regressions; independent verification; exact final-head original CI; user merge consent still required"
+  },
+  "performanceRepair": {
+    "candidate": "a8387b08cc08c7ef4690bd3b81cc1b9c541fe2a3",
+    "independentReviewSha": "baf90a57d4d98563546d9f288aee85cf011a3887",
+    "groupsPassed": 69,
+    "sourceTestsBound": 30,
+    "priorFailedHead": "d43d25d976f1191072e7f1cfdaf186e38229e1f0",
+    "priorFullCiAttempts": 2,
+    "priorFailureClassification": "TEST_FAILURE",
+    "priorFailuresEach": {
+      "pass": 1693,
+      "fail": 2,
+      "skip": 1
+    },
+    "nativeScope": "Large SHA only; portable browser fallback and all HMAC unchanged; no payload, seal, restore, timeout or skip changes",
+    "producerReceipt": "D:/fd-validation/dr-p01-m1-sha-perf-20261030/producer-receipts.json"
   }
 }
