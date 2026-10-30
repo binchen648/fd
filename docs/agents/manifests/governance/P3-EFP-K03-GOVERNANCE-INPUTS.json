@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "fd-engineering-k03-governance-inputs-v1",
+  "taskId": "P3-EFP-K03",
+  "controlEpoch": "FD-P3-2026-09-23-09",
+  "status": "GOVERNANCE_INPUT_COMPLETE",
+  "observedMain": "a42b5e1c517141b90f3407773958b0d8afe63264",
+  "reviewedCandidateSha": "8a900a2bed074508dcd8e4e0affde523763291b0",
+  "authority": {
+    "commit": "6284de6aade2b20fd9e313f43e5e66d0a7f9c32d",
+    "path": "docs/agents/P3-EFP-K03-EVIDENCE-FINALIZATION-DISPATCH.md"
+  },
+  "reviewerA": {
+    "commit": "8a326f8d1d408704ee7a7f756af7191440e30829",
+    "path": "docs/reviews/phase3/P3-EFP-K03-finalization-reviewer-a.json",
+    "sha256": "bfdebafc06fd64734f717e30d7fd0cf13f16897612f0023fa499c347add02cf1",
+    "scope": "EXACT_K03_EVIDENCE_FINALIZATION_AND_HISTORICAL_FIXTURE_ISOLATION_ONLY",
+    "verdict": "PASS",
+    "directCandidateParentVerified": true,
+    "independentFocused": "68/68 PASS"
+  },
+  "reviewerB": {
+    "commit": "9d2854d241bfdb5eefc426b3ec854b802062e4ca",
+    "path": "docs/reviews/phase3/P3-EFP-K03-B-540abe6-reviewer-b.json",
+    "sha256": "0214eccc3f2b5701752d2461085bb10c01c02ac7d35a2bcc0f3209726bfad119",
+    "runtimeCandidateSha": "540abe6c8cadc015fe7ad4030673091405a61063",
+    "scope": "CURRENT_MAIN_STATIC_REWARD_COMPILED_ENVELOPE_GUARD: activation/lifecycle/limit/visibility only",
+    "verdict": "PASS",
+    "reuse": "Exact whole-current rules/source and rules/test objects equal accepted RB; no runtime changes during finalization"
+  },
+  "packet": {
+    "path": "artifacts/phase3-efp-k03-evidence-finalization.json",
+    "sha256": "2b06d92336f2875c027a4d4299466e9391099d4e15f17f3e9e36c6b6767c39bd"
+  },
+  "report": {
+    "path": "docs/reports/2026-10-14-p3-efp-k03-evidence-finalization.md",
+    "sha256": "daa5ffd8aef3903bb19decdb6ceeeebbec9296627796b7c3a8418839a9d070d9"
+  },
+  "githubIdentity": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/560#issuecomment-6158510060",
+  "policyBridgePath": "docs/reviews/phase3/P3-EFP-K03-promotion-attestation.json",
+  "topology": "Current main and original RB candidate/review are assembly ancestors; A implementation/carrier -> independent RA -> separate G bridge -> I synchronization -> distinct final HEAD",
+  "originalReviewIdentityRewritten": false,
+  "policyChanged": false,
+  "validatorWeakened": false,
+  "sourceEquivalenceVerified": true,
+  "producerExecution": {
+    "testedSha": "6679730b2fad17873025016771c4febf3e11aea7",
+    "focused": "129/129 PASS",
+    "defaultCi": "196 files / 1651 tests PASS; exit0",
+    "typecheck": "PASS",
+    "currentCoverage": "23/144/3/0/111",
+    "trackedCoverageChanged": false
+  },
+  "remainingGates": [
+    "GitHub actual-final-HEAD build/test/policy",
+    "Human approval before merge",
+    "Post-merge synchronization"
+  ],
+  "humanApproved": false,
+  "merged": false,
+  "creditDelta": 0,
+  "ledger": "111/944",
+  "gateC": "NOT_VERIFIED",
+  "missingImages": 93,
+  "longTermStability": "NOT_VERIFIED"
+}

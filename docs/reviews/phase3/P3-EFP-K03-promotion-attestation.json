@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-EFP-K03",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/560#issuecomment-6158510060",
+  "candidateSha": "8a900a2bed074508dcd8e4e0affde523763291b0",
+  "conclusion": "REVIEW_ACCEPTED"
+}

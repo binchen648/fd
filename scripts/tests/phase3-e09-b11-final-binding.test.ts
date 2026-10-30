@@ -175,7 +175,8 @@ describe('explicit immutable real assembly is not a producer fixture', () => {
 describe('B11 current transport evidence is distinct from immutable history', () => {
   beforeAll(prepareGitFixture('restore exact transport fixture', () => { gitProbe('checkout', '--detach', '086a86a24f5cf0991b3743ceb28b34a767252070'); }), 30_000);
   it('recomputes current coverage separately without rewriting the historical artifact or classifier', async () => {
-    const result = await buildSnapshotAtCheckout(root, input.candidateSha);
+    // Recompute B11 against its immutable provider, independently of later K03 runtime.
+    const result = await buildSnapshotAtCheckout(historicalDirectory, input.candidateSha);
     const bytes = readFileSync(join(root, 'artifacts/phase3-e09-b11-final-coverage.json'));
     assertSameEvidence(JSON.parse(bytes.toString()), result.coverage);
     expect(result.sync.candidateLocalRouting.after).toEqual({ new: 23, legacyResolve: 144, legacyExecute: 3, dual: 0, notClassifiable: 111 });

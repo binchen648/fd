@@ -75,6 +75,10 @@ export function isAcceptedStaticCombatRewardDistributionAbility(
   form: 'authoring' | 'compiled' = 'authoring',
 ): boolean {
   if (str(rawAbility.kind) !== 'passive') return false;
+  for (const key of ['activation', 'lifecycle', 'limit', 'visibility']) {
+    const value = rawAbility[key];
+    if (value !== undefined && (value === null || typeof value !== 'object' || Array.isArray(value))) return false;
+  }
   const responseWindow = node(rawAbility.responseWindow);
   const responseKeys = Object.keys(responseWindow);
   const responseAccepted = form === 'authoring'
