@@ -1,0 +1,11 @@
+{
+  "taskId": "DR-P01",
+  "state": "RELEASED",
+  "releasedAt": "2026-10-30T11:29:40.649965+00:00",
+  "authority": "Current user explicitly instructs release entire old P01 authorization; old agent chats deleted; Global Technical Lead /root executes scheduling authority without impersonating former owner",
+  "frozenHead": "e0d81a6d728a84ed716d9198ea037427db37edc1",
+  "mergedMain": "48eef963fbe66ed652188ca40d56deced4899bd0",
+  "scope": "ALL old P01 task source/test/output grants including same-owner addenda and portable-SHA addendum; interpreter and all old files released; no new writer assigned by release itself",
+  "preserve": "All frozen candidates/worktrees/receipts remain untouched; no reset; no acceptance or credit change",
+  "successor": "A-END-01 requires separate exact grant"
+}

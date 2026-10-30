@@ -1,6 +1,6 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-30T05:03:59.108656+00:00",
+  "updatedAt": "2026-10-30T11:29:40.649965+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
@@ -8,59 +8,64 @@
     "RELEASED"
   ],
   "precedence": "This published Planner registry and task manifests supersede earlier local/frozen reservation snapshots; frozen evidence is not writer permission",
-  "activeRuntimeTask": "DR-P01",
-  "owner": "Feature Delivery Lead /root/dr_p01_delivery_lead",
-  "binding": {
-    "branch": "codex/dr-p01-m1-integration-20261030",
-    "absoluteWorktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
-    "acknowledgement": "BOUND_BY_EXPLICIT_SAME_OWNER_TRANSFER; OWNER_REACK_REQUIRED_BEFORE_REPLAY"
-  },
+  "activeRuntimeTask": null,
+  "owner": null,
+  "binding": null,
   "requiredBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "resources": [
     {
       "path": "apps/client/src/pages/MatchTable.tsx",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "apps/client/src/state/playtest-fixture-loader.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "apps/client/src/state/remote-room-fixture.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "packages/rules/src/ability/interpreter.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "packages/rules/src/ability/types.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "packages/rules/src/core/combat-resolver.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "packages/rules/src/core/movement.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     {
       "path": "packages/rules/src/match-session.ts",
-      "state": "GRANTED",
-      "taskId": "DR-P01"
+      "state": "RELEASED",
+      "taskId": "DR-P01",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     }
   ],
   "loader": {
@@ -71,10 +76,11 @@
   },
   "tasks": {
     "DR-P01": {
-      "state": "GRANTED",
+      "state": "RELEASED",
       "taskManifest": "docs/agents/manifests/tasks/DR-P01.json",
       "oldBindingState": "SUSPENDED",
-      "oldFrozenCandidate": "2c50256280ef0ebdb1c1366cb09984530fd868ff"
+      "oldFrozenCandidate": "2c50256280ef0ebdb1c1366cb09984530fd868ff",
+      "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
     },
     "CB-C02": {
       "state": "SUSPENDED",
@@ -93,5 +99,6 @@
     "Owner of CB-C02 not impersonated; suspension issued by user-authorized Global Technical Lead",
     "No acceptance/promotion/credit granted",
     "No source in frozen worktrees changed"
-  ]
+  ],
+  "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
 }

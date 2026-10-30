@@ -4,7 +4,7 @@
   "ownerTask": "DR-P01",
   "ownerRole": "Feature Delivery Lead /root/dr_p01_delivery_lead",
   "issuerRole": "Global Technical Lead /root under latest explicit user scheduling instruction",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "requiredBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "observedRemoteMain": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "taskManifestPath": "docs/agents/manifests/tasks/DR-P01.json",
@@ -71,12 +71,22 @@
     "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
     "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md"
   ],
-  "productionWriteAuthorized": true,
-  "sharedRuntimeWriteAuthorized": true,
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
   "testWindowExclusive": false,
   "promotionAuthorized": false,
   "creditDelta": 0,
-  "release": "No successor grant; original branch remains frozen; report any new writer conflict before replay.",
+  "release": {
+    "taskId": "DR-P01",
+    "state": "RELEASED",
+    "releasedAt": "2026-10-30T11:29:40.649965+00:00",
+    "authority": "Current user explicitly instructs release entire old P01 authorization; old agent chats deleted; Global Technical Lead /root executes scheduling authority without impersonating former owner",
+    "frozenHead": "e0d81a6d728a84ed716d9198ea037427db37edc1",
+    "mergedMain": "48eef963fbe66ed652188ca40d56deced4899bd0",
+    "scope": "ALL old P01 task source/test/output grants including same-owner addenda and portable-SHA addendum; interpreter and all old files released; no new writer assigned by release itself",
+    "preserve": "All frozen candidates/worktrees/receipts remain untouched; no reset; no acceptance or credit change",
+    "successor": "A-END-01 requires separate exact grant"
+  },
   "authorityRegistry": "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
   "excludedWritePaths": [
     "packages/rules/src/ability/loader.ts"
