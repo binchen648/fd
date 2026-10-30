@@ -56,3 +56,7 @@ Machine evidence: `artifacts/dr-p01-m1-prestart-path-audit.json`. Reservation ad
 Only the three explicit prestart record files are added outside the 30 candidate paths. Future validation outputs are named in the transfer. Independent verifier output remains verifier-owned.
 
 Next implementation must use the new task/reservation copies, compose minimum A0 legality and DR deltas, and run fresh affected tests and complete CI before independent verification. Old evidence is provenance only. No merge/promotion authority is granted.
+
+## Authoritative single-writer disposition (latest user instruction)
+
+The former local-only transfer is superseded by the committed and pushed Planner SHARED-RUNTIME-LANE.json registry. DR-P01 M1 is GRANTED to the same Feature Delivery Lead on exact base7724bff0; CB-C02 is SUSPENDED/PARKED_BLOCKED at its preserved2d386ddd candidate. loader.ts is explicitly excluded from P01, has no active writer, and requires a future explicit grant. This resolves the previously recorded overlap without inferring release from candidate freezing. Original frozen worktrees and legacy records are unchanged. User authority is recorded; no unavailable external Owner ACK is claimed. The exact containing control SHA is reported in dispatch, without a self-referential fabricated hash.

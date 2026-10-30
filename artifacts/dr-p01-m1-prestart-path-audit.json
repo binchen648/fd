@@ -1,0 +1,570 @@
+{
+  "schemaVersion": "fd-prestart-path-audit-v1",
+  "verifiedAt": "2026-10-30T12:47:00.786825+08:00",
+  "expectedMain": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "observedMain": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
+  "baselineChanged": false,
+  "historicalBase": "f70120e48284a2c5409320fa02b8cadce1e7899a",
+  "frozenCandidate": "2c50256280ef0ebdb1c1366cb09984530fd868ff",
+  "newBranch": "codex/dr-p01-m1-integration-20261030",
+  "newWorktree": "D:/fd-validation/dr-p01-m1-integration-20261030",
+  "counts": {
+    "PRODUCTION_SOURCE": 9,
+    "TEST_OR_TEST_SUPPORT": 19,
+    "MANIFEST": 2
+  },
+  "pathCount": 30,
+  "rows": [
+    {
+      "index": 1,
+      "path": "apps/client/src/pages/MatchTable.test.tsx",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Verify backend actions, progress text and end-turn disable/enable.",
+      "mainBlob": "3eb8dd2d8ba19703fa5ebed36b5ac503a5c810ad",
+      "historicalBaseBlob": "3eb8dd2d8ba19703fa5ebed36b5ac503a5c810ad",
+      "frozenCandidateBlob": "1d916bcec785e7022298a74f6702e712fe676699",
+      "diffSha256": "cf6458b31df95b69a365eefd48741ac388504cb7011fa6f0d0d0df23c7e01dea",
+      "numstat": "20\t0\tapps/client/src/pages/MatchTable.test.tsx",
+      "hunks": [
+        "@@ -506,6 +506,26 @@ const fixture: PlaytestClientFixture = {"
+      ]
+    },
+    {
+      "index": 2,
+      "path": "apps/client/src/pages/MatchTable.tsx",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Render authoritative action progress and public power; gate both end-turn buttons.",
+      "mainBlob": "299e1eb06fee2d268e5c986542355fc4d2ea64f8",
+      "historicalBaseBlob": "299e1eb06fee2d268e5c986542355fc4d2ea64f8",
+      "frozenCandidateBlob": "05ba7172dd63a2e47182488a5a3ea01bebe9c1fe",
+      "diffSha256": "07c9ff0204a56765d46cb60547928fd7560aaf30c556215578949be803c64c03",
+      "numstat": "5\t2\tapps/client/src/pages/MatchTable.tsx",
+      "hunks": [
+        "@@ -53,6 +53,7 @@ export default function MatchTable({",
+        "@@ -375,6 +376,8 @@ export default function MatchTable({",
+        "@@ -635,7 +638,7 @@ export default function MatchTable({",
+        "@@ -661,7 +664,7 @@ export default function MatchTable({"
+      ]
+    },
+    {
+      "index": 3,
+      "path": "apps/client/src/state/playtest-fixture-loader.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Add optional actionTurn and totalPower projection types.",
+      "mainBlob": "2b2904e3457debdb01ac37c543375ad4a440e30d",
+      "historicalBaseBlob": "2b2904e3457debdb01ac37c543375ad4a440e30d",
+      "frozenCandidateBlob": "ffea9dfbe65abd048d9501dba0689992de365df2",
+      "diffSha256": "15211679c6ec52a485a40ee38ed4d384bc0a4553ec3be2bb0e4e0531fd752c25",
+      "numstat": "2\t0\tapps/client/src/state/playtest-fixture-loader.ts",
+      "hunks": [
+        "@@ -113,6 +113,7 @@ export interface ClientPhaseStep {",
+        "@@ -124,6 +125,7 @@ export interface PlaytestClientFixture {"
+      ]
+    },
+    {
+      "index": 4,
+      "path": "apps/client/src/state/remote-room-fixture.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Carry server action progress/power and map normal move/skip/empty-batch actions.",
+      "mainBlob": "ffa4028aa6d9edf056002874c13e669ce7891403",
+      "historicalBaseBlob": "ffa4028aa6d9edf056002874c13e669ce7891403",
+      "frozenCandidateBlob": "0930ad5f3f9c94d1f29b7f6dbdfa56d56f757fcb",
+      "diffSha256": "569102f9da138676c19668a0ed02198c975f0729075621fa2c63a2595d219ea3",
+      "numstat": "7\t2\tapps/client/src/state/remote-room-fixture.ts",
+      "hunks": [
+        "@@ -57,6 +57,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt",
+        "@@ -78,6 +79,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt",
+        "@@ -109,11 +111,14 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt"
+      ]
+    },
+    {
+      "index": 5,
+      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Carry local seven-seat projection and labels for new server actions.",
+      "mainBlob": "f3513dbdfdd7067a586b33cf6ad36409b3ac2032",
+      "historicalBaseBlob": "f3513dbdfdd7067a586b33cf6ad36409b3ac2032",
+      "frozenCandidateBlob": "06080be85398f32e45da9631479ffb29131b3e64",
+      "diffSha256": "25af186e51309b8da6703f96b0658c61fb41641e7b98ef50ce2d5838eba8f66b",
+      "numstat": "5\t1\tapps/client/src/state/seven-authoring-smoke-fixture.ts",
+      "hunks": [
+        "@@ -406,6 +406,9 @@ function buildServantDeckView(",
+        "@@ -433,7 +436,7 @@ function mapLegalAction(action: LegalAction, index: number, ownerPlayerId: strin",
+        "@@ -724,6 +727,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe"
+      ]
+    },
+    {
+      "index": 6,
+      "path": "apps/server/src/match-server.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Raw WS authority, stale/replay rejection and authenticated durable restore coverage.",
+      "mainBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+      "historicalBaseBlob": "10248b72cc9a032bfefc7280d6fc44c529b5d56e",
+      "frozenCandidateBlob": "03d4bd4a52dffd5735d1282827d95aa2377ee092",
+      "diffSha256": "741cbb0db988021d0d814e6b1ba1a385c714a7a40d7070611d1a73887f9669d0",
+      "numstat": "56\t0\tapps/server/src/match-server.test.ts",
+      "hunks": [
+        "@@ -168,6 +168,62 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate"
+      ]
+    },
+    {
+      "index": 7,
+      "path": "docs/agents/manifests/reservations/DR-P01.json",
+      "category": "MANIFEST",
+      "disposition": "REBIND_METADATA",
+      "reason": "Rewrite current binding, exact scope and authority; never copy obsolete base binding verbatim.",
+      "mainBlob": null,
+      "historicalBaseBlob": null,
+      "frozenCandidateBlob": "d521bb15e44c34efb5fda77a0eac72a4946618e9",
+      "diffSha256": "f69dc43a9e8badb9625a58f06a4dd3e516f83926f6758390b08273e5e161a156",
+      "numstat": "42\t0\tdocs/agents/manifests/reservations/DR-P01.json",
+      "hunks": [
+        "@@ -0,0 +1,42 @@"
+      ]
+    },
+    {
+      "index": 8,
+      "path": "docs/agents/manifests/tasks/DR-P01.json",
+      "category": "MANIFEST",
+      "disposition": "REBIND_METADATA",
+      "reason": "Rewrite M1 task scope, dependencies, worktree and merged PR561 disposition.",
+      "mainBlob": null,
+      "historicalBaseBlob": null,
+      "frozenCandidateBlob": "a7f08aebdd932e1506b7838ee4ef5c0ef663a28a",
+      "diffSha256": "d36798f348c021c3c912db945707c8079193d05962cce43e3c044f5bb980ba5f",
+      "numstat": "150\t0\tdocs/agents/manifests/tasks/DR-P01.json",
+      "hunks": [
+        "@@ -0,0 +1,150 @@"
+      ]
+    },
+    {
+      "index": 9,
+      "path": "e2e/fd-action-turn-delivery.spec.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Real seven-seat browser/WS movement, staging, complete batch, reconnect and replay.",
+      "mainBlob": null,
+      "historicalBaseBlob": null,
+      "frozenCandidateBlob": "9298817a33bda2c096002b11601260d64a215fb9",
+      "diffSha256": "00aec9fa885cdc43edb9665584d7f5a266136430d3191db19fc33cb7eb2b6973",
+      "numstat": "114\t0\te2e/fd-action-turn-delivery.spec.ts",
+      "hunks": [
+        "@@ -0,0 +1,114 @@"
+      ]
+    },
+    {
+      "index": 10,
+      "path": "e2e/fd-time-alter-core-primitive.spec.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Retain natural Origin Bullet legality regression and adapt ordinary action setup.",
+      "mainBlob": "ba14fe55a08dd7e0a1bdd252eeda413b4ad2113d",
+      "historicalBaseBlob": "ef6e1d3ad9ca5fff773717a6f7cb3afd849ce74f",
+      "frozenCandidateBlob": "00a18cd5be71dbef0ca5dd9d61cff8d333275085",
+      "diffSha256": "ab70377bf50b4c9fbe35dcc465fb243f2c9e73f4455929905eff66757962c69a",
+      "numstat": "120\t52\te2e/fd-time-alter-core-primitive.spec.ts",
+      "hunks": [
+        "@@ -1,16 +1,25 @@",
+        "@@ -36,6 +45,8 @@ test('routes Time Alter through browser, target reconnect, face-down effect play",
+        "@@ -75,7 +86,7 @@ test('routes Time Alter through browser, target reconnect, face-down effect play",
+        "@@ -86,6 +97,8 @@ test('routes Time Alter through browser, target reconnect, face-down effect play",
+        "@@ -118,11 +131,16 @@ test('routes Time Alter through browser, target reconnect, face-down effect play",
+        "@@ -137,51 +155,101 @@ test('routes Time Alter through browser, target reconnect, face-down effect play"
+      ]
+    },
+    {
+      "index": 11,
+      "path": "e2e/support/start-action-turn-fixture-server.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Test-only real HTTP/WS server setup and readiness output for seven-seat E2E.",
+      "mainBlob": null,
+      "historicalBaseBlob": null,
+      "frozenCandidateBlob": "dc4c95341b8dfc18246a85be20b00a3a4d23dd26",
+      "diffSha256": "64f55109ffd67d027aa30b698cd4b3ea9738c598bcbde3f74f533069f0f6f16c",
+      "numstat": "40\t0\te2e/support/start-action-turn-fixture-server.ts",
+      "hunks": [
+        "@@ -0,0 +1,40 @@"
+      ]
+    },
+    {
+      "index": 12,
+      "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Adapt staging and battle-dash setup to move/skip then complete regular batch.",
+      "mainBlob": "a319deb3914b20f578b769a85ab118167af7b402",
+      "historicalBaseBlob": "a319deb3914b20f578b769a85ab118167af7b402",
+      "frozenCandidateBlob": "48bdb215b0be2fc402c1c20ae4a09fe299a45caa",
+      "diffSha256": "8e744f5ac35083aedb4a8e01ea9a9530ad75df1f60ed32abff25fc3226afe25b",
+      "numstat": "7\t1\tpackages/rules/src/__tests__/match-session-regressions.test.ts",
+      "hunks": [
+        "@@ -86,6 +86,7 @@ describe('match session gameplay regressions', () => {",
+        "@@ -169,7 +170,12 @@ describe('match session gameplay regressions', () => {"
+      ]
+    },
+    {
+      "index": 13,
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Combine minimum A0 attack/effect target legality with DR action progression, batch legality, movement and private staging.",
+      "mainBlob": "25f17fe843a9a05650722e996f0ce97109cfadbe",
+      "historicalBaseBlob": "b2a7fa373b3fb8a607ad1c5b233a5aa190bc454b",
+      "frozenCandidateBlob": "2f1eb21d9773a44cb8b10dcd5be0fae9d92102fe",
+      "diffSha256": "1bc69a8fcf5737177567c7285fa5608697d96090c13d4d8b45b8a5073185b86b",
+      "numstat": "182\t17\tpackages/rules/src/ability/interpreter.ts",
+      "hunks": [
+        "@@ -2,6 +2,7 @@ import type { GameState, PhaseName } from '../schema/game';",
+        "@@ -87,6 +88,7 @@ import type {",
+        "@@ -107,6 +109,31 @@ function stagedAttacks(s: GameState): Record<string, PlayCardAction[]> {",
+        "@@ -135,7 +162,7 @@ function active(s: GameState, id: string): boolean {",
+        "@@ -589,12 +616,15 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[",
+        "@@ -987,6 +1017,14 @@ function isActivationOnlyDefinition(s: GameState, definitionId: string): boolean",
+        "@@ -998,7 +1036,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false",
+        "@@ -1015,6 +1055,70 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false",
+        "@@ -1033,33 +1137,52 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {",
+        "@@ -1249,7 +1372,7 @@ function shortestPath(s: GameState, from: string, to: string): string[] {",
+        "@@ -1257,7 +1380,7 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s",
+        "@@ -4129,10 +4252,11 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou",
+        "@@ -4209,7 +4333,31 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay",
+        "@@ -4238,7 +4386,8 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void",
+        "@@ -4540,6 +4689,12 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu",
+        "@@ -4550,7 +4705,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu",
+        "@@ -4558,9 +4715,17 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu"
+      ]
+    },
+    {
+      "index": 14,
+      "path": "packages/rules/src/ability/types.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Action command union, versioned continuation, reveal-event and public projection types.",
+      "mainBlob": "c911d57606de0c30ecb4a255848206b4e7369dbb",
+      "historicalBaseBlob": "c911d57606de0c30ecb4a255848206b4e7369dbb",
+      "frozenCandidateBlob": "93fa7a7d4941b3f216d79101155e474f166e2a7e",
+      "diffSha256": "9bdb705b6ee930353aa7f38a9993b21e4c743297a74bd3b44b399e54d81cc164",
+      "numstat": "15\t3\tpackages/rules/src/ability/types.ts",
+      "hunks": [
+        "@@ -253,6 +253,7 @@ export interface SafeEvent {",
+        "@@ -345,14 +346,25 @@ export interface ChooseTargetAction { type: 'choose_target'; decisionId: string;"
+      ]
+    },
+    {
+      "index": 15,
+      "path": "packages/rules/src/core/combat-resolver.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Pure public current-power projection; recheck no scoring/events or hidden contribution leakage.",
+      "mainBlob": "5b32ce5d69298877e83d9438fd80a97b4a740857",
+      "historicalBaseBlob": "5b32ce5d69298877e83d9438fd80a97b4a740857",
+      "frozenCandidateBlob": "0f6cc2bbf6a0e486b7079504a32280237666b3e0",
+      "diffSha256": "4bc091363018eae3c2f4c28405225c3a05f1bc1ad7c674f537b91b5c5a8d9bf2",
+      "numstat": "12\t0\tpackages/rules/src/core/combat-resolver.ts",
+      "hunks": [
+        "@@ -356,6 +356,18 @@ export function deriveBattleParticipantsFromState("
+      ]
+    },
+    {
+      "index": 16,
+      "path": "packages/rules/src/core/movement.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Canonical directed-arrow costs; recheck all shared movement consumers and route cost regression.",
+      "mainBlob": "4170f44af2d1817a32232ac6480e5a28797ad966",
+      "historicalBaseBlob": "4170f44af2d1817a32232ac6480e5a28797ad966",
+      "frozenCandidateBlob": "4e1c47dce85b8f64d96805db4170e4c6a5873cc3",
+      "diffSha256": "de34c89462b9b13845dbd7a71399a50d21922e27612bec67a504b49c68e7cab9",
+      "numstat": "8\t2\tpackages/rules/src/core/movement.ts",
+      "hunks": [
+        "@@ -328,8 +328,14 @@ function calculateMovementCost("
+      ]
+    },
+    {
+      "index": 17,
+      "path": "packages/rules/src/match-session.ts",
+      "category": "PRODUCTION_SOURCE",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Authoritative step gates, durable/legacy restore, privacy, revision, AI and battle settlement continuation.",
+      "mainBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378",
+      "historicalBaseBlob": "3418ff800b605a6a6e8c93f76eb072699c5c6378",
+      "frozenCandidateBlob": "cd4cc0df9a411ce21273a978e4511ad1b973d410",
+      "diffSha256": "8008bce3a722fcc54b6bef4b79b7ea15d39bb057738ca85ea7f2f23e29a88e35",
+      "numstat": "175\t28\tpackages/rules/src/match-session.ts",
+      "hunks": [
+        "@@ -2,6 +2,9 @@ import {",
+        "@@ -43,7 +46,7 @@ import type {",
+        "@@ -480,6 +483,8 @@ function isRestoreSafeEvent(value: unknown): boolean {",
+        "@@ -1083,6 +1088,16 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin",
+        "@@ -1447,6 +1462,7 @@ function actionFingerprint(state: GameState): string {",
+        "@@ -1465,6 +1481,11 @@ function chooseAiAction(actions: LegalAction[]): LegalAction | undefined {",
+        "@@ -1675,23 +1696,36 @@ export class MatchSession {",
+        "@@ -1759,13 +1793,39 @@ export class MatchSession {",
+        "@@ -1824,14 +1884,12 @@ export class MatchSession {",
+        "@@ -1843,7 +1901,13 @@ export class MatchSession {",
+        "@@ -1859,12 +1923,16 @@ export class MatchSession {",
+        "@@ -1884,7 +1952,7 @@ export class MatchSession {",
+        "@@ -1905,6 +1973,10 @@ export class MatchSession {",
+        "@@ -1914,9 +1986,14 @@ export class MatchSession {",
+        "@@ -1937,10 +2014,10 @@ export class MatchSession {",
+        "@@ -1972,6 +2049,7 @@ export class MatchSession {",
+        "@@ -1989,6 +2067,13 @@ export class MatchSession {",
+        "@@ -1998,6 +2083,13 @@ export class MatchSession {",
+        "@@ -2012,10 +2104,12 @@ export class MatchSession {",
+        "@@ -2023,6 +2117,43 @@ export class MatchSession {",
+        "@@ -2089,6 +2220,8 @@ export class MatchSession {",
+        "@@ -2110,6 +2243,7 @@ export class MatchSession {",
+        "@@ -2184,6 +2318,7 @@ export class MatchSession {",
+        "@@ -2597,16 +2732,20 @@ export class MatchSession {",
+        "@@ -2624,14 +2763,18 @@ export class MatchSession {",
+        "@@ -2893,6 +3036,10 @@ export function restoreMatchSession("
+      ]
+    },
+    {
+      "index": 18,
+      "path": "packages/rules/tests/match-room-hub.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Adapt staff activation setup to legal complete ordinary batch.",
+      "mainBlob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf",
+      "historicalBaseBlob": "d2c95bf2c918aa929b817bd472fa03d6b5c9f4cf",
+      "frozenCandidateBlob": "9942ee95a36efcffa72a41c8a6b06e000928c786",
+      "diffSha256": "ee51afa7b8ea790a3f8e311937d46a9d2090becab7201ccb811c803040aed014",
+      "numstat": "6\t1\tpackages/rules/tests/match-room-hub.test.ts",
+      "hunks": [
+        "@@ -145,7 +145,12 @@ describe('MatchRoomHub local multiplayer transport layer', () => {"
+      ]
+    },
+    {
+      "index": 19,
+      "path": "packages/rules/tests/match-session.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Shared complete-batch setup for staff and Conversion/Golden Eater regressions.",
+      "mainBlob": "a95ef79efb7086ec992794c45c0358428e7e2e6c",
+      "historicalBaseBlob": "a95ef79efb7086ec992794c45c0358428e7e2e6c",
+      "frozenCandidateBlob": "9b75e627979cc011347460669a2dce766d329a1c",
+      "diffSha256": "9100a1be1fa9d1376c8da9359b2b2c9a02e3ee44d92b097ce3fbad0586fd02ab",
+      "numstat": "11\t2\tpackages/rules/tests/match-session.test.ts",
+      "hunks": [
+        "@@ -6,6 +6,15 @@ import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpr",
+        "@@ -527,7 +536,7 @@ describe('MatchSession semi-auto runtime', () => {",
+        "@@ -579,7 +588,7 @@ describe('MatchSession semi-auto runtime', () => {"
+      ]
+    },
+    {
+      "index": 20,
+      "path": "packages/rules/tests/regression/action-turn-delivery.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "New action-turn movement, batch, quotas, atomicity, privacy, restore, power and settlement regressions.",
+      "mainBlob": null,
+      "historicalBaseBlob": null,
+      "frozenCandidateBlob": "18d49c0e0c9ed953cf61d738480710ff460ff5b2",
+      "diffSha256": "a2d00b39813c1b37a3dccb288758a3aebc9973985797253b0f52a34152e57a32",
+      "numstat": "410\t0\tpackages/rules/tests/regression/action-turn-delivery.test.ts",
+      "hunks": [
+        "@@ -0,0 +1,410 @@"
+      ]
+    },
+    {
+      "index": 21,
+      "path": "packages/rules/tests/regression/card-action-close.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Play source and noble in same complete batch; retain source-close behavior assertions.",
+      "mainBlob": "b1b3588ff3e65a4f72a0fc55774a818882bbac0a",
+      "historicalBaseBlob": "b1b3588ff3e65a4f72a0fc55774a818882bbac0a",
+      "frozenCandidateBlob": "fd93eac0a36d00b63cfb3f6b44d6ad3d90e7f9fc",
+      "diffSha256": "afacba5fb0a4d606f62b406023d7aba3907e128c40eb967802e4806f4bbc64e3",
+      "numstat": "13\t9\tpackages/rules/tests/regression/card-action-close.test.ts",
+      "hunks": [
+        "@@ -4,20 +4,28 @@ import { createMatchSession } from '../../src/match-session';",
+        "@@ -28,11 +36,7 @@ function nobleCard(session: ReturnType<typeof createMatchSession>, playerId: str"
+      ]
+    },
+    {
+      "index": 22,
+      "path": "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Keep required technical A0 regression; progress turns legally while preserving naturally drawn Origin Bullet.",
+      "mainBlob": null,
+      "historicalBaseBlob": "37c9e87eb0c0570c863301abf5d16f024c784b21",
+      "frozenCandidateBlob": "61a7430e7516cec409daa4811c7d7cef4a9221c3",
+      "diffSha256": "f7b466cea040934f2613fec353d899bf4efb9ed15fd505d3b2edd6378c0b39ce",
+      "numstat": "155\t0\tpackages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
+      "hunks": [
+        "@@ -0,0 +1,155 @@"
+      ]
+    },
+    {
+      "index": 23,
+      "path": "packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Initialize explicit continuation on manually replaced trusted fixture before serialization.",
+      "mainBlob": "ea1cd769d9abd16b66221ec933b239d43cba5649",
+      "historicalBaseBlob": "ea1cd769d9abd16b66221ec933b239d43cba5649",
+      "frozenCandidateBlob": "dc069ad61ff1c6493b912a9a084a04fb8588e5c9",
+      "diffSha256": "dfc3f60d34ee9c0a4b00d6d6200fc79a3e0231bddbfc9e1a3c58db6def2f7128",
+      "numstat": "1\t0\tpackages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts",
+      "hunks": [
+        "@@ -340,6 +340,7 @@ describe('P3-FB2-27 Ruler seal relationship subsystem', () => {"
+      ]
+    },
+    {
+      "index": 24,
+      "path": "packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Initialize continuation before trusted fixture restore; retain private hand-return assertions.",
+      "mainBlob": "0205f5e0860e64acb2d3fada7bb33162348737ec",
+      "historicalBaseBlob": "0205f5e0860e64acb2d3fada7bb33162348737ec",
+      "frozenCandidateBlob": "91e6a02ffc305603878e8b8cd4413a6c4db742e3",
+      "diffSha256": "da50cf2d16d8668c07074e024b181665a85c7bae93773ab15939d64ebdcaf4af",
+      "numstat": "1\t0\tpackages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts",
+      "hunks": [
+        "@@ -267,6 +267,7 @@ describe('P3-FB2-23 same-battlefield private hand return interaction', () => {"
+      ]
+    },
+    {
+      "index": 25,
+      "path": "packages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Adapt cost boundary and source-close setups to simultaneous complete batches.",
+      "mainBlob": "87d295f5651c6c63a846a458bc9d41a86bb9bf65",
+      "historicalBaseBlob": "87d295f5651c6c63a846a458bc9d41a86bb9bf65",
+      "frozenCandidateBlob": "5a9d9006a2b7249bd3a6886c62b3323aeaea10da",
+      "diffSha256": "3823c09c9479ed4141fcfa66714c325edc4bd8cae4e7b6410037cea665d2e18a",
+      "numstat": "18\t21\tpackages/rules/tests/regression/golden-card-content-pipeline.test.ts",
+      "hunks": [
+        "@@ -28,8 +28,18 @@ function prepareGoldenCard(cardId: GoldenCardId, mana: number) {",
+        "@@ -88,16 +98,13 @@ describe('Phase 2 golden-card compiled-content pipeline', () => {",
+        "@@ -106,32 +113,22 @@ describe('Phase 2 golden-card compiled-content pipeline', () => {"
+      ]
+    },
+    {
+      "index": 26,
+      "path": "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Complete ordinary turn legally before scoring; explicitly progress battle barrier.",
+      "mainBlob": "3bc3d9e8500ef29e15bde8c434ac3ee922ed8b7b",
+      "historicalBaseBlob": "3bc3d9e8500ef29e15bde8c434ac3ee922ed8b7b",
+      "frozenCandidateBlob": "b9e2bc28b11a05460748d1c9cd9b35604b66bae8",
+      "diffSha256": "8c2570c8063a36a363eaaca7d6173fd307b67cc81f7290761068070446c61b34",
+      "numstat": "8\t0\tpackages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+      "hunks": [
+        "@@ -68,6 +68,12 @@ function buildGoldenFlow2Room(roomId = 'golden-flow-2-regression') {",
+        "@@ -86,6 +92,8 @@ describe('Golden Flow 2 combat -> power -> winner -> VP', () => {"
+      ]
+    },
+    {
+      "index": 27,
+      "path": "packages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Initialize continuation before trusted fixture serialization; retain visibility checks.",
+      "mainBlob": "09058b3405f2718a2d93dffa7d16637309706da1",
+      "historicalBaseBlob": "09058b3405f2718a2d93dffa7d16637309706da1",
+      "frozenCandidateBlob": "ba591c411c851e71b0a975a12992da332d0a72a0",
+      "diffSha256": "55dd1d18b5dbc6c72747875b6f093dd24b0551664819bf3d105f137d6b1a5349",
+      "numstat": "1\t0\tpackages/rules/tests/regression/interaction-private-optional-runtime.test.ts",
+      "hunks": [
+        "@@ -115,6 +115,7 @@ describe('P3-TO-13 private optional target interaction gateway', () => {"
+      ]
+    },
+    {
+      "index": 28,
+      "path": "packages/rules/tests/regression/interaction-room-boundary.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Use move/skip and complete batch before private interaction activation with fresh revisions.",
+      "mainBlob": "2c69d5f0d5ebc836512ae1bdd544e00e7aac1733",
+      "historicalBaseBlob": "2c69d5f0d5ebc836512ae1bdd544e00e7aac1733",
+      "frozenCandidateBlob": "39c4e935b9aea87e4b695b7f93cc21920f6ccb86",
+      "diffSha256": "94f475ad0f097386aa8572ff5d304f666d762f91847d8c5d4cb3269fa000cf75",
+      "numstat": "11\t3\tpackages/rules/tests/regression/interaction-room-boundary.test.ts",
+      "hunks": [
+        "@@ -51,13 +51,21 @@ function setupHub() {"
+      ]
+    },
+    {
+      "index": 29,
+      "path": "packages/rules/tests/regression/trigger-resource-runtime.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Update expected mana and movement provenance to canonical workshop arrow cost 1.",
+      "mainBlob": "0f720b0ad96b8b17d0c6e7450b0495526db05a68",
+      "historicalBaseBlob": "0f720b0ad96b8b17d0c6e7450b0495526db05a68",
+      "frozenCandidateBlob": "8ec3a2f063cf06e1d729d0e6628746b4e794f11e",
+      "diffSha256": "3f05020937ac60d6fcdef79e013c3b2ea96f435ffa8bab478f25401cf34a5420",
+      "numstat": "4\t4\tpackages/rules/tests/regression/trigger-resource-runtime.test.ts",
+      "hunks": [
+        "@@ -183,18 +183,18 @@ describe('P3-TO-11 trigger resource runtime', () => {"
+      ]
+    },
+    {
+      "index": 30,
+      "path": "packages/rules/tests/regression/fb2-required-additional-play.test.ts",
+      "category": "TEST_OR_TEST_SUPPORT",
+      "disposition": "REPLAY_MINIMUM_DELTA_THEN_REVERIFY",
+      "reason": "Retain append-only-only rejection, no impossible effect activation and atomic unchanged state.",
+      "mainBlob": "3eb42032f8d6bb11e30fd00ebf732826e48deef0",
+      "historicalBaseBlob": "49668bb3630e64e4f8ca1165334fc48e91a7dffe",
+      "frozenCandidateBlob": "49668bb3630e64e4f8ca1165334fc48e91a7dffe",
+      "diffSha256": "49d890ef085db9b77282d62c85ce1a0dab5fd59075130f4864d760c38759807c",
+      "numstat": "7\t8\tpackages/rules/tests/regression/fb2-required-additional-play.test.ts",
+      "hunks": [
+        "@@ -229,7 +229,7 @@ describe('P3-FB2-16 required additional-play marker', () => {",
+        "@@ -244,17 +244,16 @@ describe('P3-FB2-16 required additional-play marker', () => {",
+        "@@ -281,4 +280,4 @@ describe('P3-FB2-16 required additional-play marker', () => {"
+      ]
+    }
+  ],
+  "excludedHistoricalPaths": [
+    {
+      "path": "artifacts/phase3-cb-a0-time-alter-play-legality-repair.json",
+      "m1Blob": null,
+      "historicalBaseBlob": "f1c003fb8b39bc6fffebd7228cebeb75d86b00e3",
+      "frozenBlob": "f1c003fb8b39bc6fffebd7228cebeb75d86b00e3",
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "disposition": "SUPERSEDED_AS_DR_P01_ACTIVE_PREREQUISITE_PRESERVE_ORIGINAL",
+      "basis": "No production import or DR-P01 technical requirement for historical governance/carrier bytes."
+    },
+    {
+      "path": "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
+      "m1Blob": null,
+      "historicalBaseBlob": "13580084de364a70b2ed790e5639daa3db80ebbf",
+      "frozenBlob": "13580084de364a70b2ed790e5639daa3db80ebbf",
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "disposition": "SUPERSEDED_AS_DR_P01_ACTIVE_PREREQUISITE_PRESERVE_ORIGINAL",
+      "basis": "No production import or DR-P01 technical requirement for historical governance/carrier bytes."
+    },
+    {
+      "path": "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md",
+      "m1Blob": null,
+      "historicalBaseBlob": "84878ada7f745680d26f14500e365988e4b3342c",
+      "frozenBlob": "84878ada7f745680d26f14500e365988e4b3342c",
+      "classification": "HISTORICAL_EVIDENCE_ONLY",
+      "disposition": "SUPERSEDED_AS_DR_P01_ACTIVE_PREREQUISITE_PRESERVE_ORIGINAL",
+      "basis": "No production import or DR-P01 technical requirement for historical governance/carrier bytes."
+    }
+  ],
+  "unchangedK03Loader": {
+    "path": "packages/rules/src/ability/loader.ts",
+    "mainBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+    "historicalBaseBlob": "bbaf57a4e23b2a038d45745826a987484eb332fd",
+    "disposition": "READ_ONLY_NO_REPLAY"
+  },
+  "runtimeAcceptanceGranted": false,
+  "testsExecuted": []
+}
