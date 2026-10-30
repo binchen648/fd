@@ -2,7 +2,7 @@
   "schemaVersion": "fd-planner-writer-reservation-same-owner-addendum-v1",
   "addendumId": "DR-P01-M1-SAME-OWNER-20261030",
   "reservationId": "DR-P01",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "authority": "Latest user instruction: prioritize DR-P01 M1 as sole shared Runtime writer; suspend CB-C02; exclude loader.ts",
   "recordedBy": "/root",
   "ownerTask": "DR-P01",
@@ -88,5 +88,9 @@
     "packages/rules/src/ability/loader.ts"
   ],
   "publishedControlSha": "f674c00a065878f2fd454ed3820d87d322058114",
-  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030"
+  "publishedControlBranch": "codex/planner-post-dr-p01-recovery-20261030",
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
+  "releasePublishedSha": "6eb58edc01b84a85ac783f0b0a9f3206703dff16"
 }

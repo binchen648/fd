@@ -1,0 +1,63 @@
+{
+  "taskId": "A-END-01",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "authority": "Current user explicitly approves seven-player product work, entire old P01 release and a separate exact A-END-01 grant; old fragmented chats deleted",
+  "BaseCommit": "48eef963fbe66ed652188ca40d56deced4899bd0",
+  "branch": "codex/a-end-01-seven-player-20261030",
+  "worktree": "D:\\fd-validation\\dr-p01-m1-integration-20261030",
+  "ReservedFiles": [
+    "packages/rules/src/core/scoring-resolver.ts",
+    "packages/rules/src/core/elimination-resolver.ts",
+    "packages/rules/src/core/game-loop.ts",
+    "packages/rules/src/schema/game.ts",
+    "packages/rules/src/match-session.ts",
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/pages/MatchTable.tsx",
+    "packages/rules/tests/core/scoring-resolver.test.ts",
+    "packages/rules/tests/core/elimination-resolver.test.ts",
+    "packages/rules/tests/match-session.test.ts",
+    "packages/rules/tests/regression/standard-endgame.test.ts",
+    "apps/client/src/pages/MatchTable.test.tsx",
+    "apps/server/src/match-server.test.ts",
+    "e2e/fd-standard-endgame.spec.ts",
+    "e2e/support/start-standard-endgame-fixture-server.ts",
+    "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
+    "docs/agents/manifests/reservations/DR-P01.json",
+    "docs/agents/manifests/tasks/DR-P01.json",
+    "docs/agents/manifests/reservations/DR-P01-M1-SAME-OWNER-TRANSFER.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/agents/manifests/tasks/A-END-01.json",
+    "docs/agents/manifests/reservations/A-END-01.json",
+    "docs/plans/2026-10-30-a-end-01-seven-player.md",
+    "docs/reports/2026-10-30-a-end-01-result.md"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/loader.ts",
+    "data/authoring/**",
+    "data/phase3/**",
+    "packages/content/**",
+    "CB-C02 frozen worktree",
+    "coverage and evidence classification tools"
+  ],
+  "dependencies": {
+    "oldP01ReleaseSha": "6eb58edc01b84a85ac783f0b0a9f3206703dff16",
+    "main": "48eef963fbe66ed652188ca40d56deced4899bd0",
+    "CB-C02": "NOT_REQUIRED_SUSPENDED"
+  },
+  "productScope": "Full seven-player standard-game terminal slice only; 3-6 seats, NPC and 3X deferred",
+  "acceptance": [
+    "7/8/9/10 cutoff no military elimination in standard Session",
+    "VP cutoff ties survive; preexisting eliminated excluded; protection must not be guessed",
+    "round11 unique VP / unique tied-top Miyama winner / otherwise grail overflow",
+    "round_end pending windows finish before idempotent outcome; signed restore rejects tampering",
+    "real remote seven-seat browser/WS/reconnect/stale projection plus local outcome UI",
+    "independent reviewer of exact candidate; original full CI no gate weakening"
+  ],
+  "promotion": "One main PR only; user consent still required before merge",
+  "migrationCreditDelta": 0,
+  "notes": "Legacy core simulation may retain explicitly named military policy; standard product cannot route there. No new generic ability primitive or waiver inferred."
+}

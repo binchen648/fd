@@ -4,7 +4,7 @@
   "ownerTask": "DR-P01",
   "ownerRole": "Feature Delivery Lead /root/dr_p01_delivery_lead",
   "issuerRole": "Global Technical Lead /root under latest explicit user scheduling instruction",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "requiredBase": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "observedRemoteMain": "7724bff0d849e13e5b6725c5b05f76dc6c03bce4",
   "taskManifestPath": "docs/agents/manifests/tasks/DR-P01.json",
@@ -73,8 +73,8 @@
     "docs/agents/manifests/tasks/P3-CB-A0-TIME-ALTER-PLAY-LEGALITY-REPAIR.json",
     "docs/reports/2026-10-14-p3-cb-a0-time-alter-play-legality-repair.md"
   ],
-  "productionWriteAuthorized": true,
-  "sharedRuntimeWriteAuthorized": true,
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
   "testWindowExclusive": false,
   "promotionAuthorized": false,
   "creditDelta": 0,
@@ -98,5 +98,7 @@
     "scopePreflight": "D:/fd-validation/dr-p01-m1-timeout-diag-20261030/scope-preflight.json",
     "ownership": "Same sole Feature Delivery Lead, no transfer/release; loader excluded and CB-C02 remains suspended",
     "verification": "Native/portable differential UTF8/RFC/long-message vectors; real browser fallback; existing restore/tamper/atomic/privacy regressions; independent verification; exact final-head original CI; user merge consent still required"
-  }
+  },
+  "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
+  "releasePublishedSha": "6eb58edc01b84a85ac783f0b0a9f3206703dff16"
 }
