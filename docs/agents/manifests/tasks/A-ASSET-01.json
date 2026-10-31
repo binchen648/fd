@@ -1,0 +1,43 @@
+{
+  "taskId": "A-ASSET-01",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling",
+  "BaseCommit": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
+  "branch": "codex/a-asset-01-client-gate-20261031",
+  "worktree": "D:/fd-validation/a-asset-01-20261031",
+  "ReservedFiles": [
+    "apps/client/src/state/fd-asset-registry.ts",
+    "apps/client/src/state/fd-asset-registry.test.ts",
+    ".github/workflows/test.yml",
+    "e2e/fd-approved-assets.spec.ts",
+    "docs/agents/manifests/tasks/A-ASSET-01.json",
+    "docs/agents/manifests/reservations/A-ASSET-01.json",
+    "docs/agents/manifests/tasks/A-MATCH-03.json",
+    "docs/agents/manifests/reservations/A-MATCH-03.json",
+    "docs/agents/manifests/releases/A-MATCH-03-TO-A-ASSET-01.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/plans/2026-10-31-a-asset-01.md",
+    "docs/reports/2026-10-31-a-asset-01-result.md",
+    "docs/reviews/phase3/A-ASSET-01-review-attestation.json"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/**",
+    "apps/server/**",
+    "data/authoring/**",
+    "data/phase3/**",
+    "data/generated/**",
+    "apps/client/public/**",
+    "apps/client/src/state/fd-asset-manifest.ts",
+    "test selection and existing timeouts",
+    "all frozen worktrees"
+  ],
+  "acceptance": [
+    "Approved roster matches explicit active content pack exactly,all127authoring archives remain distinct from14approved",
+    "Every approved archive/card has loadable correct art;known inline master skills map to owner overview according to source,unknown IDs not implicitly approved",
+    "Preserve missing asset/path/duplicate and unapproved-content coverage;do not delete or skip baseline assertion",
+    "Full client suite PASS and add unchanged npm run test:client to existing CI after original test:ci",
+    "Build,typecheck,real seven-player browser/card inspection and independent review;onePR,user approval before merge"
+  ],
+  "migrationCreditDelta": 0
+}

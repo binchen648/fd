@@ -1,0 +1,12 @@
+{
+  "releasedTask": "A-MATCH-03",
+  "state": "RELEASED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling",
+  "mergedMain": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
+  "frozenHead": "afc736dc23bd62dae5dae548fa2714844b1b5e1f",
+  "preserveFrozenWorktree": true,
+  "successor": "A-ASSET-01",
+  "runtimeGrant": "NONE_TO_SUCCESSOR",
+  "noCredit": true
+}
