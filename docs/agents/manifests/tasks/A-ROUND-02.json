@@ -58,5 +58,12 @@
     "passedTests": 105,
     "goldenSupplementTests": 1
   },
-  "goldenRegressionAddendum": "Update only superseded room round_end/next-decision assertions after retained RED; all battle power, VP, military and duplicate-scoring checks remain"
+  "goldenRegressionAddendum": "Update only superseded room round_end/next-decision assertions after retained RED; all battle power, VP, military and duplicate-scoring checks remain",
+  "integration": {
+    "candidate": "27c7e62f7a12c760e938f46f9c09b6db819dbd27",
+    "review": "85db33bd71398203354cc60d5eca27856a17cf0a",
+    "synchronizationSha": "1493807d0c02a2aaebca40f5071cfad60fc6b842",
+    "fullCi": "PENDING_FINAL_HEAD",
+    "mergeRequiresUserConsent": true
+  }
 }
