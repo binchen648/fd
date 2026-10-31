@@ -1,65 +1,35 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-30T11:30:39.987962+00:00",
+  "updatedAt": "2026-10-31T03:51:21.101379+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "This current user-authorized successor registry supersedes older pinned Planner grants; P01 fully released, CB-C02 suspended, interpreter/loader not granted",
-  "activeRuntimeTask": "A-END-01",
+  "precedence": "A-END-01 merged and explicitly released by same authorized owner for user-approved A-ROUND-02; CB-C02 remains suspended; interpreter and loader excluded",
+  "activeRuntimeTask": "A-ROUND-02",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
-    "branch": "codex/a-end-01-seven-player-20261030",
-    "absoluteWorktree": "D:\\fd-validation\\dr-p01-m1-integration-20261030"
+    "branch": "codex/a-round-02-seven-player-20261031",
+    "absoluteWorktree": "D:\\fd-validation\\a-round-02-20261031"
   },
-  "requiredBase": "48eef963fbe66ed652188ca40d56deced4899bd0",
+  "requiredBase": "67bd7416de4bdf35131606144e0b6572e562a5d2",
   "resources": [
     {
-      "path": "packages/rules/src/core/scoring-resolver.ts",
+      "path": "packages/rules/src/match-session.ts",
       "state": "GRANTED",
-      "taskId": "A-END-01"
+      "taskId": "A-ROUND-02"
     },
     {
-      "path": "packages/rules/src/core/elimination-resolver.ts",
+      "path": "packages/rules/src/match-room.ts",
       "state": "GRANTED",
-      "taskId": "A-END-01"
-    },
-    {
-      "path": "packages/rules/src/core/game-loop.ts",
-      "state": "GRANTED",
-      "taskId": "A-END-01"
+      "taskId": "A-ROUND-02"
     },
     {
       "path": "packages/rules/src/schema/game.ts",
       "state": "GRANTED",
-      "taskId": "A-END-01"
-    },
-    {
-      "path": "packages/rules/src/match-session.ts",
-      "state": "GRANTED",
-      "taskId": "A-END-01"
-    },
-    {
-      "path": "apps/client/src/state/playtest-fixture-loader.ts",
-      "state": "GRANTED",
-      "taskId": "A-END-01"
-    },
-    {
-      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-      "state": "GRANTED",
-      "taskId": "A-END-01"
-    },
-    {
-      "path": "apps/client/src/state/remote-room-fixture.ts",
-      "state": "GRANTED",
-      "taskId": "A-END-01"
-    },
-    {
-      "path": "apps/client/src/pages/MatchTable.tsx",
-      "state": "GRANTED",
-      "taskId": "A-END-01"
+      "taskId": "A-ROUND-02"
     }
   ],
   "loader": {
@@ -83,8 +53,12 @@
       "reservation": "docs/agents/manifests/reservations/CB-C02.json"
     },
     "A-END-01": {
-      "state": "GRANTED",
+      "state": "RELEASED",
       "taskManifest": "docs/agents/manifests/tasks/A-END-01.json"
+    },
+    "A-ROUND-02": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-ROUND-02.json"
     }
   },
   "historicalDirtyInterpreter": {
