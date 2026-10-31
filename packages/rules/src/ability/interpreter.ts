@@ -822,8 +822,15 @@ function acceptedSkillUseForbidApplies(s: GameState, modifierControllerId: strin
   return targetPlayerId !== modifierControllerId && target.zone === 'skill' && runtime(s).cardState[targetSourceId]?.faceDown === true;
 }
 function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
+  // The accepted selector only restricts skill cards. Avoid scanning every source
+  // for an attack/deck card; the authoritative applicability check remains below.
+  const targetDefinition = definition(s, sourceId);
+  if (!targetDefinition || !['master_skill', 'servant_skill'].includes(targetDefinition.cardType)) return [];
   const rules: string[] = [];
   for (const source of s.cards) {
+    // Necessary condition of the canonical active-source policy, not a substitute
+    // for it. Off-board cards cannot contribute a while-active prohibition.
+    if (source.zone !== 'field' && source.zone !== 'attack_area') continue;
     if (!active(s, source.instanceId)) continue;
     const sourceDefinition = definition(s, source.instanceId);
     if (!sourceDefinition) continue;

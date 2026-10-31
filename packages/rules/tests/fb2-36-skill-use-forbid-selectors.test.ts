@@ -119,6 +119,22 @@ function activatePhaseForbid(state: GameState) {
 }
 
 describe('P3-FB2-36 skill-use forbid selectors', () => {
+  it('avoids repeated inactive-zone reads beyond the ordinary face-up counter scan', () => {
+    const state=setup();
+    add(state,'target',TRUE_NAME_SKILL,'p2','skill');state.round.prioritySeat=2;
+    let inactiveReads=0;
+    for(let i=0;i<100;i++) {
+      const id=`deck-source-${i}`;add(state,id,STATIC_SOURCE,'p1','skill');
+      state.cards.find(c=>c.instanceId===id)!.zone='deck';
+      Object.defineProperty(state.abilityRuntime!.cardState,id,{configurable:true,enumerable:true,get(){inactiveReads++;return {active:true,faceDown:false,playedRound:1};}});
+    }
+    const actions=rules.getLegalActions(state,'p2');
+    expect(actions.some(a=>a.type==='play_card'&&a.cardInstanceId==='target')).toBe(true);
+    // The existing face-up counter reads each playedRound once; static source
+    // validity must not add a second full scan of off-board runtime states.
+    expect(inactiveReads).toBeLessThanOrEqual(100);
+  });
+
   it('accepts only the two exact identity-free modifier shapes', () => {
     expect(rules.classifyAcceptedSkillUseForbidModifier(staticModifier())).toBe('same_location_true_name_off_attack');
     expect(rules.classifyAcceptedSkillUseForbidModifier(phaseModifier())).toBe('same_location_opponent_facedown_skill');
