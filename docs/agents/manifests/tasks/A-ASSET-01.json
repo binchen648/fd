@@ -2,7 +2,7 @@
   "taskId": "A-ASSET-01",
   "status": "GRANTED",
   "owner": "Global Technical Lead / Product A Builder /root",
-  "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling",
+  "authority": "User 进行下一步 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling",
   "BaseCommit": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
   "branch": "codex/a-asset-01-client-gate-20261031",
   "worktree": "D:/fd-validation/a-asset-01-20261031",
@@ -39,5 +39,14 @@
     "Full client suite PASS and add unchanged npm run test:client to existing CI after original test:ci",
     "Build,typecheck,real seven-player browser/card inspection and independent review;onePR,user approval before merge"
   ],
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "candidateEvidenceState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewedCandidateSha": "d22570e0358946fa423000902cd5fd4a8090ffef",
+  "reviewCommit": "486e09719484e20afb93ff2cfdf752ca9124cb6b",
+  "synchronizationCommit": "78021a64128f6f8d599edf47fe98c924b34206fe",
+  "promotionPr": 687,
+  "remainingGates": [
+    "exact final-head CI",
+    "explicit user merge approval"
+  ]
 }
