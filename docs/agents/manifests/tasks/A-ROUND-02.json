@@ -1,6 +1,6 @@
 {
   "taskId": "A-ROUND-02",
-  "status": "GRANTED",
+  "status": "SUSPENDED",
   "owner": "Global Technical Lead / Product A Builder /root",
   "authority": "User instruction \u8fdb\u884c\u8fd9\u4e00\u6b65 approves previously proposed A-ROUND-02 and necessary same-owner scheduling",
   "BaseCommit": "67bd7416de4bdf35131606144e0b6572e562a5d2",
@@ -65,5 +65,10 @@
     "synchronizationSha": "1493807d0c02a2aaebca40f5071cfad60fc6b842",
     "fullCi": "PENDING_FINAL_HEAD",
     "mergeRequiresUserConsent": true
+  },
+  "suspension": {
+    "successor": "A-ROUND-02-CI-01",
+    "reason": "Merged product candidate frozen; same owner grants isolated CI repair, no overlapping live writers",
+    "mergedMain": "dec47680027beb4ee7af2036b293c5d0c96365c1"
   }
 }

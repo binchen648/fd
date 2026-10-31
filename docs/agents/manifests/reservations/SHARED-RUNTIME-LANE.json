@@ -1,40 +1,25 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-31T03:51:21.101379+00:00",
+  "updatedAt": "2026-10-31T04:49:59.923725+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "A-END-01 merged and explicitly released by same authorized owner for user-approved A-ROUND-02; CB-C02 remains suspended; interpreter and loader excluded",
-  "activeRuntimeTask": "A-ROUND-02",
+  "precedence": "A-ROUND-02 merged and suspended for user-authorized same-owner CI repair; CB-C02 remains suspended; interpreter/loader excluded",
+  "activeRuntimeTask": "A-ROUND-02-CI-01",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
-    "branch": "codex/a-round-02-seven-player-20261031",
-    "absoluteWorktree": "D:\\fd-validation\\a-round-02-20261031"
+    "branch": "codex/a-round-02-ci-repair-20261031",
+    "absoluteWorktree": "D:/fd-validation/a-round-02-ci-repair-20261031"
   },
-  "requiredBase": "67bd7416de4bdf35131606144e0b6572e562a5d2",
+  "requiredBase": "dec47680027beb4ee7af2036b293c5d0c96365c1",
   "resources": [
     {
       "path": "packages/rules/src/match-session.ts",
       "state": "GRANTED",
-      "taskId": "A-ROUND-02"
-    },
-    {
-      "path": "packages/rules/src/match-room.ts",
-      "state": "GRANTED",
-      "taskId": "A-ROUND-02"
-    },
-    {
-      "path": "packages/rules/src/schema/game.ts",
-      "state": "GRANTED",
-      "taskId": "A-ROUND-02"
-    },
-    {
-      "path": "packages/rules/src/match-room-hub.ts",
-      "state": "GRANTED",
-      "taskId": "A-ROUND-02"
+      "taskId": "A-ROUND-02-CI-01"
     }
   ],
   "loader": {
@@ -62,8 +47,12 @@
       "taskManifest": "docs/agents/manifests/tasks/A-END-01.json"
     },
     "A-ROUND-02": {
-      "state": "GRANTED",
+      "state": "SUSPENDED",
       "taskManifest": "docs/agents/manifests/tasks/A-ROUND-02.json"
+    },
+    "A-ROUND-02-CI-01": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-ROUND-02-CI-01.json"
     }
   },
   "historicalDirtyInterpreter": {

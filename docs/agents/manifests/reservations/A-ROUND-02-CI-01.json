@@ -1,0 +1,36 @@
+{
+  "taskId": "A-ROUND-02-CI-01",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead /root",
+  "authority": "User \u8bf7\u4f60\u5904\u7406 explicitly authorizes diagnosis and minimal repair of merged main CI timeout",
+  "BaseCommit": "dec47680027beb4ee7af2036b293c5d0c96365c1",
+  "branch": "codex/a-round-02-ci-repair-20261031",
+  "worktree": "D:/fd-validation/a-round-02-ci-repair-20261031",
+  "ReservedFiles": [
+    "packages/rules/src/match-session.ts",
+    "packages/rules/tests/regression/match-session-ci-performance.test.ts",
+    "docs/agents/manifests/tasks/A-ROUND-02-CI-01.json",
+    "docs/agents/manifests/reservations/A-ROUND-02-CI-01.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/agents/manifests/tasks/A-ROUND-02.json",
+    "docs/agents/manifests/reservations/A-ROUND-02.json",
+    "docs/plans/2026-10-31-a-round-02-ci-repair.md",
+    "docs/reports/2026-10-31-a-round-02-ci-repair.md",
+    "docs/reviews/phase3/A-ROUND-02-CI-01-review-attestation.json"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/loader.ts",
+    "test timeouts and selection",
+    "data/authoring/**",
+    "coverage tools",
+    "frozen worktrees"
+  ],
+  "acceptance": [
+    "Profile real eleven-round Session and retain failing main CI evidence",
+    "Minimal measured fix preserves game outcomes,checkpoint count,independent snapshots,authority and signed restore rejection",
+    "Original full test:ci and original10000ms pass on exact final head",
+    "Independent technical review and user consent before merge"
+  ],
+  "migrationCreditDelta": 0
+}
