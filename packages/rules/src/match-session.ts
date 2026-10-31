@@ -1019,7 +1019,8 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       !isRestoreRecord(value.abilityRuntime) || !isRestoreAbilityRuntimeBoundary(value.abilityRuntime, packKind)) return false;
   const round = value.round;
   if (!isRestoreSafeInteger(round.roundNumber, 1) || typeof round.activePhase !== 'string' || !validReplayPhases.has(round.activePhase) ||
-      !isRestoreSafeInteger(round.prioritySeat, 1)) return false;
+      !isRestoreSafeInteger(round.prioritySeat, 1) ||
+      (round.startingSeat !== undefined && !isRestoreSafeInteger(round.startingSeat, 1))) return false;
 
   const players = value.players as Array<Record<string, unknown>>;
   const playerIds = new Set(players.map((player) => player.id as string));
@@ -1027,7 +1028,8 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   const map = value.map as Record<string, unknown>;
   if (playerIds.size !== players.length || seats.size !== players.length || map.playerCount !== players.length ||
       !players.every((player) => (player.seat as number) <= (map.playerCount as number)) ||
-      !players.some((player) => player.seat === round.prioritySeat)) return false;
+      !players.some((player) => player.seat === round.prioritySeat) ||
+      (round.startingSeat !== undefined && !players.some(player => player.seat === round.startingSeat))) return false;
 
   const abilityRuntime = value.abilityRuntime as Record<string, unknown>;
   const pack = abilityRuntime.pack as Record<string, unknown>;
@@ -1980,6 +1982,7 @@ export class MatchSession {
       const windowPause = this.autoResolveNonInteractiveWindows();
       if (windowPause) return this.pause(windowPause);
       if (this.state.round.activePhase === 'round_end') { this.finalizeStandardRoundEnd(); return this.pause(this.standardOutcome() ? 'match_complete' : 'round_end'); }
+      if (this.state.round.activePhase === 'cleanup') { this.finishBattleRound(); continue; }
       if (this.state.round.roundNumber > 11) return this.pause('match_complete');
       if (this.battleSettlementInProgress()) {
         this.resolveBattlePhase();
@@ -2037,8 +2040,7 @@ export class MatchSession {
           if (this.state.round.roundNumber === 11) { this.ensureFinalScoring(); return this.pause('match_complete'); }
           return this.pause('round_end');
         }
-        this.state.round.roundNumber += 1;
-        this.startRound(this.state.round.roundNumber);
+        this.startNextRound();
         continue;
       }
       return reason;
@@ -2047,7 +2049,24 @@ export class MatchSession {
   }
 
   runUntilHumanInputOrStop(): MatchPauseReason {
-    return this.runUntilHumanInputOrRoundEnd();
+    for (let guard = 0; guard < 11; guard++) {
+      const reason = this.runUntilHumanInputOrRoundEnd();
+      if (reason !== 'round_end') return reason;
+      if (!this.startNextRound()) return reason;
+    }
+    return this.pause('state_loop');
+  }
+
+  private startNextRound(): boolean {
+    const round = this.state.round.roundNumber;
+    if (round >= 11 || this.standardOutcome() ||
+      !this.logs.some(entry => entry.type === 'standard_round_end_resolved' && entry.round === round)) return false;
+    const active = this.state.players.filter(player => player.status === 'active').sort((a, b) => a.seat - b.seat);
+    const oldStarter = this.state.round.startingSeat ?? 1;
+    const next = active.find(player => player.seat > oldStarter) ?? active[0];
+    if (!next) return false;
+    this.startRound(round + 1, this.state, next.seat);
+    return true;
   }
 
   runRound(): MatchPauseReason {
@@ -2062,21 +2081,21 @@ export class MatchSession {
       if (this.advanceToNextActiveSeat()) return;
       if (this.state.round.activePhase === 'preparation') {
         this.state.round.activePhase = 'advance';
-        this.state.round.prioritySeat = 1;
+        this.state.round.prioritySeat = this.roundSeatOrder()[0]!.seat;
         advanceAbilityPhase(this.state, 'advance', this.state.round.roundNumber);
         this.record('phase_started', `round ${this.state.round.roundNumber} advance phase`);
         return;
       }
       if (this.state.round.activePhase === 'advance') {
         this.state.round.activePhase = 'action';
-        this.state.round.prioritySeat = 1;
+        this.state.round.prioritySeat = this.roundSeatOrder()[0]!.seat;
         this.revealShintoEventsAtActionStart(this.state);
         advanceAbilityPhase(this.state, 'action', this.state.round.roundNumber);
         this.record('phase_started', `round ${this.state.round.roundNumber} action phase`);
         return;
       }
       if (this.state.round.activePhase === 'action') {
-        this.state.round.prioritySeat = 1;
+        this.state.round.prioritySeat = this.roundSeatOrder()[0]!.seat;
         advanceAbilityPhase(this.state, 'battle', this.state.round.roundNumber);
         this.record('phase_started', `round ${this.state.round.roundNumber} battle phase`);
         return;
@@ -2578,8 +2597,12 @@ export class MatchSession {
     });
   }
 
-  private startRound(round: number, targetState = this.state): void {
-    targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: 1 };
+  private startRound(round: number, targetState = this.state, startingSeat = 1): void {
+    // Runtime must observe the old round so its canonical reset and expiration run.
+    if (round > targetState.round.roundNumber && targetState.abilityRuntime) {
+      advanceAbilityPhase(targetState, 'round_start', round);
+    }
+    targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: startingSeat, startingSeat };
     for (const player of targetState.players) {
       delete player.locationId;
     }
@@ -2778,7 +2801,11 @@ export class MatchSession {
   }
 
   private finishBattleRound(): void {
-    advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
+    if (this.state.round.activePhase !== 'cleanup') advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
+    const runtime = this.state.abilityRuntime;
+    if (runtime?.pendingDecision || runtime?.responseWindows.length || runtime?.hostRequests.length) return;
+    for (const player of this.state.players) delete player.locationId;
+    modeStateOf(this.state).terrainAssignments = {};
     this.discardRoundSituationAndEvents();
     advanceAbilityPhase(this.state, 'round_end', this.state.round.roundNumber);
     this.record('round_end', `round ${this.state.round.roundNumber} ended`);
@@ -2894,11 +2921,16 @@ export class MatchSession {
       rank:1+ordered.filter(other=>other.vp>p.vp).length}));
   }
 
+  private roundSeatOrder() {
+    const starter = this.state.round.startingSeat ?? 1;
+    return this.state.players.filter(player => player.status === 'active').sort((a, b) =>
+      Number(a.seat < starter) - Number(b.seat < starter) || a.seat - b.seat);
+  }
+
   private advanceToNextActiveSeat(): boolean {
-    const currentSeat = this.state.round.prioritySeat;
-    const next = this.state.players
-      .filter((player) => player.status === 'active' && player.seat > currentSeat)
-      .sort((left, right) => left.seat - right.seat)[0];
+    const starter = this.state.round.startingSeat ?? 1;
+    const key = (seat: number) => seat < starter ? seat + this.state.players.length : seat;
+    const next = this.roundSeatOrder().find(player => key(player.seat) > key(this.state.round.prioritySeat));
     if (!next) return false;
     this.state.round.prioritySeat = next.seat;
     this.record('priority_changed', `priority seat ${next.seat}`);

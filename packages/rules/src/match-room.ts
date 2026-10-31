@@ -213,7 +213,7 @@ export class MatchRoom {
       persistenceScope: this.persistenceScope,
     });
     this.status = 'running';
-    this.session.runUntilHumanInputOrRoundEnd();
+    this.session.runUntilHumanInputOrStop();
     return this.session.projectToClientState(primaryHuman);
   }
 
@@ -237,7 +237,7 @@ export class MatchRoom {
     if (!seat) throw new Error('Client does not control a seat');
     const result = this.session.dispatchPlayerCommand(seat.playerId, command);
     if (result.ok) {
-      this.session.runUntilHumanInputOrRoundEnd();
+      this.session.runUntilHumanInputOrStop();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return result;
@@ -251,7 +251,7 @@ export class MatchRoom {
     if (!seat) throw new Error('Client does not control a seat');
     const result = this.session.passPriority(seat.playerId);
     if (result.ok) {
-      this.session.runUntilHumanInputOrRoundEnd();
+      this.session.runUntilHumanInputOrStop();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return result;
@@ -262,7 +262,7 @@ export class MatchRoom {
     if (!this.session) throw new Error('Match has not started');
     const consumed = this.session.consumeDirective(directiveId);
     if (consumed) {
-      this.session.runUntilHumanInputOrRoundEnd();
+      this.session.runUntilHumanInputOrStop();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return consumed;
