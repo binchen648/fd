@@ -65,6 +65,16 @@
       "path": ".github/workflows/test.yml",
       "state": "GRANTED",
       "taskId": "A-RECOVER-04"
+    },
+    {
+      "path": "packages/rules/src/match-session.ts",
+      "taskId": "A-RECOVER-04",
+      "state": "GRANTED"
+    },
+    {
+      "path": "packages/rules/src/match-room.ts",
+      "taskId": "A-RECOVER-04",
+      "state": "GRANTED"
     }
   ],
   "loader": {

@@ -29,11 +29,13 @@
     "docs/agents/manifests/tasks/A-ASSET-01.json",
     "docs/agents/manifests/reservations/A-ASSET-01.json",
     "docs/agents/manifests/releases/A-ASSET-01-TO-A-RECOVER-04.json",
-    "apps/client/src/App.test.tsx"
+    "apps/client/src/App.test.tsx",
+    "packages/rules/src/match-session.ts",
+    "packages/rules/src/match-room.ts",
+    "packages/rules/tests/regression/room-persistence-serialization.test.ts"
   ],
   "ForbiddenFiles": [
     "packages/rules/src/ability/**",
-    "packages/rules/src/match-session.ts",
     "data/**",
     "apps/client/public/**",
     "frozen worktrees",
@@ -57,5 +59,11 @@
   "remainingGates": [
     "exact final-head original+client+server CI",
     "explicit user merge approval"
-  ]
+  ],
+  "scopeAddendum": {
+    "authority": "User-authorized recovery implementation and same-owner Runtime scheduling; actual round7 end-to-end timeout requires minimal serialization fix; no rules/ability semantics changes",
+    "preservedPriorCandidate": "7b8f62e96e876a846388730f215ed55f68ee2027",
+    "preservedPriorIntegrationHead": "726a03fe8e9ff30adc7c024a197639068e2bea8c",
+    "candidateState": "REVISION_REQUIRED_PENDING_PROFILING"
+  }
 }
