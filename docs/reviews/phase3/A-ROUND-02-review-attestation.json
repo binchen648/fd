@@ -3,7 +3,7 @@
   "taskId": "P3-A-ROUND-02",
   "reviewer": "github:binchen648",
   "reviewThread": "https://github.com/binchen648/fd/pull/684#issuecomment-6538748933",
-  "candidateSha": "38df1ac7d5ac9fa020112cbd500a6edaa3587273",
+  "candidateSha": "27c7e62f7a12c760e938f46f9c09b6db819dbd27",
   "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
   "independentVerification": {
     "reviewer": "/root/a_round_02_independent",
@@ -72,5 +72,61 @@
       "Browser/build/fullCI evidence is separate coordinator responsibility"
     ]
   },
-  "publication": "Coordinator GitHub account publishes independent agent evidence; not a human merge approval or a separate GitHub reviewer identity"
+  "publication": "Coordinator GitHub account publishes independent agent evidence; not a human merge approval or a separate GitHub reviewer identity",
+  "finalIndependentSupplement": {
+    "reviewer": "/root/a_round_02_independent",
+    "candidate": "27c7e62f7a12c760e938f46f9c09b6db819dbd27",
+    "base": "67bd7416de4bdf35131606144e0b6572e562a5d2",
+    "classification": "PASS",
+    "scope": "Final exact-head independent technical supplement for A-ROUND-02",
+    "previousAcceptedCandidate": "38df1ac7d5ac9fa020112cbd500a6edaa3587273",
+    "previousReceipt": "independent-review-38df1ac7.json",
+    "productionSourceAndExecutionConfigUnchangedFromPrior": true,
+    "deltaFiles": [
+      "docs/agents/manifests/reservations/A-ROUND-02.json",
+      "docs/agents/manifests/tasks/A-ROUND-02.json",
+      "docs/reviews/phase3/A-ROUND-02-review-attestation.json",
+      "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts"
+    ],
+    "worktreeClean": true,
+    "goldenFlowReview": {
+      "reason": "Previous room round_end pause assertions conflict with approved continuous product runner; new expected boundary is round2 preparation. New preparation pass is legal and is not a duplicate battle command.",
+      "assertionsRetained": [
+        "combat participant powers",
+        "winner/tie/margin",
+        "battle/event/competition VP",
+        "military result",
+        "battle history/log receipts",
+        "serialized/restored history and VP",
+        "post-resume no repeated history/scoring"
+      ],
+      "newAssertions": [
+        "phase preparation before/after durable restore",
+        "round2 before/after durable restore",
+        "legitimate next preparation decision accepted"
+      ],
+      "result": "PASS",
+      "tests": 1,
+      "exitCode": 0,
+      "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+      "log": "D:\\fd-validation\\a-round-02-evidence-20261031\\independent-golden-27c7e62f.log",
+      "logSha256": "51d1b26224519d822b187225babac6d8335c8d37d34008785c6d197a44f95ea2",
+      "originalRedLog": "golden-red.log"
+    },
+    "priorTechnicalChecks": {
+      "focusedTests": 105,
+      "remainingBlockingFindings": 0,
+      "r1ThroughR4": "CLOSED"
+    },
+    "fullCi": "Coordinator must supply final same-head run; reviewer did not run fullCI",
+    "noGateWeakening": true,
+    "reviewerProductionWrites": false,
+    "checkedAt": "2026-10-31T04:04:00.191975+00:00",
+    "doesNotGrant": [
+      "human merge consent",
+      "migration credit",
+      "whole-game acceptance",
+      "new synthetic authoring contract"
+    ]
+  }
 }

@@ -52,10 +52,11 @@
   "migrationCreditDelta": 0,
   "scopeAddendum": "Same-owner grant: match-room-hub restore boundary resume only, after every room validates and trust reconciliation; no transport, authentication, coverage changes",
   "review": {
-    "candidate": "38df1ac7d5ac9fa020112cbd500a6edaa3587273",
+    "candidate": "27c7e62f7a12c760e938f46f9c09b6db819dbd27",
     "independentAgent": "/root/a_round_02_independent",
     "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
-    "passedTests": 105
+    "passedTests": 105,
+    "goldenSupplementTests": 1
   },
   "goldenRegressionAddendum": "Update only superseded room round_end/next-decision assertions after retained RED; all battle power, VP, military and duplicate-scoring checks remain"
 }
