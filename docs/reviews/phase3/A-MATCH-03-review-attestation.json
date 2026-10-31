@@ -1,0 +1,264 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-MATCH-03",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/686#issuecomment-6539571139",
+  "candidateSha": "f31c3b12f02c4560c96eaf0f1c991c8edc8b16b7",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "independentVerification": {
+    "reviewer": "/root/a_match_03_independent",
+    "candidate": "f31c3b12f02c4560c96eaf0f1c991c8edc8b16b7",
+    "observedHead": "f31c3b12f02c4560c96eaf0f1c991c8edc8b16b7",
+    "base": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
+    "classification": "PASS",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "scope": "Limited seven-seat default-production-pack full-match delivery: supply/revision/UI fixes plus naturally completed end-to-end UI path; not all character/capability acceptance or unconditional client release",
+    "blockingImplementationFindings": [],
+    "worktreeClean": true,
+    "sourceTestsConfigReviewed": "9a implementation + f31 test policy relocation/artifact persistence supplement",
+    "interpreterLoaderAndExistingGatesUnchanged": true,
+    "independentRuntimeChecks": {
+      "supplyProbeGroups": 5,
+      "terminalTests": 21,
+      "authorityTests": 51,
+      "passed": 72,
+      "reviewerFullCi": "NOT_RUN"
+    },
+    "browserGate": {
+      "classification": "PASS",
+      "naturalResult": "1 passed (3.0m)",
+      "seed": 20260904,
+      "actualHumanSeats": 7,
+      "commandCount": 523,
+      "errors": [],
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "outcome": {
+        "kind": "winner",
+        "round": 11,
+        "winnerPlayerId": "p5",
+        "tiedTopPlayerIds": [
+          "p5"
+        ],
+        "reason": "highest_vp"
+      },
+      "commandCounts": {
+        "end_turn": 195,
+        "deploy_player": 65,
+        "normal_move": 6,
+        "stage_attack_card": 130,
+        "confirm_staged_attack": 65,
+        "skip_normal_move": 59,
+        "decline_this_window": 3
+      },
+      "preparationPlayersAtLateRounds": {
+        "8": [
+          "p1",
+          "p2",
+          "p3",
+          "p4",
+          "p5",
+          "p6",
+          "p7"
+        ],
+        "9": [
+          "p4",
+          "p5",
+          "p6",
+          "p7"
+        ],
+        "10": [
+          "p5",
+          "p6",
+          "p4"
+        ],
+        "11": [
+          "p6",
+          "p5"
+        ]
+      },
+      "path": "Public HTTP creates/joins, UI seat/start, production backend legal projections select actions, actual UI clicks, real server/WS, round4 reload/reconnect and final reload",
+      "stateInjection": false,
+      "directWsGameCommandBypass": false,
+      "sourceBinding": "Coordinator recorded exact f31 clean before archive run; independently observed same f31 clean after run. Result/transcript artifacts do not embed SHA; binding comes from observed fixed source and recorded invocation, not an invented embedded field.",
+      "limitations": "One browser seed and deterministic optional-decline policy; two core seeds and second-seed real HTTP/WS whole game are separate evidence. Specific activated-skill and host-adjudication paths not certified."
+    },
+    "artifactHandling": {
+      "initialGeneratedHelperFiles": "Confirmed moved to external initial-tsc-emitted; source workspace no helper js/map/dts shadow files remain",
+      "generatedArtifactsPreserved": true
+    },
+    "clientAssetFailure": {
+      "classification": "PREEXISTING_CLIENT_ASSET_TEST_FAILURE",
+      "candidateFullClient": "53 PASS / 1 FAIL /54",
+      "baselineFocusedAsset": "7 PASS /1 FAIL /8 at c99fa8f8 tree equal to bbe1ef91",
+      "rootTestCiIncludesClientTests": false,
+      "testSelectionChanged": false,
+      "affectedAssetSourceTestAuthoringDelta": false,
+      "releaseImplication": "Independent client release blocker remains; no unconditional all-client/full-release PASS. Separate task must reconcile approved-list versus complete archives; cannot ignore or skip failed test."
+    },
+    "integrationAllowed": "NO_PENDING_FINAL_HEAD_FULL_CI_AND_USER_APPROVAL",
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\browser-full-archived.log",
+        "sha256": "6849f1d22cd54e6b2ceb6f4194241fed4477996a75daba0f0767332fd1a999b8"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\whole-match-result.json",
+        "sha256": "f165a0b3c3dd3cf456c8e448fce59652fbc78c8ab8d06695c2b068992640d2a9"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\whole-match-result.png",
+        "sha256": "4522f0a399ccf4f512ca6e78942bed827cb4ca240abaa79aa60d6fdec865a60c"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\whole-match-transcript.json",
+        "sha256": "645defa68e6dc754d761d77e781696afb6e397e84a04051a9ec80a75dc1d8661"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\client-asset-baseline.json",
+        "sha256": "0d0201b197a9e56da89a729eb1a4062d9a1e8b7c0e901ada91150d6f7a1a6788"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\client-all.log",
+        "sha256": "c16543467fc13d130958659204abb2c1ae5ba06fd8ad05768f0f0b6172af9bfc"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\client-assets-at-base.log",
+        "sha256": "79d96b04f8d7bf305492b4980ea92bd7d080611c7fb68893af34cb09668ae15f"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\independent-review-9a4662c3.json",
+        "sha256": "3605281d2fefb63b3a283e1e9af1a41acbe7e21772bebc08228cf371e4c640b5"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\independent-review-f31c3b12.json",
+        "sha256": "8e3ae4b688e17947ba5a735ba8a8e0051990df8f149185703ea2734955439ad7"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\independent-supply-probes.log",
+        "sha256": "6c631faa26d6f38d8c519926716042d858e476b566cea5145a6721a180a3b016"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\independent-focused-9a4662c3.log",
+        "sha256": "2cd83ad6bf639d1c756f691c89ad1afa83159eb747bbde28c88434e8f7eeb104"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\typecheck-2.log",
+        "sha256": "20b3ccb456235240f24197faef2fad63fb19562934f659030820e2650a177dd7"
+      }
+    ],
+    "checkedAt": "2026-10-31T05:28:47.355526+00:00",
+    "reviewerProductionWrites": false,
+    "doesNotGrant": [
+      "User merge approval",
+      "migration/coverage credit",
+      "whole-roster/full-capability acceptance",
+      "unconditional client release with known asset failure"
+    ]
+  },
+  "initialTechnicalReview": {
+    "reviewer": "/root/a_match_03_independent",
+    "candidate": "9a4662c30b6d3af0265f8dae5d261ab1e5cf8511",
+    "observedHead": "9a4662c30b6d3af0265f8dae5d261ab1e5cf8511",
+    "base": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
+    "classification": "PASS",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "scope": "Independent limited technical acceptance of A-MATCH-03 supply/order/revision/remote deployment labels and static evidence-path review; final full-browser/CI completion remains coordinator gate",
+    "worktreeClean": true,
+    "blockingFindings": [],
+    "ownership": {
+      "soleWriter": "/root",
+      "task": "A-MATCH-03",
+      "interpreterLoaderDiffEmpty": true,
+      "reviewerProductionWrites": false
+    },
+    "productionReview": {
+      "recycling": "Consumes existing deck prefix before recycling own discard; card instances/count retained, original remaining deck not shuffled early; other owners and non-discard zones excluded; controller/visibility/transient state reset; deterministic seed/round/seat order",
+      "preparation": "Draws for active players in rotated seat order before situation mana/event placement; original pending round_start guard remains",
+      "deployment": "Successful deployment increments authoritative revision before rewards/phase advance, restoring stale-revision rejection for workshop path; rejection validation precedes mutation",
+      "client": "Only semantic kind/Chinese destination label and outpost label changed; server authorized command objects preserved"
+    },
+    "independentProbe": {
+      "groups": 5,
+      "exitCode": 0,
+      "cases": [
+        "existing deck first/card identities",
+        "removed/independent/attack zone exclusion",
+        "controller/faceDown/active/transient reset",
+        "no early recycle with enough deck",
+        "full-hand no-op",
+        "empty deck+discard bounded/no fabricated cards",
+        "same-seed deterministic recycle"
+      ]
+    },
+    "focused": {
+      "passed": 72,
+      "failed": 0,
+      "exitCode": 0,
+      "endgame": 21,
+      "authority": 51,
+      "fullCiRunByReviewer": false
+    },
+    "coordinatorEvidenceRead": {
+      "coreFullMatch": "full-room-tests.log: two deterministic seven-human rooms naturally initialize and complete all11rounds, midround4 restore and stale replay assertions, 4tests PASS at receipt; source now includes added revision edge test",
+      "realWire": "wire-full-3.log: real public HTTP create/join +7authenticatedWS play through 11rounds, forged durable restore rejection/valid restore/reconnect/stale rejection/privacy/final reconnect;1PASS",
+      "browser": "browser-full-first.log RUNNING when checked; source uses HTTP create/join and actual UI select/start/actions clicks; no state/round/card injection or direct WS command bypass",
+      "unitFixtures": "Only isolated depletion fixture mutates state and calls private helper; it is explicitly separate from full-game evidence"
+    },
+    "integrationAllowed": "NO_PENDING_COMPLETE_BROWSER_AND_FINAL_HEAD_FULL_CI",
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\independent-supply-probes.log",
+        "sha256": "6c631faa26d6f38d8c519926716042d858e476b566cea5145a6721a180a3b016"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\independent-focused-9a4662c3.log",
+        "sha256": "2cd83ad6bf639d1c756f691c89ad1afa83159eb747bbde28c88434e8f7eeb104"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\full-room-tests.log",
+        "sha256": "b3a274756da40c83933ae5e0964d29e072e5db5accf9f9ed6c81a4ec6a4b2f09"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\wire-full-3.log",
+        "sha256": "9026e5e9d908eeddd5d5da705f8f98c4979788a539e9349ca0dd460041c3cdbf"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\refill-first-red-2.log",
+        "sha256": "ed553ace478cd724c7e25a07bcda0373ee41a8da790e720345d820b970deea0f"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\deploy-revision-red.log",
+        "sha256": "c44a4def65a6845837f8308fe42f2cd88eab15c6cfd4a408a29323317bb1783b"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\client-deploy-red.log",
+        "sha256": "091754ec233c7a9e4cae87f259b0edcd28674abe3766fed636e20d1cb554f344"
+      },
+      {
+        "path": "D:\\fd-validation\\a-match-03-evidence-20261031\\client-deploy-green.log",
+        "sha256": "fc7f1572d55d726aba62612eaa5b977cb9997ba8632b8048e03735d8be3b6e0e"
+      }
+    ],
+    "checkedAt": "2026-10-31T05:21:44.379619+00:00",
+    "limitations": [
+      "Default seven-seat production pack with deterministic optional-decline policy and two seeds, not all capabilities/all skills",
+      "Browser result must be naturally complete and bound to final source; current running log is not PASS",
+      "Existing skill-specific temporary/residual/per-game cleanup contracts are not newly certified",
+      "Generated real deck additions follow discard semantics; temporary attacks must already obey their separate dissolve/cleanup contract",
+      "No migration/coverage credit or human merge approval granted"
+    ]
+  },
+  "publication": "Coordinator publishes independent agent evidence; not human merge consent. Full client-release gate remains blocked by reproduced asset-list baseline defect."
+}
