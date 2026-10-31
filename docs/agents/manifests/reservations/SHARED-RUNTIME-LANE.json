@@ -1,80 +1,40 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-31T05:10:03.571520+00:00",
+  "updatedAt": "2026-10-31T10:21:12.050829+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "CI repair merged and explicitly released by same authorized owner; A-MATCH-03 sole grant,interpreter/loader excluded,CB-C02 suspended",
-  "activeRuntimeTask": "A-MATCH-03",
+  "precedence": "A-MATCH-03 merged and explicitly released;A-ASSET-01 owns only named client/gate files;no active Runtime writer;CB-C02 remains suspended",
+  "activeRuntimeTask": null,
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
-    "branch": "codex/a-match-03-seven-player-20261031",
-    "absoluteWorktree": "D:/fd-validation/a-match-03-20261031"
+    "branch": "codex/a-asset-01-client-gate-20261031",
+    "absoluteWorktree": "D:/fd-validation/a-asset-01-20261031"
   },
-  "requiredBase": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
+  "requiredBase": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
   "resources": [
     {
-      "path": "packages/rules/src/match-session.ts",
+      "path": "apps/client/src/state/fd-asset-registry.ts",
       "state": "GRANTED",
-      "taskId": "A-MATCH-03"
+      "taskId": "A-ASSET-01"
     },
     {
-      "path": "packages/rules/src/match-room.ts",
+      "path": "apps/client/src/state/fd-asset-registry.test.ts",
       "state": "GRANTED",
-      "taskId": "A-MATCH-03"
+      "taskId": "A-ASSET-01"
     },
     {
-      "path": "packages/rules/tests/regression/full-seven-player-match.test.ts",
+      "path": ".github/workflows/test.yml",
       "state": "GRANTED",
-      "taskId": "A-MATCH-03"
+      "taskId": "A-ASSET-01"
     },
     {
-      "path": "apps/server/src/full-seven-player-match.test.ts",
+      "path": "e2e/fd-approved-assets.spec.ts",
       "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "apps/client/src/App.tsx",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "apps/client/src/pages/MatchTable.tsx",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "apps/client/src/state/match-room-client.ts",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "apps/client/src/state/remote-room-fixture.ts",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "e2e/fd-full-seven-player-match.spec.ts",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "e2e/support/full-seven-player-driver.ts",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
-    },
-    {
-      "path": "e2e/support/start-full-match-server.ts",
-      "state": "GRANTED",
-      "taskId": "A-MATCH-03"
+      "taskId": "A-ASSET-01"
     }
   ],
   "loader": {
@@ -110,8 +70,12 @@
       "taskManifest": "docs/agents/manifests/tasks/A-ROUND-02-CI-01.json"
     },
     "A-MATCH-03": {
-      "state": "GRANTED",
+      "state": "RELEASED",
       "taskManifest": "docs/agents/manifests/tasks/A-MATCH-03.json"
+    },
+    "A-ASSET-01": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-ASSET-01.json"
     }
   },
   "historicalDirtyInterpreter": {
@@ -125,5 +89,6 @@
     "No acceptance/promotion/credit granted",
     "No source in frozen worktrees changed"
   ],
-  "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json"
+  "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
+  "activeClientTask": "A-ASSET-01"
 }

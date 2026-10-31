@@ -59,6 +59,25 @@ const servantPortraits: Record<string, string> = {
   'servant.suzuka_gozen': '/assets/fd/servants/suzuka.png',
 };
 
+// These fourteen abilities are printed on their owner's reviewed overview card.
+// Enumerate identities: an arbitrary master.skill prefix must retain the unknown fallback.
+const printedMasterSkillOwners: Record<string, keyof typeof fdRealAssetManifest.entities> = {
+  'master.kayneth.skill.double-master': 'master.kayneth',
+  'master.kayneth.skill.alchemist': 'master.kayneth',
+  'master.kayneth.skill.pride': 'master.kayneth',
+  'master.shinji.skill.drain-command': 'master.shinji',
+  'master.shinji.skill.useless-person': 'master.shinji',
+  'master.shinji.skill.clown': 'master.shinji',
+  'master.kiritsugu.skill.magus-killer': 'master.kiritsugu',
+  'master.kiritsugu.skill.time-alter': 'master.kiritsugu',
+  'master.kiritsugu.skill.square-accel': 'master.kiritsugu',
+  'master.maiya.skill.military': 'master.maiya',
+  'master.gatou.skill.seeker': 'master.gatou',
+  'master.irisviel.skill.proxy-master': 'master.irisviel',
+  'master.irisviel.skill.conversion-magic': 'master.irisviel',
+  'master.olga-marie.skill.astronomical-science': 'master.olga-marie',
+};
+
 const cardArt: Record<string, string> = {
   'basic.agility.2': '/assets/fd/cards/basic-agility-2.svg',
   'basic.magecraft.2': '/assets/fd/cards/basic-magecraft-2.svg',
@@ -105,6 +124,16 @@ export function resolveEntityImageUrl(kind: EntityKind, id: string): string {
 export function resolveCardImageUrl(input: { definitionId: string; cardType?: string }): string {
   const realAsset = fdRealAssetManifest.cards[input.definitionId as keyof typeof fdRealAssetManifest.cards];
   if (realAsset) return realAsset;
+
+  const printedMaster = printedMasterSkillOwners[input.definitionId];
+  if (printedMaster) return fdRealAssetManifest.entities[printedMaster];
+
+  if (input.cardType === 'master_overview' && approvedAuthoringMasterIdSet.has(input.definitionId)) {
+    return resolveEntityImageUrl('master', input.definitionId);
+  }
+  if (input.cardType === 'servant_overview' && approvedAuthoringServantIdSet.has(input.definitionId)) {
+    return resolveEntityImageUrl('servant', input.definitionId);
+  }
 
   const mapped = cardArt[input.definitionId];
   if (mapped) return mapped;

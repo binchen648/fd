@@ -1,6 +1,6 @@
 {
   "taskId": "A-MATCH-03",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "owner": "Global Technical Lead / Product A Builder /root",
   "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves A-MATCH-03 proposal; sole writer scheduling included",
   "BaseCommit": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
@@ -58,5 +58,11 @@
     "fullCi": "PENDING_FINAL_HEAD",
     "clientReleaseGate": "BASELINE_ASSET_TEST_FAILURE_REPRODUCED",
     "mergeRequiresUserConsent": true
+  },
+  "completion": {
+    "mergedMain": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
+    "postMergeCI": "PASS_1741_1ORIGINALSKIP",
+    "successor": "A-ASSET-01",
+    "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling"
   }
 }
