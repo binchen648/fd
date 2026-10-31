@@ -213,7 +213,7 @@ export class MatchRoom {
       persistenceScope: this.persistenceScope,
     });
     this.status = 'running';
-    this.session.runUntilHumanInputOrRoundEnd();
+    this.session.runUntilHumanInputOrStop();
     return this.session.projectToClientState(primaryHuman);
   }
 
@@ -237,7 +237,7 @@ export class MatchRoom {
     if (!seat) throw new Error('Client does not control a seat');
     const result = this.session.dispatchPlayerCommand(seat.playerId, command);
     if (result.ok) {
-      this.session.runUntilHumanInputOrRoundEnd();
+      this.session.runUntilHumanInputOrStop();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return result;
@@ -251,7 +251,7 @@ export class MatchRoom {
     if (!seat) throw new Error('Client does not control a seat');
     const result = this.session.passPriority(seat.playerId);
     if (result.ok) {
-      this.session.runUntilHumanInputOrRoundEnd();
+      this.session.runUntilHumanInputOrStop();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return result;
@@ -262,7 +262,7 @@ export class MatchRoom {
     if (!this.session) throw new Error('Match has not started');
     const consumed = this.session.consumeDirective(directiveId);
     if (consumed) {
-      this.session.runUntilHumanInputOrRoundEnd();
+      this.session.runUntilHumanInputOrStop();
       if (this.session.stopReason === 'match_complete') this.status = 'ended';
     }
     return consumed;
@@ -272,8 +272,18 @@ export class MatchRoom {
     this.requireHost(clientId);
     if (!this.session) throw new Error('Match has not started');
     const restored = this.session.restoreToCheckpoint(checkpointId);
-    if (restored) this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
+    if (restored) {
+      this.resumeRestoredBoundary();
+      this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
+    }
     return restored;
+  }
+
+  /** Invoke only after authenticated replay or durable restore has validated. */
+  resumeRestoredBoundary(): void {
+    if (!this.session || !['round_end', 'round_start', 'cleanup'].includes(this.session.state.round.activePhase)) return;
+    this.session.runUntilHumanInputOrStop();
+    this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
   }
 
   getProjection(clientId: string): MatchRoomProjection {
@@ -354,5 +364,7 @@ export function restoreMatchRoom(
   room.status = snapshot.status;
   room.seats = structuredClone(snapshot.seats);
   room.session = restoredSession;
+  // Bulk restore deliberately defers execution until every room has validated.
+  if (reconcileReplayTrust) room.resumeRestoredBoundary();
   return room;
 }

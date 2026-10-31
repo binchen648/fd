@@ -35,6 +35,8 @@ export interface RoundState {
   roundNumber: number;
   activePhase: PhaseName;
   prioritySeat: number;
+  /** Physical first seat for clockwise phase order; absent in legacy snapshots means seat 1. */
+  startingSeat?: number;
 }
 
 export interface GameLogEntry {

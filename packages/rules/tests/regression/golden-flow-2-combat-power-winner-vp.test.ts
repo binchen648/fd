@@ -96,7 +96,8 @@ describe('Golden Flow 2 combat -> power -> winner -> VP', () => {
     expect(room.endClientTurn('host-gf2').ok).toBe(true);
 
     const settled = session.projectToClientState('p5');
-    expect(settled.phase).toBe('round_end');
+    expect(settled.phase).toBe('preparation');
+    expect(settled.round).toBe(2);
     expect(settled.battleBreakdowns).toHaveLength(1);
     expect(settled.battleBreakdowns[0]).toMatchObject({
       battlefieldId: 'miyama_town',
@@ -126,14 +127,15 @@ describe('Golden Flow 2 combat -> power -> winner -> VP', () => {
     const snapshot = room.serializeRoom();
     const restored = restoreMatchRoom(snapshot);
     const restoredProjection = restored.getProjection('host-gf2').match!;
-    expect(restoredProjection.phase).toBe('round_end');
+    expect(restoredProjection.phase).toBe('preparation');
+    expect(restoredProjection.round).toBe(2);
     expect(restoredProjection.battleBreakdowns).toEqual(settled.battleBreakdowns);
     expect(restoredProjection.view.players.find((player) => player.id === 'p1')?.vp).toBe(7);
     expect(restoredProjection.view.players.find((player) => player.id === 'p2')?.vp).toBe(0);
 
     const replayAttempt = restored.endClientTurn('host-gf2');
-    expect(replayAttempt.ok).toBe(false);
-    expect(replayAttempt.rejection?.code).toBe('wrong_phase');
+    // This is now a legitimate next-round preparation pass, not a replay of battle.
+    expect(replayAttempt.ok).toBe(true);
     const afterReplay = restored.getProjection('host-gf2').match!;
     expect(afterReplay.battleBreakdowns).toHaveLength(1);
     expect(afterReplay.view.players.find((player) => player.id === 'p1')?.vp).toBe(7);

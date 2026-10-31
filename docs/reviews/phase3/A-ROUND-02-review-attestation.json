@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-ROUND-02",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/684#issuecomment-6538748933",
+  "candidateSha": "27c7e62f7a12c760e938f46f9c09b6db819dbd27",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "independentVerification": {
+    "reviewer": "/root/a_round_02_independent",
+    "candidate": "38df1ac7d5ac9fa020112cbd500a6edaa3587273",
+    "base": "67bd7416de4bdf35131606144e0b6572e562a5d2",
+    "classification": "PASS",
+    "scope": "Independent limited technical acceptance of A-ROUND-02 only",
+    "worktreeClean": true,
+    "originalFindings": {
+      "R1": "CLOSED: original workshop order probe now yields 2,1,1,1",
+      "R2": "CLOSED: original round_start optional-window probe pauses at round_start with next starter before preparation; slice signed/restore pending window regression passes",
+      "R3": "CLOSED: original real-room replay checkpoint probe resumes round2 seat2",
+      "R4": "CLOSED: original durable saved-boundary probe resumes round2 seat2; normal and bulk restore slice tests pass"
+    },
+    "remainingBlockingFindings": [],
+    "focused": {
+      "files": 5,
+      "passed": 105,
+      "failed": 0,
+      "exitCode": 0,
+      "suites": {
+        "round-transition": 16,
+        "standard-endgame": 21,
+        "fb2-49-opponent-close-to-one-interaction": 51,
+        "match-room-hub": 10,
+        "match-room": 7
+      },
+      "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/regression/round-transition.test.ts packages/rules/tests/regression/standard-endgame.test.ts packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts packages/rules/tests/match-room-hub.test.ts packages/rules/tests/match-room.test.ts"
+    },
+    "additionalChecks": [
+      "Bulk restore retains validation/projectability before trust installation and boundary execution; existing malformed-container/credential/authority atomic refusal tests pass",
+      "Ordinary closing non-residual skill returns inactive to public skill zone; source/test reviewed and regression passes",
+      "New persisted startingSeat validates as an existing safe physical seat; historical absent value uses seat1",
+      "interpreter.ts and loader.ts have zero diff against base"
+    ],
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-round-02-evidence-20261031\\independent-focused-38df1ac7.log",
+        "sha256": "ea7e7b92ff45f55c5bbbc2752a140a0db8c7c49520c759f20293b927db488ae6"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-evidence-20261031\\independent-probes-38df1ac7.log",
+        "sha256": "f08984d58291afd2a794577598ebf6eb090e1580961047cdcc36b801bb412cb7"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-evidence-20261031\\independent-replay-38df1ac7.log",
+        "sha256": "a0fa35b5d03de60f098c97d26984fc57a8fc77a12e93ba052ad3abcfad3c3c71"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-evidence-20261031\\independent-durable-38df1ac7.log",
+        "sha256": "64f245a00c04d7fbe6a6f82b638fb02c63d3ef56c60cd4c064a288b4458c1cc1"
+      }
+    ],
+    "checkedAt": "2026-10-31T04:01:47.098344+00:00",
+    "productionWrites": false,
+    "fullCi": "NOT_RUN_BY_REVIEWER; coordinator owns final same-SHA fullCI",
+    "doesNotGrant": [
+      "human merge approval",
+      "migration or coverage credit",
+      "complete seven-player match acceptance",
+      "new synthetic phase_changed production authoring/restore contract"
+    ],
+    "limitations": [
+      "Review covers seven-seat clockwise standard Session, not NPC/3X/direction voting",
+      "Existing skill-specific residual/once-per-game/temporary cleanup contracts are not newly certified by this slice",
+      "Browser/build/fullCI evidence is separate coordinator responsibility"
+    ]
+  },
+  "publication": "Coordinator GitHub account publishes independent agent evidence; not a human merge approval or a separate GitHub reviewer identity",
+  "finalIndependentSupplement": {
+    "reviewer": "/root/a_round_02_independent",
+    "candidate": "27c7e62f7a12c760e938f46f9c09b6db819dbd27",
+    "base": "67bd7416de4bdf35131606144e0b6572e562a5d2",
+    "classification": "PASS",
+    "scope": "Final exact-head independent technical supplement for A-ROUND-02",
+    "previousAcceptedCandidate": "38df1ac7d5ac9fa020112cbd500a6edaa3587273",
+    "previousReceipt": "independent-review-38df1ac7.json",
+    "productionSourceAndExecutionConfigUnchangedFromPrior": true,
+    "deltaFiles": [
+      "docs/agents/manifests/reservations/A-ROUND-02.json",
+      "docs/agents/manifests/tasks/A-ROUND-02.json",
+      "docs/reviews/phase3/A-ROUND-02-review-attestation.json",
+      "packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts"
+    ],
+    "worktreeClean": true,
+    "goldenFlowReview": {
+      "reason": "Previous room round_end pause assertions conflict with approved continuous product runner; new expected boundary is round2 preparation. New preparation pass is legal and is not a duplicate battle command.",
+      "assertionsRetained": [
+        "combat participant powers",
+        "winner/tie/margin",
+        "battle/event/competition VP",
+        "military result",
+        "battle history/log receipts",
+        "serialized/restored history and VP",
+        "post-resume no repeated history/scoring"
+      ],
+      "newAssertions": [
+        "phase preparation before/after durable restore",
+        "round2 before/after durable restore",
+        "legitimate next preparation decision accepted"
+      ],
+      "result": "PASS",
+      "tests": 1,
+      "exitCode": 0,
+      "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts",
+      "log": "D:\\fd-validation\\a-round-02-evidence-20261031\\independent-golden-27c7e62f.log",
+      "logSha256": "51d1b26224519d822b187225babac6d8335c8d37d34008785c6d197a44f95ea2",
+      "originalRedLog": "golden-red.log"
+    },
+    "priorTechnicalChecks": {
+      "focusedTests": 105,
+      "remainingBlockingFindings": 0,
+      "r1ThroughR4": "CLOSED"
+    },
+    "fullCi": "Coordinator must supply final same-head run; reviewer did not run fullCI",
+    "noGateWeakening": true,
+    "reviewerProductionWrites": false,
+    "checkedAt": "2026-10-31T04:04:00.191975+00:00",
+    "doesNotGrant": [
+      "human merge consent",
+      "migration credit",
+      "whole-game acceptance",
+      "new synthetic authoring contract"
+    ]
+  }
+}

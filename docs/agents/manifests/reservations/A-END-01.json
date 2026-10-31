@@ -1,6 +1,6 @@
 {
   "taskId": "A-END-01",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "owner": "Global Technical Lead / Product A Builder /root",
   "authority": "Current user explicitly approves seven-player product work, entire old P01 release and a separate exact A-END-01 grant; old fragmented chats deleted",
   "BaseCommit": "48eef963fbe66ed652188ca40d56deced4899bd0",
@@ -83,5 +83,12 @@
     "scope": "Disable cross-file parallelism only; all test selection, assertions, individual timeouts, concurrent tests within files and original test:ci command retained",
     "evidence": "2workers full remote11round12663ms vsNode20 standalone8152ms afterJSON optimization; CPU sampling dominated cloning and signing. Serial file scheduling avoids competing suites during complete-match test. Runtime invariants/WS concurrency tests unchanged",
     "noCredit": true
+  },
+  "completion": {
+    "mergedMain": "67bd7416de4bdf35131606144e0b6572e562a5d2",
+    "postMergeCI": "PASS",
+    "successor": "A-ROUND-02",
+    "authority": "User instruction \u8fdb\u884c\u8fd9\u4e00\u6b65 approves previously proposed A-ROUND-02 and necessary same-owner scheduling",
+    "releasedAt": "2026-10-31T03:51:21.101379+00:00"
   }
 }

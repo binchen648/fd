@@ -168,6 +168,37 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  it('crosses a seven-human round boundary and rejects stale/duplicate end-turn after reconnect', async () => {
+    serverHandle=createMatchServer(); const port=await serverHandle.listen(0); const hub=serverHandle.hub;
+    const roomId='round-transition';hub.createRoom({roomId,hostClientId:'host',seed:20260904});
+    for(let seat=1;seat<=7;seat++) {
+      const id=seat===1?'host':`seat-${seat}`;
+      if(seat!==1)hub.joinRoom(roomId,{clientId:id,displayName:id,role:'player'});
+      hub.selectSeat(roomId,id,seat);
+    }
+    hub.startMatch(roomId,'host'); const room=hub.getRoom(roomId);const session=room.session!;
+    Object.assign(session.state.round,{roundNumber:1,activePhase:'battle',prioritySeat:7,startingSeat:1});
+    session.state.players.forEach(p=>delete p.locationId);
+    session.state.abilityRuntime!.responseWindows=[];session.state.abilityRuntime!.hostRequests=[];delete session.state.abilityRuntime!.pendingDecision;
+    const url=`ws://127.0.0.1:${port}/rooms/${roomId}?clientId=seat-7&reconnectToken=${room.getIssuedCredential('seat-7')}`;
+    const inbox=await connectSocket(url);await inbox.next(m=>m.type==='server:projection');
+    const revision=session.getPlayerView('p7').revision;
+    const command={type:'client:end_turn',requestId:'end-round',expectedRevision:revision};
+    inbox.socket.send(JSON.stringify(command));
+    await inbox.next(m=>m.type==='server:projection'&&m.projection.match?.round===2);
+    expect(session.state.round).toMatchObject({roundNumber:2,prioritySeat:2,startingSeat:2});
+    const before=session.serializeSession();
+    inbox.socket.send(JSON.stringify(command));
+    await inbox.next(m=>m.type==='server:error'&&m.requestId==='end-round');
+    expect(session.serializeSession()).toEqual(before);
+    inbox.socket.close();await new Promise(resolve=>inbox.socket.once('close',resolve));
+    const next=await connectSocket(url);const view=await next.next(m=>m.type==='server:projection');
+    expect(view.type==='server:projection'&&view.projection.match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
+    const snap=room.serializeRoom();const restored=await postJson<RoomHttpResponse>(`http://127.0.0.1:${port}/rooms/${roomId}/restore`,restoreRequest(snap));
+    expect(restored.projection.match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
+    next.socket.close();
+  });
+
   it('preserves DR-P01 authority through raw WS rejection, replay and authenticated durable restore', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen(0);
