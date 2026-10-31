@@ -50,5 +50,13 @@
     "Client/browser+real server full run,not terminal fixture; preserve raw first failure and bounded diagnostic logs",
     "Independent exact-candidate review;unchanged full CI;user approval before merge"
   ],
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "integration": {
+    "candidate": "f31c3b12f02c4560c96eaf0f1c991c8edc8b16b7",
+    "review": "3b7b8f3eeee42a481235c46a1cf6aca26b081fb0",
+    "synchronizationSha": "975a0a996d5a6d959ca62c68a429a71667d88fad",
+    "fullCi": "PENDING_FINAL_HEAD",
+    "clientReleaseGate": "BASELINE_ASSET_TEST_FAILURE_REPRODUCED",
+    "mergeRequiresUserConsent": true
+  }
 }
