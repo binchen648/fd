@@ -12,7 +12,7 @@ const locationLabels: Record<string, string> = {
 const phaseLabels: Record<string, string> = {
   round_start: '回合开始',
   preparation: '准备阶段',
-  advance: '移动阶段',
+  advance: '前哨阶段',
   action: '行动阶段',
   battle: '战斗阶段',
   cleanup: '清理阶段',
@@ -111,11 +111,11 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     publicCardIds,
     availableActions: match.view.legalActions.map((action, index) => ({
       actionId: `${action.type}:${index}`,
-      kind: action.type === 'normal_move' ? 'move' : action.type === 'play_card' || action.type === 'stage_attack_card' || action.type === 'activate_ability' ? 'play_card'
+      kind: action.type === 'deploy_player' ? 'deploy' : action.type === 'normal_move' ? 'move' : action.type === 'play_card' || action.type === 'stage_attack_card' || action.type === 'activate_ability' ? 'play_card'
         : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack' ? 'pass'
           : 'respond',
       ownerPlayerId: viewerId ?? '',
-      label: action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
+      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
         : action.type === 'skip_normal_move' ? '不进行常规移动'
         : action.type === 'complete_empty_regular_play' ? '无合法攻击牌 · 完成常规出牌'
         : action.type === 'stage_attack_card' ? action.faceDown ? '加入待确认盖放' : '加入待确认攻击'
