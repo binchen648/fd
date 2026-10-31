@@ -1,6 +1,6 @@
 # A-RECOVER-04 result
 
-Base462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a. Reviewed source7b8f62e96e876a846388730f215ed55f68ee2027. IMPLEMENTATION_COMPLETE_CANDIDATE; final-head complete CI and explicit user merge consent pending.
+Base462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a. Current reviewed source1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946 (prior7b frozen and superseded). IMPLEMENTATION_COMPLETE_CANDIDATE; final-head complete CI and explicit user merge consent pending.
 
 ## Actual gap and implementation
 
@@ -17,3 +17,11 @@ Original root/client CI commands retained; add full server suite as an additiona
 ## Boundaries
 
 This validates a default production seven-seat restart/reconnect slice, not all capability-specific restore cases, complete roster acceptance, distributed HA or disk-loss recovery. Private state and key must be retained on a persistent volume. Windows rename durability across power loss relies on filesystem; POSIX file+directory flush used. A crash leaving the exclusive recovery guard fails closed for operator review; never delete a live writer lock. UI presentation refinements and stale on-screen outage notices are later product work; unsent commands are dropped and never replayed. Final integration SHA must pass original+client+server CI and receive explicit user approval before merge.
+
+## R1 revision supersedes initial bounded candidate
+
+The original complete durable11round witness (full-durable-match-2.log) exceeded its unchanged5sec WS wait at round7battle, with no server protocol error. It was not PASS and not attributed to environment. Prior source7b/integration726/full-CI pass are preserved but do not certify whole-game durability. Same round7battle profile: default snapshot serialization2652ms, JSON463ms,total save3809ms,disk182378004bytes,high memory.
+
+New source1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946 borrows only replay history for immediate synchronous encoding while default public snapshots still copy. It recomputes every original digest/seal and keeps all replay entries. AES-GCM v2 compresses before encrypting, binds v2AAD, still reads authentic v1 files and upgrades on next confirmed write. Byte-identical sealed JSON/default-copy isolation and actual independent-built v1 restore/upgrade tests pass. Same-state save1939.9ms/disk24486560bytes; no original timeout increased.
+
+Independent R1 bounded review5store+1byte-equivalence testsPASS, verdictLIMITED_TECHNICAL_PASS. Real7page productionkill/restart browserR1 naturally1PASS14.2sec. Full durable11round witness rerun bound to1d remainsRUNNING at assembly; finalHEADCI and user approval remain required. A first R1 probe was intentionally cancelled to correct its old hardcoded SHA label; logs retained separately, not counted as product failure or PASS. Final measured witness and integration receipts are external producer-receipts/final-ci-receipt/final-result files, not inferred from old evidence.
