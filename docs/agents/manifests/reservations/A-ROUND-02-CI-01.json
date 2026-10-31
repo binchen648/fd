@@ -39,5 +39,12 @@
     "authority": "User-authorized minimum CI repair after measured CPU profile",
     "scope": "Only staticWhileActiveSkillUseForbidRules query pruning by preexisting skill target types and canonical active source zones. No caching,conditions,controller,cost,phase,dispatch or source-validity policy changes. Loader remains excluded.",
     "evidence": "baseline.cpuprofile: static query764/5991 inclusive samples; existing predicate only applies to master_skill/servant_skill and field/attack_area sources"
+  },
+  "integration": {
+    "candidate": "53023f2fcee75dbe12ca857064b546209440cacf",
+    "review": "475d06076be09d96efba87bdba17edd6b382bc47",
+    "synchronizationSha": "63e87dc9beedee18408aa2d70878b415a5692b0d",
+    "fullCi": "PENDING_FINAL_HEAD",
+    "mergeRequiresUserConsent": true
   }
 }
