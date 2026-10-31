@@ -2548,14 +2548,15 @@ export class MatchSession {
         ability.kind === 'residual' &&
         !['discard_at_round_end', 'close_at_round_end'].includes(String(ability.lifecycle?.cleanup ?? ''))) ?? false;
       if (shouldRemainActive) continue;
-      card.zone = 'discard';
+      const closesToSkill = definition?.cardType === 'servant_skill' || definition?.cardType === 'master_skill';
+      card.zone = closesToSkill ? 'skill' : 'discard';
       card.controllerPlayerId = card.ownerPlayerId;
-      card.visibility = visibleScope('discard', card.ownerPlayerId);
+      card.visibility = closesToSkill ? { scope: 'public' } : visibleScope('discard', card.ownerPlayerId);
       if (this.state.abilityRuntime?.cardState[card.instanceId]) {
         this.state.abilityRuntime.cardState[card.instanceId]!.active = false;
       }
       clearTransientCardTransformState(this.state, card.instanceId);
-      this.record('attack_area_card_discarded', `${card.instanceId}:discard`, {
+      this.record(closesToSkill ? 'attack_area_skill_closed' : 'attack_area_card_discarded', `${card.instanceId}:${card.zone}`, {
         cardInstanceId: card.instanceId,
         definitionId: card.definitionId,
         ownerPlayerId: card.ownerPlayerId,

@@ -172,7 +172,10 @@ export class MatchRoomHub {
 
     this.rooms = restoredRooms;
     this.roomVersions = new Map();
-    for (const roomId of this.rooms.keys()) this.bump(roomId, 'room_restored');
+    for (const [roomId, room] of this.rooms) {
+      room.resumeRestoredBoundary();
+      this.bump(roomId, 'room_restored');
+    }
   }
 
   private bump(roomId: string, type: MatchRoomHubEvent['type']): MatchRoomHubEvent {

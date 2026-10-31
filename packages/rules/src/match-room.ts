@@ -273,10 +273,17 @@ export class MatchRoom {
     if (!this.session) throw new Error('Match has not started');
     const restored = this.session.restoreToCheckpoint(checkpointId);
     if (restored) {
-      if (['round_end', 'round_start', 'cleanup'].includes(this.session.state.round.activePhase)) this.session.runUntilHumanInputOrStop();
+      this.resumeRestoredBoundary();
       this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
     }
     return restored;
+  }
+
+  /** Invoke only after authenticated replay or durable restore has validated. */
+  resumeRestoredBoundary(): void {
+    if (!this.session || !['round_end', 'round_start', 'cleanup'].includes(this.session.state.round.activePhase)) return;
+    this.session.runUntilHumanInputOrStop();
+    this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
   }
 
   getProjection(clientId: string): MatchRoomProjection {
@@ -357,5 +364,7 @@ export function restoreMatchRoom(
   room.status = snapshot.status;
   room.seats = structuredClone(snapshot.seats);
   room.session = restoredSession;
+  // Bulk restore deliberately defers execution until every room has validated.
+  if (reconcileReplayTrust) room.resumeRestoredBoundary();
   return room;
 }

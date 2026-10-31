@@ -30,6 +30,11 @@
       "path": "packages/rules/src/schema/game.ts",
       "state": "GRANTED",
       "taskId": "A-ROUND-02"
+    },
+    {
+      "path": "packages/rules/src/match-room-hub.ts",
+      "state": "GRANTED",
+      "taskId": "A-ROUND-02"
     }
   ],
   "loader": {

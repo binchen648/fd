@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createMatchSession, restoreMatchSession } from '../../src/match-session';
-import { createMatchRoom } from '../../src/match-room';
+import { createMatchRoom, restoreMatchRoom } from '../../src/match-room';
+import { createMatchRoomHub } from '../../src/match-room-hub';
 
 const humans = Array.from({length: 7}, (_, i) => `p${i + 1}`);
 function ending(round = 1, startingSeat = 1) {
@@ -139,6 +140,15 @@ describe('A-ROUND-02 standard product round transitions', () => {
     expect(restored.state.round).toMatchObject({roundNumber:2,activePhase:'preparation',prioritySeat:2});
     expect(restored.logs.filter(l=>l.type==='round_start'&&l.round===2)).toHaveLength(1);
   });
+  it('returns a closing skill to its public skill zone instead of discarding it as an attack', () => {
+    const s=ending();s.state.round.activePhase='battle';s.state.players.forEach(p=>delete p.locationId);
+    const card=s.state.cards.find(c=>c.ownerPlayerId==='p1'&&s.rawCards.get(c.definitionId)?.cardType==='servant_skill'&&s.rawCards.get(c.definitionId)?.abilities.every(a=>a.kind!=='residual'))!;
+    expect(card).toBeDefined();card.zone='attack_area';card.visibility={scope:'public'};
+    s.state.abilityRuntime!.cardState[card.instanceId]={active:true,faceDown:false,playedRound:1};
+    expect(s.passPriority('p7').ok).toBe(true);
+    expect(s.state.cards.find(c=>c.instanceId===card.instanceId)).toMatchObject({zone:'skill',visibility:{scope:'public'}});
+    expect(s.state.abilityRuntime!.cardState[card.instanceId]!.active).toBe(false);
+  });
   it('keeps bounded round simulation at round_end and does not rotate the final outcome', () => {
     const s=ending(); expect(s.runRound()).toBe('round_end'); expect(s.state.round.roundNumber).toBe(1);
     const final=ending(11,4); final.state.players.forEach((p,i)=>p.vp=i);
@@ -155,6 +165,20 @@ describe('A-ROUND-02 standard product round transitions', () => {
     const end=s.replay.find(e=>e.label==='round 1 end')!;
     expect(room.restoreToReplayCheckpoint('host',end.id)).toBe(true);
     expect(room.getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
+  });
+  it('continues a signed durable round-end save from the old product room flow', () => {
+    const room=createMatchRoom({roomId:'durable-boundary',hostClientId:'host',seed:20260904});
+    for(let seat=1;seat<=7;seat++){const id=seat===1?'host':`seat-${seat}`;if(seat!==1)room.joinRoom({clientId:id,displayName:id,role:'player'});room.selectSeat(id,seat);}
+    room.startMatch('host');const s=room.session!;
+    Object.assign(s.state.round,{roundNumber:1,activePhase:'battle',prioritySeat:7,startingSeat:1});
+    s.state.players.forEach(p=>delete p.locationId);s.state.abilityRuntime!.hostRequests=[];s.state.abilityRuntime!.responseWindows=[];delete s.state.abilityRuntime!.pendingDecision;
+    // Old room flow stops here, before invoking the product runner.
+    expect(s.passPriority('p7').ok).toBe(true);
+    const saved=room.serializeRoom();expect(saved.session!.state.round.activePhase).toBe('round_end');
+    const restored=restoreMatchRoom(saved,room.getPersistenceContext());
+    expect(restored.getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
+    const hub=createMatchRoomHub();hub.restore({version:1,rooms:[saved]});
+    expect(hub.getRoom(room.roomId).getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
   });
   it('room existing end-turn command crosses the boundary to the next human seat', () => {
     const room=createMatchRoom({hostClientId:'host',seed:20260904});

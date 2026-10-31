@@ -22,7 +22,8 @@
     "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
     "docs/agents/manifests/tasks/A-END-01.json",
     "docs/agents/manifests/reservations/A-END-01.json",
-    "docs/agents/manifests/releases/A-END-01-TO-A-ROUND-02.json"
+    "docs/agents/manifests/releases/A-END-01-TO-A-ROUND-02.json",
+    "packages/rules/src/match-room-hub.ts"
   ],
   "ForbiddenFiles": [
     "packages/rules/src/ability/interpreter.ts",
@@ -46,5 +47,6 @@
     "Independent exact-candidate review, focused integration/browser and unchanged complete CI"
   ],
   "mergeRequiresNewUserConsent": true,
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "scopeAddendum": "Same-owner grant: match-room-hub restore boundary resume only, after every room validates and trust reconciliation; no transport, authentication, coverage changes"
 }
