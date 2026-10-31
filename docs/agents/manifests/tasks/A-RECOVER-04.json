@@ -49,5 +49,13 @@
     "Client bounded reconnect fetches projection before commands; no automatic mutation replay",
     "Independent review, full original+client+server CI, actual browser recovery; user approval before merge"
   ],
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "candidateEvidenceState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewedCandidateSha": "7b8f62e96e876a846388730f215ed55f68ee2027",
+  "reviewCommit": "260a648419da2f8eec8a054285c6b914286db0e2",
+  "synchronizationCommit": "255bdc49c2ccb811b0f2266e0ed26f26d3338ed5",
+  "remainingGates": [
+    "exact final-head original+client+server CI",
+    "explicit user merge approval"
+  ]
 }
