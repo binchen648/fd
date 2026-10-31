@@ -1859,6 +1859,7 @@ export class MatchSession {
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
     player.locationId = locationId;
     this.rejection = undefined;
+    this.state.abilityRuntime!.revision++;
     this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId });
     this.applyDeploymentLocationReward(playerId, locationId);
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
@@ -2570,6 +2571,22 @@ export class MatchSession {
     if (!drawCount) return;
     const deck = targetState.cards.filter((card) => card.ownerPlayerId === playerId && card.zone === 'deck');
     const drawn = deck.slice(0, drawCount);
+    if (drawn.length < drawCount) {
+      const indexes = targetState.cards.flatMap((card, index) => card.ownerPlayerId === playerId && card.zone === 'discard' ? [index] : []);
+      const seat = targetState.players.find(player => player.id === playerId)!.seat;
+      const recycled = shuffle(indexes.map(index => targetState.cards[index]!), this.seed ^ targetState.round.roundNumber ^ seat ^ 0x44524157);
+      for (const [index, card] of recycled.entries()) {
+        card.zone = 'deck';
+        card.controllerPlayerId = card.ownerPlayerId;
+        card.visibility = visibleScope('deck', playerId);
+        const runtimeState = targetState.abilityRuntime?.cardState[card.instanceId];
+        if (runtimeState) { runtimeState.active = false; runtimeState.faceDown = false; }
+        clearTransientCardTransformState(targetState, card.instanceId);
+        targetState.cards[indexes[index]!] = card;
+      }
+      if (recycled.length) this.record('player_deck_recycled', `${playerId}:discard shuffled into deck`, { playerId, count: recycled.length }, targetState);
+      drawn.push(...recycled.slice(0, drawCount - drawn.length));
+    }
     for (const card of drawn) {
       card.zone = 'hand';
       card.visibility = visibleScope('hand', playerId);
@@ -2614,12 +2631,12 @@ export class MatchSession {
     }
     terrainAssignmentsOf(targetState);
     (modeStateOf(targetState) as { terrainAssignments?: Partial<Record<LocationId, string[]>> }).terrainAssignments = {};
+    const drawOrder = targetState.players.filter(player => player.status === 'active').sort((a, b) =>
+      Number(a.seat < startingSeat) - Number(b.seat < startingSeat) || a.seat - b.seat);
+    for (const player of drawOrder) this.drawToHandLimit(targetState, player.id);
     const situation = this.applySituation(targetState, round);
     this.applySituationModeState(targetState, situation);
     this.placeRoundEvents(targetState, situation, round);
-    for (const player of targetState.players) {
-      if (player.status === 'active') this.drawToHandLimit(targetState, player.id);
-    }
     if (targetState.abilityRuntime) advanceAbilityPhase(targetState, 'preparation', round);
     this.record('round_start', `round ${round} started`, { situation: targetState.currentSituationCardId, events: targetState.eventPlacements, closedLocations: modeStateOf(targetState).closedLocations }, targetState);
     this.checkpoint(`round ${round} start`, targetState);
