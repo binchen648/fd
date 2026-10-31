@@ -272,7 +272,10 @@ export class MatchRoom {
     this.requireHost(clientId);
     if (!this.session) throw new Error('Match has not started');
     const restored = this.session.restoreToCheckpoint(checkpointId);
-    if (restored) this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
+    if (restored) {
+      if (['round_end', 'round_start', 'cleanup'].includes(this.session.state.round.activePhase)) this.session.runUntilHumanInputOrStop();
+      this.status = this.session.stopReason === 'match_complete' ? 'ended' : 'running';
+    }
     return restored;
   }
 

@@ -95,11 +95,66 @@ describe('A-ROUND-02 standard product round transitions', () => {
     expect(restored.logs.filter(l=>l.type==='round_cards_discarded'&&l.round===1)).toHaveLength(1);
     expect(restored.logs.filter(l=>l.type==='standard_round_end_resolved'&&l.round===1)).toHaveLength(1);
   });
+  it('awards workshop slots by deployment occupancy after rotation, not physical seat', () => {
+    const s=ending();s.runUntilHumanInputOrStop();
+    for(const id of ['p2','p3','p4','p5','p6','p7','p1'])s.passPriority(id);
+    const mode=(s.state as any).modeState;mode.closedLocations=[];mode.deploymentLimitOnly={};
+    s.state.players.forEach(p=>p.mana=0);
+    const gains:number[]=[];
+    for(const id of ['p2','p3','p4','p5','p6','p7','p1']) {
+      const workshop=!['p5','p6','p7'].includes(id);const player=s.state.players.find(p=>p.id===id)!;const before=player.mana;
+      expect(s.dispatchPlayerCommand(id,{type:'deploy_player',locationId:workshop?'magic_workshop':'miyama_town'}).ok).toBe(true);
+      if(workshop)gains.push(s.state.players.find(p=>p.id===id)!.mana-before);
+    }
+    expect(gains).toEqual([2,1,1,1]);
+  });
+  it('suspends a new-round phase window before preparation setup and resumes it once', () => {
+    const s=ending();const runtime=s.state.abilityRuntime!;
+    const definition=structuredClone(Object.values(runtime.pack.cards).find(c=>c.abilities.length>0)!);
+    definition.id='test.round-transition.phase-changed';
+    definition.abilities=[{id:'start-window',kind:'optional_trigger',printedClause:'test',activation:{trigger:'phase_changed'},conditions:[],targets:[],effects:[],cost:[],creates:[],ruleModifiers:[],lifecycle:{},responseWindow:{opens:'phase_changed'},limit:{},visibility:{},execution:{mode:'automatic'}} as any];
+    runtime.pack.cards[definition.id]=definition;
+    s.state.cards.push({instanceId:'start-window-source',definitionId:definition.id,ownerPlayerId:'p1',controllerPlayerId:'p1',zone:'skill',visibility:{scope:'public'}});
+    expect(s.runUntilHumanInputOrStop()).toBe('human_input');
+    expect(s.state.round).toMatchObject({roundNumber:2,activePhase:'round_start',startingSeat:2,prioritySeat:2});
+    expect(s.logs.filter(l=>l.type==='situation_applied'&&l.round===2)).toHaveLength(0);
+    // Low-level synthetic phase_changed source is a scheduling fault injection,
+    // not a newly accepted production/restore authoring contract.
+    const decline=s.getPlayerView('p1').legalActions.find(a=>a.type==='decline_this_window')!;
+    expect(s.dispatchPlayerAction('p1',decline).ok).toBe(true);
+    expect(s.runUntilHumanInputOrStop()).toBe('human_input');
+    expect(s.state.round).toMatchObject({roundNumber:2,activePhase:'preparation',prioritySeat:2});
+    expect(s.logs.filter(l=>l.type==='situation_applied'&&l.round===2)).toHaveLength(1);
+    expect(s.logs.filter(l=>l.type==='round_start'&&l.round===2)).toHaveLength(1);
+  });
+  it('signs and restores a pending round_start with preparation setup still deferred', () => {
+    const s=ending();Object.assign(s.state.round,{roundNumber:2,activePhase:'round_start',prioritySeat:2,startingSeat:2});
+    s.state.abilityRuntime!.responseWindows.push({id:'start',kind:'response',opens:'round_start',controllerId:'p1',choices:[],event:{id:'start-event',type:'phase_changed'},passBehavior:'decline_this_window',order:'turn_order'});
+    const restored=restoreMatchSession(s.serializeSession());
+    expect(restored.runUntilHumanInputOrStop()).toBe('human_input');
+    expect(restored.state.round.activePhase).toBe('round_start');
+    const action=restored.getPlayerView('p1').legalActions.find(a=>a.type==='decline_this_window')!;
+    expect(restored.dispatchPlayerAction('p1',action).ok).toBe(true);
+    expect(restored.runUntilHumanInputOrStop()).toBe('human_input');
+    expect(restored.state.round).toMatchObject({roundNumber:2,activePhase:'preparation',prioritySeat:2});
+    expect(restored.logs.filter(l=>l.type==='round_start'&&l.round===2)).toHaveLength(1);
+  });
   it('keeps bounded round simulation at round_end and does not rotate the final outcome', () => {
     const s=ending(); expect(s.runRound()).toBe('round_end'); expect(s.state.round.roundNumber).toBe(1);
     const final=ending(11,4); final.state.players.forEach((p,i)=>p.vp=i);
     expect(final.runUntilHumanInputOrStop()).toBe('match_complete');
     expect(final.state.round.roundNumber).toBe(11);
+  });
+  it('host replay restore of the automatic round-end checkpoint resumes the room', () => {
+    const room=createMatchRoom({hostClientId:'host',seed:20260904});
+    for(let seat=1;seat<=7;seat++){const id=seat===1?'host':`seat-${seat}`;if(seat!==1)room.joinRoom({clientId:id,displayName:id,role:'player'});room.selectSeat(id,seat);}
+    room.startMatch('host');const s=room.session!;
+    Object.assign(s.state.round,{roundNumber:1,activePhase:'battle',prioritySeat:7,startingSeat:1});
+    s.state.players.forEach(p=>delete p.locationId);s.state.abilityRuntime!.hostRequests=[];s.state.abilityRuntime!.responseWindows=[];delete s.state.abilityRuntime!.pendingDecision;
+    expect(room.endClientTurn('seat-7').ok).toBe(true);
+    const end=s.replay.find(e=>e.label==='round 1 end')!;
+    expect(room.restoreToReplayCheckpoint('host',end.id)).toBe(true);
+    expect(room.getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
   });
   it('room existing end-turn command crosses the boundary to the next human seat', () => {
     const room=createMatchRoom({hostClientId:'host',seed:20260904});

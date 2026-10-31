@@ -1982,6 +1982,7 @@ export class MatchSession {
       const windowPause = this.autoResolveNonInteractiveWindows();
       if (windowPause) return this.pause(windowPause);
       if (this.state.round.activePhase === 'round_end') { this.finalizeStandardRoundEnd(); return this.pause(this.standardOutcome() ? 'match_complete' : 'round_end'); }
+      if (this.state.round.activePhase === 'round_start') { this.startRound(this.state.round.roundNumber, this.state, this.state.round.startingSeat ?? 1); continue; }
       if (this.state.round.activePhase === 'cleanup') { this.finishBattleRound(); continue; }
       if (this.state.round.roundNumber > 11) return this.pause('match_complete');
       if (this.battleSettlementInProgress()) {
@@ -2577,10 +2578,10 @@ export class MatchSession {
 
   private applyDeploymentLocationReward(playerId: string, locationId: LocationId): void {
     if (locationId !== 'magic_workshop') return;
-    const workshopPlayers = this.state.players
-      .filter((candidate) => candidate.status === 'active' && candidate.locationId === 'magic_workshop')
-      .sort((left, right) => left.seat - right.seat);
-    const slotIndex = workshopPlayers.findIndex((candidate) => candidate.id === playerId);
+    // The deploying master has just occupied the next available slot. Physical
+    // seat numbers cannot determine arrival order once the first player rotates.
+    const slotIndex = this.state.players.filter(candidate =>
+      candidate.status === 'active' && candidate.locationId === 'magic_workshop').length - 1;
     const manaReward = workshopDeploymentManaSlots[slotIndex] ?? 0;
     if (!manaReward) return;
     const result = grantMana(this.state, playerId, manaReward, { source: 'deployment' });
@@ -2600,7 +2601,11 @@ export class MatchSession {
   private startRound(round: number, targetState = this.state, startingSeat = 1): void {
     // Runtime must observe the old round so its canonical reset and expiration run.
     if (round > targetState.round.roundNumber && targetState.abilityRuntime) {
+      targetState.round.startingSeat = startingSeat;
+      targetState.round.prioritySeat = startingSeat;
       advanceAbilityPhase(targetState, 'round_start', round);
+      const runtime = targetState.abilityRuntime;
+      if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
     }
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: startingSeat, startingSeat };
     for (const player of targetState.players) {
