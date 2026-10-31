@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-ROUND-02-CI-01",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/685#issuecomment-6539263342",
+  "candidateSha": "53023f2fcee75dbe12ca857064b546209440cacf",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "independentVerification": {
+    "reviewer": "/root/ci_repair_independent",
+    "candidate": "53023f2fcee75dbe12ca857064b546209440cacf",
+    "observedHead": "53023f2fcee75dbe12ca857064b546209440cacf",
+    "base": "dec47680027beb4ee7af2036b293c5d0c96365c1",
+    "classification": "PASS",
+    "scope": "Independent bounded technical review of static skill-use query pruning; not final CI or whole-game acceptance",
+    "worktreeClean": false,
+    "blockingFindings": [],
+    "productionDiff": "Two necessary-condition guards in staticWhileActiveSkillUseForbidRules only; no cache, no changes to canonical active predicate, applicability/controller/location/target selector, dispatcher or signing",
+    "semanticProof": {
+      "targetGuard": "acceptedSkillUseForbidApplies already returns false for targetDefinition missing or cardType outside master_skill/servant_skill",
+      "sourceGuard": "canonical isActiveCardSource requires zone field or attack_area; original active check still executes for both eligible zones",
+      "mutation": "No query cache; same-state mutation probe observes current zone/active/faceDown on each call",
+      "ordinaryNonSkill": "Early return applies only to static skill_use selector; ongoing/match play forbids remain evaluated"
+    },
+    "focused": {
+      "files": 3,
+      "passed": 80,
+      "failed": 0,
+      "exitCode": 0,
+      "skillUse": 8,
+      "endgame": 21,
+      "authority": 51
+    },
+    "independentProbe": {
+      "combinations": 128,
+      "queries": 384,
+      "exitCode": 0,
+      "axes": [
+        "8 source zones",
+        "2 active states",
+        "2 faces",
+        "4 target cardTypes"
+      ],
+      "sameObjectZoneMutation": true
+    },
+    "producerParityEvidenceIndependentlyCompared": {
+      "allFieldsEqual": true,
+      "fieldsCompared": [
+        "reason",
+        "round",
+        "checkpoints",
+        "logs",
+        "state",
+        "logsDigest",
+        "battleHistory",
+        "replay",
+        "snapshots"
+      ],
+      "checkpoints": 482,
+      "signedSnapshotAggregateDigest": "5b33927cc9e6b0f9f35a515e856ef0b3d8405ec2cf3f078c87e391355d352b67",
+      "baselineMs": 6811.0538,
+      "repairMs": 5961.2251,
+      "note": "Coordinator measurements and digest evidence read/compared; reviewer did not rerun complete eleven-round timing or fullCI"
+    },
+    "gatesUnchanged": [
+      "Original10000ms eleven-round test",
+      "test selection/assertions/CI command",
+      "vitest config",
+      "loader"
+    ],
+    "documentationNote": {
+      "blocking": false,
+      "file": "docs/plans/2026-10-31-a-round-02-ci-repair.md",
+      "issue": "Opening No interpreter/loader grant wording predates explicit interpreter profileScopeAddendum; update to loader excluded and interpreter exact limited grant",
+      "status": "CORRECTED_BY_COORDINATOR_IN_UNCOMMITTED_DOCUMENTATION_ONLY"
+    },
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-round-02-ci-evidence-20261031\\independent-focused-53023f2f.log",
+        "sha256": "80b733b2bd132b51f12c5905ed10191e1cec2a280c96f0fa27aba9f3492e850e"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-ci-evidence-20261031\\independent-query-probe-53023f2f.log",
+        "sha256": "c56538e5edcc000e34793a93e8b2e97e0115eb8d0ff226d9138b307e8d542ca1"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-ci-evidence-20261031\\parity-baseline.json",
+        "sha256": "affb4dc9f63d9c01bc5462063b73817a5466d8a118f89f559b3e33ed17c60e37"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-ci-evidence-20261031\\parity-repaired.json",
+        "sha256": "f1434c7cfdaa991cce2989a156cf54d4c2e3fa8a1b75bfc904cecbec6c805d83"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-ci-evidence-20261031\\query-red-corrected.log",
+        "sha256": "2816a4a6cb221ccaaaf10e58a9a58ed3891877f5316d60ba4109189220d87bdc"
+      },
+      {
+        "path": "D:\\fd-validation\\a-round-02-ci-evidence-20261031\\query-green-corrected.log",
+        "sha256": "18f36d3891a808eecceef7ccc2d6882d961d31775b6d6ae47a4a0707c0a88e57"
+      }
+    ],
+    "fullCi": "NOT_RUN_BY_REVIEWER; exact-final-head fullCI required by coordinator",
+    "checkedAt": "2026-10-31T04:54:53.357047+00:00",
+    "productionWrites": false,
+    "doesNotGrant": [
+      "User merge consent",
+      "whole-game acceptance",
+      "migration/coverage credit",
+      "environment root-cause conclusion from timeout"
+    ],
+    "worktreeObservation": "Clean at review start; coordinator concurrently updated only plan documentation before final receipt. Production source/tests/config still exactly53023f2f (git diff exit0).",
+    "sourceTestsConfigUnchangedAtFinish": true
+  },
+  "documentationNoteResolved": "Plan now states initial exclusion followed by exact same-owner query-pruning grant; no source/test/config change",
+  "publication": "Coordinator publishes independent agent technical evidence; not human merge consent"
+}
