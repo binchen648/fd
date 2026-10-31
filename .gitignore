@@ -19,6 +19,7 @@ scripts/*.js.map
 test-results/
 playwright-report/
 artifacts/
+**/.fd-server/
 tmp/
 assessment-b-tmp/
 data/logs/

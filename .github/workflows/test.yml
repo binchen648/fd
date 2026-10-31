@@ -35,3 +35,6 @@ jobs:
 
       - name: Client tests
         run: npm run test:client
+
+      - name: Server tests
+        run: npm test --workspace @fd/server

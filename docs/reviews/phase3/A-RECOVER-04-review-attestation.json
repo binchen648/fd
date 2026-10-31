@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-RECOVER-04",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/688#issuecomment-6543064808",
+  "candidateSha": "1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "independentVerification": {
+    "taskId": "A-RECOVER-04-R1",
+    "reviewer": "/root/a_recover_04_independent",
+    "candidate": "1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946",
+    "base": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+    "verdict": "LIMITED_TECHNICAL_PASS",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "worktreeClean": true,
+    "blockingCodeFindings": [],
+    "independentExecution": {
+      "storeTests": 5,
+      "serializationBytesTests": 1,
+      "exitCodes": [
+        0,
+        0
+      ],
+      "totalPassed": 6
+    },
+    "reviewed": [
+      "Default serialization remains deep copied; explicit false borrows only replaySnapshots for immediate synchronous server JSON encoding",
+      "No await or user callback between borrowed graph and encoding; no live-state mutation, replay pruning or digest/seal cache introduced",
+      "Independent byte-equivalence test confirms default-copy and borrowed snapshots encode identically and default snapshot mutations cannot alter replay history",
+      "AES-GCM v2 binds version in AAD; successful authentication precedes gzip decoding; existing v1 AAD and uncompressed read retained",
+      "Independent store tests build original v1 ciphertext with original AAD, restore credentials, and next confirmed mutation writes compressed v2",
+      "Original write-before-confirmation, storage-failure latch, path ownership, atomic file flush/rename and private-key boundaries retained"
+    ],
+    "earlierAcceptance": "Original7b8f62e9 bounded transport/privacy/recovery review remains historical; new candidate acceptance bound here, no historical complete-CI claim transferred",
+    "pendingGates": {
+      "fullDurableElevenRoundWitness": "RUNNING at review time; no result inferred",
+      "finalPromotionHeadCi": "NOT_RUN by independent reviewer; coordinator required",
+      "newCandidateBrowser": "Coordinator running; not independently reexecuted"
+    },
+    "integrationAllowed": "NO_PENDING_DURABLE_ENDURANCE_FINAL_HEAD_CI_AND_USER_CONSENT",
+    "limitations": [
+      "No global performance/complete-game PASS from bounded tests",
+      "Same7battle profile improvement is coordinator evidence, not full-round delivery proof",
+      "Explicit borrowed snapshot API must remain internal synchronous readonly usage; callers choosing false must not mutate it",
+      "Single-process local store, storage+key retention and stale recovery guard operator handling remain documented restrictions",
+      "No migration credit or human merge consent"
+    ],
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-recover-04-evidence-20261031\\independent-r1-store-1d17b3f5.log",
+        "sha256": "fd15dbdc5af07b4ed5a5740db35c5923c10b0da21a52ea9ba2fc252fdde8c9ed"
+      },
+      {
+        "path": "D:\\fd-validation\\a-recover-04-evidence-20261031\\independent-r1-bytes-1d17b3f5.log",
+        "sha256": "d19ca17988226f3727f15f9e3c2ac10c9c98116fb3a6bd1a9e41fc8e3a42772f"
+      }
+    ]
+  },
+  "publication": "Coordinator publishes LIMITED_TECHNICAL_PASS for candidate; durable full11round witness, exact finalHEADCI and user merge consent pending. Not overall game acceptance. Prior7b limited review and failed endurance preserved in Git/history/external logs."
+}

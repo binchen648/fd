@@ -22,31 +22,51 @@ export class RemoteMatchRoomClient {
   connected = false;
   private socket: WebSocket | null = null;
   private listeners = new Set<RemoteRoomListener>();
+  private retryTimer: ReturnType<typeof setTimeout> | undefined;
+  private retryAttempt = 0;
+  private stopped = true;
 
   constructor(private connection: RemoteRoomConnection) {}
 
   connect(): void {
+    this.stopped = false;
+    clearTimeout(this.retryTimer);
+    const previous = this.socket;
+    this.socket = null;
+    previous?.close();
+    this.connected = false;
     const url = `${this.connection.wsBaseUrl}/rooms/${encodeURIComponent(this.connection.roomId)}?clientId=${encodeURIComponent(this.connection.clientId)}&reconnectToken=${encodeURIComponent(this.connection.reconnectToken)}`;
-    this.socket = new WebSocket(url);
-    this.socket.addEventListener('open', () => {
-      this.connected = true;
-    });
-    this.socket.addEventListener('close', () => {
+    const socket = new WebSocket(url);
+    this.socket = socket;
+    socket.addEventListener('close', (event) => {
+      if (this.socket !== socket || this.stopped) return;
       this.connected = false;
+      if (event.code === 1008) { this.stopped = true; return; }
+      this.retryTimer = setTimeout(() => this.connect(), Math.min(500 * 2 ** Math.min(this.retryAttempt++, 4), 8000));
     });
-    this.socket.addEventListener('message', (event) => {
+    socket.addEventListener('message', (event) => {
+      if (this.socket !== socket || this.stopped) return;
       const message = JSON.parse(String(event.data)) as ServerRoomMessage;
-      if (message.type === 'server:projection') this.projection = message.projection;
+      if (message.type === 'server:projection') {
+        this.projection = message.projection;
+        this.connected = true;
+        this.retryAttempt = 0;
+      }
       for (const listener of this.listeners) listener(message);
     });
   }
 
   close(): void {
-    this.socket?.close();
+    this.stopped = true;
+    clearTimeout(this.retryTimer);
+    this.connected = false;
+    const socket = this.socket;
     this.socket = null;
+    socket?.close();
   }
 
   send(message: ClientRoomMessage): void {
+    if (!this.connected || this.socket?.readyState !== 1) return;
     if ((message.type === 'client:dispatch_command' || message.type === 'client:end_turn')
       && (!Number.isSafeInteger(message.expectedRevision) || message.expectedRevision < 0)) return;
     this.socket?.send(JSON.stringify(message));

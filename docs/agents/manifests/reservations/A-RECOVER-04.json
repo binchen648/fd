@@ -1,0 +1,71 @@
+{
+  "taskId": "A-RECOVER-04",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "authority": "User implements approved seven-player recovery plan; single-writer scheduling under existing user delegation",
+  "BaseCommit": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+  "branch": "codex/a-recover-04-seven-player-20261031",
+  "worktree": "D:/fd-validation/a-recover-04-20261031",
+  "ReservedFiles": [
+    "apps/server/src/room-store.ts",
+    "apps/server/src/room-store.test.ts",
+    "apps/server/src/match-server.ts",
+    "apps/server/src/index.ts",
+    "apps/server/README.md",
+    "packages/rules/src/match-room-hub.ts",
+    "packages/rules/tests/match-room-hub.test.ts",
+    "packages/rules/tests/regression/seven-player-restart.test.ts",
+    "apps/client/src/state/match-room-client.ts",
+    "apps/client/src/state/match-room-client.test.ts",
+    ".gitignore",
+    ".github/workflows/test.yml",
+    "e2e/fd-server-recovery.spec.ts",
+    "docs/agents/manifests/tasks/A-RECOVER-04.json",
+    "docs/agents/manifests/reservations/A-RECOVER-04.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/plans/2026-10-31-a-recover-04.md",
+    "docs/reports/2026-10-31-a-recover-04-result.md",
+    "docs/reviews/phase3/A-RECOVER-04-review-attestation.json",
+    "docs/agents/manifests/tasks/A-ASSET-01.json",
+    "docs/agents/manifests/reservations/A-ASSET-01.json",
+    "docs/agents/manifests/releases/A-ASSET-01-TO-A-RECOVER-04.json",
+    "apps/client/src/App.test.tsx",
+    "packages/rules/src/match-session.ts",
+    "packages/rules/src/match-room.ts",
+    "packages/rules/tests/regression/room-persistence-serialization.test.ts"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/ability/**",
+    "data/**",
+    "apps/client/public/**",
+    "frozen worktrees",
+    "A-ASSET-01 asset resolver/tests"
+  ],
+  "dependencies": [
+    "PR687 merged exactmain462bb827; main postmerge CI still pending at task scheduling"
+  ],
+  "acceptance": [
+    "Existing seven-player production room survives fresh process restart with original credentials",
+    "Write-before-success persistence; corrupt storage fails closed; no HTTP trust-context import",
+    "Fresh projections preserve private information; old/duplicate command rejected without mutation",
+    "Client bounded reconnect fetches projection before commands; no automatic mutation replay",
+    "Independent review, full original+client+server CI, actual browser recovery; user approval before merge"
+  ],
+  "migrationCreditDelta": 0,
+  "candidateEvidenceState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewedCandidateSha": "1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946",
+  "reviewCommit": "495d91b95722e37ce4d0cc323239158736a90367",
+  "synchronizationCommit": "920d0d978d438271a12f02a0aaadea15330f1baf",
+  "remainingGates": [
+    "complete durable11round witness under unchanged5sec WS wait",
+    "exact final-head original+client+server CI",
+    "explicit user merge approval"
+  ],
+  "scopeAddendum": {
+    "authority": "User-authorized recovery implementation and same-owner Runtime scheduling; actual round7 end-to-end timeout requires minimal serialization fix; no rules/ability semantics changes",
+    "preservedPriorCandidate": "7b8f62e96e876a846388730f215ed55f68ee2027",
+    "preservedPriorIntegrationHead": "726a03fe8e9ff30adc7c024a197639068e2bea8c",
+    "candidateState": "R1_CANDIDATE_UNDER_INTEGRATION_VALIDATION"
+  },
+  "promotionPr": 688
+}

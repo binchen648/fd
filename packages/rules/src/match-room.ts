@@ -314,7 +314,7 @@ export class MatchRoom {
     };
   }
 
-  serializeRoom(): MatchRoomSnapshot {
+  serializeRoom(copyReplaySnapshots = true): MatchRoomSnapshot {
     return {
       version: 1,
       roomId: this.roomId,
@@ -323,7 +323,7 @@ export class MatchRoom {
       status: this.status,
       clients: this.clients.map(client => ({ ...client, reconnectToken: this.getIssuedCredential(client.id) })),
       seats: structuredClone(this.seats),
-      ...(this.session ? { session: this.session.serializeSession() } : {}),
+      ...(this.session ? { session: this.session.serializeSession(copyReplaySnapshots) } : {}),
     };
   }
 

@@ -25,13 +25,18 @@ describe('App room product shell', () => {
 
   it('does not send either mutation when its revision is missing or invalid', () => {
     const send = vi.fn();
+    let onMessage: EventListener | undefined;
     vi.stubGlobal('WebSocket', class {
+      readyState = 1;
       send = send;
-      addEventListener() {}
+      addEventListener(type: string, listener: EventListener) { if (type === 'message') onMessage = listener; }
       close() {}
     });
     const client = new RemoteMatchRoomClient({ httpBaseUrl: 'http://localhost', wsBaseUrl: 'ws://localhost', roomId: 'room', clientId: 'host', reconnectToken: 'private-test-token' });
     client.connect();
+    client.send({ type: 'client:end_turn', expectedRevision: 2 });
+    expect(send).not.toHaveBeenCalled();
+    onMessage!(new MessageEvent('message', { data: JSON.stringify({ type: 'server:projection', projection: {} }) }));
     for (const expectedRevision of [undefined, null, '2', NaN, Infinity, -1, 0.5]) {
       for (const type of ['client:end_turn', 'client:dispatch_command']) {
         client.send({ type, expectedRevision, command: { type: 'pass_priority' } } as unknown as ClientRoomMessage);
