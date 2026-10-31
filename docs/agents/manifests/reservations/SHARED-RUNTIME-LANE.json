@@ -7,7 +7,7 @@
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "A-RECOVER-04 owns only listed hub/transport/server/client connection files; interpreter/loader excluded; CB-C02 suspended; A-ASSET-01 merged and awaiting postmerge verification; no overlapping asset writes",
+  "precedence": "A-RECOVER-04 owns only listed hub/transport/server/client connection files; interpreter/loader excluded; CB-C02 suspended; A-ASSET-01 merged,postmerge Test/Build/Policy/Deploy PASS and explicitly RELEASED; no overlapping asset writes",
   "activeRuntimeTask": "A-RECOVER-04",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
@@ -16,26 +16,6 @@
   },
   "requiredBase": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
   "resources": [
-    {
-      "path": "apps/client/src/state/fd-asset-registry.ts",
-      "state": "GRANTED",
-      "taskId": "A-ASSET-01"
-    },
-    {
-      "path": "apps/client/src/state/fd-asset-registry.test.ts",
-      "state": "GRANTED",
-      "taskId": "A-ASSET-01"
-    },
-    {
-      "path": ".github/workflows/test.yml",
-      "state": "GRANTED",
-      "taskId": "A-ASSET-01"
-    },
-    {
-      "path": "e2e/fd-approved-assets.spec.ts",
-      "state": "GRANTED",
-      "taskId": "A-ASSET-01"
-    },
     {
       "path": "apps/server/src/room-store.ts",
       "state": "GRANTED",
@@ -80,6 +60,11 @@
       "path": "apps/client/src/state/match-room-client.test.ts",
       "state": "GRANTED",
       "taskId": "A-RECOVER-04"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "state": "GRANTED",
+      "taskId": "A-RECOVER-04"
     }
   ],
   "loader": {
@@ -119,7 +104,7 @@
       "taskManifest": "docs/agents/manifests/tasks/A-MATCH-03.json"
     },
     "A-ASSET-01": {
-      "state": "GRANTED",
+      "state": "RELEASED",
       "taskManifest": "docs/agents/manifests/tasks/A-ASSET-01.json"
     },
     "A-RECOVER-04": {

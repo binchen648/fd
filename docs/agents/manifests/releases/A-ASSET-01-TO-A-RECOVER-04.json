@@ -1,0 +1,11 @@
+{
+  "taskId": "A-ASSET-01",
+  "owner": "/root",
+  "state": "RELEASED",
+  "authority": "Existing user-authorized same-owner scheduling after merged main verified",
+  "main": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+  "postmergeTest": 41196175954,
+  "scope": "all A-ASSET-01 ReservedFiles",
+  "nextTask": "A-RECOVER-04",
+  "frozenTreePreserved": true
+}

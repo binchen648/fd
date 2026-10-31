@@ -1,8 +1,8 @@
 {
   "taskId": "A-ASSET-01",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "owner": "Global Technical Lead / Product A Builder /root",
-  "authority": "User 进行下一步 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling",
+  "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves proposed A-ASSET-01 asset and client release-gate repair,including same-owner scheduling",
   "BaseCommit": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
   "branch": "codex/a-asset-01-client-gate-20261031",
   "worktree": "D:/fd-validation/a-asset-01-20261031",
@@ -48,5 +48,14 @@
   "remainingGates": [
     "exact final-head CI",
     "explicit user merge approval"
-  ]
+  ],
+  "releaseRecord": "docs/agents/manifests/releases/A-ASSET-01-TO-A-RECOVER-04.json",
+  "postmerge": {
+    "main": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+    "test": 41196175954,
+    "conclusion": "success",
+    "build": 41196175957,
+    "policy": 41196175977,
+    "deploy": 41196175955
+  }
 }
