@@ -7,7 +7,7 @@
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "A-ROUND-02 merged and suspended for user-authorized same-owner CI repair; CB-C02 remains suspended; interpreter/loader excluded",
+  "precedence": "User-authorized CI repair sole writer; limited interpreter static query scope; loader excluded; other tasks suspended",
   "activeRuntimeTask": "A-ROUND-02-CI-01",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
@@ -20,6 +20,12 @@
       "path": "packages/rules/src/match-session.ts",
       "state": "GRANTED",
       "taskId": "A-ROUND-02-CI-01"
+    },
+    {
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "state": "GRANTED",
+      "taskId": "A-ROUND-02-CI-01",
+      "scope": "Only profiled static skill-use query exclusion; same sole writer"
     }
   ],
   "loader": {
