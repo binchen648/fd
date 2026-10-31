@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-RECOVER-04",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/687#issuecomment-6542825620",
+  "candidateSha": "7b8f62e96e876a846388730f215ed55f68ee2027",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "independentVerification": {
+    "taskId": "A-RECOVER-04",
+    "reviewer": "/root/a_recover_04_independent",
+    "candidate": "7b8f62e96e876a846388730f215ed55f68ee2027",
+    "base": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+    "verdict": "TECHNICAL_PASS",
+    "worktreeClean": true,
+    "blockingFindings": [],
+    "priorFindings": [
+      {
+        "priority": "P1",
+        "description": "HTTP body await crossed storage-failure latch",
+        "resolution": "All three readBody continuations assertStorage before hub mutation; persist asserts too; producer streaming request regression verifies no pending identity mutation",
+        "status": "FIXED_VERIFIED"
+      },
+      {
+        "priority": "P1",
+        "description": "Concurrent stale-PID lock reapers could unlink replacement lock",
+        "resolution": "Exclusive recovery guard with PID re-read/re-probe and replacement acquisition before releasing guard; independent ten rounds of two-process race PASS",
+        "status": "FIXED_VERIFIED"
+      }
+    ],
+    "independentExecution": {
+      "server": {
+        "command": "npm test --workspace @fd/server -- --run src/room-store.test.ts",
+        "passed": 4,
+        "exitCode": 0
+      },
+      "client": {
+        "command": "npm test --workspace @fd/client -- --run src/state/match-room-client.test.ts",
+        "passed": 2,
+        "exitCode": 0
+      },
+      "staleLockRace": {
+        "newNodeProcessesPerRound": 2,
+        "rounds": 10,
+        "exactlyOneWriterEveryRound": true
+      }
+    },
+    "producerBrowserReviewed": {
+      "log": "browser-recovery-final.log",
+      "result": "1 passed (13.7s)",
+      "sevenSeats": true,
+      "actualFreshProcess": true,
+      "mechanism": "Production index child killed SIGKILL; fresh PID restarted same port and same private file; all seven browser pages receive new projection without reload, compare private views/legal actions, UI command accepted before and after",
+      "independentlyRerun": false
+    },
+    "reviewed": [
+      "AES-256-GCM authenticates whole private payload and per-room contexts; private key not in HTTP/WS projections",
+      "Confirmed operations persist before HTTP response or WS projection; failed save latches unhealthy and blocks subsequent mutations/upgrade",
+      "Optional trustedContexts only supplied locally to hub restore; network restore endpoint still requires authenticated existing host",
+      "Atomic temp write/file fsync/rename and POSIX directory sync; file600/directory700, Windows ACL and power-loss limitations documented",
+      "Client send waits for fresh projection, does not replay mutations, ignores old socket events and cancels retry on intentional close/policy close",
+      "Existing App test now supplies authenticated-ready projection before invalid-revision assertions; assertions retained and preprojection-send assertion added",
+      "CI adds server tests after unchanged root and client commands; no deleted/skipped tests or weakened existing timeouts"
+    ],
+    "limitations": [
+      "Exact final promotion HEAD CI remains coordinator requirement",
+      "Reviewer independently executed bounded tests and concurrent lock probe; producer browser log/source reviewed, not independently rerun",
+      "Single-process local store, not replication/disaster recovery; state+key must be retained; stale recovery guard fails closed pending operator review",
+      "Windows rename power-loss durability relies on filesystem as documented",
+      "Not all roster/capability-specific persistence acceptance; no migration credit or human merge approval"
+    ],
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-recover-04-evidence-20261031\\independent-server-7b8f62e9.log",
+        "sha256": "905495a8f2b84dac677d862a5133dc4c77ca899bbb5d6f942fb8b54b15da6b4d"
+      },
+      {
+        "path": "D:\\fd-validation\\a-recover-04-evidence-20261031\\independent-client-7b8f62e9.log",
+        "sha256": "a36f66bab054d207ce28fb6a719832f619b630cd2a49f3e754d45d4bb324e75b"
+      },
+      {
+        "path": "D:\\fd-validation\\a-recover-04-evidence-20261031\\independent-lock-probe.json",
+        "sha256": "2eec6ac58b824a69f690f20c0c97e8be0c2f660f705e4721141546c2c01f5bd8"
+      },
+      {
+        "path": "D:\\fd-validation\\a-recover-04-evidence-20261031\\browser-recovery-final.log",
+        "sha256": "e1c801553a7f6e929c2fe7ca9fbc899a5974cb7ca47e2f4d663ab652bca2e911"
+      }
+    ]
+  },
+  "publication": "Coordinator publishes independent reviewer evidence as a postmerge followup comment on preceding PR687; not human merge consent. One new promotion PR will link this handoff receipt."
+}
