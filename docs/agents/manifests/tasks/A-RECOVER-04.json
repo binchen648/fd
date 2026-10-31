@@ -53,10 +53,11 @@
   ],
   "migrationCreditDelta": 0,
   "candidateEvidenceState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
-  "reviewedCandidateSha": "7b8f62e96e876a846388730f215ed55f68ee2027",
-  "reviewCommit": "260a648419da2f8eec8a054285c6b914286db0e2",
-  "synchronizationCommit": "255bdc49c2ccb811b0f2266e0ed26f26d3338ed5",
+  "reviewedCandidateSha": "1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946",
+  "reviewCommit": "495d91b95722e37ce4d0cc323239158736a90367",
+  "synchronizationCommit": "920d0d978d438271a12f02a0aaadea15330f1baf",
   "remainingGates": [
+    "complete durable11round witness under unchanged5sec WS wait",
     "exact final-head original+client+server CI",
     "explicit user merge approval"
   ],
@@ -64,6 +65,7 @@
     "authority": "User-authorized recovery implementation and same-owner Runtime scheduling; actual round7 end-to-end timeout requires minimal serialization fix; no rules/ability semantics changes",
     "preservedPriorCandidate": "7b8f62e96e876a846388730f215ed55f68ee2027",
     "preservedPriorIntegrationHead": "726a03fe8e9ff30adc7c024a197639068e2bea8c",
-    "candidateState": "REVISION_REQUIRED_PENDING_PROFILING"
-  }
+    "candidateState": "R1_CANDIDATE_UNDER_INTEGRATION_VALIDATION"
+  },
+  "promotionPr": 688
 }
