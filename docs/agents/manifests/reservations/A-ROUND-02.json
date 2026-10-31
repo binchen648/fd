@@ -23,7 +23,8 @@
     "docs/agents/manifests/tasks/A-END-01.json",
     "docs/agents/manifests/reservations/A-END-01.json",
     "docs/agents/manifests/releases/A-END-01-TO-A-ROUND-02.json",
-    "packages/rules/src/match-room-hub.ts"
+    "packages/rules/src/match-room-hub.ts",
+    "docs/reviews/phase3/A-ROUND-02-review-attestation.json"
   ],
   "ForbiddenFiles": [
     "packages/rules/src/ability/interpreter.ts",
@@ -48,5 +49,11 @@
   ],
   "mergeRequiresNewUserConsent": true,
   "migrationCreditDelta": 0,
-  "scopeAddendum": "Same-owner grant: match-room-hub restore boundary resume only, after every room validates and trust reconciliation; no transport, authentication, coverage changes"
+  "scopeAddendum": "Same-owner grant: match-room-hub restore boundary resume only, after every room validates and trust reconciliation; no transport, authentication, coverage changes",
+  "review": {
+    "candidate": "38df1ac7d5ac9fa020112cbd500a6edaa3587273",
+    "independentAgent": "/root/a_round_02_independent",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "passedTests": 105
+  }
 }
