@@ -140,12 +140,12 @@ export class MatchRoomHub {
     return projection;
   }
 
-  restore(snapshot: MatchRoomHubSnapshot): void {
+  restore(snapshot: MatchRoomHubSnapshot, trustedContexts?: ReadonlyMap<string, ReturnType<MatchRoom['getPersistenceContext']>>): void {
     if (snapshot.version !== 1) throw new Error(`Unsupported MatchRoomHub snapshot version: ${snapshot.version}`);
     const restoredRooms = new Map<string, MatchRoom>();
     for (const roomSnapshot of snapshot.rooms) {
       const existing = this.rooms.get(roomSnapshot.roomId);
-      const room = restoreMatchRoom(roomSnapshot, existing?.getPersistenceContext(), false);
+      const room = restoreMatchRoom(roomSnapshot, trustedContexts?.get(roomSnapshot.roomId) ?? existing?.getPersistenceContext(), false);
       if (restoredRooms.has(room.roomId)) throw new Error(`Duplicate room in restore snapshot: ${room.roomId}`);
       restoredRooms.set(room.roomId, room);
     }

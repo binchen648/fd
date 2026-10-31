@@ -1,6 +1,7 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { URL } from 'node:url';
 import { WebSocket, WebSocketServer, type RawData } from 'ws';
+import { RoomStore } from './room-store';
 import {
   createMatchRoomHub,
   type ClientRoomMessage,
@@ -75,9 +76,21 @@ function parseRoomPath(pathname: string): { roomId: string; action: 'join' | 're
   return { roomId: decodeURIComponent(match[1]!), action: match[2] as 'join' | 'restore' };
 }
 
-export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServerHandle {
+export function createMatchServer(input: { hub?: MatchRoomHub; stateFile?: string } = {}): MatchServerHandle {
   const hub = input.hub ?? createMatchRoomHub();
+  const store = input.stateFile ? new RoomStore(input.stateFile) : undefined;
+  try { store?.restore(hub); } catch (error) { store?.close(); throw error; }
   const sockets = new Set<ClientSocket>();
+  let storageFailed = false;
+  const assertStorage = () => { if (storageFailed) throw new Error('Durable storage unavailable; server restart required'); };
+  const persist = () => {
+    assertStorage();
+    try { store?.save(hub); } catch {
+      storageFailed = true;
+      for (const client of sockets) client.socket.close(1011, 'Durable storage unavailable');
+      throw new Error('Durable storage unavailable; server restart required');
+    }
+  };
 
   const broadcastRoom = (roomId: string, event: string) => {
     for (const clientSocket of sockets) {
@@ -110,30 +123,36 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
       }
       const requestUrl = new URL(request.url ?? '/', 'http://127.0.0.1');
       if (request.method === 'GET' && requestUrl.pathname === '/health') {
-        sendJson(response, 200, { ok: true });
+        sendJson(response, storageFailed ? 503 : 200, { ok: !storageFailed });
         return;
       }
+      assertStorage();
       if (request.method === 'POST' && requestUrl.pathname === '/rooms') {
         const body = await readBody(request) as CreateRoomHttpRequest;
+        assertStorage();
         const projection = hub.createRoom({
           ...(body.roomId !== undefined ? { roomId: body.roomId } : {}),
           ...(body.seed !== undefined ? { seed: body.seed } : {}),
           ...(body.hostClientId ? { hostClientId: body.hostClientId } : {}),
           ...(body.hostName ? { hostName: body.hostName } : {}),
         });
+        persist();
         sendJson(response, 201, roomResponse(hub, projection));
         return;
       }
       const roomPath = parseRoomPath(requestUrl.pathname);
       if (request.method === 'POST' && roomPath?.action === 'join') {
         const body = await readBody(request) as JoinRoomHttpRequest;
+        assertStorage();
         const projection = hub.joinRoom(roomPath.roomId, body);
+        persist();
         sendJson(response, 200, roomResponse(hub, projection));
         broadcastRoom(roomPath.roomId, 'client_joined');
         return;
       }
       if (request.method === 'POST' && roomPath?.action === 'restore') {
         const body = await readBody(request) as PersistedRoomHttpRequest;
+        assertStorage();
         const room = hub.getRoom(roomPath.roomId);
         room.authenticateClient(body.clientId, body.reconnectToken);
         if (body.clientId !== room.hostClientId || body.snapshot?.hostClientId !== body.clientId
@@ -141,6 +160,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
           throw new Error('Authenticated host and matching snapshot credentials required');
         }
         const projection = hub.restoreRoom(roomPath.roomId, body.snapshot);
+        persist();
         sendJson(response, 200, roomResponse(hub, projection));
         broadcastRoom(roomPath.roomId, 'room_restored');
         return;
@@ -157,6 +177,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
   const wss = new WebSocketServer({ noServer: true });
   server.on('upgrade', (request, socket, head) => {
     try {
+      assertStorage();
       const requestUrl = new URL(request.url ?? '/', 'http://127.0.0.1');
       const match = requestUrl.pathname.match(/^\/rooms\/([^/]+)$/);
       if (!match) throw new Error('Unknown websocket route');
@@ -179,6 +200,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
     // Reconnect and registration share one synchronous boundary after authentication.
     const room = hub.getRoom(roomId);
     try {
+      assertStorage();
       room.authenticateClient(clientId, reconnectToken);
       hub.reconnect(roomId, reconnectToken);
     } catch {
@@ -201,9 +223,11 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
         return;
       }
       try {
+        assertStorage();
         if (hub.getRoom(roomId) !== room) throw new Error('Room replaced; authenticated reconnect required');
         room.authenticateClient(clientId, reconnectToken);
         handleClientMessage(hub, roomId, clientId, message);
+        persist();
         broadcastRoom(roomId, message.type);
       } catch (error) {
         sendSocket(socket, {
@@ -250,6 +274,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub } = {}): MatchServ
             return;
           }
           server.close((serverError) => {
+            store?.close();
             if (serverError) reject(serverError);
             else resolve();
           });

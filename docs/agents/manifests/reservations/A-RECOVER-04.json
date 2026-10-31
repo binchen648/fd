@@ -28,7 +28,8 @@
     "docs/reviews/phase3/A-RECOVER-04-review-attestation.json",
     "docs/agents/manifests/tasks/A-ASSET-01.json",
     "docs/agents/manifests/reservations/A-ASSET-01.json",
-    "docs/agents/manifests/releases/A-ASSET-01-TO-A-RECOVER-04.json"
+    "docs/agents/manifests/releases/A-ASSET-01-TO-A-RECOVER-04.json",
+    "apps/client/src/App.test.tsx"
   ],
   "ForbiddenFiles": [
     "packages/rules/src/ability/**",
