@@ -1,5 +1,6 @@
 import {expect,test,type Page}from'@playwright/test';
 import {spawn,type ChildProcess}from'node:child_process';
+import {writeFileSync}from'node:fs';
 import type {MatchRoomProjection,RoomHttpResponse,ServerRoomMessage}from'../packages/rules/src/index';
 import {chooseFullMatchDecision}from'./support/full-seven-player-driver';
 import {projectRemoteRoomFixture}from'../apps/client/src/state/remote-room-fixture';
@@ -57,9 +58,12 @@ test('seven real browser seats play from lobby through eleven rounds and reconne
   expect(latest[0]!.projection.status).toBe('ended');expect(latest[0]!.projection.match!.outcome).toBeDefined();
   await expect(pages[0]!.getByLabel('正式对局结果')).toBeVisible();
   const outcome=latest[0]!.projection.match!.outcome;await pages[0]!.reload();await expect(pages[0]!.getByLabel('正式对局结果')).toBeVisible();expect(latest[0]!.projection.match!.outcome).toEqual(outcome);
+  writeFileSync(info.outputPath('whole-match-result.json'),JSON.stringify({roomId,seed:20260904,rounds:[...rounds],commands:trace.length,outcome,realSeats:7,setup:'HTTP create/join + UI seat/start',actions:'UI clicks only',stateInjection:false},null,2));
+  await pages[0]!.screenshot({path:info.outputPath('whole-match-result.png')});
   await info.attach('whole-seven-player-ui-result',{body:JSON.stringify({roomId,seed:20260904,rounds:[...rounds],commands:trace.length,outcome,realSeats:7,setup:'HTTP create/join + UI seat/start',actions:'UI clicks only',stateInjection:false}),contentType:'application/json'});
   await info.attach('final-result',{body:await pages[0]!.screenshot(),contentType:'image/png'});
  }finally{
+  writeFileSync(info.outputPath('whole-match-transcript.json'),JSON.stringify({trace,errors},null,2));
   await info.attach('full-ui-command-transcript',{body:JSON.stringify({trace,errors}),contentType:'application/json'});
   await context.close();
  }
