@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -16,7 +16,10 @@ import { createSevenAuthoringMatchSession, loadSevenAuthoringSmokeFixture, proje
 function publicAssetFile(url: string): string {
   const publicPath = resolvePublicAssetPath(url);
   if (!publicPath) throw new Error(`Expected public asset URL, got ${url}`);
-  return resolve(__dirname, '../../public', publicPath);
+  const assetRoot = resolve(__dirname, '../../public/assets');
+  const file = resolve(__dirname, '../../public', publicPath);
+  if (!file.startsWith(assetRoot + sep)) throw new Error(`Asset is outside public assets: ${url}`);
+  return file;
 }
 
 function expectAssetExists(url: string): void {
@@ -110,12 +113,20 @@ function deckEntryKey(entry: { entryType: string; attribute: string; printedValu
 
 function readAuthoringArchives(kind: 'masters' | 'servants'): Array<{
   id: string;
+  sourcePath: string;
   cards: Array<{ id: string; cardType: string }>;
 }> {
   const directory = resolve(__dirname, '../../../../data/authoring', kind);
   return readdirSync(directory)
     .filter((name) => name.endsWith('.json'))
-    .map((name) => JSON.parse(readFileSync(resolve(directory, name), 'utf8')));
+    .map((name) => ({ ...JSON.parse(readFileSync(resolve(directory, name), 'utf8')), sourcePath: `data/authoring/${kind}/${name}` }));
+}
+
+function playableArchivePaths(): string[] {
+  const pack = JSON.parse(readFileSync(resolve(__dirname, '../../../../data/packs/fd-playtest-v1/pack.json'), 'utf8')) as {
+    authoringMasterFiles: string[]; authoringServantFiles: string[];
+  };
+  return [...pack.authoringMasterFiles, ...pack.authoringServantFiles];
 }
 
 describe('FD asset registry', () => {
@@ -132,6 +143,29 @@ describe('FD asset registry', () => {
       expectAssetExists(resolveEntityImageUrl('servant', id));
       expectAssetExists(resolveCardImageUrl({ definitionId: id, cardType: 'servant_overview' }));
     }
+  });
+
+  it('uses reviewed CHM entity art for every approved raw overview identity', () => {
+    for (const id of [...approvedAuthoringMasterIds, ...approvedAuthoringServantIds]) {
+      expect(resolveCardImageUrl({ definitionId: id, cardType: id.startsWith('master.') ? 'master_overview' : 'servant_overview' }), id)
+        .toBe(fdRealAssetManifest.entities[id]);
+    }
+  });
+
+  it('shows owner overview art for the fourteen printed master abilities instead of generic placeholders', () => {
+    const paths = new Set(playableArchivePaths());
+    const archives = readAuthoringArchives('masters').filter(archive => paths.has(archive.sourcePath));
+    const inline = archives.flatMap(archive => archive.cards
+      .filter(card => card.cardType === 'master_skill' && !Object.prototype.hasOwnProperty.call(fdRealAssetManifest.cards, card.id))
+      .map(card => ({ owner: archive.id, card })));
+    expect(inline).toHaveLength(14);
+    for (const { owner, card } of inline) {
+      expect(resolveCardImageUrl({ definitionId: card.id, cardType: card.cardType }), card.id)
+        .toBe(resolveEntityImageUrl('master', owner));
+    }
+    // A plausible prefix alone is not an approved mapping.
+    expect(resolveCardImageUrl({ definitionId: 'master.kayneth.skill.unreviewed', cardType: 'master_skill' }))
+      .toBe('/assets/fd/placeholders/skill.svg');
   });
 
   it('keeps the imported CHM real-asset manifest loadable', () => {
@@ -213,8 +247,14 @@ describe('FD asset registry', () => {
   });
 
   it('resolves every card in the approved authoring archives', () => {
-    const archives = [...readAuthoringArchives('masters'), ...readAuthoringArchives('servants')];
-
+    // Admission comes from the explicit playable pack, not every rules-source archive.
+    const root = resolve(__dirname, '../../../..');
+    const paths = playableArchivePaths();
+    expect(new Set(paths).size).toBe(14);
+    const archives = paths.map(path => JSON.parse(readFileSync(resolve(root, path), 'utf8')) as {
+      id: string; cards: Array<{ id: string; cardType: string }>;
+    });
+    expect(new Set(archives.map(archive => archive.id)).size).toBe(14);
     expect(archives.map((archive) => archive.id).sort()).toEqual([
       ...approvedAuthoringMasterIds,
       ...approvedAuthoringServantIds,
@@ -226,9 +266,43 @@ describe('FD asset registry', () => {
         cardType: archive.id.startsWith('master.') ? 'master_overview' : 'servant_overview',
       }));
       for (const card of archive.cards) {
-        expectAssetExists(resolveCardImageUrl({ definitionId: card.id, cardType: card.cardType }));
+        const url = resolveCardImageUrl({ definitionId: card.id, cardType: card.cardType });
+        expect(url, card.id).not.toContain('/placeholders/');
+        expectAssetExists(url);
       }
     }
+  });
+
+  it('keeps the full source catalog distinct from explicit playable and art admission', () => {
+    const catalog = [...readAuthoringArchives('masters'), ...readAuthoringArchives('servants')];
+    const ids = catalog.map(archive => archive.id);
+    // Split migration archives may deliberately share an owner ID; admission uses paths.
+    expect(new Set(catalog.map(archive => archive.sourcePath)).size).toBe(catalog.length);
+    const approved = [...approvedAuthoringMasterIds, ...approvedAuthoringServantIds];
+    for (const id of approved) expect(ids).toContain(id);
+    const approvedSet = new Set<string>(approved);
+    const unapproved = ids.filter(id => !approvedSet.has(id));
+    expect(unapproved.length).toBeGreaterThan(0);
+    const paths = playableArchivePaths();
+    for (const variant of ['data/authoring/masters/master.irisviel.fm08.json', 'data/authoring/masters/master.kayneth.p3-s3.json']) {
+      expect(catalog.some(archive => archive.sourcePath === variant)).toBe(true);
+      expect(paths).not.toContain(variant);
+    }
+    for (const id of approved) expect(catalog.filter(archive => archive.id === id && paths.includes(archive.sourcePath))).toHaveLength(1);
+
+    expect(Object.keys(fdRealAssetManifest.entities).sort()).toEqual([...approved].sort());
+    const generated = JSON.parse(readFileSync(resolve(__dirname, '../../../../data/generated/fd-playtest-v1.content-library.json'), 'utf8')) as {
+      masters: Array<{ id: string }>; servants: Array<{ id: string }>;
+    };
+    expect(generated.masters.map(entity => entity.id).sort()).toEqual([...approvedAuthoringMasterIds].sort());
+    expect(generated.servants.map(entity => entity.id).sort()).toEqual([...approvedAuthoringServantIds].sort());
+    for (const id of unapproved) expect(Object.prototype.hasOwnProperty.call(fdRealAssetManifest.entities, id), id).toBe(false);
+  });
+
+  it('rejects external or escaping asset paths and detects missing files', () => {
+    expect(() => publicAssetFile('https://example.invalid/card.png')).toThrow('Expected public asset');
+    expect(() => publicAssetFile('/assets/../../package.json')).toThrow('outside public assets');
+    expect(() => expectAssetExists('/assets/fd/asset-gate-missing-image.png')).toThrow();
   });
 
   it('keeps the generated playtest fixture free of broken card art URLs', () => {
