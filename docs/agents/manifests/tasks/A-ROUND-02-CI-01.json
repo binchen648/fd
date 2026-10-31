@@ -1,6 +1,6 @@
 {
   "taskId": "A-ROUND-02-CI-01",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "owner": "Global Technical Lead /root",
   "authority": "User \u8bf7\u4f60\u5904\u7406 explicitly authorizes diagnosis and minimal repair of merged main CI timeout",
   "BaseCommit": "dec47680027beb4ee7af2036b293c5d0c96365c1",
@@ -46,5 +46,11 @@
     "synchronizationSha": "63e87dc9beedee18408aa2d70878b415a5692b0d",
     "fullCi": "PENDING_FINAL_HEAD",
     "mergeRequiresUserConsent": true
+  },
+  "completion": {
+    "mergedMain": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
+    "postMergeCI": "PASS_1736_1ORIGINALSKIP",
+    "successor": "A-MATCH-03",
+    "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves A-MATCH-03 proposal; sole writer scheduling included"
   }
 }

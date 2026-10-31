@@ -1,0 +1,53 @@
+{
+  "taskId": "A-MATCH-03",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "authority": "User \u8fdb\u884c\u4e0b\u4e00\u6b65 approves A-MATCH-03 proposal; sole writer scheduling included",
+  "BaseCommit": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
+  "branch": "codex/a-match-03-seven-player-20261031",
+  "worktree": "D:/fd-validation/a-match-03-20261031",
+  "ReservedFiles": [
+    "packages/rules/src/match-session.ts",
+    "packages/rules/src/match-room.ts",
+    "packages/rules/tests/regression/full-seven-player-match.test.ts",
+    "apps/server/src/full-seven-player-match.test.ts",
+    "apps/client/src/App.tsx",
+    "apps/client/src/pages/MatchTable.tsx",
+    "apps/client/src/state/match-room-client.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "e2e/fd-full-seven-player-match.spec.ts",
+    "e2e/support/full-seven-player-driver.ts",
+    "e2e/support/start-full-match-server.ts",
+    "docs/agents/manifests/tasks/A-MATCH-03.json",
+    "docs/agents/manifests/reservations/A-MATCH-03.json",
+    "docs/agents/manifests/releases/A-ROUND-02-CI-01-TO-A-MATCH-03.json",
+    "docs/agents/manifests/tasks/A-ROUND-02-CI-01.json",
+    "docs/agents/manifests/reservations/A-ROUND-02-CI-01.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/plans/2026-10-31-a-match-03.md",
+    "docs/reports/2026-10-31-a-match-03-result.md",
+    "docs/reviews/phase3/A-MATCH-03-review-attestation.json"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/loader.ts",
+    "data/authoring/**",
+    "data/phase3/**",
+    "coverage tools",
+    "existing test limits/selection",
+    "all frozen worktrees"
+  ],
+  "dependencies": {
+    "mergedCIRepair": "bbe1ef91584d550c690552efa5d5bbae78d36b3b",
+    "B-capabilities": "NOT_REQUIRED_READ_ONLY"
+  },
+  "acceptance": [
+    "Seven human-controlled seats from real room create/join/select/start through all11rounds; no synthetic state injection or auto-accepted failure reason",
+    "Real legal commands,normal move and regular play,battle/scoring,8-10VPcutoff and11outcome",
+    "Midmatch signed save/restore,reconnect and stale/duplicate rejection without repeated effects;hidden-info checks",
+    "Client/browser+real server full run,not terminal fixture; preserve raw first failure and bounded diagnostic logs",
+    "Independent exact-candidate review;unchanged full CI;user approval before merge"
+  ],
+  "migrationCreditDelta": 0
+}
