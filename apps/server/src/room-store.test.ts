@@ -4,6 +4,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { request as httpRequest } from 'node:http';
+import { createCipheriv, randomBytes } from 'node:crypto';
 import { WebSocket } from 'ws';
 import { createMatchServer, type MatchServerHandle } from './match-server';
 import { RoomStore } from './room-store';
@@ -79,6 +80,8 @@ it('durably restores seven real identities and rejects stale/duplicate commands 
     expect(publicText).not.toContain(card.instanceId);
   }
   const disk = readFileSync(file, 'utf8'); expect(disk).not.toContain(host.reconnectToken); expect(disk).not.toContain('persistenceSecret');
+  expect(JSON.parse(disk).version).toBe(2);
+  expect(Buffer.byteLength(disk)).toBeLessThan(Buffer.byteLength(JSON.stringify(restored.hub.serialize())) / 3);
   socket.ws.close();
 });
 
@@ -86,6 +89,23 @@ it('refuses a corrupt durable file instead of silently starting an empty hub', (
   const file = stateFile(); writeFileSync(file, '{broken');
   expect(() => start(file)).toThrow(/store|state|persist|JSON|key/i);
   expect(readFileSync(file, 'utf8')).toBe('{broken');
+});
+
+it('loads an authenticated v1 file and upgrades to compressed v2 on the next confirmed operation', async () => {
+  const file = stateFile(); const server = start(file); const port = await server.listen();
+  const host = await post(port, '/rooms', { roomId: 'restart', hostClientId: 'host' });
+  const snapshot = server.hub.serialize();
+  const contexts = snapshot.rooms.map(r => [r.roomId, server.hub.getRoom(r.roomId).getPersistenceContext()]);
+  // Build the original format independently, including its original AAD.
+  const iv = randomBytes(12); const legacy = createCipheriv('aes-256-gcm', readFileSync(`${file}.key`), iv);
+  legacy.setAAD(Buffer.from('fd-room-store-v1'));
+  const data = Buffer.concat([legacy.update(JSON.stringify({ version: 1, snapshot, contexts }), 'utf8'), legacy.final()]);
+  await server.close(); servers.splice(servers.indexOf(server), 1);
+  writeFileSync(file, JSON.stringify({ version: 1, iv: iv.toString('base64'), tag: legacy.getAuthTag().toString('base64'), data: data.toString('base64') }));
+  const restored = start(file); const newPort = await restored.listen();
+  expect(restored.hub.getRoom('restart').getIssuedCredential('host')).toBe(host.reconnectToken);
+  await post(newPort, '/rooms/restart/join', { clientId: 'new', displayName: 'New' });
+  expect(JSON.parse(readFileSync(file, 'utf8')).version).toBe(2);
 });
 
 it('rejects concurrent writers and authenticated ciphertext corruption, preserving disk evidence', async () => {

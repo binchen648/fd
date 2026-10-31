@@ -119,10 +119,11 @@ export class MatchRoomHub {
     return this.roomVersions.get(roomId) ?? 0;
   }
 
-  serialize(): MatchRoomHubSnapshot {
+  /** false borrows replay history only for immediate synchronous server encoding. */
+  serialize(copyReplaySnapshots = true): MatchRoomHubSnapshot {
     return {
       version: 1,
-      rooms: [...this.rooms.values()].map((room) => room.serializeRoom()),
+      rooms: [...this.rooms.values()].map((room) => room.serializeRoom(copyReplaySnapshots)),
     };
   }
 

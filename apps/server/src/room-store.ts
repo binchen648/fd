@@ -1,6 +1,7 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { gzipSync, gunzipSync } from 'node:zlib';
 import type { MatchRoom, MatchRoomHub, MatchRoomHubSnapshot } from '@fd/rules';
 
 type RoomContext = ReturnType<MatchRoom['getPersistenceContext']>;
@@ -64,11 +65,12 @@ export class RoomStore {
     if (!existsSync(this.file)) return;
     try {
       const envelope = JSON.parse(readFileSync(this.file, 'utf8'));
-      if (envelope.version !== 1) throw new Error('Unsupported durable state version');
+      if (![1, 2].includes(envelope.version)) throw new Error('Unsupported durable state version');
       const decipher = createDecipheriv('aes-256-gcm', this.key, Buffer.from(envelope.iv, 'base64'));
-      decipher.setAAD(Buffer.from('fd-room-store-v1'));
+      decipher.setAAD(Buffer.from(`fd-room-store-v${envelope.version}`));
       decipher.setAuthTag(Buffer.from(envelope.tag, 'base64'));
-      const stored = JSON.parse(Buffer.concat([decipher.update(Buffer.from(envelope.data, 'base64')), decipher.final()]).toString('utf8')) as StoredRooms;
+      const plaintext = Buffer.concat([decipher.update(Buffer.from(envelope.data, 'base64')), decipher.final()]);
+      const stored = JSON.parse((envelope.version === 2 ? gunzipSync(plaintext) : plaintext).toString('utf8')) as StoredRooms;
       if (stored.version !== 1 || !Array.isArray(stored.snapshot?.rooms) || !Array.isArray(stored.contexts)) throw new Error('Invalid durable state payload');
       const contexts = new Map(stored.contexts);
       if (contexts.size !== stored.contexts.length || contexts.size !== stored.snapshot.rooms.length) throw new Error('Invalid durable room contexts');
@@ -82,12 +84,15 @@ export class RoomStore {
     } catch { throw new Error('Durable room store could not be validated; state preserved'); }
   }
   save(hub: MatchRoomHub): void {
-    const snapshot = hub.serialize();
+    // No await/callback between borrowing history and encoding it. The default
+    // public snapshot API still copies; authority digests/seals are unchanged.
+    const snapshot = hub.serialize(false);
     const stored: StoredRooms = { version: 1, snapshot, contexts: snapshot.rooms.map(room => [room.roomId, hub.getRoom(room.roomId).getPersistenceContext()]) };
     const iv = randomBytes(12); const cipher = createCipheriv('aes-256-gcm', this.key, iv);
-    cipher.setAAD(Buffer.from('fd-room-store-v1'));
-    const data = Buffer.concat([cipher.update(JSON.stringify(stored), 'utf8'), cipher.final()]);
-    const text = JSON.stringify({ version: 1, iv: iv.toString('base64'), tag: cipher.getAuthTag().toString('base64'), data: data.toString('base64') });
+    cipher.setAAD(Buffer.from('fd-room-store-v2'));
+    const compressed = gzipSync(JSON.stringify(stored), { level: 1 });
+    const data = Buffer.concat([cipher.update(compressed), cipher.final()]);
+    const text = JSON.stringify({ version: 2, iv: iv.toString('base64'), tag: cipher.getAuthTag().toString('base64'), data: data.toString('base64') });
     const temporary = `${this.file}.${process.pid}.tmp`;
     const fd = openSync(temporary, 'w', 0o600);
     try { writeFileSync(fd, text); fsyncSync(fd); } finally { closeSync(fd); }

@@ -2185,7 +2185,8 @@ export class MatchSession {
     return Object.fromEntries(Object.entries(record).map(([key, child]) => [key, this.projectEventPayload(child, hiddenIds)]));
   }
 
-  serializeSession(): MatchSessionSnapshot {
+  /** Borrowed replay snapshots must only be read during immediate synchronous encoding. */
+  serializeSession(copyReplaySnapshots = true): MatchSessionSnapshot {
     const authorityField = persistedOpponentCloseToOneAuthorityField(this.state, this.persistenceSecret, this.persistenceScope);
     const currentSeal = authorityField.opponentCloseToOneServerAuthority;
     const replayEntries = replayManifestEntries(this.replaySnapshots);
@@ -2209,7 +2210,7 @@ export class MatchSession {
       } : {}),
       logs: structuredClone(this.logs),
       replay: structuredClone(this.replay),
-      replaySnapshots: structuredClone(this.replaySnapshots),
+      replaySnapshots: copyReplaySnapshots ? structuredClone(this.replaySnapshots) : this.replaySnapshots,
       battleHistory: structuredClone(this.battleHistory),
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: structuredClone(this.rejection) } : {}),
