@@ -1,0 +1,49 @@
+{
+  "taskId": "A-RECOVER-04",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "authority": "User implements approved seven-player recovery plan; single-writer scheduling under existing user delegation",
+  "BaseCommit": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+  "branch": "codex/a-recover-04-seven-player-20261031",
+  "worktree": "D:/fd-validation/a-recover-04-20261031",
+  "ReservedFiles": [
+    "apps/server/src/room-store.ts",
+    "apps/server/src/room-store.test.ts",
+    "apps/server/src/match-server.ts",
+    "apps/server/src/index.ts",
+    "apps/server/README.md",
+    "packages/rules/src/match-room-hub.ts",
+    "packages/rules/tests/match-room-hub.test.ts",
+    "packages/rules/tests/regression/seven-player-restart.test.ts",
+    "apps/client/src/state/match-room-client.ts",
+    "apps/client/src/state/match-room-client.test.ts",
+    ".gitignore",
+    ".github/workflows/test.yml",
+    "e2e/fd-server-recovery.spec.ts",
+    "docs/agents/manifests/tasks/A-RECOVER-04.json",
+    "docs/agents/manifests/reservations/A-RECOVER-04.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/plans/2026-10-31-a-recover-04.md",
+    "docs/reports/2026-10-31-a-recover-04-result.md",
+    "docs/reviews/phase3/A-RECOVER-04-review-attestation.json"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/ability/**",
+    "packages/rules/src/match-session.ts",
+    "data/**",
+    "apps/client/public/**",
+    "frozen worktrees",
+    "A-ASSET-01 asset resolver/tests"
+  ],
+  "dependencies": [
+    "PR687 merged exactmain462bb827; main postmerge CI still pending at task scheduling"
+  ],
+  "acceptance": [
+    "Existing seven-player production room survives fresh process restart with original credentials",
+    "Write-before-success persistence; corrupt storage fails closed; no HTTP trust-context import",
+    "Fresh projections preserve private information; old/duplicate command rejected without mutation",
+    "Client bounded reconnect fetches projection before commands; no automatic mutation replay",
+    "Independent review, full original+client+server CI, actual browser recovery; user approval before merge"
+  ],
+  "migrationCreditDelta": 0
+}
