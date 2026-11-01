@@ -36,7 +36,7 @@
           "printedClause": "双重御主-你拥有的魔力少于8点也可以使用技能牌。",
           "activation": { "trigger": "while_active" },
           "ruleModifiers": [
-            { "id": "kayneth-low-mana-skill-exception", "operation": "ignore", "rule": "skill_zone_mana_requirement", "scope": { "object": "this_card" } }
+            { "id": "kayneth-low-mana-skill-exception", "operation": "ignore", "rule": "skill_zone_mana_requirement", "scope": { "subject": "controller" } }
           ],
           "effects": [
             { "type": "record_master_directive", "directive": "low_mana_skill_cards_allowed", "payload": "controller may use skill cards below 8 mana" }

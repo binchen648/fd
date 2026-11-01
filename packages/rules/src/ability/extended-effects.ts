@@ -403,7 +403,8 @@ export function resolveExtendedEffect(
       if (!owner || owner.id === controllerId || amount <= 0) break;
       const payer = state.players.find(candidate => candidate.id === controllerId);
       if (!payer) break;
-      const paid = Math.min(amount, payer.vp);
+      if (!Number.isSafeInteger(amount) || payer.vp < amount) throw new Error('Cannot pay mandatory victory-point transfer.');
+      const paid = amount;
       payer.vp -= paid;
       owner.vp += paid;
       modeState(state).vpTransfers = [

@@ -471,6 +471,24 @@ function liveOngoing(s: GameState): OngoingEffect[] {
     sourceBoundOngoingIsLive(s, o) &&
     (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
 }
+function controllerIgnoresSkillZoneMana(s: GameState, targetId: string): boolean {
+  const target = card(s, targetId);
+  const targetDefinition = definition(s, targetId);
+  if (target.zone !== 'skill' || !['master_skill', 'servant_skill'].includes(targetDefinition?.cardType ?? '')) return false;
+  const controller = player(s, target.controllerPlayerId);
+  return s.cards.some(source => {
+    const d = definition(s, source.instanceId) as ExecutableCardDefinition | undefined;
+    if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id ||
+        d?.cardType !== 'master_skill' || d.ownerId !== controller.masterCardId ||
+        (source.zone !== 'skill' && !active(s, source.instanceId))) return false;
+    return d.abilities.some(a => a.execution.mode === 'automatic' && a.kind === 'passive' &&
+      a.activation.trigger === 'while_active' && !a.activation.phase && !a.conditions.length && !a.cost.length &&
+      (!a.activation.requiresSourceState || active(s, source.instanceId)) &&
+      a.ruleModifiers.some(m => m.operation === 'ignore' && m.rule === 'skill_zone_mana_requirement' &&
+        node(m.scope).subject === 'controller' && node(m.scope).object === undefined &&
+        nodes(m.conditions).every(c => condition(s, context(s, source.instanceId, a.id), c))));
+  });
+}
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);
   if (!scoped || scoped === 'self' || scoped === 'controller') return modifierControllerId === source.controllerPlayerId;
@@ -500,7 +518,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
-    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close') continue;
+    const m = modifier.definition; const scope = node(m.scope);
+    if (m.rule !== 'attack.currentPower' && m.rule !== 'card.currentPower') continue;
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
@@ -710,7 +729,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   switch (c.type) {
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
-      if (cardDef && hasPlayRuleException(cardDef, 'skill_zone_mana_at_least')) return true;
+      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || controllerIgnoresSkillZoneMana(s, ctx.sourceCardId))) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
     case 'event_location_is_source_event_battlefield': return !!ctx.eventSource &&
@@ -845,12 +864,34 @@ function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, so
 function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
   const d = definition(s, sourceId); if (!d) return ['missing_definition'];
   const targetPlayer = player(s, playerId);
+  // Static while-active prohibitions are predicates over the CURRENT source,
+  // location and resources. They must work immediately after play, including
+  // sources whose conditions were false during the last phase event.
+  const staticAttributeRules = s.cards.flatMap(source => {
+    if (!active(s, source.instanceId)) return [];
+    const controller = player(s, source.controllerPlayerId);
+    if (controller.id === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId)) return [];
+    return (definition(s, source.instanceId)?.abilities ?? []).flatMap(a => {
+      if (a.execution.mode !== 'automatic' || a.activation.trigger !== 'while_active' ||
+          !['passive', 'residual'].includes(a.kind)) return [];
+      const ctx = context(s, source.instanceId, a.id);
+      if (!a.conditions.every(c => condition(s, ctx, c))) return [];
+      return a.ruleModifiers.flatMap(m => m.operation === 'forbid' && m.rule === 'play_card_attribute' &&
+        ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(node(m.scope).subject)) &&
+        nodes(m.conditions).every(c => condition(s, ctx, c)) &&
+        Array.isArray(d.cardFace.attributes) && d.cardFace.attributes.includes(str(m.attribute ?? node(m.scope).attribute)) ? ['play_card_attribute'] : []);
+    });
+  });
   const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, sourceCardId, definition: m }) => {
     const controller = player(s, controllerId); const scope = node(m.scope);
     const appliesToSameBattlefieldOpponent = ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.subject)) ||
       ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.object));
     if (appliesToSameBattlefieldOpponent && (controllerId === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId))) return [];
     if (m.operation !== 'forbid') return [];
+    if (str(node(m.lifecycle).duration) === 'while_active') {
+      const a = definition(s, sourceCardId)?.abilities.find(a => a.ruleModifiers.some(candidate => candidate.id === m.id));
+      if (!a || !a.conditions.every(c => condition(s, context(s, sourceCardId, a.id), c))) return [];
+    }
     if (m.rule === 'skill_use' && acceptedSkillUseForbidApplies(s, controllerId, sourceCardId, playerId, sourceId, m)) return ['skill_use'];
     if (m.rule === 'situation_restrictions' || m.rule === 'situation_play_forbid') return [str(m.rule)];
     if (m.rule === 'use_skill_card') return d.cardType === 'servant_skill' ? [str(m.rule)] : [];
@@ -868,7 +909,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
         return [entry.rule ?? (entry.sourceType === 'situation' ? 'situation_play_forbid' : 'play_card_attribute')];
       })
     : [];
-  return staticWhileActiveSkillUseForbidRules(s, playerId, sourceId).concat(ongoingRules, matchRules);
+  return staticWhileActiveSkillUseForbidRules(s, playerId, sourceId).concat(staticAttributeRules, ongoingRules, matchRules);
 }
 function abilityLimitReached(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
   const limitType = str(a.limit?.type);
@@ -951,6 +992,14 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
   const activationContext = context(s, sourceId, a.id, event);
+  if (isAddToAttackRouteCandidate(a) && !hasAvailableManaForFixedCosts(s, activationContext, a)) return false;
+  if (a.effects.some(effect => {
+    if (effect.type !== 'transfer_vp_to_owner') return false;
+    const ownerId = card(s, sourceId).ownerPlayerId;
+    const amount = Number(effect.amount);
+    return ownerId !== activationContext.controllerId &&
+      (!Number.isSafeInteger(amount) || amount < 0 || player(s, activationContext.controllerId).vp < amount);
+  })) return false;
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return !faceUpEffectPlayLimitReached(s, activationContext, a);
   if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
   return !faceUpEffectPlayLimitReached(s, activationContext, a);

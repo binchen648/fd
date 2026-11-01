@@ -3110,7 +3110,7 @@
                 "operation": "ignore",
                 "rule": "skill_zone_mana_requirement",
                 "scope": {
-                  "object": "this_card"
+                  "subject": "controller"
                 }
               }
             ],
@@ -10968,11 +10968,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+    "definitionHash": "bfd544ef7d4a0f53f24b6462abf224277c03327c4469191fb7c3d676f1ae4757",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce"
+      "definitionHash": "bfd544ef7d4a0f53f24b6462abf224277c03327c4469191fb7c3d676f1ae4757"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
