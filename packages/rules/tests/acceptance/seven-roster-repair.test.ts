@@ -12,6 +12,15 @@ describe('A-ACCEPT-06 repair permission and payment boundaries', () => {
     rejectAtomically(session, playerId, { type: 'stage_attack_card', cardInstanceId: skill.instanceId });
   });
 
+  it('does not ignore an unaccepted lifecycle on a controller mana exception', () => {
+    const { session, playerId, sourceId } = fixture('master.kayneth.skill.double-master');
+    const d = session.state.abilityRuntime!.pack.cards[card(session, sourceId).definitionId]!;
+    d.abilities[0]!.lifecycle = { expiresAtRound: 0 };
+    const skill = session.state.cards.find(c => c.controllerPlayerId === playerId && c.definitionId === 'servant.artoria-alt.skill.sc-artoria-alt-1')!;
+    player(session, playerId).mana = 7;
+    rejectAtomically(session, playerId, { type: 'stage_attack_card', cardInstanceId: skill.instanceId });
+  });
+
   it.each(['phase', 'cost', 'selector'] as const)('does not treat an unsupported %s-limited aura as an unconditional prohibition', boundary => {
     const { session, playerId, sourceId } = fixture('servant.artoria-alt.skill.sc-artoria-alt-2');
     player(session, playerId).mana = 7;

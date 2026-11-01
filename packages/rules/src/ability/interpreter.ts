@@ -487,6 +487,8 @@ function controllerIgnoresSkillZoneMana(s: GameState, targetId: string): boolean
     return d.abilities.some(a => a.execution.mode === 'automatic' && a.kind === 'passive' &&
       a.activation.trigger === 'while_active' && onlyRuleKeys(a.activation, ['trigger']) &&
       !a.conditions.length && !a.cost.length && !a.targets.length && !Object.keys(a.limit).length &&
+      !Object.keys(a.lifecycle).length && !Object.keys(a.responseWindow).length && !a.creates.length &&
+      a.effects.every(effect => effect.type === 'record_master_directive') &&
       a.ruleModifiers.some(m => m.operation === 'ignore' && m.rule === 'skill_zone_mana_requirement' &&
         onlyRuleKeys(m, ['id', 'printedClause', 'operation', 'rule', 'scope']) &&
         node(m.scope).subject === 'controller' && onlyRuleKeys(m.scope, ['subject']) &&
