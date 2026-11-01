@@ -48,5 +48,14 @@
     "typecheck/build/original+client+serverCI/independentreview;providerliveverification separately labelled"
   ],
   "migrationCreditDelta": 0,
-  "buildAddendum": "Actual production-browser failure: manualChunks forces entire Node tool barrels into web output; remove only broad rules/content manual chunks,retain rule semantics and build test evidence"
+  "buildAddendum": "Actual production-browser failure: manualChunks forces entire Node tool barrels into web output; remove only broad rules/content manual chunks,retain rule semantics and build test evidence",
+  "candidateEvidenceState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "reviewedCandidateSha": "42899ae6ddcfcde041d6b10e3d44a3cbedca1b79",
+  "reviewCommit": "c89c95ff7f41456483ac69ff9c51cc6bcf729ccb",
+  "synchronizationCommit": "3ccca887edba165b67c1bd141b70546dbf20a046",
+  "remainingGates": [
+    "exact final-head original/client/serverCI",
+    "explicit user merge approval"
+  ],
+  "liveProviderVerification": "NOT_RUN_NO_SAKURA_ACCOUNT_NODE"
 }
