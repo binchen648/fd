@@ -1,0 +1,42 @@
+{
+  "taskId": "A-ACCEPT-06-REPAIR",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "BaseCommit": "8a67c5ab2d88bccdafd038f1d7d1e3fafb75506e",
+  "technicalMain": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "branch": "codex/a-accept-06-repair-20261101",
+  "worktree": "D:/fd-validation/a-accept-06-repair-20261101",
+  "authority": "Latest explicit user: 进行修复. Root implements; independent agents review. Preserve original frozen red evidence and PR689.",
+  "phase": "R1 permissions and mandatory costs",
+  "ReservedFiles": [
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/extended-effects.ts",
+    "data/authoring/masters/master.kayneth.json",
+    "data/generated/fd-playtest-v1.content-library.json",
+    "packages/rules/tests/acceptance/seven-roster-repair.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-session-effects.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-combinations.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-test-helpers.ts",
+    "docs/agents/manifests/tasks/A-ACCEPT-06-REPAIR.json",
+    "docs/agents/manifests/reservations/A-ACCEPT-06-REPAIR.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "docs/plans/2026-11-01-a-accept-06-repair.md",
+    "docs/reports/2026-11-01-a-accept-06-repair-result.md",
+    "docs/reviews/phase3/A-ACCEPT-06-REPAIR-review-attestation.json"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/ability/loader.ts",
+    "all A-CLOUD-05 production files",
+    "all frozen worktrees including original A-ACCEPT-06",
+    "all other production paths until exact scope addendum",
+    "global coverage/migration counters"
+  ],
+  "frozenEvidenceSource": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+  "sharedOwnershipEvidence": [
+    "A-CLOUD-05 lane has no active rules writer; rules excluded",
+    "A-RECOVER-04 explicitly RELEASED at 02fa5a6c52f430d96c549415273a8063aa048160",
+    "CB-C02 remains SUSPENDED; no code imported"
+  ],
+  "migrationCreditDelta": 0,
+  "mergeAuthorization": "NONE for new candidate; PR689 remains OPEN"
+}

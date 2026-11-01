@@ -1,80 +1,85 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-31T11:21:01.774653+00:00",
+  "updatedAt": "2026-11-01T07:40:23.422735+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "A-RECOVER-04 owns only listed hub/transport/server/client connection files; interpreter/loader excluded; CB-C02 suspended; A-ASSET-01 merged,postmerge Test/Build/Policy/Deploy PASS and explicitly RELEASED; no overlapping asset writes",
-  "activeRuntimeTask": "A-RECOVER-04",
+  "precedence": "Root R1 sole rules Runtime writer under latest user repair instruction; A-CLOUD-05 existing server/client entry ownership preserved and frozen; CB-C02 SUSPENDED; loader excluded",
+  "activeRuntimeTask": "A-ACCEPT-06-REPAIR",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
-    "branch": "codex/a-recover-04-seven-player-20261031",
-    "absoluteWorktree": "D:/fd-validation/a-recover-04-20261031"
+    "branch": "codex/a-accept-06-repair-20261101",
+    "absoluteWorktree": "D:/fd-validation/a-accept-06-repair-20261101"
   },
-  "requiredBase": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+  "requiredBase": "8a67c5ab2d88bccdafd038f1d7d1e3fafb75506e",
   "resources": [
     {
-      "path": "apps/server/src/room-store.ts",
+      "path": "apps/server/src/static-client.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "apps/server/src/room-store.test.ts",
+      "path": "apps/server/src/static-client.test.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
       "path": "apps/server/src/match-server.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
       "path": "apps/server/src/index.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "packages/rules/src/match-room-hub.ts",
+      "path": "apps/client/src/state/public-playtest.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "packages/rules/tests/match-room-hub.test.ts",
+      "path": "apps/client/src/state/public-playtest.test.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "packages/rules/tests/regression/seven-player-restart.test.ts",
+      "path": "apps/client/src/App.tsx",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "apps/client/src/state/match-room-client.ts",
+      "path": "apps/client/src/App.test.tsx",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "apps/client/src/state/match-room-client.test.ts",
+      "path": "scripts/start-public-playtest.mjs",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": ".github/workflows/test.yml",
+      "path": "packages/rules/src/ability/interpreter.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-ACCEPT-06-REPAIR"
     },
     {
-      "path": "packages/rules/src/match-session.ts",
-      "taskId": "A-RECOVER-04",
-      "state": "GRANTED"
+      "path": "packages/rules/src/ability/extended-effects.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
     },
     {
-      "path": "packages/rules/src/match-room.ts",
-      "taskId": "A-RECOVER-04",
-      "state": "GRANTED"
+      "path": "data/authoring/masters/master.kayneth.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
     }
   ],
   "loader": {
@@ -118,8 +123,16 @@
       "taskManifest": "docs/agents/manifests/tasks/A-ASSET-01.json"
     },
     "A-RECOVER-04": {
-      "state": "GRANTED",
+      "state": "RELEASED",
       "taskManifest": "docs/agents/manifests/tasks/A-RECOVER-04.json"
+    },
+    "A-CLOUD-05": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-CLOUD-05.json"
+    },
+    "A-ACCEPT-06-REPAIR": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-ACCEPT-06-REPAIR.json"
     }
   },
   "historicalDirtyInterpreter": {
@@ -134,5 +147,5 @@
     "No source in frozen worktrees changed"
   ],
   "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
-  "activeClientTask": "A-RECOVER-04"
+  "activeClientTask": "A-CLOUD-05"
 }
