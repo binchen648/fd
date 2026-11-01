@@ -228,10 +228,15 @@ describe('playtest pack loader', () => {
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
     expect(loaded.eventCards).toHaveLength(18);
     expect(issues.filter((issue) => issue.blocking)).toEqual([]);
-    expect(issues).toContainEqual(expect.objectContaining({
-      code: 'SOURCE_ASSET_UNVERIFIED',
-      blocking: false,
-    }));
+    // Main assets may be present locally. Prove missing-source warnings using
+    // an isolated workspace rather than requiring local assets to be absent.
+    const missing = createMinimalWorkspace(false);
+    try {
+      const isolated = loadPlaytestContentPack(missing.packPath, { workspaceRoot: missing.root });
+      expect(validateLoadedPlaytestPack(isolated, { workspaceRoot: missing.root })).toContainEqual(expect.objectContaining({
+        code: 'SOURCE_ASSET_UNVERIFIED', blocking: false,
+      }));
+    } finally { rmSync(missing.root, { recursive: true, force: true }); }
   });
 
   it('loads master support archives into rules only without widening the playable roster', () => {

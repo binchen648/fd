@@ -483,7 +483,7 @@ function controllerIgnoresSkillZoneMana(s: GameState, targetId: string): boolean
   if (target.zone !== 'skill' || !['master_skill', 'servant_skill'].includes(targetDefinition?.cardType ?? '')) return false;
   const controller = player(s, target.controllerPlayerId);
   return s.cards.some(source => {
-    const d = definition(s, source.instanceId) as ExecutableCardDefinition | undefined;
+    const d = runtime(s).pack.cards[source.definitionId] as ExecutableCardDefinition | undefined;
     if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id ||
         d?.cardType !== 'master_skill' || d.ownerId !== controller.masterCardId ||
         (source.zone !== 'skill' && !active(s, source.instanceId))) return false;
@@ -887,10 +887,13 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
   // location and resources. They must work immediately after play, including
   // sources whose conditions were false during the last phase event.
   const staticAttributeRules = s.cards.flatMap(source => {
+    const sourceDefinition = runtime(s).pack.cards[source.definitionId];
+    if (!sourceDefinition?.abilities.some(a => a.activation.trigger === 'while_active' &&
+        a.ruleModifiers.some(m => m.operation === 'forbid' && m.rule === 'play_card_attribute'))) return [];
     if (!active(s, source.instanceId)) return [];
     const controller = player(s, source.controllerPlayerId);
     if (controller.id === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId)) return [];
-    return (definition(s, source.instanceId)?.abilities ?? []).flatMap(a => {
+    return sourceDefinition.abilities.flatMap(a => {
       if (a.execution.mode !== 'automatic' || a.activation.trigger !== 'while_active' ||
           !onlyRuleKeys(a.activation, ['trigger']) || !['passive', 'residual'].includes(a.kind) ||
           a.cost.length || a.targets.length || a.effects.length || a.creates.length || Object.keys(a.limit).length ||

@@ -923,3 +923,19 @@ it('shows the authoritative standard outcome through the actual local Session pr
  render(<MatchTable fixture={projected} />);
  expect(screen.getByLabelText('正式对局结果')).toHaveTextContent('圣杯溢出：全员失败');
 });
+
+it('preserves authoritative empty terrain slots instead of compacting occupants into a higher bonus', () => {
+ const projected=structuredClone(fixture),location=projected.locations.find(l=>l.id==='miyama_town')!;
+ location.terrainOccupants=['','player-2'];
+ render(<MatchTable fixture={projected} />);
+ const slots=screen.getByLabelText('深山町',{selector:'article'}).querySelectorAll('.location-node__slot-board--terrain > span');
+ expect(slots[0]).not.toHaveClass('is-occupied');expect(slots[1]).toHaveClass('is-occupied');expect(slots[1]).toHaveTextContent('+1');
+});
+
+it('renders a player without an affordable terrain slot in the battlefield overflow area', () => {
+ const projected=structuredClone(fixture),location=projected.locations.find(l=>l.id==='miyama_town')!;
+ location.terrainOccupants=['',''];
+ render(<MatchTable fixture={projected} />);
+ expect(screen.getByLabelText('深山町',{selector:'article'}).querySelectorAll('.location-node__slot-board--terrain > .is-occupied')).toHaveLength(0);
+ expect(screen.getByLabelText('深山町部署玩家')).toHaveTextContent('2');
+});

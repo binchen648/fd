@@ -25,4 +25,7 @@ it('labels each server-authorized Inferno payment and preserves the exact wire c
  const actions=fixture.availableActions.filter(a=>a.backendCommand?.type==='deploy_player'&&a.backendCommand.locationId==='miyama_town');
  expect(actions.map(a=>a.label)).toEqual(['部署至 深山町','部署至 深山町 · 支付 1 战果','部署至 深山町 · 支付 2 战果','部署至 深山町 · 支付 3 战果']);
  expect(actions.map(a=>a.backendCommand)).toEqual(projection.match!.view.legalActions.filter(a=>a.type==='deploy_player'&&a.locationId==='miyama_town'));
+ expect(room.dispatchClientCommand(`seat-${actor.seat}`,{type:'deploy_player',locationId:'miyama_town',vpPayment:1}).ok).toBe(true);
+ const paid=projectRemoteRoomFixture(room.getProjection(`seat-${actor.seat}`))!;
+ expect(paid.locations.find(l=>l.id==='miyama_town')!.terrainOccupants).toEqual(['',actor.id]);
 });

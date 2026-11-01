@@ -44,7 +44,11 @@
     "packages/rules/tests/kintoki-authoring.test.ts",
     "apps/client/src/pages/MatchTable.tsx",
     "apps/client/src/pages/MatchTable.test.tsx",
-    "apps/client/src/state/playtest-fixture-loader.ts"
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "packages/rules/tests/kayneth-s3-consumer-migration.test.ts",
+    "packages/content/src/__tests__/playtest-pack-loader.test.ts",
+    "packages/rules/src/__tests__/match-session-regressions.test.ts",
+    "packages/rules/tests/regression/action-turn-delivery.test.ts"
   ],
   "ForbiddenFiles": [
     "all A-CLOUD-05 production files",
@@ -70,5 +74,6 @@
   "terrainProjectionAddendum": {
     "base": "aab320736028eb4b4a6ca4f3e503371bbf7fa931",
     "reason": "Browser screenshot/code inspection: client hardcodes terrain slots and compacts occupants; paid Inferno holes would display false terrain. Publish public slots/occupants from Session and render exact indexes/overflow. No App or public hosting/server-entry files."
-  }
+  },
+  "ciRecoveryScope": "Retain frozen archive hash after reversing only the approved Kayneth selector delta; deterministic missing-asset fixture for warning; legal battlefield origin for free-move availability; explicitly resolve legitimate post-scoring response windows without double settlement. Preserve performance budget and 30s natural-game timeout."
 }

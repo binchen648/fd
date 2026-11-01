@@ -455,6 +455,16 @@ describe('DR-P01 authoritative action turn', () => {
       expect(session.state.round).toMatchObject({ activePhase: 'battle', prioritySeat: player.seat });
       expect(session.passPriority(player.id).ok).toBe(true);
     }
+    // Scoring can legitimately open a post-scoring optional ability (for
+    // example Noble Bloom). Resolve it through the public Session interface.
+    const scored = structuredClone(session.battleHistory);
+    for (let step = 0; session.state.round.activePhase === 'battle' && step < 12; step++) {
+      const responder = session.state.players.map(player => ({ player, action: session.getPlayerView(player.id).legalActions.find(a => a.type === 'decline_this_window') })).find(entry => entry.action);
+      expect(responder).toBeDefined();
+      expect(command(session, responder!.action!, responder!.player.id).ok).toBe(true);
+      session.runUntilHumanInputOrRoundEnd();
+      expect(session.battleHistory).toEqual(scored);
+    }
     expect(session.state.round.activePhase).toBe('round_end');
     const history = structuredClone(session.battleHistory);
     expect(history.length).toBeGreaterThan(0);

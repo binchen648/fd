@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 
-test('Inferno payment uses real HTTP/WS, rejects stale replay and survives a fresh server process', async ({ page }, info) => {
+for (const payment of [1, 3]) test(`Inferno payment ${payment} uses real HTTP/WS, rejects stale replay and survives a fresh server process`, async ({ page }, info) => {
   test.setTimeout(90_000);
   const directory = mkdtempSync(join(tmpdir(), 'fd-r3-accept-'));
   const roomId = `r3-paid-${Date.now()}`;
@@ -57,26 +57,33 @@ test('Inferno payment uses real HTTP/WS, rejects stale replay and survives a fre
     const server = await start(), http = `http://127.0.0.1:${server.port}`, ws = `ws://127.0.0.1:${server.port}`;
     await page.goto('/?' + new URLSearchParams({ remote:'1', roomId, clientId:server.clientId, token:server.token, http, ws }));
     const latest = () => projections.at(-1)?.match;
-    await expect(page.getByRole('button', { name:'部署至 深山町 · 支付 3 战果', exact:true })).toBeVisible();
+    await expect(page.getByRole('button', { name:`部署至 深山町 · 支付 ${payment} 战果`, exact:true })).toBeVisible();
     const revision=latest().view.revision;
-    await page.getByRole('button', { name:'部署至 深山町 · 支付 3 战果', exact:true }).click();
-    await expect.poll(()=>latest()?.view.players.find((p:any)=>p.id===server.actorId)?.vp).toBe(5);
+    await page.getByRole('button', { name:`部署至 深山町 · 支付 ${payment} 战果`, exact:true }).click();
+    await expect.poll(()=>latest()?.view.players.find((p:any)=>p.id===server.actorId)?.vp).toBe(8-payment);
     await expect.poll(()=>latest()?.view.revision).toBeGreaterThan(revision);
+    const slots=page.getByLabel('深山町',{exact:true}).locator('.location-node__slot-board--terrain').locator(':scope > span');
+    await expect(slots).toHaveCount(3);
+    await expect(slots.nth(0)).not.toHaveClass(/is-occupied/);
+    await expect(slots.nth(payment===1?2:1)).toHaveClass(/is-occupied/);
+    await expect(slots.nth(payment===1?2:1).locator('small')).toHaveText(`+${payment}`);
     const paidRevision=latest().view.revision;
-    const duplicate = await page.evaluate(({ ws, roomId, clientId, token, revision }) => new Promise<any>((done,reject)=>{
+    const duplicate = await page.evaluate(({ ws, roomId, clientId, token, revision, payment }) => new Promise<any>((done,reject)=>{
       const socket=new WebSocket(`${ws}/rooms/${roomId}?clientId=${clientId}&reconnectToken=${token}`);
-      socket.addEventListener('open',()=>socket.send(JSON.stringify({type:'client:dispatch_command',expectedRevision:revision,command:{type:'deploy_player',locationId:'miyama_town',vpPayment:3}})));
+      socket.addEventListener('open',()=>socket.send(JSON.stringify({type:'client:dispatch_command',expectedRevision:revision,command:{type:'deploy_player',locationId:'miyama_town',vpPayment:payment}})));
       socket.addEventListener('message',event=>{const m=JSON.parse(event.data);if(m.type==='server:error'){socket.close();done({code:m.code,message:m.message});}});socket.addEventListener('error',()=>reject(new Error('Replay socket failed')));
-    }), { ws,roomId,clientId:server.clientId,token:server.token,revision });
+    }), { ws,roomId,clientId:server.clientId,token:server.token,revision,payment });
     expect(duplicate.message).toContain('Stale command revision');
     const count=projections.length;
     await kill();const restarted=await start(server.port,server.clientId);expect(restarted.pid).not.toBe(server.pid);
     await expect.poll(()=>projections.length).toBeGreaterThan(count);
     await expect.poll(()=>latest()?.view.revision).toBe(paidRevision);
-    expect(latest().view.players.find((p:any)=>p.id===server.actorId)).toMatchObject({vp:5,locationId:'miyama_town'});
-    await page.reload();await expect.poll(()=>latest()?.view.players.find((p:any)=>p.id===server.actorId)?.vp).toBe(5);
+    expect(latest().view.players.find((p:any)=>p.id===server.actorId)).toMatchObject({vp:8-payment,locationId:'miyama_town'});
+    const reloadCount=projections.length;await page.reload();await expect.poll(()=>projections.length).toBeGreaterThan(reloadCount);
+    await expect.poll(()=>latest()?.view.players.find((p:any)=>p.id===server.actorId)?.vp).toBe(8-payment);
+    await expect(slots.nth(payment===1?2:1)).toHaveClass(/is-occupied/);
     expect(errors).toEqual([]);
     await page.screenshot({path:info.outputPath('inferno-paid-recovered.png'),fullPage:true});
-    writeFileSync(info.outputPath('result.json'),JSON.stringify({boundedFixture:true,realProductionAbilityActivation:true,realHttpWs:true,actualFreshProcess:true,payment:3,beforeVp:8,afterVp:5,duplicateRejected:true,recoveredRevision:paidRevision,errors},null,2));
+    writeFileSync(info.outputPath('result.json'),JSON.stringify({boundedFixture:true,realProductionAbilityActivation:true,realHttpWs:true,actualFreshProcess:true,payment,beforeVp:8,afterVp:8-payment,authoritativeSlotPreserved:true,duplicateRejected:true,recoveredRevision:paidRevision,errors},null,2));
   } finally { await kill(); const safe=resolve(directory); if(!safe.startsWith(resolve(tmpdir())+sep+'fd-r3-accept-'))throw new Error('Unexpected test directory');rmSync(safe,{recursive:true,force:true}); }
 });

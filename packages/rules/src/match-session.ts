@@ -164,6 +164,7 @@ export interface MatchClientState {
   phase: PhaseName;
   priorityPlayerId: string;
   view: AbilityPlayerView;
+  battlefieldTerrain?: Array<{ locationId: LocationId; bonuses: number[]; occupants: string[] }>;
   interactionWindows: MatchInteractionWindow[];
   directives: MatchDirectiveView[];
   zones: MatchZoneProjection[];
@@ -2154,6 +2155,11 @@ export class MatchSession {
       phase: this.state.round.activePhase,
       priorityPlayerId: this.priorityPlayer()?.id ?? this.humanPlayerId,
       view,
+      battlefieldTerrain: getEnabledLocations(this.state.map, this.state.locationConfig)
+        .filter(location => location.tags.includes('battlefield')).map(location => ({
+          locationId: location.id, bonuses: [...(location.terrainBonuses ?? [])],
+          occupants: assignedTerrainOccupants(this.state, location.id).slice(0, location.terrainBonuses?.length ?? 0),
+        })),
       interactionWindows: projectInteractionWindows(this.state, playerId),
       directives: this.directiveViews().map(directive => ({ ...directive,
         ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),

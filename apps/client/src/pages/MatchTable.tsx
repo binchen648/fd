@@ -197,11 +197,11 @@ export default function MatchTable({
         {location.reconVp !== undefined ? <span className='location-node__vp'>G 侦察 +{location.reconVp} VP</span> : null}
         {location.moveCostToNext !== undefined ? <span className='location-node__route'>E 移动成本 {location.moveCostToNext}</span> : null}
       </div>
-      {renderSlotBoard('D 地利位', location.terrainSlots, location.occupants, 'location-node__slot-board--terrain')}
+      {renderSlotBoard('D 地利位', location.terrainSlots, location.terrainOccupants ?? location.occupants, 'location-node__slot-board--terrain')}
       {renderSlotBoard('C 工房位', location.workshopManaSlots, location.occupants, 'location-node__slot-board--workshop')}
       {renderLocationEvents(location.id, location.name)}
       <div className='location-node__occupants' aria-label={`${location.name}部署玩家`}>
-        {location.occupants.slice(location.terrainSlots?.length ?? location.workshopManaSlots?.length ?? 0).map((id) => renderOccupantToken(id))}
+        {location.occupants.filter(id => !(location.terrainOccupants ?? location.occupants.slice(0, location.terrainSlots?.length ?? location.workshopManaSlots?.length ?? 0)).includes(id)).map((id) => renderOccupantToken(id))}
       </div>
     </article>
   );

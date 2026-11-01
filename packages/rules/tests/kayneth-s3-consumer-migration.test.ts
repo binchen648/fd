@@ -80,7 +80,11 @@ describe('P3 S R79 Kayneth s3 consumer migration', () => {
     });
     expect(hash(authored.printedText)).toBe(TEXT_SHA);
     expect(hash(authored.abilities[0].printedClause)).toBe(TEXT_SHA);
-    expect(hash(registeredText)).toBe(REGISTERED_ARCHIVE_SHA);
+    // The later A-ACCEPT-06 repair changes only Double Master's controller
+    // selector. Retain the frozen whole-archive hash for every other byte.
+    const approvedScope = '"scope": { "subject": "controller" }';
+    expect(registeredText.split(approvedScope)).toHaveLength(2);
+    expect(hash(registeredText.replace(approvedScope, '"scope": { "object": "this_card" }'))).toBe(REGISTERED_ARCHIVE_SHA);
     expect(registeredText).toContain('master.kayneth.skill.pride');
 
     const pack = rules.loadAuthoringJson(raw);

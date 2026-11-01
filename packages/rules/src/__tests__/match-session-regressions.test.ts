@@ -52,6 +52,7 @@ describe('match session gameplay regressions', () => {
     const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p1' });
     const state = mutableState(session);
     setPriority(state, 'p1', 'action');
+    state.players.find(player => player.id === 'p1')!.locationId = 'miyama_town';
     const commandSpell = state.cards.find((card) =>
       card.controllerPlayerId === 'p1' &&
       state.abilityRuntime?.pack.cards[card.definitionId]?.cardType === 'command_spell');
