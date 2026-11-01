@@ -40,5 +40,10 @@
     "sakuraPresentServantReplacement": "outside default seven-master presence;separateconditionalbranch,not silentlyexcluded orclaimednaturalgame"
   },
   "evidencePolicy": "Exact card::ability::clause/branch identity;test-link/static-match is not executionPASS;fixtures not whole-gamePASS;do not alter global migrationcoverage",
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "candidateEvidenceState": "FROZEN_RED_REPRODUCERS",
+  "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+  "productAcceptance": "FAIL",
+  "productionWriteGrant": false,
+  "releaseOrTransfer": "NONE; test/report-only GRANTED record retained; no shared Runtime file granted"
 }

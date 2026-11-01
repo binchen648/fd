@@ -1,6 +1,6 @@
 {
   "taskId": "A-ACCEPT-06",
-  "status": "GRANTED",
+  "status": "ACCEPTANCE_EVIDENCE_COMPLETE_PRODUCT_FAIL",
   "owner": "Global Technical Lead / Product A Builder /root",
   "BaseCommit": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
   "branch": "codex/a-accept-06-seven-roster-20261101",
@@ -40,5 +40,25 @@
     "sakuraPresentServantReplacement": "outside default seven-master presence;separateconditionalbranch,not silentlyexcluded orclaimednaturalgame"
   },
   "evidencePolicy": "Exact card::ability::clause/branch identity;test-link/static-match is not executionPASS;fixtures not whole-gamePASS;do not alter global migrationcoverage",
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+  "candidateEvidenceState": "FROZEN_RED_REPRODUCERS",
+  "productAcceptance": "FAIL",
+  "integrationAllowed": false,
+  "implementationCompleteClaim": false,
+  "productionChanges": [],
+  "testSummary": {
+    "selectedTotal": 741,
+    "selectedPass": 711,
+    "selectedFail": 30,
+    "newTotal": 68,
+    "newPass": 40,
+    "newFail": 28,
+    "fullCi": "NOT_RUN"
+  },
+  "matrixPath": "docs/reports/2026-11-01-a-accept-06-effect-matrix.json",
+  "reportPath": "docs/reports/2026-11-01-a-accept-06-result.md",
+  "reviewPath": "docs/reviews/phase3/A-ACCEPT-06-review-attestation.json",
+  "nextOwner": "Root / Product A Lead",
+  "productionFixStatus": "NOT_STARTED; new exact production-file scope must be bound before writes"
 }
