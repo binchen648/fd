@@ -7,7 +7,7 @@
   "branch": "codex/a-accept-06-repair-20261101",
   "worktree": "D:/fd-validation/a-accept-06-repair-20261101",
   "authority": "Latest explicit user: 进行修复. Root implements; independent agents review. Preserve original frozen red evidence and PR689.",
-  "phase": "R2 identity, total power and board location",
+  "phase": "R3 clockwise order, terrain and command movement",
   "ReservedFiles": [
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/extended-effects.ts",
@@ -27,7 +27,19 @@
     "packages/rules/src/ability/loader.ts",
     "packages/rules/src/core/combat-resolver.ts",
     "data/authoring/servants/servant.ereshkigal.json",
-    "packages/rules/tests/regression/complex-skills-regression.test.ts"
+    "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "packages/rules/src/core/terrain-advantage.ts",
+    "packages/rules/src/match-session.ts",
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "data/authoring/servants/servant.tomoe.json",
+    "data/authoring/masters/master.maiya.json",
+    "data/authoring/masters/master.gatou.json",
+    "data/authoring/masters/master.olga-marie.json",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "apps/client/src/state/remote-room-fixture.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-deployment.test.ts",
+    "e2e/fd-seven-roster-repair.spec.ts"
   ],
   "ForbiddenFiles": [
     "all A-CLOUD-05 production files",
@@ -45,6 +57,8 @@
   "mergeAuthorization": "NONE for new candidate; PR689 remains OPEN",
   "R2BaseCommit": "f74bd211542b75232570003dbee9f69e74f63061",
   "R1Review": "TECHNICAL_PASS_LIMITED_R1; external independent-r1-final.json",
-  "loaderGrant": "R2 ONLY: card_at_controller_battlefield condition and scoped battlefield placement; no unrelated primitive admission",
-  "R2RegressionAdjustment": "Eresh old fixture stood in recon, not a battlefield; Gatou old assertion required the incorrect per-card total-power representation. Replace with actual behavior assertions, preserve all cases."
+  "loaderGrant": "R2 board predicates/placement plus R3 explicit controller origin and terrain base bonus semantics only",
+  "R2RegressionAdjustment": "Eresh old fixture stood in recon, not a battlefield; Gatou old assertion required the incorrect per-card total-power representation. Replace with actual behavior assertions, preserve all cases.",
+  "R2Review": "TECHNICAL_PASS_LIMITED_R2 at dc4bdfba",
+  "R3BaseCommit": "dc4bdfba1c981d76b22daae626a09e17c0b34813"
 }

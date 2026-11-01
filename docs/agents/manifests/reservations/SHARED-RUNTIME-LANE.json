@@ -7,7 +7,7 @@
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "Root R1 sole rules Runtime writer under latest user repair instruction; A-CLOUD-05 existing server/client entry ownership preserved and frozen; CB-C02 SUSPENDED; loader excluded",
+  "precedence": "R1/R2 reviewed. Root sole shared rules/Session writer for R3; A-CLOUD-05 server/client public entry remains frozen and untouched; no overlapping App/server writes; CB-C02 suspended.",
   "activeRuntimeTask": "A-ACCEPT-06-REPAIR",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
@@ -98,6 +98,66 @@
     },
     {
       "path": "data/authoring/servants/servant.ereshkigal.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/src/core/terrain-advantage.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/src/match-session.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/src/ability/executable-card-pack.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "data/authoring/servants/servant.tomoe.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "data/authoring/masters/master.maiya.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "data/authoring/masters/master.gatou.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "data/authoring/masters/master.olga-marie.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "apps/client/src/state/remote-room-fixture.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "apps/client/src/state/remote-room-fixture.test.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/tests/acceptance/seven-roster-deployment.test.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "e2e/fd-seven-roster-repair.spec.ts",
       "state": "GRANTED",
       "taskId": "A-ACCEPT-06-REPAIR"
     }
