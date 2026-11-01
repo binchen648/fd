@@ -14,9 +14,7 @@ export default defineConfig({
       external: ['node:fs', 'node:path', 'node:fs/promises'],
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          rules: ['@fd/rules'],
-          content: ['@fd/content']
+          vendor: ['react', 'react-dom']
         }
       }
     }

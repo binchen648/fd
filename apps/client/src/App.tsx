@@ -13,6 +13,7 @@ import {
 import { projectRemoteRoomFixture } from './state/remote-room-fixture';
 import { loadPlaytestClientFixture, type ClientAvailableAction, type PlaytestClientFixture } from './state/playtest-fixture-loader';
 import './App.css';
+import { defaultServiceUrl, publicLobbyDefaults, roomInviteUrl } from './state/public-playtest';
 
 const HOST_CLIENT_ID = 'host';
 const PLAYER_CLIENT_IDS = ['host', 'client-2', 'client-3', 'client-4', 'client-5', 'client-6', 'client-7'];
@@ -74,6 +75,7 @@ export default function App() {
   if (getE2eFixtureMode() === 'interaction') return <E2eInteractionHarness />;
   const remoteConnection = getRemoteConnection();
   if (remoteConnection) return <RemoteRoomApp connection={remoteConnection} />;
+  if (import.meta.env.VITE_FD_PUBLIC_PLAYTEST === '1' || new URLSearchParams(window.location.search).has('join')) return <div className='app-shell'><RemoteLobbyPanel /></div>;
   return <LocalRoomApp />;
 }
 
@@ -234,15 +236,18 @@ function LocalRoomApp() {
 }
 
 function RemoteLobbyPanel() {
-  const [httpBaseUrl, setHttpBaseUrl] = useState('http://127.0.0.1:8787');
-  const [roomId, setRoomId] = useState('fd-live-1');
-  const [clientId, setClientId] = useState('host');
-  const [displayName, setDisplayName] = useState('房主');
+  const [defaults] = useState(() => publicLobbyDefaults(window.location.href, import.meta.env.VITE_FD_PUBLIC_PLAYTEST === '1'));
+  const [httpBaseUrl, setHttpBaseUrl] = useState(defaults.httpBaseUrl);
+  const [roomId, setRoomId] = useState(defaults.roomId);
+  const [clientId, setClientId] = useState(defaults.clientId);
+  const [displayName, setDisplayName] = useState(defaults.displayName);
   const [remoteLaunchUrl, setRemoteLaunchUrl] = useState<string | null>(() => {
     const stored = getStoredRemoteConnection();
+    if (stored && new URLSearchParams(window.location.search).has('join')
+      && (stored.roomId !== defaults.roomId || stored.httpBaseUrl.replace(/\/$/, '') !== httpBaseUrl.replace(/\/$/, ''))) return null;
     return stored ? buildRemoteLaunchUrl(stored) : null;
   });
-  const [remoteError, setRemoteError] = useState<string | null>(null);
+  const [remoteError, setRemoteError] = useState<string | null>(defaults.serviceError);
 
   const useResponse = (response: { roomId: string; clientId: string; reconnectToken: string }) => {
     const connection = {
@@ -284,18 +289,18 @@ function RemoteLobbyPanel() {
 
   return (
     <section className='remote-lobby' aria-label='联机大厅'>
-      <label>
+      {(!defaults.shared || defaults.serviceError) && <label>
         <span>服务</span>
         <input value={httpBaseUrl} onChange={(event) => setHttpBaseUrl(event.currentTarget.value)} />
-      </label>
+      </label>}
       <label>
         <span>房间</span>
         <input value={roomId} onChange={(event) => setRoomId(event.currentTarget.value)} />
       </label>
-      <label>
+      {!defaults.shared && <label>
         <span>客户端</span>
         <input value={clientId} onChange={(event) => setClientId(event.currentTarget.value)} />
-      </label>
+      </label>}
       <label>
         <span>名称</span>
         <input value={displayName} onChange={(event) => setDisplayName(event.currentTarget.value)} />
@@ -468,6 +473,7 @@ function RemoteRoomApp({ connection }: { connection: RemoteRoomConnection }) {
         <div className='room-strip__actions'>
           <button type='button' onClick={() => client.send({ type: 'client:start_match' })}>开始</button>
           <button type='button' onClick={() => client.send({ type: 'client:request_projection' })}>同步</button>
+          <label>房间邀请链接<input readOnly value={roomInviteUrl(connection.roomId, window.location.href, connection.httpBaseUrl)} /></label>
         </div>
       </section>
       {error ? <div role='alert' className='remote-error'>{error}</div> : null}
@@ -499,7 +505,7 @@ function getRemoteConnection(): RemoteRoomConnection | null {
   const clientId = params.get('clientId');
   const reconnectToken = params.get('token');
   if (!roomId || !clientId || !reconnectToken) return null;
-  const httpBaseUrl = params.get('http') ?? 'http://127.0.0.1:8787';
+  const httpBaseUrl = params.get('http') ?? defaultServiceUrl(window.location.href, import.meta.env.VITE_FD_PUBLIC_PLAYTEST === '1');
   const wsBaseUrl = params.get('ws') ?? httpBaseUrl.replace(/^http/, 'ws');
   return { httpBaseUrl, wsBaseUrl, roomId, clientId, reconnectToken };
 }
