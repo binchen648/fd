@@ -7,7 +7,7 @@
   "branch": "codex/a-accept-06-repair-20261101",
   "worktree": "D:/fd-validation/a-accept-06-repair-20261101",
   "authority": "Latest explicit user: 进行修复. Root implements; independent agents review. Preserve original frozen red evidence and PR689.",
-  "phase": "R1 permissions and mandatory costs",
+  "phase": "R2 identity, total power and board location",
   "ReservedFiles": [
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/extended-effects.ts",
@@ -22,10 +22,13 @@
     "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
     "docs/plans/2026-11-01-a-accept-06-repair.md",
     "docs/reports/2026-11-01-a-accept-06-repair-result.md",
-    "docs/reviews/phase3/A-ACCEPT-06-REPAIR-review-attestation.json"
+    "docs/reviews/phase3/A-ACCEPT-06-REPAIR-review-attestation.json",
+    "packages/rules/src/ability/types.ts",
+    "packages/rules/src/ability/loader.ts",
+    "packages/rules/src/core/combat-resolver.ts",
+    "data/authoring/servants/servant.ereshkigal.json"
   ],
   "ForbiddenFiles": [
-    "packages/rules/src/ability/loader.ts",
     "all A-CLOUD-05 production files",
     "all frozen worktrees including original A-ACCEPT-06",
     "all other production paths until exact scope addendum",
@@ -38,5 +41,8 @@
     "CB-C02 remains SUSPENDED; no code imported"
   ],
   "migrationCreditDelta": 0,
-  "mergeAuthorization": "NONE for new candidate; PR689 remains OPEN"
+  "mergeAuthorization": "NONE for new candidate; PR689 remains OPEN",
+  "R2BaseCommit": "f74bd211542b75232570003dbee9f69e74f63061",
+  "R1Review": "TECHNICAL_PASS_LIMITED_R1; external independent-r1-final.json",
+  "loaderGrant": "R2 ONLY: card_at_controller_battlefield condition and scoped battlefield placement; no unrelated primitive admission"
 }

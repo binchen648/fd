@@ -80,13 +80,33 @@
       "path": "data/generated/fd-playtest-v1.content-library.json",
       "state": "GRANTED",
       "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/src/ability/types.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/src/ability/loader.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "packages/rules/src/core/combat-resolver.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "data/authoring/servants/servant.ereshkigal.json",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR"
     }
   ],
   "loader": {
     "path": "packages/rules/src/ability/loader.ts",
-    "state": "RELEASED",
-    "activeWriter": null,
-    "note": "Excluded from P01; CB-C02 suspended; any future write requires new explicit grant"
+    "state": "GRANTED",
+    "activeWriter": "A-ACCEPT-06-REPAIR",
+    "scope": "R2 explicit board condition/placement only; independent verification required"
   },
   "tasks": {
     "DR-P01": {
