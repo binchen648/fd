@@ -194,7 +194,7 @@ const supportedTypes = new Set([
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
   'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
-  'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
+  'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'card_at_controller_battlefield', 'place_card_on_battlefield', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
@@ -354,6 +354,14 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
+      if (n.type === 'card_at_controller_battlefield' &&
+          (typeof n.cardId !== 'string' || !n.cardId || !Object.keys(n).every(key => ['type', 'cardId'].includes(key)))) {
+        issue(path, 'Battlefield card condition requires only type and a definition id', abilityId);
+      }
+      if (n.type === 'place_card_on_battlefield' &&
+          (typeof n.cardId !== 'string' || !n.cardId || !Object.keys(n).every(key => ['type', 'cardId'].includes(key)))) {
+        issue(path, 'Battlefield placement requires only type and a definition id', abilityId);
+      }
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
       if (['move_source_event', 'move_event_card'].includes(str(n.type)) && !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(str(node(n.to).zone))) {

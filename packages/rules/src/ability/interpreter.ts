@@ -156,6 +156,9 @@ function abilityDefinition(s: GameState, source: string, abilityId: string): Aut
   if (!a) reject('illegal_action', 'Ability is not available'); return a;
 }
 function nextId(s: GameState, label: string): string { return `${label}-${++runtime(s).sequence}`; }
+function canonicalDefinitionId(s: GameState, id: string): string {
+  return id === 'card.luck' && runtime(s).pack.cards['basic.luck'] ? 'basic.luck' : id;
+}
 function active(s: GameState, id: string): boolean {
   card(s, id);
   return isActiveCardSource(s, id);
@@ -355,8 +358,8 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
   switch (c.type) {
     case 'base_power_at_most': return !!d && d.mode === 'automatic' && d.abilities.every(a => a.execution.mode === 'automatic') &&
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value <= Number(c.value);
-    case 'has_card_id': return candidate.definitionId === c.cardId;
-    case 'not_card_id': return candidate.definitionId !== c.cardId;
+    case 'has_card_id': return canonicalDefinitionId(s, candidate.definitionId) === canonicalDefinitionId(s, str(c.cardId));
+    case 'not_card_id': return canonicalDefinitionId(s, candidate.definitionId) !== canonicalDefinitionId(s, str(c.cardId));
     case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
     case 'not_source_card': return candidate.instanceId !== ctx.sourceCardId;
     case 'played_this_round': return runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber;
@@ -758,7 +761,11 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
-    case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
+    case 'card_not_on_board': return !s.cards.some(candidate => candidate.controllerPlayerId === ctx.controllerId &&
+      canonicalDefinitionId(s, candidate.definitionId) === canonicalDefinitionId(s, str(c.cardId)) && ['field', 'attack_area'].includes(candidate.zone));
+    case 'card_at_controller_battlefield': return isBattlefield(s, p.locationId) && s.cards.some(candidate =>
+      candidate.controllerPlayerId === ctx.controllerId && candidate.definitionId === c.cardId &&
+      ['field', 'attack_area'].includes(candidate.zone) && runtime(s).cardState[candidate.instanceId]?.boardLocationId === p.locationId);
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
@@ -1364,7 +1371,7 @@ function moveCard(s: GameState, id: string, zone: string): number {
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
-    if (runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+    if (runtime(s).cardState[id]) { runtime(s).cardState[id]!.active = false; delete runtime(s).cardState[id]!.boardLocationId; }
     clearTransientCardTransformState(s, id);
     clearReturnSilenceTransformForSource(s, id);
   }
@@ -1395,6 +1402,14 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
   if (modifier.type !== 'power_bonus') reject('unsupported', 'Unsupported created modifier');
   const target = str(modifier.target ?? effect.target);
   const amount = numeric(s, ctx, modifier.amount ?? modifier.value ?? 0);
+  if (target === 'controller') {
+    if (modifier.duration !== undefined && modifier.duration !== 'this_round') reject('unsupported', 'Total-power adjustment supports only this round');
+    const r = runtime(s);
+    if (r.roundTotalPowerAdjustments.round !== s.round.roundNumber) r.roundTotalPowerAdjustments = { round: s.round.roundNumber, byPlayer: {} };
+    r.roundTotalPowerAdjustments.byPlayer[ctx.controllerId] = (r.roundTotalPowerAdjustments.byPlayer[ctx.controllerId] ?? 0) + amount;
+    r.events.push({ type: 'total_power_adjusted', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: amount });
+    return;
+  }
   const scope = target === 'this_card' ? { object: 'source_card' } : target === 'controller' ? { controller: 'self' } : {};
   runtime(s).ongoingEffects.push({
     id: nextId(s, 'created-modifier'),
@@ -1791,6 +1806,27 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const count = calculated.value; if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid deck look count');
       const top = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').slice(0, count);
       top.forEach(c => moveCard(s, c.instanceId, str(effect.resultZone))); break;
+    }
+    case 'place_card_on_battlefield': {
+      if (!onlyRuleKeys(effect, ['type', 'cardId']) || !isBattlefield(s, p.locationId)) reject('invalid_placement', 'Field placement requires the controller battlefield');
+      const matches = s.cards.filter(c => c.definitionId === effect.cardId && c.ownerPlayerId === p.id && c.controllerPlayerId === p.id);
+      if (matches.length !== 1) reject('invalid_placement', 'Field placement requires one owned physical card');
+      const target = matches[0]!;
+      const d = definition(s, target.instanceId);
+      const fieldRule = d?.abilities.find(a => a.kind === 'residual' && a.activation.trigger === 'on_card_played' &&
+        !a.cost.length && !a.targets.length && !a.conditions.length && !a.creates.length && a.effects.length === 1 &&
+        a.effects[0]?.type === 'reverse_situation_and_event_power_modifiers');
+      if (!d || d.mode !== 'automatic' || d.cardType !== 'servant_skill' || d.cardFace.cost !== 0 || d.cardFace.basePower !== 0 ||
+          !fieldRule || !['skill', 'hand', 'deck', 'discard'].includes(target.zone)) reject('invalid_placement', 'Unsupported battlefield placement contract');
+      const playedRound = runtime(s).cardState[target.instanceId]?.playedRound ?? 0;
+      moveCard(s, target.instanceId, 'field');
+      runtime(s).cardState[target.instanceId] = { active: true, faceDown: false, playedRound, boardLocationId: p.locationId! };
+      // Install only the admitted continuous field rule. Placement is not play:
+      // no on_card_played event, true-name release, payment or play counters.
+      resolveExtendedEffect(s, p.id, fieldRule.effects[0]!, { ...context(s, target.instanceId, fieldRule.id) });
+      runtime(s).events.push({ type: 'card_placed', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+        cardInstanceId: target.instanceId, toZone: 'field', battlefieldId: p.locationId! });
+      break;
     }
     case 'move_card': {
       const selected = ctx.selections[str(effect.target)] ?? implicitCardTargets(s, ctx, effect.target);
@@ -4117,7 +4153,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     const create = a.creates[0]!;
     const createdCardId = nextId(s, 'created');
     s.cards.push({
-      instanceId: createdCardId, definitionId: str(create.cardId), ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+      instanceId: createdCardId, definitionId: canonicalDefinitionId(s, str(create.cardId)), ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
       zone: 'deck', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId,
     });
     runtime(s).events.push({

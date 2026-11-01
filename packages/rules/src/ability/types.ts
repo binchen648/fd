@@ -259,6 +259,8 @@ export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   /** Actual mana charged for this physical card by its latest authoritative play. */
   paidManaOnPlay?: number;
+  /** Fixed battlefield placement; ordinary attacks continue to follow their controller. */
+  boardLocationId?: string;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface RulerSealBinding {

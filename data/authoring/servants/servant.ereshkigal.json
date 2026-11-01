@@ -377,17 +377,17 @@
                   },
                   "then": [
                     {
-                      "type": "move_card",
-                      "target": "sc-ereshkigal-2",
-                      "to": {
-                        "zone": "field",
-                        "owner": "controller"
-                      }
+                      "type": "place_card_on_battlefield",
+                      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
                     }
                   ]
                 },
                 {
-                  "else": [
+                  "if": {
+                    "type": "card_at_controller_battlefield",
+                    "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
+                  },
+                  "then": [
                     {
                       "type": "create_modifier",
                       "modifier": {

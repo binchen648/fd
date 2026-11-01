@@ -1,8 +1,41 @@
 import { describe, expect, it } from 'vitest';
 import { processAbilityEvent } from '../../src/ability/interpreter';
+import { resolveBattlefield, projectCurrentPlayerPowers } from '../../src/core/combat-resolver';
+import { advanceAbilityPhase } from '../../src/ability/interpreter';
+import { restoreMatchSession } from '../../src/match-session';
 import { activate, active, card, dispatch, fixture, playPair, player, rejectAtomically } from './seven-roster-test-helpers';
 
 describe('A-ACCEPT-06 repair permission and payment boundaries', () => {
+  it('Eresh absent Protection placement activates its fixed field effect without pretending that it was played', () => {
+    const { session, playerId, sourceId } = fixture('servant.ereshkigal.skill.sc-ereshkigal-3');
+    active(session, sourceId);
+    const protection = session.state.cards.find(c => c.definitionId === 'servant.ereshkigal.skill.sc-ereshkigal-2')!;
+    const before = session.state.abilityRuntime!.events.length;
+    activate(session, playerId, sourceId, 'sc-ereshkigal-3.blooming-netherworld');
+    expect(card(session, protection.instanceId).zone).toBe('field');
+    expect(session.state.abilityRuntime!.cardState[protection.instanceId]).toMatchObject({ active: true, faceDown: false, boardLocationId: 'miyama_town' });
+    const events = session.state.abilityRuntime!.events.slice(before);
+    expect(events).toContainEqual(expect.objectContaining({ type: 'card_placed', cardInstanceId: protection.instanceId }));
+    expect(events.some(e => e.type === 'card_played')).toBe(false);
+    session.state.currentSituationModifiers = [{ sourceId: 'a06-situation', targetTag: '特殊', value: 2 }];
+    const opponent = session.state.players.find(p => p.id !== playerId)!.id;
+    player(session, opponent).locationId = 'miyama_town';
+    const result = resolveBattlefield(session.state, { battlefieldId: 'miyama_town', participants: [{ playerId: opponent, totalPower: 4, attackTags: ['特殊'] }] }).nextState.battleResults.at(-1)!;
+    expect(result.participantBreakdowns[0]!.modifiers.filter(m => m.source === 'situation').reduce((n,m) => n+m.value,0)).toBe(-2);
+  });
+
+  it('a total-power seal survives serialization state and expires next round without changing individual attacks', () => {
+    const { session, playerId, sourceId } = fixture('master.gatou.command-spell');
+    const hand = session.state.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand').slice(0, 2);
+    for (const c of hand) active(session, c.instanceId);
+    const before = projectCurrentPlayerPowers(session.state, [playerId])[playerId]!;
+    activate(session, playerId, sourceId, 'command-spell.power-victory');
+    expect(projectCurrentPlayerPowers(session.state, [playerId])[playerId]! - before).toBe(2);
+    const restored = restoreMatchSession(session.serializeSession());
+    expect(projectCurrentPlayerPowers(restored.state, [playerId])[playerId]! - before).toBe(2);
+    advanceAbilityPhase(restored.state, 'action', 2);
+    expect(projectCurrentPlayerPowers(restored.state, [playerId])[playerId]!).toBe(before);
+  });
   it('does not widen a controller mana exception carrying an unaccepted extra selector', () => {
     const { session, playerId, sourceId } = fixture('master.kayneth.skill.double-master');
     const d = session.state.abilityRuntime!.pack.cards[card(session, sourceId).definitionId]!;

@@ -638,6 +638,8 @@ export function resolveExtendedEffect(
       if (!locationId) break;
       
       // Get all players at this location
+      const placedSource = sourceCardId(context);
+      if (state.abilityRuntime?.cardState[placedSource]) state.abilityRuntime.cardState[placedSource]!.boardLocationId = locationId;
       const playersAtLocation = state.players.filter(pl => 
         pl.status === 'active' && pl.locationId === locationId
       );
@@ -647,6 +649,7 @@ export function resolveExtendedEffect(
       (state as any).modeState.reversedModifierLocations = (state as any).modeState.reversedModifierLocations || [];
       (state as any).modeState.reversedModifierLocations.push({
         locationId,
+        sourceCardId: placedSource,
         sourceControllerId: controllerId,
         exemptPlayers: [controllerId], // Ereshkigal herself is exempt
         duration: 'while_active'

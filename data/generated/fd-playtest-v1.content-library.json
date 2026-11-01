@@ -7870,17 +7870,17 @@
                     },
                     "then": [
                       {
-                        "type": "move_card",
-                        "target": "sc-ereshkigal-2",
-                        "to": {
-                          "zone": "field",
-                          "owner": "controller"
-                        }
+                        "type": "place_card_on_battlefield",
+                        "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
                       }
                     ]
                   },
                   {
-                    "else": [
+                    "if": {
+                      "type": "card_at_controller_battlefield",
+                      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
+                    },
+                    "then": [
                       {
                         "type": "create_modifier",
                         "modifier": {
@@ -10968,11 +10968,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "bfd544ef7d4a0f53f24b6462abf224277c03327c4469191fb7c3d676f1ae4757",
+    "definitionHash": "7bec11cf92a3cf296f348a7ae01fa83c41cb23840c0db1f3845ddd0fdaa848af",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "bfd544ef7d4a0f53f24b6462abf224277c03327c4469191fb7c3d676f1ae4757"
+      "definitionHash": "7bec11cf92a3cf296f348a7ae01fa83c41cb23840c0db1f3845ddd0fdaa848af"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

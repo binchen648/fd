@@ -26,7 +26,8 @@
     "packages/rules/src/ability/types.ts",
     "packages/rules/src/ability/loader.ts",
     "packages/rules/src/core/combat-resolver.ts",
-    "data/authoring/servants/servant.ereshkigal.json"
+    "data/authoring/servants/servant.ereshkigal.json",
+    "packages/rules/tests/regression/complex-skills-regression.test.ts"
   ],
   "ForbiddenFiles": [
     "all A-CLOUD-05 production files",
@@ -44,5 +45,6 @@
   "mergeAuthorization": "NONE for new candidate; PR689 remains OPEN",
   "R2BaseCommit": "f74bd211542b75232570003dbee9f69e74f63061",
   "R1Review": "TECHNICAL_PASS_LIMITED_R1; external independent-r1-final.json",
-  "loaderGrant": "R2 ONLY: card_at_controller_battlefield condition and scoped battlefield placement; no unrelated primitive admission"
+  "loaderGrant": "R2 ONLY: card_at_controller_battlefield condition and scoped battlefield placement; no unrelated primitive admission",
+  "R2RegressionAdjustment": "Eresh old fixture stood in recon, not a battlefield; Gatou old assertion required the incorrect per-card total-power representation. Replace with actual behavior assertions, preserve all cases."
 }
