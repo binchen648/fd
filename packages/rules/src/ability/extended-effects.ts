@@ -233,6 +233,8 @@ export function resolveExtendedEffect(
         id: statusId,
         sourceControllerId: controllerId,
         duration,
+        startsAtRound: state.round.roundNumber + (duration === 'next_round' ? 1 : 0),
+        expiresAtRound: state.round.roundNumber + (duration === 'next_round' ? 2 : 1),
         locationId: p.locationId
       });
       break;
@@ -550,12 +552,16 @@ export function resolveExtendedEffect(
     }
     case 'terrain_multiplier': {
       const multiplier = Number(effect.value ?? 2);
+      const baseBonus = Number(effect.baseBonus ?? 0);
+      if (!Number.isFinite(multiplier) || multiplier < 0 || !Number.isFinite(baseBonus)) throw new Error('Invalid terrain adjustment');
       // Apply terrain multiplier to controller's terrain bonus
       (state as any).modeState = (state as any).modeState || {};
       (state as any).modeState.terrainMultipliers = (state as any).modeState.terrainMultipliers || [];
       (state as any).modeState.terrainMultipliers.push({
         playerId: controllerId,
         multiplier,
+        baseBonus,
+        round: state.round.roundNumber,
         duration: 'this_round',
         ...directiveContext(context),
       });

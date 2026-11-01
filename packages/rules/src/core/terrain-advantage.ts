@@ -6,6 +6,22 @@ function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
 }
 
+export function infernoAffectsDeployment(state: GameState, playerId: string, locationId: string): boolean {
+  const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
+  return statuses.some(status => status.id === 'inferno_fire' && status.sourceControllerId !== playerId &&
+    status.locationId === locationId && typeof status.startsAtRound === 'number' && typeof status.expiresAtRound === 'number' &&
+    state.round.roundNumber >= status.startsAtRound && state.round.roundNumber < status.expiresAtRound);
+}
+
+function terrainBaseBonus(state: GameState, playerId: string): number {
+  const entries = modeState(state).terrainMultipliers;
+  return !Array.isArray(entries) ? 0 : entries.reduce((sum, entry) => {
+    const candidate = entry as { playerId?: string; baseBonus?: number; round?: number };
+    return candidate?.playerId === playerId && (candidate.round === undefined || candidate.round === state.round.roundNumber)
+      ? sum + (candidate.baseBonus ?? 0) : sum;
+  }, 0);
+}
+
 function hasActiveBasicCardAtBattlefield(
   state: GameState,
   playerId: string,
@@ -29,8 +45,8 @@ function terrainMultiplierForPlayer(state: GameState, playerId: string): number 
   const entries = modeState(state).terrainMultipliers;
   const authoredMultiplier = !Array.isArray(entries) ? 1 : entries.reduce((multiplier, entry) => {
     if (!entry || typeof entry !== 'object') return multiplier;
-    const candidate = entry as { playerId?: string; multiplier?: number };
-    return candidate.playerId === playerId && typeof candidate.multiplier === 'number'
+    const candidate = entry as { playerId?: string; multiplier?: number; round?: number };
+    return candidate.playerId === playerId && typeof candidate.multiplier === 'number' && (candidate.round === undefined || candidate.round === state.round.roundNumber)
       ? multiplier * candidate.multiplier
       : multiplier;
   }, 1);
@@ -79,7 +95,7 @@ export function terrainBonusAt(
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.terrainBonuses?.length || isTerrainSuppressedByAuthoredDuel(state, battlefieldId, playerId)) return undefined;
   const baseValue = location.terrainBonuses[terrainSlotIndex];
-  return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) : undefined;
+  return typeof baseValue === 'number' ? (baseValue + terrainBaseBonus(state, playerId)) * terrainMultiplierForPlayer(state, playerId) : undefined;
 }
 
 export function currentDeploymentBonus(state: GameState, playerId: string): number {

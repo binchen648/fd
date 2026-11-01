@@ -88,7 +88,7 @@
           "printedClause": "压制-行动阶段：若你不是久宇舞弥，你需向其支付2点战果使用此效果。获得+1基础地利后，翻倍你的地利。",
           "activation": { "phase": "action", "opens": "controller_action_window", "requiresSourceState": "active" },
           "effects": [
-            { "type": "terrain_multiplier", "value": 2 },
+            { "type": "terrain_multiplier", "value": 2, "baseBonus": 1 },
             { "type": "transfer_vp_to_owner", "amount": 2 }
           ],
           "execution": { "mode": "automatic" }

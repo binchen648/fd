@@ -1366,7 +1366,11 @@ describe('complex master and session regressions', () => {
       abilityId: 'command-spell.power-victory',
     });
 
+    state.players[0]!.locationId = 'miyama_town';
     expect(activate(state, commandSpell, 'command-spell.free-move').ok).toBe(true);
+    const movement = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: movement.id, selectedIds: ['shinto'] }).ok).toBe(true);
+    expect(state.players[0]!.locationId).toBe('shinto');
     expect(commandSpells(state)).toBe(0);
     expectDirective(state, 'move_from_shinto_or_miyama_to_any_location_ignore_engagement', {
       controllerId: 'p1',
@@ -1498,7 +1502,11 @@ describe('complex master and session regressions', () => {
       sourceCardId: commandSpell,
       abilityId: 'command-spell.power-victory',
     });
+    state.players[0]!.locationId = 'miyama_town';
     expect(activate(state, commandSpell, 'command-spell.free-move').ok).toBe(true);
+    const movement = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: movement.id, selectedIds: ['shinto'] }).ok).toBe(true);
+    expect(state.players[0]!.locationId).toBe('shinto');
     expect(commandSpells(state)).toBe(0);
     expectDirective(state, 'move_from_shinto_or_miyama_to_any_location_ignore_engagement', {
       controllerId: 'p1',

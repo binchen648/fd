@@ -186,7 +186,7 @@ const supportedTypes = new Set([
   // New types for 5 servants
   'opponents_random_discard', 'lock_battlefield', 'exclude_from_terrain_and_external_effects',
   'choice', 'set_opponent_power_to_zero', 'forbid_opponents_noble_phantasm',
-  'create_status', 'terrain_multiplier', 'controller_seat_in_first_half',
+  'create_status', 'terrain_multiplier', 'controller_seat_in_first_half', 'controller_at_one_of_locations',
   'reduce_opponents_power', 'move_card_from_zone_to_skill', 'controller_at_battlefield',
   'controller_servant_revealed', 'choice_is', 'hide_servant_true_name', 'close_source_card',
   'controller_at_battlefield_with_exactly_one_opponent',
@@ -240,7 +240,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
-  'lossAmount', 'winnerRewardAmount',
+  'lossAmount', 'winnerRewardAmount', 'baseBonus', 'locationIds',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
@@ -354,6 +354,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
+      if (n.baseBonus !== undefined && (n.type !== 'terrain_multiplier' || !Number.isSafeInteger(n.baseBonus) || Number(n.baseBonus) < 0)) {
+        issue(`${path}.baseBonus`, 'Base terrain bonus is a nonnegative integer on terrain_multiplier only', abilityId);
+      }
+      if (n.type === 'controller_at_one_of_locations' && (!Object.keys(n).every(key => ['type', 'locationIds'].includes(key)) ||
+          !Array.isArray(n.locationIds) || !n.locationIds.length || n.locationIds.some(id => typeof id !== 'string' || !['miyama_town', 'shinto', 'magic_workshop', 'recon', 'moon_holy_grail'].includes(id)))) {
+        issue(path, 'Controller origin condition requires explicit known location IDs', abilityId);
+      }
       if (n.type === 'card_at_controller_battlefield' &&
           (typeof n.cardId !== 'string' || !n.cardId || !Object.keys(n).every(key => ['type', 'cardId'].includes(key)))) {
         issue(path, 'Battlefield card condition requires only type and a definition id', abilityId);

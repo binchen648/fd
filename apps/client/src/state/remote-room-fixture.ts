@@ -115,7 +115,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack' ? 'pass'
           : 'respond',
       ownerPlayerId: viewerId ?? '',
-      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
+      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}${action.vpPayment ? ` · 支付 ${action.vpPayment} 战果` : ''}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
         : action.type === 'skip_normal_move' ? '不进行常规移动'
         : action.type === 'complete_empty_regular_play' ? '无合法攻击牌 · 完成常规出牌'
         : action.type === 'stage_attack_card' ? action.faceDown ? '加入待确认盖放' : '加入待确认攻击'
