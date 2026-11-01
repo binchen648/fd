@@ -28,7 +28,11 @@
     "docs/agents/manifests/tasks/A-RECOVER-04.json",
     "docs/agents/manifests/reservations/A-RECOVER-04.json",
     "docs/agents/manifests/releases/A-RECOVER-04-TO-A-CLOUD-05.json",
-    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json"
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json",
+    "apps/client/src/vite-env.d.ts",
+    "scripts/public-playtest-build.mjs",
+    "scripts/tests/public-playtest-build.test.ts",
+    "apps/client/vite.config.ts"
   ],
   "ForbiddenFiles": [
     "packages/rules/**",
@@ -43,5 +47,6 @@
     "public entry seven-context browser lobby/seat/start/action/reload,negativeHTTPfiles andwrongcredentials",
     "typecheck/build/original+client+serverCI/independentreview;providerliveverification separately labelled"
   ],
-  "migrationCreditDelta": 0
+  "migrationCreditDelta": 0,
+  "buildAddendum": "Actual production-browser failure: manualChunks forces entire Node tool barrels into web output; remove only broad rules/content manual chunks,retain rule semantics and build test evidence"
 }
