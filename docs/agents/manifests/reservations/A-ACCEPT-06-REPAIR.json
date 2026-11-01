@@ -39,7 +39,9 @@
     "apps/client/src/state/seven-authoring-smoke-fixture.ts",
     "apps/client/src/state/remote-room-fixture.test.ts",
     "packages/rules/tests/acceptance/seven-roster-deployment.test.ts",
-    "e2e/fd-seven-roster-repair.spec.ts"
+    "e2e/fd-seven-roster-repair.spec.ts",
+    "packages/rules/tests/fm01-source-play-basic-draw-authoring.test.ts",
+    "packages/rules/tests/kintoki-authoring.test.ts"
   ],
   "ForbiddenFiles": [
     "all A-CLOUD-05 production files",
@@ -60,5 +62,6 @@
   "loaderGrant": "R2 board predicates/placement plus R3 explicit controller origin and terrain base bonus semantics only",
   "R2RegressionAdjustment": "Eresh old fixture stood in recon, not a battlefield; Gatou old assertion required the incorrect per-card total-power representation. Replace with actual behavior assertions, preserve all cases.",
   "R2Review": "TECHNICAL_PASS_LIMITED_R2 at dc4bdfba",
-  "R3BaseCommit": "dc4bdfba1c981d76b22daae626a09e17c0b34813"
+  "R3BaseCommit": "dc4bdfba1c981d76b22daae626a09e17c0b34813",
+  "baselineAssertionRepair": "Test-only: bind FM01 selected identity rather than archive total; align old Kintoki intermediate assertion to already accepted staged Result Binding. No test removal/skip or weakened printed/source checks."
 }
