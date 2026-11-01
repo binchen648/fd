@@ -1,0 +1,47 @@
+{
+  "taskId": "A-CLOUD-05",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "BaseCommit": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "branch": "codex/a-cloud-05-public-hosting-20261101",
+  "worktree": "D:/fd-validation/a-cloud-05-20261101",
+  "authority": "User authorizes cloud/relay implementation then requests current A audit and begin work; no cloud resources, chooses examination of SakuraFrp; unified single-origin entry is provider-independent prerequisite",
+  "ReservedFiles": [
+    "apps/server/src/static-client.ts",
+    "apps/server/src/static-client.test.ts",
+    "apps/server/src/match-server.ts",
+    "apps/server/src/index.ts",
+    "apps/client/src/state/public-playtest.ts",
+    "apps/client/src/state/public-playtest.test.ts",
+    "apps/client/src/App.tsx",
+    "apps/client/src/App.test.tsx",
+    "scripts/start-public-playtest.mjs",
+    "package.json",
+    "e2e/fd-public-playtest.spec.ts",
+    "docs/product/FD-PUBLIC-PLAYTEST.md",
+    "docs/reports/2026-11-01-a-line-status-and-review.md",
+    "docs/reports/2026-11-01-a-cloud-05-result.md",
+    "docs/plans/2026-11-01-a-cloud-05.md",
+    "docs/reviews/phase3/A-CLOUD-05-review-attestation.json",
+    "docs/agents/manifests/tasks/A-CLOUD-05.json",
+    "docs/agents/manifests/reservations/A-CLOUD-05.json",
+    "docs/agents/manifests/tasks/A-RECOVER-04.json",
+    "docs/agents/manifests/reservations/A-RECOVER-04.json",
+    "docs/agents/manifests/releases/A-RECOVER-04-TO-A-CLOUD-05.json",
+    "docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/**",
+    "data/**",
+    "all frozen worktrees",
+    "SakuraFrp account/token/node configuration"
+  ],
+  "acceptance": [
+    "one port serves built client,HTTP and WS;private disk/keys/source never static",
+    "invites carry room information only,no reconnect credential;distinct guest identities",
+    "public build uses currentorigin includingHTTPS/WSS;local and legacy modes preserved",
+    "public entry seven-context browser lobby/seat/start/action/reload,negativeHTTPfiles andwrongcredentials",
+    "typecheck/build/original+client+serverCI/independentreview;providerliveverification separately labelled"
+  ],
+  "migrationCreditDelta": 0
+}
