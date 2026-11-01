@@ -471,6 +471,9 @@ function liveOngoing(s: GameState): OngoingEffect[] {
     sourceBoundOngoingIsLive(s, o) &&
     (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
 }
+function onlyRuleKeys(value: unknown, keys: string[]): boolean {
+  return Object.keys(node(value)).every(key => keys.includes(key));
+}
 function controllerIgnoresSkillZoneMana(s: GameState, targetId: string): boolean {
   const target = card(s, targetId);
   const targetDefinition = definition(s, targetId);
@@ -482,10 +485,11 @@ function controllerIgnoresSkillZoneMana(s: GameState, targetId: string): boolean
         d?.cardType !== 'master_skill' || d.ownerId !== controller.masterCardId ||
         (source.zone !== 'skill' && !active(s, source.instanceId))) return false;
     return d.abilities.some(a => a.execution.mode === 'automatic' && a.kind === 'passive' &&
-      a.activation.trigger === 'while_active' && !a.activation.phase && !a.conditions.length && !a.cost.length &&
-      (!a.activation.requiresSourceState || active(s, source.instanceId)) &&
+      a.activation.trigger === 'while_active' && onlyRuleKeys(a.activation, ['trigger']) &&
+      !a.conditions.length && !a.cost.length && !a.targets.length && !Object.keys(a.limit).length &&
       a.ruleModifiers.some(m => m.operation === 'ignore' && m.rule === 'skill_zone_mana_requirement' &&
-        node(m.scope).subject === 'controller' && node(m.scope).object === undefined &&
+        onlyRuleKeys(m, ['id', 'printedClause', 'operation', 'rule', 'scope']) &&
+        node(m.scope).subject === 'controller' && onlyRuleKeys(m.scope, ['subject']) &&
         nodes(m.conditions).every(c => condition(s, context(s, source.instanceId, a.id), c))));
   });
 }
@@ -873,10 +877,14 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
     if (controller.id === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId)) return [];
     return (definition(s, source.instanceId)?.abilities ?? []).flatMap(a => {
       if (a.execution.mode !== 'automatic' || a.activation.trigger !== 'while_active' ||
-          !['passive', 'residual'].includes(a.kind)) return [];
+          !onlyRuleKeys(a.activation, ['trigger']) || !['passive', 'residual'].includes(a.kind) ||
+          a.cost.length || a.targets.length || a.effects.length || a.creates.length || Object.keys(a.limit).length ||
+          !onlyRuleKeys(a.lifecycle, ['duration']) || (a.lifecycle.duration && a.lifecycle.duration !== 'while_active')) return [];
       const ctx = context(s, source.instanceId, a.id);
       if (!a.conditions.every(c => condition(s, ctx, c))) return [];
       return a.ruleModifiers.flatMap(m => m.operation === 'forbid' && m.rule === 'play_card_attribute' &&
+        onlyRuleKeys(m, ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'lifecycle', 'conditions', 'attribute']) &&
+        onlyRuleKeys(m.scope, ['subject', 'attribute']) && onlyRuleKeys(m.lifecycle, ['duration']) && node(m.lifecycle).duration === 'while_active' &&
         ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(node(m.scope).subject)) &&
         nodes(m.conditions).every(c => condition(s, ctx, c)) &&
         Array.isArray(d.cardFace.attributes) && d.cardFace.attributes.includes(str(m.attribute ?? node(m.scope).attribute)) ? ['play_card_attribute'] : []);

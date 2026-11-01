@@ -3,6 +3,31 @@ import { processAbilityEvent } from '../../src/ability/interpreter';
 import { activate, active, card, dispatch, fixture, playPair, player, rejectAtomically } from './seven-roster-test-helpers';
 
 describe('A-ACCEPT-06 repair permission and payment boundaries', () => {
+  it('does not widen a controller mana exception carrying an unaccepted extra selector', () => {
+    const { session, playerId, sourceId } = fixture('master.kayneth.skill.double-master');
+    const d = session.state.abilityRuntime!.pack.cards[card(session, sourceId).definitionId]!;
+    (d.abilities[0]!.ruleModifiers[0]!.scope as Record<string, unknown>).onlyDefinitionId = 'different.skill';
+    const skill = session.state.cards.find(c => c.controllerPlayerId === playerId && c.definitionId === 'servant.artoria-alt.skill.sc-artoria-alt-1')!;
+    player(session, playerId).mana = 7;
+    rejectAtomically(session, playerId, { type: 'stage_attack_card', cardInstanceId: skill.instanceId });
+  });
+
+  it.each(['phase', 'cost', 'selector'] as const)('does not treat an unsupported %s-limited aura as an unconditional prohibition', boundary => {
+    const { session, playerId, sourceId } = fixture('servant.artoria-alt.skill.sc-artoria-alt-2');
+    player(session, playerId).mana = 7;
+    playPair(session, playerId, sourceId);
+    const d = session.state.abilityRuntime!.pack.cards[card(session, sourceId).definitionId]!;
+    const aura = d.abilities.find(a => a.id === 'sc-artoria-alt-2.forbid-noble-phantasm-when-low-mana')!;
+    if (boundary === 'phase') aura.activation.phase = 'combat';
+    if (boundary === 'cost') aura.cost = [{ type: 'pay_mana', amount: 2 }];
+    if (boundary === 'selector') (aura.ruleModifiers[0]!.scope as Record<string, unknown>).onlyDefinitionId = 'different.skill';
+    const noble = session.state.cards.find(c => c.definitionId === 'servant.ereshkigal.skill.sc-ereshkigal-3')!;
+    player(session, noble.controllerPlayerId).locationId = 'miyama_town';
+    session.state.round.prioritySeat = player(session, noble.controllerPlayerId).seat;
+    dispatch(session, noble.controllerPlayerId, { type: 'skip_normal_move' });
+    dispatch(session, noble.controllerPlayerId, { type: 'stage_attack_card', cardInstanceId: noble.instanceId });
+  });
+
   it('Kayneth bypasses only the eight-mana threshold and still pays the complete printed cost', () => {
     const { session, playerId, sourceId } = fixture('master.kayneth.skill.double-master');
     const skill = session.state.cards.find(c => c.controllerPlayerId === playerId && c.definitionId === 'servant.artoria-alt.skill.sc-artoria-alt-1')!;
