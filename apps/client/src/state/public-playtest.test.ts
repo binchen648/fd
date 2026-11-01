@@ -9,6 +9,8 @@ it('shares room identity without owner credentials or private launch query param
   const link = roomInviteUrl('room & x', 'https://fd.example/?remote=1&token=PRIVATE&clientId=host&http=http://old', 'https://fd.example');
   expect(new URL(link).searchParams.get('join')).toBe('room & x');
   for (const text of ['PRIVATE', 'token=', 'clientId=', 'remote=', 'old']) expect(link).not.toContain(text);
+  const basic = roomInviteUrl('r', 'https://alice:secret@fd.example/?token=PRIVATE', 'https://fd.example');
+  expect(basic).not.toContain('alice'); expect(basic).not.toContain('secret');
 });
 it('assigns distinct guest identities and keeps an explicit service address on invitation', () => {
   const invite = roomInviteUrl('r', 'http://localhost:3000/', 'https://relay.example:2345');

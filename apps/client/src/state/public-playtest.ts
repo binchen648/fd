@@ -8,6 +8,7 @@ export function defaultServiceUrl(page: string, publicMode: boolean): string {
 }
 export function roomInviteUrl(roomId: string, page: string, service: string): string {
   const url = new URL(page); url.search = ''; url.hash = '';
+  url.username = ''; url.password = '';
   url.searchParams.set('join', roomId);
   const endpoint = serviceUrl(service);
   if (endpoint !== url.origin) url.searchParams.set('service', endpoint);
