@@ -1813,9 +1813,17 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (matches.length !== 1) reject('invalid_placement', 'Field placement requires one owned physical card');
       const target = matches[0]!;
       const d = definition(s, target.instanceId);
-      const fieldRule = d?.abilities.find(a => a.kind === 'residual' && a.activation.trigger === 'on_card_played' &&
-        !a.cost.length && !a.targets.length && !a.conditions.length && !a.creates.length && a.effects.length === 1 &&
-        a.effects[0]?.type === 'reverse_situation_and_event_power_modifiers');
+      const fieldRule = d?.abilities.find(a => a.execution.mode === 'automatic' && a.kind === 'residual' &&
+        a.activation.trigger === 'on_card_played' && a.activation.opens === 'immediate' && onlyRuleKeys(a.activation, ['trigger', 'opens']) &&
+        !a.cost.length && !a.targets.length && !a.conditions.length && !a.creates.length && !a.ruleModifiers.length &&
+        !Object.keys(a.limit).length && !Object.keys(a.visibility).length &&
+        onlyRuleKeys(a.lifecycle, ['starts', 'duration', 'cleanup']) && a.lifecycle.starts === 'immediate' &&
+        a.lifecycle.duration === 'while_card_active' && a.lifecycle.cleanup === 'remain_active' &&
+        onlyRuleKeys(a.responseWindow, ['order', 'passBehavior']) &&
+        (!a.responseWindow.order || a.responseWindow.order === 'turn_order') &&
+        (!a.responseWindow.passBehavior || a.responseWindow.passBehavior === 'decline_this_window') &&
+        a.effects.length === 1 && a.effects[0]?.type === 'reverse_situation_and_event_power_modifiers' &&
+        a.effects[0].scope === 'players_at_this_battlefield' && onlyRuleKeys(a.effects[0], ['type', 'scope']));
       if (!d || d.mode !== 'automatic' || d.cardType !== 'servant_skill' || d.cardFace.cost !== 0 || d.cardFace.basePower !== 0 ||
           !fieldRule || !['skill', 'hand', 'deck', 'discard'].includes(target.zone)) reject('invalid_placement', 'Unsupported battlefield placement contract');
       const playedRound = runtime(s).cardState[target.instanceId]?.playedRound ?? 0;

@@ -24,6 +24,15 @@ describe('A-ACCEPT-06 repair permission and payment boundaries', () => {
     expect(result.participantBreakdowns[0]!.modifiers.filter(m => m.source === 'situation').reduce((n,m) => n+m.value,0)).toBe(-2);
   });
 
+  it.each(['phase', 'scope'] as const)('rejects battlefield placement whose field contract has an unaccepted %s', boundary => {
+    const { session, playerId, sourceId } = fixture('servant.ereshkigal.skill.sc-ereshkigal-3');
+    active(session, sourceId);
+    const rule = session.state.abilityRuntime!.pack.cards['servant.ereshkigal.skill.sc-ereshkigal-2']!.abilities[0]!;
+    if (boundary === 'phase') rule.activation.phase = 'combat';
+    if (boundary === 'scope') rule.effects[0]!.scope = 'only_a_different_battlefield';
+    rejectAtomically(session, playerId, { type: 'activate_ability', cardInstanceId: sourceId, abilityId: 'sc-ereshkigal-3.blooming-netherworld' });
+  });
+
   it('a total-power seal survives serialization state and expires next round without changing individual attacks', () => {
     const { session, playerId, sourceId } = fixture('master.gatou.command-spell');
     const hand = session.state.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand').slice(0, 2);
