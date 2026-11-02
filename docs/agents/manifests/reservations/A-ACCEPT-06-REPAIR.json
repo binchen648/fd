@@ -7,7 +7,7 @@
   "branch": "codex/a-accept-06-repair-20261101",
   "worktree": "D:/fd-validation/a-accept-06-repair-20261101",
   "authority": "Latest explicit user: 进行修复. Root implements; independent agents review. Preserve original frozen red evidence and PR689.",
-  "phase": "R4 evidence-driven full-match performance recovery",
+  "phase": "R4 source independently accepted; exact new remote gates pending",
   "ReservedFiles": [
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/extended-effects.ts",
@@ -78,23 +78,27 @@
   },
   "ciRecoveryScope": "Retain frozen archive hash after reversing only the approved Kayneth selector delta; deterministic missing-asset fixture for warning; legal battlefield origin for free-move availability; explicitly resolve legitimate post-scoring response windows without double settlement. Preserve performance budget and 30s natural-game timeout.",
   "deliveryState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
-  "frozenCodeCandidate": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+  "frozenCodeCandidate": "d6fabffa9aa6e1ea70a7275610316043a09f03de",
   "updatedAt": "2026-11-01T15:18:14.564413+00:00",
   "fullCi": {
+    "candidate": "d6fabffa9aa6e1ea70a7275610316043a09f03de",
+    "result": "NOT_RUN_PENDING_NEW_REMOTE_HEAD"
+  },
+  "reservationDisposition": "GRANTED retained; freeze is evidence state, no release or transfer",
+  "promotionStatus": "PR690 old5904 Test naturallyFAILED; new candidate targeted81/Node20fullmatch2/browser2PASS; exact newHEAD fullCI pending",
+  "reviewCommit": "c7c5a5ec918b404c443d6bd109705709c29a4fae",
+  "independentConclusion": "R4 SOURCE_ACCEPTED_CANDIDATE_PENDING_NEW_FULL_CI",
+  "performanceAddendum": {
+    "BaseCommit": "5904a99164975eb53f87512e04703e02cef88ae0",
+    "scope": "Candidate-first short circuit of face-up cap source scans; no cache, source semantics/timeout/test selection unchanged",
+    "evidence": "perf-before CPU profile: face-up cap source scan 592/5781 inclusive samples, before isActiveCardSource linear card lookup for every physical card; checkpoint/clone also dominant. Preserve raw profile and remote failure logs."
+  },
+  "historicalFullCi": {
     "candidate": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
     "result": "PASS",
     "exitCode": 0,
     "passed": 1855,
     "failed": 0,
     "skipped": 0
-  },
-  "reservationDisposition": "GRANTED retained; freeze is evidence state, no release or transfer",
-  "promotionStatus": "PR690 exact5904a991 remoteTest FAILED two original full-match deadlines; no merge",
-  "reviewCommit": "d9795e90f5f8c1e1f8b0569e79315121b91732ba",
-  "independentConclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE; not whole-game acceptance",
-  "performanceAddendum": {
-    "BaseCommit": "5904a99164975eb53f87512e04703e02cef88ae0",
-    "scope": "Candidate-first short circuit of face-up cap source scans; no cache, source semantics/timeout/test selection unchanged",
-    "evidence": "perf-before CPU profile: face-up cap source scan 592/5781 inclusive samples, before isActiveCardSource linear card lookup for every physical card; checkpoint/clone also dominant. Preserve raw profile and remote failure logs."
   }
 }

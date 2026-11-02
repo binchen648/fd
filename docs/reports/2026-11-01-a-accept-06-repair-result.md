@@ -1,6 +1,6 @@
 # A-ACCEPT-06-REPAIR：七对主从机制修复
 
-代码候选：`82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d`。技术 main：`e63cdeb2a065a9f87c24039d2b08bbe059513fed`。独立工作区：`D:/fd-validation/a-accept-06-repair-20261101`。
+首个功能代码候选：`82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d`。当前性能修复候选：`d6fabffa9aa6e1ea70a7275610316043a09f03de`。技术 main：`e63cdeb2a065a9f87c24039d2b08bbe059513fed`。独立工作区：`D:/fd-validation/a-accept-06-repair-20261101`。
 
 本任务修复原验收定位的 11 类共享机制错误，保留原冻结失败证据。原验收报告不是被改写为 PASS；本报告绑定新的代码和执行收据。实现者只声明 IMPLEMENTATION_COMPLETE_CANDIDATE，合并仍需用户批准。
 
@@ -20,7 +20,7 @@
 
 完整CI的第一次修复候选运行(aab32073)自然退出1：1849PASS/6FAIL。原始日志保留。六项依次为静态查询性能、历史肯尼斯档案哈希、资产警告环境假设、移动令咒起点夹具、自然局超时、结算后可选响应驱动。已分别处理：保留原性能预算与30秒超时；哈希仅反向规范一处已授权selector后校验原档案；资产警告用独立缺资产夹具；正确起点；减少不相关来源active查询；通过真实Session完成已投影可选响应并确认不重复结算。没有新增排除或跳过测试。
 
-## 冻结候选验证结果
+## 第一阶段冻结候选82ac9a0d的历史验证结果
 
 全部绑定代码候选82ac9a0d。完整CI开始/结束HEAD一致，工作树均clean。
 
@@ -52,3 +52,13 @@
 修复分支已推送origin/codex/a-accept-06-repair-20261101。本次不合并，不改动PR689。已创建唯一Promotion PR #690（https://github.com/binchen648/fd/pull/690）；远端PR Test/Build/Policy尚待最终HEAD运行，不据本地结果声称远端通过；代码门禁绑定82ac9a0d，后续提交只包含报告和权限状态记账。后续须绑定精确最终HEAD及独立证据，通过现有远端门禁并获得用户合并批准；main变化时重新核对差异。
 
 独立审查的GitHub条目为协调者发布的COMMENT，仅记录Agent审查与证据，不表示用户已批准合并；远端最终门禁以PR690 checks为准。代码候选之后的review/synchronization/head提交仅为文档及权限记账，生产/测试源码一致性另有逐路径差异收据。
+
+## R4：远端完整对局超时的实际恢复
+
+远端5904a991的原始Test工作流41373251629自然退出1：1852PASS/2FAIL/1既有SKIP。两失败分别为原始完整对局10秒、主动七人对局30秒超时；归为TEST_FAILURE，不推定环境故障或TIMEOUT_INCONCLUSIVE。Build/Policy通过不消除此阻塞。原日志github-5904a991-failed.log保留。
+
+CPU剖析定位face-up cap查询对每张实体牌先执行线性来源查找（perf-before保留）；新候选d6fabffa改为区域、严格合同、控制者/位置候选优先，再调用同一canonical活动来源谓词。不引入缓存、不改变规则、超时、选择条件或测试并发。新增读预算测试先红后绿，既有FB2-44/36与相关Session/自然局81PASS；与CI一致Node20.20.2两项原整局定向自然通过约7.07秒/19.11秒；最终d6fabffa真实HTTP/WS浏览器2PASS，HEAD前后相同clean。计时有波动，尚不据此推断远端超时已解决；新完整CI必须以实际远端退出结果为准。
+
+新证据：r4-producer-receipt.json、perf-scan-green.json、perf-node20/tests.json、browser-r4-receipt.json；旧收据及旧独立结果不被修改或转写为新候选PASS。
+
+R4独立结论为SOURCE_ACCEPTED_CANDIDATE_PENDING_NEW_FULL_CI，证据independent-r4.json/md。GitHub发布记录为协调者COMMENT，不能解释为人类合并批准。

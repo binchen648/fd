@@ -7,7 +7,7 @@
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "Root sole shared rules/Session writer; frozen candidate82ac9a0d completeCI PASS, retained GRANTED through review. A-CLOUD-05 files untouched; CB-C02 suspended.",
+  "precedence": "Root sole shared rules/Session writer; R4 frozen source d6fabffa independently accepted, new fullCI pending. GRANTED retained; A-CLOUD-05 untouched; CB-C02 suspended.",
   "activeRuntimeTask": "A-ACCEPT-06-REPAIR",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
@@ -178,6 +178,12 @@
       "state": "GRANTED",
       "taskId": "A-ACCEPT-06-REPAIR",
       "scopeBasis": "d095f4e2 terrainProjectionAddendum; mirror existing exact task/reservation grant"
+    },
+    {
+      "path": "packages/rules/src/ability/face-up-cards-per-round.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR",
+      "scopeBasis": "f7257927 profiled R4 addendum"
     }
   ],
   "loader": {
@@ -246,5 +252,5 @@
   ],
   "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
   "activeClientTask": "A-CLOUD-05",
-  "frozenCodeCandidate": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d"
+  "frozenCodeCandidate": "d6fabffa9aa6e1ea70a7275610316043a09f03de"
 }
