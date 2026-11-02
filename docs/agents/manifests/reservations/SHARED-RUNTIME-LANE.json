@@ -1,13 +1,13 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-11-01T07:40:23.422735+00:00",
+  "updatedAt": "2026-11-01T15:18:14.564413+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "R1/R2 reviewed. Root sole shared rules/Session writer for R3; A-CLOUD-05 server/client public entry remains frozen and untouched; no overlapping App/server writes; CB-C02 suspended.",
+  "precedence": "Root sole shared rules/Session writer; frozen candidate82ac9a0d completeCI PASS, retained GRANTED through review. A-CLOUD-05 files untouched; CB-C02 suspended.",
   "activeRuntimeTask": "A-ACCEPT-06-REPAIR",
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
@@ -160,6 +160,24 @@
       "path": "e2e/fd-seven-roster-repair.spec.ts",
       "state": "GRANTED",
       "taskId": "A-ACCEPT-06-REPAIR"
+    },
+    {
+      "path": "apps/client/src/pages/MatchTable.tsx",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR",
+      "scopeBasis": "d095f4e2 terrainProjectionAddendum; mirror existing exact task/reservation grant"
+    },
+    {
+      "path": "apps/client/src/pages/MatchTable.test.tsx",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR",
+      "scopeBasis": "d095f4e2 terrainProjectionAddendum; mirror existing exact task/reservation grant"
+    },
+    {
+      "path": "apps/client/src/state/playtest-fixture-loader.ts",
+      "state": "GRANTED",
+      "taskId": "A-ACCEPT-06-REPAIR",
+      "scopeBasis": "d095f4e2 terrainProjectionAddendum; mirror existing exact task/reservation grant"
     }
   ],
   "loader": {
@@ -227,5 +245,6 @@
     "No source in frozen worktrees changed"
   ],
   "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
-  "activeClientTask": "A-CLOUD-05"
+  "activeClientTask": "A-CLOUD-05",
+  "frozenCodeCandidate": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d"
 }

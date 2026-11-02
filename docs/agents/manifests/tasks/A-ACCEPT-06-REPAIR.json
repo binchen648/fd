@@ -7,7 +7,7 @@
   "branch": "codex/a-accept-06-repair-20261101",
   "worktree": "D:/fd-validation/a-accept-06-repair-20261101",
   "authority": "Latest explicit user: 进行修复. Root implements; independent agents review. Preserve original frozen red evidence and PR689.",
-  "phase": "R3 clockwise order, terrain and command movement",
+  "phase": "Final independent bounded acceptance complete; promotion gates pending",
   "ReservedFiles": [
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/extended-effects.ts",
@@ -75,5 +75,20 @@
     "base": "aab320736028eb4b4a6ca4f3e503371bbf7fa931",
     "reason": "Browser screenshot/code inspection: client hardcodes terrain slots and compacts occupants; paid Inferno holes would display false terrain. Publish public slots/occupants from Session and render exact indexes/overflow. No App or public hosting/server-entry files."
   },
-  "ciRecoveryScope": "Retain frozen archive hash after reversing only the approved Kayneth selector delta; deterministic missing-asset fixture for warning; legal battlefield origin for free-move availability; explicitly resolve legitimate post-scoring response windows without double settlement. Preserve performance budget and 30s natural-game timeout."
+  "ciRecoveryScope": "Retain frozen archive hash after reversing only the approved Kayneth selector delta; deterministic missing-asset fixture for warning; legal battlefield origin for free-move availability; explicitly resolve legitimate post-scoring response windows without double settlement. Preserve performance budget and 30s natural-game timeout.",
+  "deliveryState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "frozenCodeCandidate": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+  "updatedAt": "2026-11-01T15:18:14.564413+00:00",
+  "fullCi": {
+    "candidate": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+    "result": "PASS",
+    "exitCode": 0,
+    "passed": 1855,
+    "failed": 0,
+    "skipped": 0
+  },
+  "reservationDisposition": "GRANTED retained; freeze is evidence state, no release or transfer",
+  "promotionStatus": "PR690 draft; exact final-head gates and human merge approval pending",
+  "reviewCommit": "d9795e90f5f8c1e1f8b0569e79315121b91732ba",
+  "independentConclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE; not whole-game acceptance"
 }
