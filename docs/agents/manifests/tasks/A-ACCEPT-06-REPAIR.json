@@ -7,7 +7,7 @@
   "branch": "codex/a-accept-06-repair-20261101",
   "worktree": "D:/fd-validation/a-accept-06-repair-20261101",
   "authority": "Latest explicit user: 进行修复. Root implements; independent agents review. Preserve original frozen red evidence and PR689.",
-  "phase": "Final independent bounded acceptance complete; promotion gates pending",
+  "phase": "R4 evidence-driven full-match performance recovery",
   "ReservedFiles": [
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/extended-effects.ts",
@@ -48,7 +48,8 @@
     "packages/rules/tests/kayneth-s3-consumer-migration.test.ts",
     "packages/content/src/__tests__/playtest-pack-loader.test.ts",
     "packages/rules/src/__tests__/match-session-regressions.test.ts",
-    "packages/rules/tests/regression/action-turn-delivery.test.ts"
+    "packages/rules/tests/regression/action-turn-delivery.test.ts",
+    "packages/rules/src/ability/face-up-cards-per-round.ts"
   ],
   "ForbiddenFiles": [
     "all A-CLOUD-05 production files",
@@ -88,7 +89,12 @@
     "skipped": 0
   },
   "reservationDisposition": "GRANTED retained; freeze is evidence state, no release or transfer",
-  "promotionStatus": "PR690 draft; exact final-head gates and human merge approval pending",
+  "promotionStatus": "PR690 exact5904a991 remoteTest FAILED two original full-match deadlines; no merge",
   "reviewCommit": "d9795e90f5f8c1e1f8b0569e79315121b91732ba",
-  "independentConclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE; not whole-game acceptance"
+  "independentConclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE; not whole-game acceptance",
+  "performanceAddendum": {
+    "BaseCommit": "5904a99164975eb53f87512e04703e02cef88ae0",
+    "scope": "Candidate-first short circuit of face-up cap source scans; no cache, source semantics/timeout/test selection unchanged",
+    "evidence": "perf-before CPU profile: face-up cap source scan 592/5781 inclusive samples, before isActiveCardSource linear card lookup for every physical card; checkpoint/clone also dominant. Preserve raw profile and remote failure logs."
+  }
 }
