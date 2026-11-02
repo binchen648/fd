@@ -62,3 +62,4 @@ CPU剖析定位face-up cap查询对每张实体牌先执行线性来源查找（
 新证据：r4-producer-receipt.json、perf-scan-green.json、perf-node20/tests.json、browser-r4-receipt.json；旧收据及旧独立结果不被修改或转写为新候选PASS。
 
 R4独立结论为SOURCE_ACCEPTED_CANDIDATE_PENDING_NEW_FULL_CI，证据independent-r4.json/md。GitHub发布记录为协调者COMMENT，不能解释为人类合并批准。
+`R4` 后续review/synchronization/head只更新文档；新完整CI结果由PR690最终checks与独立收据补充确认。
