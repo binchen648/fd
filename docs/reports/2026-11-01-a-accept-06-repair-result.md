@@ -50,3 +50,5 @@
 ## 交付与后续集成
 
 修复分支已推送origin/codex/a-accept-06-repair-20261101。本次不合并，不改动PR689。已创建唯一Promotion PR #690（https://github.com/binchen648/fd/pull/690）；远端PR Test/Build/Policy尚待最终HEAD运行，不据本地结果声称远端通过；代码门禁绑定82ac9a0d，后续提交只包含报告和权限状态记账。后续须绑定精确最终HEAD及独立证据，通过现有远端门禁并获得用户合并批准；main变化时重新核对差异。
+
+独立审查的GitHub条目为协调者发布的COMMENT，仅记录Agent审查与证据，不表示用户已批准合并；远端最终门禁以PR690 checks为准。代码候选之后的review/synchronization/head提交仅为文档及权限记账，生产/测试源码一致性另有逐路径差异收据。
