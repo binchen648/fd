@@ -90,9 +90,13 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     }),
     locations: [
       { id: 'magic_workshop', name: '魔术工房', subtitle: '远程同步', occupants: occupants(playerLocations, 'magic_workshop'), mapArea: 'A2', capacityLabel: '1', workshopManaSlots: [2, 1, 1, 1], moveCostToNext: 1 },
-      { id: 'miyama_town', name: '深山町', subtitle: '远程同步', occupants: occupants(playerLocations, 'miyama_town'), mapArea: 'B2', terrainSlots: [3, 1], contestVp: 2, moveCostToNext: 2 },
+      { id: 'miyama_town', name: '深山町', subtitle: '远程同步', occupants: occupants(playerLocations, 'miyama_town'), mapArea: 'B2',
+        terrainSlots: match.battlefieldTerrain?.find(t => t.locationId === 'miyama_town')?.bonuses ?? [3, 1],
+        terrainOccupants: match.battlefieldTerrain?.find(t => t.locationId === 'miyama_town')?.occupants, contestVp: 2, moveCostToNext: 2 },
       { id: 'recon', name: '侦察', subtitle: '远程同步', occupants: occupants(playerLocations, 'recon'), mapArea: 'G', capacityLabel: '1', reconVp: 2 },
-      { id: 'shinto', name: '新都', subtitle: '远程同步', occupants: occupants(playerLocations, 'shinto'), mapArea: 'B3', terrainSlots: [3, 1], contestVp: 3, moveCostToNext: 2 },
+      { id: 'shinto', name: '新都', subtitle: '远程同步', occupants: occupants(playerLocations, 'shinto'), mapArea: 'B3',
+        terrainSlots: match.battlefieldTerrain?.find(t => t.locationId === 'shinto')?.bonuses ?? [3, 1],
+        terrainOccupants: match.battlefieldTerrain?.find(t => t.locationId === 'shinto')?.occupants, contestVp: 3, moveCostToNext: 2 },
     ],
     self: {
       masterName: match.view.players.find((player) => player.id === viewerId)?.masterCardId ?? '观战',
@@ -115,7 +119,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack' ? 'pass'
           : 'respond',
       ownerPlayerId: viewerId ?? '',
-      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
+      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}${action.vpPayment ? ` · 支付 ${action.vpPayment} 战果` : ''}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
         : action.type === 'skip_normal_move' ? '不进行常规移动'
         : action.type === 'complete_empty_regular_play' ? '无合法攻击牌 · 完成常规出牌'
         : action.type === 'stage_attack_card' ? action.faceDown ? '加入待确认盖放' : '加入待确认攻击'

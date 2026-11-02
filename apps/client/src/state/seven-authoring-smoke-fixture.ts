@@ -409,7 +409,7 @@ function actionLabel(action: LegalAction, rawCards?: MatchSession['rawCards'], s
   if (action.type === 'normal_move') return `常规移动至 ${locationLabels[action.locationId as keyof typeof locationLabels] ?? action.locationId} · ${action.manaCost} 魔力`;
   if (action.type === 'skip_normal_move') return '不进行常规移动';
   if (action.type === 'complete_empty_regular_play') return '无合法攻击牌 · 完成常规出牌';
-  if (action.type === 'deploy_player') return `部署到 ${locationLabels[action.locationId as keyof typeof locationLabels] ?? action.locationId}`;
+  if (action.type === 'deploy_player') return `部署到 ${locationLabels[action.locationId as keyof typeof locationLabels] ?? action.locationId}${action.vpPayment ? ` · 支付 ${action.vpPayment} 战果` : ''}`;
   if (action.type === 'stage_attack_card') return action.faceDown ? '加入待确认盖放' : '加入待确认攻击';
   if (action.type === 'confirm_staged_attack') return '确认打出攻击区';
   if (action.type === 'cancel_staged_attack') return '取消待确认攻击';
@@ -666,7 +666,8 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
         occupants: occupants('miyama_town'),
         imageUrl: '/assets/fd/locations/miyama.png',
         mapArea: 'B2',
-        terrainSlots: [3, 1],
+        terrainSlots: projected.battlefieldTerrain?.find(t => t.locationId === 'miyama_town')?.bonuses ?? [3, 1],
+        terrainOccupants: projected.battlefieldTerrain?.find(t => t.locationId === 'miyama_town')?.occupants,
         contestVp: 2,
         moveCostToNext: 2,
       },
@@ -687,7 +688,8 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
         occupants: occupants('shinto'),
         imageUrl: '/assets/fd/locations/shinto.png',
         mapArea: 'B3',
-        terrainSlots: [3, 1],
+        terrainSlots: projected.battlefieldTerrain?.find(t => t.locationId === 'shinto')?.bonuses ?? [3, 1],
+        terrainOccupants: projected.battlefieldTerrain?.find(t => t.locationId === 'shinto')?.occupants,
         contestVp: 3,
         moveCostToNext: 2,
       },

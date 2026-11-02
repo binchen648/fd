@@ -35,6 +35,7 @@ import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
 import { clearTransientCardTransformState } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
+import { infernoAffectsDeployment } from './core/terrain-advantage';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
 import type {
   AbilityCommand,
@@ -163,6 +164,7 @@ export interface MatchClientState {
   phase: PhaseName;
   priorityPlayerId: string;
   view: AbilityPlayerView;
+  battlefieldTerrain?: Array<{ locationId: LocationId; bonuses: number[]; occupants: string[] }>;
   interactionWindows: MatchInteractionWindow[];
   directives: MatchDirectiveView[];
   zones: MatchZoneProjection[];
@@ -676,6 +678,10 @@ function isRestoreRoundPlayCounters(value: unknown): boolean {
 
 function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionRestorePackKind): boolean {
   if (value === undefined) return true;
+  if (isRestoreRecord(value) && value.commandSpellVictoryRewards !== undefined && (!Array.isArray(value.commandSpellVictoryRewards) ||
+      !value.commandSpellVictoryRewards.every(reward => isRestoreRecord(reward) && typeof reward.controllerId === 'string' &&
+        typeof reward.sourceCardId === 'string' && typeof reward.abilityId === 'string' && isRestoreSafeInteger(reward.round) &&
+        typeof reward.perBattle === 'boolean' && isRestoreStringArray(reward.settledResults) && new Set(reward.settledResults).size === reward.settledResults.length))) return false;
   if (!isRestoreRecord(value) || !isRestoreAbilityPack(value.pack, packKind) || !isRestoreRecord(value.cardState) ||
       !Object.values(value.cardState).every(isRestoreCardRuntimeState) ||
       !isRestoreSafeInteger(value.revision) || !isRestoreSafeInteger(value.sequence) ||
@@ -1548,8 +1554,8 @@ function terrainSlotCount(state: GameState, locationId: LocationId): number {
 
 function assignedTerrainOccupants(state: GameState, locationId: LocationId): string[] {
   const assigned = terrainAssignmentsOf(state)[locationId] ?? [];
-  return assigned.filter((playerId) =>
-    state.players.some((player) => player.id === playerId && player.status === 'active' && player.locationId === locationId));
+  return assigned.map((playerId) =>
+    state.players.some((player) => player.id === playerId && player.status === 'active' && player.locationId === locationId) ? playerId : '');
 }
 
 function projectInteractionWindows(state: GameState, viewerId: string): MatchInteractionWindow[] {
@@ -1708,7 +1714,7 @@ export class MatchSession {
       return { ok: false, view: this.projectAbilityView(playerId), events: [], calculations: [],
         rejection: { code: 'battle_settling', message: 'All battle decisions are complete; resolve the pending battle settlement' } };
     }
-    if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
+    if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId, command.vpPayment === undefined ? 0 : command.vpPayment);
     const privateInteractionMutation = command.type === 'choose_target' &&
       this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
     const beforeEventCount = this.state.abilityRuntime?.events.length ?? 0;
@@ -1767,7 +1773,13 @@ export class MatchSession {
     return (replacementLocations.length
       ? filteredLocations.filter((location) => replacementLocations.includes(location.id))
       : filteredLocations)
-      .map((location) => ({ type: 'deploy_player' as const, locationId: location.id }));
+      .flatMap((location) => {
+        const actions: LegalAction[] = [{ type: 'deploy_player', locationId: location.id }];
+        if (infernoAffectsDeployment(this.state, playerId, location.id)) {
+          for (let payment = 1; payment <= Math.min(5, player.vp); payment++) actions.push({ type: 'deploy_player', locationId: location.id, vpPayment: payment });
+        }
+        return actions;
+      });
   }
 
   private structuralDeploymentReplacementLocations(playerId: string, legalLocationIds: LocationId[]): LocationId[] {
@@ -1834,7 +1846,7 @@ export class MatchSession {
       this.logs.some(entry => entry.round === this.state.round.roundNumber && entry.type === 'battle_decisions_completed'));
   }
 
-  private dispatchDeployPlayer(playerId: string, locationId: LocationId): DispatchResult {
+  private dispatchDeployPlayer(playerId: string, locationId: LocationId, vpPayment = 0): DispatchResult {
     const view = () => this.projectAbilityView(playerId);
     const rejection = (code: string, message: string): DispatchResult => {
       this.rejection = { code, message };
@@ -1842,7 +1854,7 @@ export class MatchSession {
       return {
         ok: false,
         view: view(),
-        events: this.state.abilityRuntime?.events ?? [],
+        events: [],
         calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [],
         rejection: this.rejection,
       };
@@ -1857,14 +1869,17 @@ export class MatchSession {
       return rejection('illegal_deployment', 'Selected deployment location is not legal');
     }
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
+    if (!Number.isSafeInteger(vpPayment) || vpPayment < 0 || vpPayment > 5 || vpPayment > player.vp ||
+        (vpPayment > 0 && !infernoAffectsDeployment(this.state, playerId, locationId))) return rejection('invalid_deployment_payment', 'Invalid Inferno deployment payment');
+    player.vp -= vpPayment;
     player.locationId = locationId;
     this.rejection = undefined;
     this.state.abilityRuntime!.revision++;
-    this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId });
+    this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId, vpPayment });
     this.applyDeploymentLocationReward(playerId, locationId);
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
     if (deployedLocation?.tags.includes('battlefield')) {
-      this.assignTerrainOnDeployment(playerId, locationId);
+      this.assignTerrainOnDeployment(playerId, locationId, vpPayment);
       processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     this.consumeAppliedDirectives();
@@ -1878,16 +1893,23 @@ export class MatchSession {
     };
   }
 
-  private assignTerrainOnDeployment(playerId: string, locationId: LocationId): void {
+  private assignTerrainOnDeployment(playerId: string, locationId: LocationId, vpPayment = 0): void {
     const slotCount = terrainSlotCount(this.state, locationId);
     if (!slotCount) return;
     const assignments = terrainAssignmentsOf(this.state);
     const current = assignedTerrainOccupants(this.state, locationId).slice(0, slotCount);
-    if (current.includes(playerId) || current.length >= slotCount) {
+    if (current.includes(playerId)) {
       assignments[locationId] = current;
       return;
     }
-    assignments[locationId] = [...current, playerId];
+    const bonuses = getEnabledLocations(this.state.map, this.state.locationConfig).find(location => location.id === locationId)?.terrainBonuses ?? [];
+    const constrained = infernoAffectsDeployment(this.state, playerId, locationId);
+    const index = Array.from({ length: slotCount }, (_, i) => i).find(i => !current[i] && (!constrained || bonuses[i]! <= vpPayment));
+    if (index !== undefined) {
+      while (current.length <= index) current.push('');
+      current[index] = playerId;
+    }
+    assignments[locationId] = current;
   }
 
   passPriority(playerId: string): DispatchResult {
@@ -2133,6 +2155,11 @@ export class MatchSession {
       phase: this.state.round.activePhase,
       priorityPlayerId: this.priorityPlayer()?.id ?? this.humanPlayerId,
       view,
+      battlefieldTerrain: getEnabledLocations(this.state.map, this.state.locationConfig)
+        .filter(location => location.tags.includes('battlefield')).map(location => ({
+          locationId: location.id, bonuses: [...(location.terrainBonuses ?? [])],
+          occupants: assignedTerrainOccupants(this.state, location.id).slice(0, location.terrainBonuses?.length ?? 0),
+        })),
       interactionWindows: projectInteractionWindows(this.state, playerId),
       directives: this.directiveViews().map(directive => ({ ...directive,
         ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),

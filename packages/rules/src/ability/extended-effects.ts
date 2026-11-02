@@ -233,6 +233,8 @@ export function resolveExtendedEffect(
         id: statusId,
         sourceControllerId: controllerId,
         duration,
+        startsAtRound: state.round.roundNumber + (duration === 'next_round' ? 1 : 0),
+        expiresAtRound: state.round.roundNumber + (duration === 'next_round' ? 2 : 1),
         locationId: p.locationId
       });
       break;
@@ -403,7 +405,8 @@ export function resolveExtendedEffect(
       if (!owner || owner.id === controllerId || amount <= 0) break;
       const payer = state.players.find(candidate => candidate.id === controllerId);
       if (!payer) break;
-      const paid = Math.min(amount, payer.vp);
+      if (!Number.isSafeInteger(amount) || payer.vp < amount) throw new Error('Cannot pay mandatory victory-point transfer.');
+      const paid = amount;
       payer.vp -= paid;
       owner.vp += paid;
       modeState(state).vpTransfers = [
@@ -549,12 +552,16 @@ export function resolveExtendedEffect(
     }
     case 'terrain_multiplier': {
       const multiplier = Number(effect.value ?? 2);
+      const baseBonus = Number(effect.baseBonus ?? 0);
+      if (!Number.isFinite(multiplier) || multiplier < 0 || !Number.isFinite(baseBonus)) throw new Error('Invalid terrain adjustment');
       // Apply terrain multiplier to controller's terrain bonus
       (state as any).modeState = (state as any).modeState || {};
       (state as any).modeState.terrainMultipliers = (state as any).modeState.terrainMultipliers || [];
       (state as any).modeState.terrainMultipliers.push({
         playerId: controllerId,
         multiplier,
+        baseBonus,
+        round: state.round.roundNumber,
         duration: 'this_round',
         ...directiveContext(context),
       });
@@ -637,6 +644,8 @@ export function resolveExtendedEffect(
       if (!locationId) break;
       
       // Get all players at this location
+      const placedSource = sourceCardId(context);
+      if (state.abilityRuntime?.cardState[placedSource]) state.abilityRuntime.cardState[placedSource]!.boardLocationId = locationId;
       const playersAtLocation = state.players.filter(pl => 
         pl.status === 'active' && pl.locationId === locationId
       );
@@ -646,6 +655,7 @@ export function resolveExtendedEffect(
       (state as any).modeState.reversedModifierLocations = (state as any).modeState.reversedModifierLocations || [];
       (state as any).modeState.reversedModifierLocations.push({
         locationId,
+        sourceCardId: placedSource,
         sourceControllerId: controllerId,
         exemptPlayers: [controllerId], // Ereshkigal herself is exempt
         duration: 'while_active'

@@ -1,0 +1,227 @@
+{
+  "taskId": "A-ACCEPT-06",
+  "reviewer": "independent agent /root/a_cloud_05_independent",
+  "reviewedUtc": "2026-11-01T07:34:40.935919+00:00",
+  "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+  "baseSha": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "testHarnessDecision": "TEST_HARNESS_ACCEPTED_WITH_PRODUCT_FAILURES",
+  "productAcceptance": "PRODUCT_ACCEPTANCE_FAIL",
+  "integrationApproved": false,
+  "productionModifiedByReviewer": false,
+  "reviewScope": "4 acceptance test files; source semantics, final selected results and bounded independent execution. No full CI, browser, live-public or whole-roster acceptance.",
+  "sourceIntegrity": {
+    "headMatched": true,
+    "testHashesMatchFinalReceipt": true,
+    "productionDiffFromBase": false,
+    "treeObservation": "Source commit frozen; current status includes coordinator untracked docs/reports/2026-11-01-a-accept-06-effect-matrix.json. Do not describe present worktree as clean."
+  },
+  "producerSelectedRun": {
+    "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+    "fileCount": 66,
+    "startUtc": "2026-11-01T07:30:08.118746+00:00",
+    "endUtc": "2026-11-01T07:31:34.521928+00:00",
+    "exitCode": 1,
+    "naturalExit": true,
+    "timeout": false,
+    "classification": "TEST_FAILURE",
+    "totalTests": 741,
+    "passedTests": 711,
+    "failedTests": 30,
+    "pendingTests": 0,
+    "fullCi": "NOT_RUN: selected acceptance has reproducible assertion failures; not a full test:ci invocation"
+  },
+  "newTests": {
+    "total": 68,
+    "passed": 40,
+    "failed": 28,
+    "structuralTests": 1,
+    "behaviorTests": 67
+  },
+  "independentRun": {
+    "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+    "exitCode": 1,
+    "classification": "TEST_FAILURE",
+    "passed": 39,
+    "failed": 28,
+    "filteredNotRun": 1,
+    "filter": "^(?!.*runs seven human seats)",
+    "note": "One natural-game test intentionally filtered to avoid overwriting coordinator evidence; pending here means filtered NOT_RUN, not accepted product skip."
+  },
+  "mechanismClusters": [
+    {
+      "id": "AC06-01",
+      "title": "Alter low-mana Noble restriction",
+      "failingCases": 2,
+      "observed": "mana7 < threshold8 still projects Noble; forged direct staging also accepted",
+      "category": "Runtime permission / execution consistency"
+    },
+    {
+      "id": "AC06-02",
+      "title": "Eresh Protection on-board predicate",
+      "failingCases": 1,
+      "observed": "real-play attack_area Protection rejected as card_not_on_board, same-location +6 missing",
+      "category": "Runtime board-zone interpretation"
+    },
+    {
+      "id": "AC06-03",
+      "title": "Kayneth low-mana servant-skill exception",
+      "failingCases": 1,
+      "observed": "real servant skill at mana7 rejected by generic play_requirement",
+      "category": "Runtime exception contract"
+    },
+    {
+      "id": "AC06-04",
+      "title": "Maiya full two-VP payment",
+      "failingCases": 2,
+      "observed": "borrowed Support Shot at VP0/1 accepted; transfer clamps instead of full-cost rejection",
+      "category": "Runtime atomic cost enforcement"
+    },
+    {
+      "id": "AC06-05",
+      "title": "Maiya terrain addition before multiplication",
+      "failingCases": 1,
+      "observed": "VP2 control expected (3+1)*2=8, actual6; structured effects omit printed +1",
+      "category": "Authoring contract omission / effect composition"
+    },
+    {
+      "id": "AC06-06",
+      "title": "Tomoe Inferno next-round terrain restriction",
+      "failingCases": 1,
+      "observed": "round2 unpaid positive terrain actual1 instead of0; field entrance is allowed",
+      "category": "Runtime lifecycle / terrain slot restriction"
+    },
+    {
+      "id": "AC06-07",
+      "title": "Maiya unaffordable attachment offer",
+      "failingCases": 1,
+      "observed": "legalActions offers mandatory two-mana attach to actor lacking mana; natural round4 rejected it",
+      "category": "Projection / execution mismatch"
+    },
+    {
+      "id": "AC06-08",
+      "title": "Tomoe first-half current action order",
+      "failingCases": 1,
+      "observed": "predicate uses physical seats instead of clockwise order from round.startingSeat",
+      "category": "Runtime rotating initiative predicate"
+    },
+    {
+      "id": "AC06-09",
+      "title": "Caster Luck identity alignment",
+      "failingCases": 4,
+      "observed": "N1..4 physical basic.luck cards produce0 instead of5/10/15/15; formula uses card.luck alias",
+      "category": "Production identity / formula binding"
+    },
+    {
+      "id": "AC06-10",
+      "title": "Command seal total power",
+      "failingCases": 7,
+      "observed": "seven masters with two attacks receive+4 total instead of canonical+2 total",
+      "category": "Shared Runtime modifier scope"
+    },
+    {
+      "id": "AC06-11",
+      "title": "Command seal executable free movement",
+      "failingCases": 7,
+      "observed": "seven masters activation succeeds but no destination decision or actual movement",
+      "category": "Shared Runtime movement execution"
+    }
+  ],
+  "historicalFailures": [
+    {
+      "file": "fm01-source-play-basic-draw-authoring.test.ts",
+      "observation": "expected one selected archive card; actual two; frozen-scope cardinality assertion",
+      "status": "separate baseline investigation required, no test weakening authorized"
+    },
+    {
+      "file": "kintoki-authoring.test.ts",
+      "observation": "Golden Eater source expected removed_from_game, actual skill",
+      "status": "separate rules/source-lifecycle investigation required; not classified harmless"
+    }
+  ],
+  "naturalGame": {
+    "stateInjected": false,
+    "steps": 712,
+    "distinctAbilityIdStrings": 20,
+    "resolveResponse": 9,
+    "restores": 1,
+    "round": 11,
+    "stopReason": "match_complete",
+    "outcome": {
+      "kind": "winner",
+      "round": 11,
+      "winnerPlayerId": "p7",
+      "tiedTopPlayerIds": [
+        "p7"
+      ],
+      "reason": "highest_vp"
+    },
+    "meaning": "One resource-aware policy completed a seven-human-seat Session game. This does not validate every projected offer, every ability identity, every printed clause or browser/network behavior. Earlier676-step observation superseded for final binding. Prior round4 projection-rejection and round5 setup-no-target witnesses remain historical RED evidence."
+  },
+  "inventory": {
+    "authoringIdentities": 92,
+    "scopedDenominator": 109,
+    "scopeComposition": "92 selected authoring +15 generated command seals +2 basic abilities",
+    "fullPackCards": 76,
+    "fullPackAbilityIdentities": 118,
+    "excludedFrom109": "8 rules-only other-master/derived identities +1 card.luck alias; inventory is structural, not runtime acceptance credit"
+  },
+  "fixtureAssessment": [
+    "Helpers explicitly mark bounded setup: phases/resources/zones/events edited, production definitions/formulas untouched. Valid effect witnesses, not natural acquisition or admission proof.",
+    "active() bypasses real play costs/triggers; downstream effect PASS cannot certify normal play. Other six players at workshop can exceed global capacity; bounded state is not a whole-game legal-state certificate.",
+    "Corrected Eresh uses real Session play and authoritative placement; corrected Tomoe restriction targets positive terrain rather than banning field entry.",
+    "Production Session confirms actual Luck entities are basic.luck; substituting unused card.luck alias to force PASS would hide a real identity mismatch.",
+    "rejectAtomically covers GameState and events, not every private Session log/counter/replay field.",
+    "Seven master repetitions of each shared command-seal bug count as two mechanisms, not fourteen independent primitive gaps."
+  ],
+  "uncoveredOrUnsettled": [
+    "Shinji master-changing branch expressly excluded; other Shinji abilities are not all excluded.",
+    "Kiritsugu setup preparation timing is supported by A0 clarification. Repeated-per-round frequency authority remains unresolved; no confirmed defect or extra cluster assigned.",
+    "Tomoe first-half test proves activation predicate only; positive/negative card-play admission still needed. Inferno paid1..5 cases remain untested.",
+    "Eresh other-location PASS and Kayneth insufficient-printed-cost PASS can be masked by existing broken common gates; re-evaluate after positive path repairs.",
+    "Caster N0 PASS is a zero baseline; prior-round injected card test is not full natural lifecycle proof.",
+    "Resource-aware policy avoids unaffordable Maiya commands and limits setup voluntarily; completion does not exonerate invalid legalActions offers.",
+    "No claim of all109 identities/clauses, full combinations, all command-seal origin/capacity/engagement negatives, hidden-state noninterference, browser, server transport or public Sakura validation."
+  ],
+  "nextActions": [
+    "Keep these red witnesses; assign production fixes separately with exact source baseline and write reservation.",
+    "Resolve eleven candidate mechanisms and both historical assertion discrepancies against rule authority; do not delete/skip/weaken tests to obtain PASS.",
+    "After minimal fixes, re-run affected positive/negative paths plus seven-player natural Session; independent review then purposefully run full CI only with a new exact candidate."
+  ],
+  "evidence": {
+    "final-selected-receipt.json": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\final-selected-receipt.json",
+      "sha256": "fd3ef1ca8c96748d26c2d019e2a946045a33f71df48e053261c3e1d1d7e58b7b"
+    },
+    "final-selected-results.json": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\final-selected-results.json",
+      "sha256": "eaba5470776923fc78a6e5a2e6631d56d4792aa19527ff70c37759e09e4cff15"
+    },
+    "final-selected.log": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\final-selected.log",
+      "sha256": "c2a885919d66b645302ee86ff2df93ac5023a86524ce16e193a4c236791d4e61"
+    },
+    "active-seven-game.json": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\active-seven-game.json",
+      "sha256": "fcefddb84027db790cbb41f9e1be8abf46e614f2e9abc2c97828718ec7dbf202"
+    },
+    "independent-final-targeted-4e2b9d50.json": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\independent-final-targeted-4e2b9d50.json",
+      "sha256": "da0c622cf93308d05c5dbf17c873e270a68c633dd6d64ca511aa621c17f154cf"
+    },
+    "independent-final-targeted-4e2b9d50.log": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\independent-final-targeted-4e2b9d50.log",
+      "sha256": "ad4bc09e13f8c5fea1e093442fbfafff7ea9f399eaed3b58d22f76098f24d753"
+    },
+    "baseline-failure-triage.json": {
+      "path": "D:\\fd-validation\\a-accept-06-evidence-20261101\\baseline-failure-triage.json",
+      "sha256": "97bd610dfb84d6afeb8e2d0fe636c48c77ca0a73b04c95f8fd61d9bb2debde60"
+    }
+  },
+  "publication": {
+    "publishedBy": "Root coordinator",
+    "independentReviewerDidNotImplementTests": true,
+    "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+    "externalReviewSha256": "cd9d652a931c62424006815f9a1a75e850eef258c120d5580005e3c62140456e",
+    "scope": "Evidence/tests accepted as reproducers; product fails. Report-only final commit does not alter source test results. No PR/merge/credit."
+  }
+}

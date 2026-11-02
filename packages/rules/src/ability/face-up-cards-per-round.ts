@@ -75,11 +75,14 @@ export function hasLiveFaceUpCardsPerRoundLimit(state: GameState, playerId: stri
   if (!battlefield) return false;
 
   return state.cards.some((source) => {
-    if (!isActiveCardSource(state, source.instanceId)) return false;
+    // Only the exact admitted contract can impose this cap. Reject unrelated
+    // physical cards before the canonical source check performs its id lookup.
+    if (source.zone !== 'field' && source.zone !== 'attack_area') return false;
+    const definition = runtime.pack.cards[source.definitionId];
+    if (!definition?.abilities.some((ability) => isAcceptedStaticFaceUpCardsPerRoundAbility(ability, 'compiled'))) return false;
     const sourceController = state.players.find((candidate) => candidate.id === source.controllerPlayerId && candidate.status === 'active');
     if (!sourceController || sourceController.locationId !== target.locationId) return false;
-    const definition = runtime.pack.cards[source.definitionId];
-    return definition?.abilities.some((ability) => isAcceptedStaticFaceUpCardsPerRoundAbility(ability, 'compiled')) === true;
+    return isActiveCardSource(state, source.instanceId);
   });
 }
 

@@ -259,6 +259,8 @@ export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   /** Actual mana charged for this physical card by its latest authoritative play. */
   paidManaOnPlay?: number;
+  /** Fixed battlefield placement; ordinary attacks continue to follow their controller. */
+  boardLocationId?: string;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface RulerSealBinding {
@@ -317,6 +319,7 @@ export interface AbilityRuntime {
   pendingRulerSealRewards: PendingRulerSealReward[];
   /** Current-round identity-free total-power adjustments keyed by recipient. */
   roundTotalPowerAdjustments: { round: number; byPlayer: Record<PlayerId, number> };
+  commandSpellVictoryRewards?: Array<{ controllerId: PlayerId; sourceCardId: string; abilityId: string; round: number; perBattle: boolean; settledResults: string[] }>;
   /** Physical source cards scheduled to return to a structural source-servant owner at battle terminal. */
   pendingSourceCardReturns: PendingSourceCardReturn[];
   usedAbilities: Record<string, number>; processedEvents: string[]; revealedServants: PlayerId[];
@@ -345,7 +348,7 @@ export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceI
 export interface ChooseTargetAction { type: 'choose_target'; decisionId: string; candidates: string[]; min: number; max: number }
 export interface ResolveResponseAction { type: 'resolve_response'; windowId: string; cardInstanceId: string; abilityId: string }
 export interface DeclineWindowAction { type: 'decline_this_window'; windowId: string }
-export interface DeployPlayerAction { type: 'deploy_player'; locationId: string }
+export interface DeployPlayerAction { type: 'deploy_player'; locationId: string; vpPayment?: number }
 export interface NormalMoveAction { type: 'normal_move'; locationId: string; manaCost?: number }
 export interface SkipNormalMoveAction { type: 'skip_normal_move' }
 export interface CompleteEmptyRegularPlayAction { type: 'complete_empty_regular_play' }

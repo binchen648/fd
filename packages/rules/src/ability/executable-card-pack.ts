@@ -413,10 +413,13 @@ function defaultCommandSpellCard(masterId: string): AuthoringCard {
         { type: 'record_master_directive', directive: 'gain_2_vp_if_win_this_round' },
         { type: 'adjust_command_seals', amount: -1, directive: 'spend_command_spell' },
       ], [{ type: 'create_modifier', modifier: { type: 'power_bonus', target: 'controller', amount: 2, duration: 'this_round' } }]),
-      ability('command-spell.free-move', '行动阶段：无视交战状态，从深山町或新都移动至任意地点。', [
+      { ...ability('command-spell.free-move', '行动阶段：无视交战状态，从深山町或新都移动至任意地点。', [
         { type: 'record_master_directive', directive: 'move_from_shinto_or_miyama_to_any_location_ignore_engagement' },
         { type: 'adjust_command_seals', amount: -1, directive: 'spend_command_spell' },
-      ]),
+        { type: 'move_player', player: 'controller', to: 'destination' },
+      ]), conditions: [{ type: 'controller_at_one_of_locations', locationIds: ['miyama_town', 'shinto'] }, { type: 'exists_target', targetRef: 'destination' }],
+      targets: [{ id: 'destination', type: 'location', count: { min: 1, max: 1 },
+        conditions: [{ type: 'controller_at_one_of_locations', locationIds: ['miyama_town', 'shinto'] }], constraints: [{ type: 'any_enabled_location' }] }] },
     ],
   };
 }

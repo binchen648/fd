@@ -186,7 +186,7 @@ const supportedTypes = new Set([
   // New types for 5 servants
   'opponents_random_discard', 'lock_battlefield', 'exclude_from_terrain_and_external_effects',
   'choice', 'set_opponent_power_to_zero', 'forbid_opponents_noble_phantasm',
-  'create_status', 'terrain_multiplier', 'controller_seat_in_first_half',
+  'create_status', 'terrain_multiplier', 'controller_seat_in_first_half', 'controller_at_one_of_locations',
   'reduce_opponents_power', 'move_card_from_zone_to_skill', 'controller_at_battlefield',
   'controller_servant_revealed', 'choice_is', 'hide_servant_true_name', 'close_source_card',
   'controller_at_battlefield_with_exactly_one_opponent',
@@ -194,7 +194,7 @@ const supportedTypes = new Set([
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
   'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
-  'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'not_card_id',
+  'create_modifier', 'not_location_kind', 'power_bonus', 'card_not_on_board', 'card_at_controller_battlefield', 'place_card_on_battlefield', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
@@ -240,7 +240,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   'before_situation_or_event_resolves', 'when_movement_options_requested',
 ]);
 const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
-  'lossAmount', 'winnerRewardAmount',
+  'lossAmount', 'winnerRewardAmount', 'baseBonus', 'locationIds',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
   'targetRef', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
@@ -354,6 +354,21 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (!isAcceptedEventLocationEqualsControllerCondition(n)) issue(path, 'Event-location relation condition must contain only type', abilityId);
       }
       if (n.type === 'base_power_at_most' && (typeof n.value !== 'number' || !Number.isFinite(n.value))) issue(`${path}.value`, 'Base power bound must be finite', abilityId);
+      if (n.baseBonus !== undefined && (n.type !== 'terrain_multiplier' || !Number.isSafeInteger(n.baseBonus) || Number(n.baseBonus) < 0)) {
+        issue(`${path}.baseBonus`, 'Base terrain bonus is a nonnegative integer on terrain_multiplier only', abilityId);
+      }
+      if (n.type === 'controller_at_one_of_locations' && (!Object.keys(n).every(key => ['type', 'locationIds'].includes(key)) ||
+          !Array.isArray(n.locationIds) || !n.locationIds.length || n.locationIds.some(id => typeof id !== 'string' || !['miyama_town', 'shinto', 'magic_workshop', 'recon', 'moon_holy_grail'].includes(id)))) {
+        issue(path, 'Controller origin condition requires explicit known location IDs', abilityId);
+      }
+      if (n.type === 'card_at_controller_battlefield' &&
+          (typeof n.cardId !== 'string' || !n.cardId || !Object.keys(n).every(key => ['type', 'cardId'].includes(key)))) {
+        issue(path, 'Battlefield card condition requires only type and a definition id', abilityId);
+      }
+      if (n.type === 'place_card_on_battlefield' &&
+          (typeof n.cardId !== 'string' || !n.cardId || !Object.keys(n).every(key => ['type', 'cardId'].includes(key)))) {
+        issue(path, 'Battlefield placement requires only type and a definition id', abilityId);
+      }
       if (['move_card', 'move_source_card', 'move_all_remaining', 'create_card'].includes(str(n.type)) &&
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
       if (['move_source_event', 'move_event_card'].includes(str(n.type)) && !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(str(node(n.to).zone))) {

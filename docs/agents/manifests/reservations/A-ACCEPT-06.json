@@ -1,0 +1,49 @@
+{
+  "taskId": "A-ACCEPT-06",
+  "status": "GRANTED",
+  "owner": "Global Technical Lead / Product A Builder /root",
+  "BaseCommit": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "branch": "codex/a-accept-06-seven-roster-20261101",
+  "worktree": "D:/fd-validation/a-accept-06-20261101",
+  "authority": "Latest explicit user prioritizes broad seven-pair effects acceptance excluding Shinji master replacement",
+  "ReservedFiles": [
+    "packages/rules/tests/acceptance/seven-roster-inventory.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-session-effects.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-combinations.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-test-helpers.ts",
+    "docs/agents/manifests/tasks/A-ACCEPT-06.json",
+    "docs/agents/manifests/reservations/A-ACCEPT-06.json",
+    "docs/plans/2026-11-01-a-accept-06.md",
+    "docs/reports/2026-11-01-a-accept-06-result.md",
+    "docs/reports/2026-11-01-a-accept-06-effect-matrix.json",
+    "docs/reviews/phase3/A-ACCEPT-06-review-attestation.json"
+  ],
+  "ForbiddenFiles": [
+    "all production Runtime until evidence-specific scope addendum",
+    "data/**",
+    "all A-CLOUD-05 reservedfiles",
+    "interpreter.ts",
+    "loader.ts",
+    "all frozen worktrees"
+  ],
+  "dependencies": [
+    "none on unmergedPR689;main base verified;A-CLOUD-05 remainsfrozen/open",
+    "Pushed same-owner A-RECOVER-04 release at02fa5a6c52f430d96c549415273a8063aa048160;no permission to rewrite its frozen tree"
+  ],
+  "scope": {
+    "approvedArchives": 14,
+    "cards": 46,
+    "authoringAbilities": 92,
+    "masterAbilities": 35,
+    "servantAbilities": 57,
+    "userExcluded": "false-attendant-book.first-empty-seals / replace-master-with-Sakura branch only;setup/bookcreation/drain/battleloss stillincluded",
+    "sakuraPresentServantReplacement": "outside default seven-master presence;separateconditionalbranch,not silentlyexcluded orclaimednaturalgame"
+  },
+  "evidencePolicy": "Exact card::ability::clause/branch identity;test-link/static-match is not executionPASS;fixtures not whole-gamePASS;do not alter global migrationcoverage",
+  "migrationCreditDelta": 0,
+  "candidateEvidenceState": "FROZEN_RED_REPRODUCERS",
+  "sourceSha": "4e2b9d50726c6cd06d6bd8a97775bc9d3e28155a",
+  "productAcceptance": "FAIL",
+  "productionWriteGrant": false,
+  "releaseOrTransfer": "NONE; test/report-only GRANTED record retained; no shared Runtime file granted"
+}

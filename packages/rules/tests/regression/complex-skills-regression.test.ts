@@ -898,6 +898,7 @@ describe('complex servant skill regressions', () => {
   it('keeps Ereshkigal noble phantasm moving Netherworld Protection into play when absent', () => {
     const raw = archive('data/authoring/servants/servant.ereshkigal.json');
     const state = setup(raw, { servantId: raw.id });
+    state.players[0]!.locationId = 'miyama_town';
     const protection = add(state, 'servant.ereshkigal.skill.sc-ereshkigal-2', 'skill');
     const noble = add(state, 'servant.ereshkigal.skill.sc-ereshkigal-3', 'skill');
 
@@ -1358,26 +1359,18 @@ describe('complex master and session regressions', () => {
 
     expect(activate(state, commandSpell, 'command-spell.power-victory').ok).toBe(true);
     expect(commandSpells(state)).toBe(1);
-    expect(state.abilityRuntime!.ongoingEffects).toContainEqual(expect.objectContaining({
-      sourceCardId: commandSpell,
-      abilityId: 'command-spell.power-victory',
-      controllerId: 'p1',
-      ruleModifiers: expect.arrayContaining([expect.objectContaining({
-        definition: expect.objectContaining({
-          operation: 'add',
-          rule: 'card.currentPower',
-          scope: { controller: 'self' },
-          value: 2,
-        }),
-      })]),
-    }));
+    expect(state.abilityRuntime!.roundTotalPowerAdjustments.byPlayer.p1).toBe(2);
     expectDirective(state, 'gain_2_vp_for_each_battle_won_this_round', {
       controllerId: 'p1',
       sourceCardId: commandSpell,
       abilityId: 'command-spell.power-victory',
     });
 
+    state.players[0]!.locationId = 'miyama_town';
     expect(activate(state, commandSpell, 'command-spell.free-move').ok).toBe(true);
+    const movement = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: movement.id, selectedIds: ['shinto'] }).ok).toBe(true);
+    expect(state.players[0]!.locationId).toBe('shinto');
     expect(commandSpells(state)).toBe(0);
     expectDirective(state, 'move_from_shinto_or_miyama_to_any_location_ignore_engagement', {
       controllerId: 'p1',
@@ -1509,7 +1502,11 @@ describe('complex master and session regressions', () => {
       sourceCardId: commandSpell,
       abilityId: 'command-spell.power-victory',
     });
+    state.players[0]!.locationId = 'miyama_town';
     expect(activate(state, commandSpell, 'command-spell.free-move').ok).toBe(true);
+    const movement = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: movement.id, selectedIds: ['shinto'] }).ok).toBe(true);
+    expect(state.players[0]!.locationId).toBe('shinto');
     expect(commandSpells(state)).toBe(0);
     expectDirective(state, 'move_from_shinto_or_miyama_to_any_location_ignore_engagement', {
       controllerId: 'p1',

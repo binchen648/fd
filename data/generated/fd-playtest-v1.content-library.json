@@ -3110,7 +3110,7 @@
                 "operation": "ignore",
                 "rule": "skill_zone_mana_requirement",
                 "scope": {
-                  "object": "this_card"
+                  "subject": "controller"
                 }
               }
             ],
@@ -4111,7 +4111,8 @@
             "effects": [
               {
                 "type": "terrain_multiplier",
-                "value": 2
+                "value": 2,
+                "baseBonus": 1
               },
               {
                 "type": "transfer_vp_to_owner",
@@ -4354,8 +4355,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -4365,6 +4401,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -4958,8 +4999,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -4969,6 +5045,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -7870,17 +7951,17 @@
                     },
                     "then": [
                       {
-                        "type": "move_card",
-                        "target": "sc-ereshkigal-2",
-                        "to": {
-                          "zone": "field",
-                          "owner": "controller"
-                        }
+                        "type": "place_card_on_battlefield",
+                        "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
                       }
                     ]
                   },
                   {
-                    "else": [
+                    "if": {
+                      "type": "card_at_controller_battlefield",
+                      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
+                    },
+                    "then": [
                       {
                         "type": "create_modifier",
                         "modifier": {
@@ -7942,6 +8023,9 @@
           {
             "type": "skill_zone_mana_at_least",
             "value": 8
+          },
+          {
+            "type": "controller_seat_in_first_half"
           }
         ],
         "abilities": [
@@ -10014,8 +10098,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10025,6 +10144,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10144,8 +10268,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10155,6 +10314,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10274,8 +10438,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10285,6 +10484,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10404,8 +10608,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10415,6 +10654,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10534,8 +10778,43 @@
               "phase": "action",
               "opens": "controller_action_window"
             },
-            "conditions": [],
-            "targets": [],
+            "conditions": [
+              {
+                "type": "controller_at_one_of_locations",
+                "locationIds": [
+                  "miyama_town",
+                  "shinto"
+                ]
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "destination"
+              }
+            ],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "conditions": [
+                  {
+                    "type": "controller_at_one_of_locations",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  }
+                ],
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10545,6 +10824,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10968,11 +11252,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+    "definitionHash": "eb9d4841fd882415554d09b4a5695230f42e29d0a8e4c86666338a25f1460e91",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce"
+      "definitionHash": "eb9d4841fd882415554d09b4a5695230f42e29d0a8e4c86666338a25f1460e91"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

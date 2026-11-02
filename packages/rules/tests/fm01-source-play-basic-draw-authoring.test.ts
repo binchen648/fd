@@ -152,13 +152,14 @@ describe('P3-FM01 source-play/basic-attack draw authoring migration', () => {
     expect(decision.candidates).not.toContain(high);
   });
 
-  it('keeps the 13 newly introduced archives scoped to one selected card and preserves their frozen evidence lineage', () => {
+  it('keeps exactly one FM01 selected identity per archive and its frozen lineage after later consumers are added', () => {
     for (const [ownerId, cardId] of members.filter(([ownerId]) => ownerId !== 'servant.drake')) {
       const raw = readArchive(ownerId);
       expect(raw.id).toBe(ownerId);
-      expect(raw.cards).toHaveLength(1);
-      expect(raw.cards[0]!.id).toBe(cardId);
-      expect(raw.cards[0]!.phase3Evidence).toMatchObject({
+      const selected = raw.cards.filter((card: { id: string }) => card.id === cardId);
+      expect(selected).toHaveLength(1);
+      expect(selected[0]!.id).toBe(cardId);
+      expect(selected[0]!.phase3Evidence).toMatchObject({
         f1Commit: F1_COMMIT,
         referenceStaticMetadata: {
           commit: 'b2f9fa15fba07c63530bbf4612b03b8b704755f9',
@@ -171,7 +172,7 @@ describe('P3-FM01 source-play/basic-attack draw authoring migration', () => {
           authority: 'final_rules_9.4',
         },
       });
-      expect(raw.cards[0]!.phase3Evidence.f1ClauseSources.map((source: any) => source.sha256)).toEqual([
+      expect(selected[0]!.phase3Evidence.f1ClauseSources.map((source: any) => source.sha256)).toEqual([
         DRAW_CLAUSE_SHA,
         ACTION_CLAUSE_SHA,
       ]);

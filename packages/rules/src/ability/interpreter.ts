@@ -156,6 +156,9 @@ function abilityDefinition(s: GameState, source: string, abilityId: string): Aut
   if (!a) reject('illegal_action', 'Ability is not available'); return a;
 }
 function nextId(s: GameState, label: string): string { return `${label}-${++runtime(s).sequence}`; }
+function canonicalDefinitionId(s: GameState, id: string): string {
+  return id === 'card.luck' && runtime(s).pack.cards['basic.luck'] ? 'basic.luck' : id;
+}
 function active(s: GameState, id: string): boolean {
   card(s, id);
   return isActiveCardSource(s, id);
@@ -355,8 +358,8 @@ function constraint(s: GameState, ctx: EffectContext, candidate: CardInstance, c
   switch (c.type) {
     case 'base_power_at_most': return !!d && d.mode === 'automatic' && d.abilities.every(a => a.execution.mode === 'automatic') &&
       d.cardFace.basePower !== undefined && evaluateFormula(d.cardFace.basePower, s, ctx.controllerId, candidate.instanceId).value <= Number(c.value);
-    case 'has_card_id': return candidate.definitionId === c.cardId;
-    case 'not_card_id': return candidate.definitionId !== c.cardId;
+    case 'has_card_id': return canonicalDefinitionId(s, candidate.definitionId) === canonicalDefinitionId(s, str(c.cardId));
+    case 'not_card_id': return canonicalDefinitionId(s, candidate.definitionId) !== canonicalDefinitionId(s, str(c.cardId));
     case 'has_attribute': return getEffectiveCardAttributes(s, candidate.instanceId).includes(str(c.attribute));
     case 'not_source_card': return candidate.instanceId !== ctx.sourceCardId;
     case 'played_this_round': return runtime(s).cardState[candidate.instanceId]?.playedRound === s.round.roundNumber;
@@ -471,6 +474,32 @@ function liveOngoing(s: GameState): OngoingEffect[] {
     sourceBoundOngoingIsLive(s, o) &&
     (o.expiresAtRound === undefined || s.round.roundNumber < o.expiresAtRound));
 }
+function onlyRuleKeys(value: unknown, keys: string[]): boolean {
+  return Object.keys(node(value)).every(key => keys.includes(key));
+}
+function controllerIgnoresSkillZoneMana(s: GameState, targetId: string): boolean {
+  const target = card(s, targetId);
+  const targetDefinition = definition(s, targetId);
+  if (target.zone !== 'skill' || !['master_skill', 'servant_skill'].includes(targetDefinition?.cardType ?? '')) return false;
+  const controller = player(s, target.controllerPlayerId);
+  return s.cards.some(source => {
+    const d = runtime(s).pack.cards[source.definitionId] as ExecutableCardDefinition | undefined;
+    if (source.ownerPlayerId !== controller.id || source.controllerPlayerId !== controller.id ||
+        d?.cardType !== 'master_skill' || d.ownerId !== controller.masterCardId ||
+        (source.zone !== 'skill' && !active(s, source.instanceId))) return false;
+    return d.abilities.some(a => a.execution.mode === 'automatic' && a.kind === 'passive' &&
+      a.activation.trigger === 'while_active' && onlyRuleKeys(a.activation, ['trigger']) &&
+      !a.conditions.length && !a.cost.length && !a.targets.length && !Object.keys(a.limit).length &&
+      !Object.keys(a.lifecycle).length && onlyRuleKeys(a.responseWindow, ['order', 'passBehavior']) &&
+      (!a.responseWindow.order || a.responseWindow.order === 'turn_order') &&
+      (!a.responseWindow.passBehavior || a.responseWindow.passBehavior === 'decline_this_window') && !a.creates.length &&
+      a.effects.every(effect => effect.type === 'record_master_directive') &&
+      a.ruleModifiers.some(m => m.operation === 'ignore' && m.rule === 'skill_zone_mana_requirement' &&
+        onlyRuleKeys(m, ['id', 'printedClause', 'operation', 'rule', 'scope']) &&
+        node(m.scope).subject === 'controller' && onlyRuleKeys(m.scope, ['subject']) &&
+        nodes(m.conditions).every(c => condition(s, context(s, source.instanceId, a.id), c))));
+  });
+}
 function modifierControllerApplies(s: GameState, modifierControllerId: string, source: CardInstance, scope: RuleNode): boolean {
   const scoped = str(scope.controller);
   if (!scoped || scoped === 'self' || scoped === 'controller') return modifierControllerId === source.controllerPlayerId;
@@ -500,7 +529,8 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
     Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
   for (const modifier of modifiers) {
-    const m = modifier.definition; const scope = node(m.scope); if (m.rule === 'effect_prevention' || m.rule === 'card_close') continue;
+    const m = modifier.definition; const scope = node(m.scope);
+    if (m.rule !== 'attack.currentPower' && m.rule !== 'card.currentPower') continue;
     if (!modifierControllerApplies(s, modifier.controllerId, source, scope)) continue;
     if (scope.object === 'source_card' && modifier.sourceCardId !== sourceId) continue;
     if (scope.object === 'attack_card' && !isAttack(d)) continue;
@@ -597,7 +627,8 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
       const locked = lockedBattlefieldIdsForMovement(s, ctx.controllerId);
       if (locked.has(from)) return [];
       const constraints = nodes(target.constraints);
-      return enabled.filter(l => l.id !== from && !locked.has(l.id) && constraints.every(c => locationConstraint(l, c)) && canOccupyLocation({
+      const closed = new Set(((s as unknown as { modeState?: { closedLocations?: string[] } }).modeState?.closedLocations ?? []));
+      return enabled.filter(l => l.id !== from && !closed.has(l.id) && !locked.has(l.id) && constraints.every(c => locationConstraint(l, c)) && canOccupyLocation({
         map: s.map, config: s.locationConfig, locationId: l.id, movingPlayerId: ctx.controllerId,
         occupyingPlayerIds: s.players.filter(p => p.status === 'active' && p.id !== ctx.controllerId && p.locationId === l.id).map(p => p.id),
         ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}),
@@ -710,7 +741,7 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   switch (c.type) {
     case 'skill_zone_mana_at_least': {
       const cardDef = definition(s, ctx.sourceCardId);
-      if (cardDef && hasPlayRuleException(cardDef, 'skill_zone_mana_at_least')) return true;
+      if (cardDef && (hasPlayRuleException(cardDef, 'skill_zone_mana_at_least') || controllerIgnoresSkillZoneMana(s, ctx.sourceCardId))) return true;
       return card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value);
     }
     case 'event_location_is_source_event_battlefield': return !!ctx.eventSource &&
@@ -731,8 +762,13 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
-    case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
+    case 'card_not_on_board': return !s.cards.some(candidate => candidate.controllerPlayerId === ctx.controllerId &&
+      canonicalDefinitionId(s, candidate.definitionId) === canonicalDefinitionId(s, str(c.cardId)) && ['field', 'attack_area'].includes(candidate.zone));
+    case 'card_at_controller_battlefield': return isBattlefield(s, p.locationId) && s.cards.some(candidate =>
+      candidate.controllerPlayerId === ctx.controllerId && candidate.definitionId === c.cardId &&
+      ['field', 'attack_area'].includes(candidate.zone) && runtime(s).cardState[candidate.instanceId]?.boardLocationId === p.locationId);
     case 'controller_at_location_kind': return c.locationKind === '侦察' || c.locationKind === '侦查' ? p.locationId === 'recon' : false;
+    case 'controller_at_one_of_locations': return Array.isArray(c.locationIds) && c.locationIds.includes(p.locationId);
     case 'controller_servant_revealed': return runtime(s).revealedServants.includes(ctx.controllerId);
     case 'source_reversed': return runtime(s).cardState[ctx.sourceCardId]?.reversed === true;
     case 'can_adjust_mana': return !runtime(s).manaGainBlocked.includes(p.id) && p.mana < (runtime(s).manaCaps[p.id] ?? 12);
@@ -760,7 +796,9 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
         : 'Unsupported current-round combat-loss absence condition shape');
     }
     case 'controller_seat_in_first_half': {
-      const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
+      const start = s.round.startingSeat ?? 1;
+      const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) =>
+        Number(a.seat < start) - Number(b.seat < start) || a.seat - b.seat);
       const firstHalfCount = Math.floor(activePlayers.length / 2);
       const playerIndex = activePlayers.findIndex(candidate => candidate.id === ctx.controllerId);
       return playerIndex >= 0 && playerIndex < firstHalfCount;
@@ -845,12 +883,41 @@ function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, so
 function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
   const d = definition(s, sourceId); if (!d) return ['missing_definition'];
   const targetPlayer = player(s, playerId);
+  // Static while-active prohibitions are predicates over the CURRENT source,
+  // location and resources. They must work immediately after play, including
+  // sources whose conditions were false during the last phase event.
+  const staticAttributeRules = s.cards.flatMap(source => {
+    const sourceDefinition = runtime(s).pack.cards[source.definitionId];
+    if (!sourceDefinition?.abilities.some(a => a.activation.trigger === 'while_active' &&
+        a.ruleModifiers.some(m => m.operation === 'forbid' && m.rule === 'play_card_attribute'))) return [];
+    if (!active(s, source.instanceId)) return [];
+    const controller = player(s, source.controllerPlayerId);
+    if (controller.id === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId)) return [];
+    return sourceDefinition.abilities.flatMap(a => {
+      if (a.execution.mode !== 'automatic' || a.activation.trigger !== 'while_active' ||
+          !onlyRuleKeys(a.activation, ['trigger']) || !['passive', 'residual'].includes(a.kind) ||
+          a.cost.length || a.targets.length || a.effects.length || a.creates.length || Object.keys(a.limit).length ||
+          !onlyRuleKeys(a.lifecycle, ['duration']) || (a.lifecycle.duration && a.lifecycle.duration !== 'while_active')) return [];
+      const ctx = context(s, source.instanceId, a.id);
+      if (!a.conditions.every(c => condition(s, ctx, c))) return [];
+      return a.ruleModifiers.flatMap(m => m.operation === 'forbid' && m.rule === 'play_card_attribute' &&
+        onlyRuleKeys(m, ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'lifecycle', 'conditions', 'attribute']) &&
+        onlyRuleKeys(m.scope, ['subject', 'attribute']) && onlyRuleKeys(m.lifecycle, ['duration']) && node(m.lifecycle).duration === 'while_active' &&
+        ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(node(m.scope).subject)) &&
+        nodes(m.conditions).every(c => condition(s, ctx, c)) &&
+        Array.isArray(d.cardFace.attributes) && d.cardFace.attributes.includes(str(m.attribute ?? node(m.scope).attribute)) ? ['play_card_attribute'] : []);
+    });
+  });
   const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, sourceCardId, definition: m }) => {
     const controller = player(s, controllerId); const scope = node(m.scope);
     const appliesToSameBattlefieldOpponent = ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.subject)) ||
       ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.object));
     if (appliesToSameBattlefieldOpponent && (controllerId === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId))) return [];
     if (m.operation !== 'forbid') return [];
+    if (str(node(m.lifecycle).duration) === 'while_active') {
+      const a = definition(s, sourceCardId)?.abilities.find(a => a.ruleModifiers.some(candidate => candidate.id === m.id));
+      if (!a || !a.conditions.every(c => condition(s, context(s, sourceCardId, a.id), c))) return [];
+    }
     if (m.rule === 'skill_use' && acceptedSkillUseForbidApplies(s, controllerId, sourceCardId, playerId, sourceId, m)) return ['skill_use'];
     if (m.rule === 'situation_restrictions' || m.rule === 'situation_play_forbid') return [str(m.rule)];
     if (m.rule === 'use_skill_card') return d.cardType === 'servant_skill' ? [str(m.rule)] : [];
@@ -868,7 +935,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
         return [entry.rule ?? (entry.sourceType === 'situation' ? 'situation_play_forbid' : 'play_card_attribute')];
       })
     : [];
-  return staticWhileActiveSkillUseForbidRules(s, playerId, sourceId).concat(ongoingRules, matchRules);
+  return staticWhileActiveSkillUseForbidRules(s, playerId, sourceId).concat(staticAttributeRules, ongoingRules, matchRules);
 }
 function abilityLimitReached(s: GameState, sourceId: string, a: AuthoringAbility): boolean {
   const limitType = str(a.limit?.type);
@@ -894,6 +961,7 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (isCommandSealMovementCandidate(a) && (!isCommandSealMovementSemantic(a) || definition(s, sourceId)?.cardType !== 'command_spell')) return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
@@ -951,6 +1019,16 @@ function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?
     if (classifyAlterEgoTransformVariant(a) === 'ex' && !hasAvailableManaForFixedCosts(s, ctx, a)) return false;
   }
   const activationContext = context(s, sourceId, a.id, event);
+  const fixedMana = a.cost.filter(c => c.type === 'pay_mana' && typeof c.amount === 'number').reduce((sum, c) => sum + Number(c.amount), 0);
+  if (!Number.isSafeInteger(fixedMana) || fixedMana < 0 || player(s, activationContext.controllerId).mana < fixedMana) return false;
+  if (isAddToAttackRouteCandidate(a) && !hasAvailableManaForFixedCosts(s, activationContext, a)) return false;
+  if (a.effects.some(effect => {
+    if (effect.type !== 'transfer_vp_to_owner') return false;
+    const ownerId = card(s, sourceId).ownerPlayerId;
+    const amount = Number(effect.amount);
+    return ownerId !== activationContext.controllerId &&
+      (!Number.isSafeInteger(amount) || amount < 0 || player(s, activationContext.controllerId).vp < amount);
+  })) return false;
   if (isAcceptedCombatOpponentPowerVpRewardAbility(a, 'compiled')) return !faceUpEffectPlayLimitReached(s, activationContext, a);
   if (!a.conditions.every(c => condition(s, activationContext, c))) return false;
   return !faceUpEffectPlayLimitReached(s, activationContext, a);
@@ -1303,7 +1381,7 @@ function moveCard(s: GameState, id: string, zone: string): number {
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
-    if (runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+    if (runtime(s).cardState[id]) { runtime(s).cardState[id]!.active = false; delete runtime(s).cardState[id]!.boardLocationId; }
     clearTransientCardTransformState(s, id);
     clearReturnSilenceTransformForSource(s, id);
   }
@@ -1325,6 +1403,7 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     store.modeState.terrainMultipliers.push({
       playerId: ctx.controllerId,
       multiplier: Number(modifier.value ?? 2),
+      round: s.round.roundNumber,
       sourceCardId: ctx.sourceCardId,
       abilityId: ctx.abilityId,
       duration: str(modifier.duration) || 'this_round',
@@ -1334,6 +1413,14 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
   if (modifier.type !== 'power_bonus') reject('unsupported', 'Unsupported created modifier');
   const target = str(modifier.target ?? effect.target);
   const amount = numeric(s, ctx, modifier.amount ?? modifier.value ?? 0);
+  if (target === 'controller') {
+    if (modifier.duration !== undefined && modifier.duration !== 'this_round') reject('unsupported', 'Total-power adjustment supports only this round');
+    const r = runtime(s);
+    if (r.roundTotalPowerAdjustments.round !== s.round.roundNumber) r.roundTotalPowerAdjustments = { round: s.round.roundNumber, byPlayer: {} };
+    r.roundTotalPowerAdjustments.byPlayer[ctx.controllerId] = (r.roundTotalPowerAdjustments.byPlayer[ctx.controllerId] ?? 0) + amount;
+    r.events.push({ type: 'total_power_adjusted', playerId: ctx.controllerId, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, delta: amount });
+    return;
+  }
   const scope = target === 'this_card' ? { object: 'source_card' } : target === 'controller' ? { controller: 'self' } : {};
   runtime(s).ongoingEffects.push({
     id: nextId(s, 'created-modifier'),
@@ -1730,6 +1817,35 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       const count = calculated.value; if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid deck look count');
       const top = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').slice(0, count);
       top.forEach(c => moveCard(s, c.instanceId, str(effect.resultZone))); break;
+    }
+    case 'place_card_on_battlefield': {
+      if (!onlyRuleKeys(effect, ['type', 'cardId']) || !isBattlefield(s, p.locationId)) reject('invalid_placement', 'Field placement requires the controller battlefield');
+      const matches = s.cards.filter(c => c.definitionId === effect.cardId && c.ownerPlayerId === p.id && c.controllerPlayerId === p.id);
+      if (matches.length !== 1) reject('invalid_placement', 'Field placement requires one owned physical card');
+      const target = matches[0]!;
+      const d = definition(s, target.instanceId);
+      const fieldRule = d?.abilities.find(a => a.execution.mode === 'automatic' && a.kind === 'residual' &&
+        a.activation.trigger === 'on_card_played' && a.activation.opens === 'immediate' && onlyRuleKeys(a.activation, ['trigger', 'opens']) &&
+        !a.cost.length && !a.targets.length && !a.conditions.length && !a.creates.length && !a.ruleModifiers.length &&
+        !Object.keys(a.limit).length && !Object.keys(a.visibility).length &&
+        onlyRuleKeys(a.lifecycle, ['starts', 'duration', 'cleanup']) && a.lifecycle.starts === 'immediate' &&
+        a.lifecycle.duration === 'while_card_active' && a.lifecycle.cleanup === 'remain_active' &&
+        onlyRuleKeys(a.responseWindow, ['order', 'passBehavior']) &&
+        (!a.responseWindow.order || a.responseWindow.order === 'turn_order') &&
+        (!a.responseWindow.passBehavior || a.responseWindow.passBehavior === 'decline_this_window') &&
+        a.effects.length === 1 && a.effects[0]?.type === 'reverse_situation_and_event_power_modifiers' &&
+        a.effects[0].scope === 'players_at_this_battlefield' && onlyRuleKeys(a.effects[0], ['type', 'scope']));
+      if (!d || d.mode !== 'automatic' || d.cardType !== 'servant_skill' || d.cardFace.cost !== 0 || d.cardFace.basePower !== 0 ||
+          !fieldRule || !['skill', 'hand', 'deck', 'discard'].includes(target.zone)) reject('invalid_placement', 'Unsupported battlefield placement contract');
+      const playedRound = runtime(s).cardState[target.instanceId]?.playedRound ?? 0;
+      moveCard(s, target.instanceId, 'field');
+      runtime(s).cardState[target.instanceId] = { active: true, faceDown: false, playedRound, boardLocationId: p.locationId! };
+      // Install only the admitted continuous field rule. Placement is not play:
+      // no on_card_played event, true-name release, payment or play counters.
+      resolveExtendedEffect(s, p.id, fieldRule.effects[0]!, { ...context(s, target.instanceId, fieldRule.id) });
+      runtime(s).events.push({ type: 'card_placed', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+        cardInstanceId: target.instanceId, toZone: 'field', battlefieldId: p.locationId! });
+      break;
     }
     case 'move_card': {
       const selected = ctx.selections[str(effect.target)] ?? implicitCardTargets(s, ctx, effect.target);
@@ -3293,7 +3409,33 @@ export function isBattleEndSourceReturnSemantic(a: AuthoringAbility): boolean {
     (destination.owner === undefined || destination.owner === 'controller');
 }
 
+function isCommandSealMovementCandidate(a: AuthoringAbility): boolean {
+  return a.effects.some(e => e.type === 'move_player') && a.effects.some(e => e.type === 'adjust_command_seals');
+}
+function isCommandSealMovementSemantic(a: AuthoringAbility): boolean {
+  const origin = (c: RuleNode) => c.type === 'controller_at_one_of_locations' && onlyRuleKeys(c, ['type', 'locationIds']) &&
+    Array.isArray(c.locationIds) && c.locationIds.length === 2 && c.locationIds.includes('miyama_town') && c.locationIds.includes('shinto');
+  if (a.kind !== 'phase_action' || a.activation.phase !== 'action' || a.activation.opens !== 'controller_action_window' ||
+      !onlyRuleKeys(a.activation, ['phase', 'opens']) || a.conditions.length !== 2 || a.targets.length !== 1 ||
+      a.cost.length || a.creates.length || a.ruleModifiers.length || Object.keys(a.lifecycle).length || Object.keys(a.limit).length || Object.keys(a.visibility).length ||
+      !onlyRuleKeys(a.responseWindow, ['order', 'passBehavior']) ||
+      (a.responseWindow.order && a.responseWindow.order !== 'turn_order') ||
+      (a.responseWindow.passBehavior && a.responseWindow.passBehavior !== 'decline_this_window') ||
+      a.effects.length !== 3) return false;
+  const target = a.targets[0]!;
+  if (target.type !== 'location' || !onlyRuleKeys(target, ['id', 'type', 'count', 'conditions', 'constraints']) ||
+      !onlyRuleKeys(target.count, ['min', 'max']) || node(target.count).min !== 1 || node(target.count).max !== 1 ||
+      nodes(target.conditions).length !== 1 || !origin(nodes(target.conditions)[0]!) ||
+      nodes(target.constraints).length !== 1 || nodes(target.constraints)[0]!.type !== 'any_enabled_location' ||
+      !onlyRuleKeys(nodes(target.constraints)[0], ['type'])) return false;
+  const [record, seal, move] = a.effects;
+  return a.conditions.some(origin) && a.conditions.some(c => c.type === 'exists_target' && c.targetRef === target.id && onlyRuleKeys(c, ['type', 'targetRef'])) &&
+    record?.type === 'record_master_directive' && record.directive === 'move_from_shinto_or_miyama_to_any_location_ignore_engagement' && onlyRuleKeys(record, ['type', 'directive']) &&
+    seal?.type === 'adjust_command_seals' && seal.amount === -1 && seal.directive === 'spend_command_spell' && onlyRuleKeys(seal, ['type', 'amount', 'directive']) &&
+    move?.type === 'move_player' && move.player === 'controller' && move.to === target.id && onlyRuleKeys(move, ['type', 'player', 'to']);
+}
 export function isAnyLocationExceptWorkshopMovementCandidate(a: AuthoringAbility): boolean {
+  if (isCommandSealMovementCandidate(a)) return false;
   if (a.kind !== 'phase_action' || str(a.activation.phase) !== 'action' ||
     str(a.activation.opens) !== 'controller_action_window' || a.targets.length !== 1) return false;
   const target = a.targets[0]!;
@@ -4056,7 +4198,7 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
     const create = a.creates[0]!;
     const createdCardId = nextId(s, 'created');
     s.cards.push({
-      instanceId: createdCardId, definitionId: str(create.cardId), ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
+      instanceId: createdCardId, definitionId: canonicalDefinitionId(s, str(create.cardId)), ownerPlayerId: ctx.controllerId, controllerPlayerId: ctx.controllerId,
       zone: 'deck', visibility: { scope: 'owner_only', ownerPlayerId: ctx.controllerId }, generatedBy: ctx.sourceCardId,
     });
     runtime(s).events.push({
@@ -4125,6 +4267,15 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   
   installOngoing(s, ctx, a);
   executeEffects(s, ctx, [...a.effects, ...a.creates]);
+  if (definition(s, ctx.sourceCardId)?.cardType === 'command_spell' &&
+      a.effects.length === 2 && a.effects[0]?.type === 'record_master_directive' &&
+      ['gain_2_vp_if_win_this_round', 'gain_2_vp_for_each_battle_won_this_round'].includes(str(a.effects[0].directive)) &&
+      a.effects[1]?.type === 'adjust_command_seals' && a.effects[1].amount === -1 &&
+      a.creates.length === 1 && node(a.creates[0]?.modifier).type === 'power_bonus' &&
+      node(a.creates[0]?.modifier).target === 'controller' && node(a.creates[0]?.modifier).amount === 2) {
+    (runtime(s).commandSpellVictoryRewards ??= []).push({ controllerId: ctx.controllerId, sourceCardId: ctx.sourceCardId,
+      abilityId: ctx.abilityId, round: s.round.roundNumber, perBattle: a.effects[0].directive === 'gain_2_vp_for_each_battle_won_this_round', settledResults: [] });
+  }
 }
 
 function stageDelayedActivation(s: GameState, trigger: TriggeredAbility, ability: AuthoringAbility, event: AbilityEvent): void {
@@ -4191,6 +4342,18 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
   settlePendingRulerSealRewards(s, event);
+  if (event.type === 'after_controller_wins_battle' && event.playerId && event.battleResult?.winners.includes(event.playerId)) {
+    const resultId = event.resultId ?? event.id;
+    for (const reward of r.commandSpellVictoryRewards ?? []) {
+      if (reward.round !== s.round.roundNumber || reward.controllerId !== event.playerId || reward.settledResults.includes(resultId) ||
+          (!reward.perBattle && reward.settledResults.length)) continue;
+      reward.settledResults.push(resultId);
+      const winner = player(s, reward.controllerId), before = winner.vp;
+      winner.vp += 2;
+      r.events.push({ type: 'command_spell_victory_reward', playerId: winner.id, sourceCardId: reward.sourceCardId,
+        abilityId: reward.abilityId, resource: 'victory_points', before, after: winner.vp, delta: 2, resultId });
+    }
+  }
   try { settlePendingSourceCardReturns(s, event); } catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Source-card return failed'); }
   if (event.type === 'after_battle_result_determined') recordCurrentRoundCombatWinsFromBattleResult(s, event);
   if (event.type === 'round_end') consumeDelayedActivations(s, event);
@@ -4252,10 +4415,16 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
   if (!Number.isInteger(round) || round < s.round.roundNumber) reject('invalid_round', 'Round cannot move backwards');
   const copy = structuredClone(s);
   if (round > s.round.roundNumber) {
+    const transient = copy as unknown as { activeStatuses?: Array<Record<string, unknown>>; modeState?: Record<string, unknown> };
+    if (transient.activeStatuses) transient.activeStatuses = transient.activeStatuses.filter(status =>
+      status.duration !== 'this_round' && (typeof status.expiresAtRound !== 'number' || status.expiresAtRound > round));
+    if (Array.isArray(transient.modeState?.terrainMultipliers)) transient.modeState.terrainMultipliers = transient.modeState.terrainMultipliers.filter((value: unknown) =>
+      node(value).duration !== 'this_round');
     runtime(copy).movementDistanceThisRound = {};
     runtime(copy).battlefieldsPassedOrStayedThisRound = {};
     runtime(copy).pendingRulerSealRewards = runtime(copy).pendingRulerSealRewards.filter((reward) => reward.round >= round);
     runtime(copy).roundTotalPowerAdjustments = { round, byPlayer: {} };
+    if (runtime(copy).commandSpellVictoryRewards) runtime(copy).commandSpellVictoryRewards = runtime(copy).commandSpellVictoryRewards!.filter(reward => reward.round >= round);
     runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
     runtime(copy).pendingPreBattleDefeats = [];
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };

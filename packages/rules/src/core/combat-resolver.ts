@@ -242,7 +242,12 @@ function reverseSituationAndEventIfNeeded(
   if (!Array.isArray(entries)) return breakdowns;
   const reversed = entries.some((entry) => {
     if (!entry || typeof entry !== "object") return false;
-    const candidate = entry as { locationId?: string; exemptPlayers?: string[] };
+    const candidate = entry as { locationId?: string; exemptPlayers?: string[]; sourceCardId?: string };
+    if (candidate.sourceCardId) {
+      const source = state.cards.find(c => c.instanceId === candidate.sourceCardId);
+      const active = state.abilityRuntime?.cardState[candidate.sourceCardId];
+      if (!source || !['field', 'attack_area'].includes(source.zone) || active?.active !== true || active.faceDown || active.boardLocationId !== candidate.locationId) return false;
+    }
     return candidate.locationId === battlefieldId && !candidate.exemptPlayers?.includes(participant.playerId);
   });
   if (!reversed) return breakdowns;

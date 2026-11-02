@@ -1,0 +1,333 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-ACCEPT-06-REPAIR",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/690#issuecomment-6567172746",
+  "candidateSha": "d6fabffa9aa6e1ea70a7275610316043a09f03de",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "scope": "Bounded source acceptance; exact new final-head fullCI pending. No transfer of old1855PASS.",
+  "publication": "Coordinator repository account publishes actual independent Agent evidence; not human approval.",
+  "independentR4": {
+    "taskId": "A-ACCEPT-06-REPAIR-INDEPENDENT-R4",
+    "reviewedUtc": "2026-11-02T01:50:37.178885+00:00",
+    "candidateSha": "d6fabffa9aa6e1ea70a7275610316043a09f03de",
+    "parentSha": "f725792729eb5b2cef59c06bfcaa6335451b8b92",
+    "decision": "SOURCE_ACCEPTED_CANDIDATE_PENDING_NEW_FULL_CI",
+    "findings": [],
+    "method": "Read-only two-file delta, canonical predicate and admitted selector review plus existing producer evidence; no tests rerun and no source/old-report modifications.",
+    "semanticAssessment": [
+      "Zone guard duplicates a necessary condition of unchanged canonical isActiveCardSource.",
+      "Exact compiled admitted ability selector remains unchanged, including envelope, phase/cost/conditions/targets/effects, lifecycle, scope, execution and allowed-operation boundaries.",
+      "Current active controller and same current target battlefield are still checked, now before canonical source lookup. Target active/location/enabled-battlefield guards remain unchanged.",
+      "Candidates still execute canonical isActiveCardSource: current physical zone, active true and faceDown not true remain mandatory. No cached source list, controller, location or active status; no frozen state.",
+      "Predicate conjunction reordered over plain valid state and unique physical instance IDs. No new semantics for malformed duplicate-ID state or side-effectful runtime getters certified.",
+      "No test selection, deadlines, timeout thresholds or test exclusions changed in R4 diff."
+    ],
+    "newTest": {
+      "name": "rejects unrelated and off-board face-up cap sources before reading runtime state",
+      "red": {
+        "passed": 0,
+        "failed": 1,
+        "selectionSkipped": 16,
+        "failure": "expected 100 to be +0",
+        "cause": "old canonical check reads cardState for 100 irrelevant/off-board cards"
+      },
+      "green": {
+        "passed": 81,
+        "failed": 0,
+        "skipped": 0,
+        "testPassed": true
+      },
+      "scope": "Read-budget regression against unrelated basic.luck physical cards in deck/attack_area; existing FB2-44 tests supply positive and boundary behavior. Not a measured full-match latency assertion."
+    },
+    "producerEvidence": {
+      "focused81": "FB2-36, FB2-44, MatchSession, seven-roster combinations and repair: 81 PASS / 0 FAIL / 0 SKIP",
+      "node20Targeted": {
+        "passed": 2,
+        "failed": 0,
+        "selectionSkipped": 38,
+        "durationsMs": [
+          7072.179700000001,
+          19109.631400000002
+        ]
+      },
+      "profile": {
+        "totalSamples": 5781,
+        "hasLiveFaceUpCardsPerRoundLimitInclusiveSamples": 592,
+        "allFaceUpModuleInclusiveSamples": 623,
+        "meaning": "Confirms candidate lookup hotspot; sampling is not a deterministic performance proof."
+      },
+      "bindingLimit": "Vitest JSON artifacts do not embed source SHA, command or natural process exit code. Reviewed as producer artifacts alongside observed candidate HEAD; no independent replay.",
+      "browserR4": {
+        "candidate": "d6fabffa9aa6e1ea70a7275610316043a09f03de",
+        "headEndSame": true,
+        "statusStartAndEndClean": true,
+        "naturalExitCode": 0,
+        "passed": 2,
+        "payments": [
+          1,
+          3
+        ],
+        "realHttpWsFreshServerRestore": true,
+        "meaning": "Receipt/log reviewed; bounded browser evidence, not final full CI."
+      }
+    },
+    "remoteHistoricalFailure": {
+      "head": "5904a991",
+      "testResult": "1852 PASS / 2 FAIL / 1 historical SKIP",
+      "retainedOriginalLog": true,
+      "meaning": "MatchSession handled-reason deadline and seven-human full-match 30000ms timeout remain actual remote failure evidence; never relabeled PASS."
+    },
+    "newFullCi": "PENDING / NOT_INDEPENDENTLY_REVIEWED. Old 82ac9a0d 1855 PASS is historical only and is not new-head credit.",
+    "limits": [
+      "No claim remote performance gate resolved; await actual new-head complete CI and preserve natural exits.",
+      "No complete ability/printed-clause/combination/roster acceptance, no migration credit.",
+      "Public Sakura/TLS network NOT_RUN; original partial/no-witness/Shinji exclusion remain.",
+      "No merge authorization; PR689 remains subject to existing OPEN instruction; reservation GRANTED not released."
+    ],
+    "observedHead": "d6fabffa9aa6e1ea70a7275610316043a09f03de",
+    "observedStatus": "",
+    "evidenceSha256": {
+      "github-5904a991-failed.log": "51d61d0447f29d081d6f9847936e910e683ed5e9bb8297027c7c95ffe520dba5",
+      "perf-before/scan-red.json": "a3c452a24ff872ba1152c6b2fbb12a0682177c97ede42426c8a71a2ea752ce37",
+      "perf-before/scan-red.log": "741b9dfab114b3bc3efd5485a480b124be6145d84658616f8b81e7c97c091567",
+      "perf-scan-green.json": "729d973ade2248e85c10770b81dce71537e2ea44e5c85c178c9ed86bd282bb3c",
+      "perf-scan-green.log": "81eff97e0829182418caf51e5f3d2bb2cf96bdf25b6f9483bb678f1056366ec3",
+      "perf-node20/tests.json": "02505c37b77a2690bfcdd5b75fe914fbaecd3f808feea4011275193afd91c48c",
+      "perf-node20/tests.log": "54f8f1366a9b7a8f4516e6ed279024d20abb6af0d5a6a61923ffc3c24f9cf776",
+      "perf-before/CPU.20261102.094350.21772.0.001.cpuprofile": "19be923f35a0bccbe948eead6288d94474bce76c7968d78bc916cd612226711a",
+      "perf-before/direct.log": "16453906e0dac6232065f07bfbb4297a99c6c10fd5d1b8fd4b92aabca117330e",
+      "perf-before/direct.mts": "3986f000b23e803fb975df2ad573c6778ae19714cf8dd688dda13d471ac7b023",
+      "browser-r4-receipt.json": "867a128828404d48e936ba4fd36efb0a1ab77ee6805fc4995ed11a63880a5e77",
+      "browser-r4.log": "7f7c79d80940f0f818503bbf709f950c66df2015e023c24b2f1550a5ab24a62a"
+    }
+  },
+  "historical82acAcceptance": {
+    "schemaVersion": "fd-phase3-review-attestation-v1",
+    "taskId": "P3-A-ACCEPT-06-REPAIR",
+    "reviewer": "github:binchen648",
+    "reviewThread": "https://github.com/binchen648/fd/pull/690#pullrequestreview-5731261496",
+    "candidateSha": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "publication": "Coordinator publishes independent agent artifacts via repository account; github reviewer is publication identity, not human approval or the source reviewer. COMMENT only.",
+    "independentSourceReview": {
+      "taskId": "A-ACCEPT-06-REPAIR-FINAL-INTEGRATED",
+      "reviewedUtc": "2026-11-01T14:32:36.988345+00:00",
+      "candidateSha": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+      "baseSha": "8a67c5ab2d88bccdafd038f1d7d1e3fafb75506e",
+      "technicalMain": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+      "reviewedDeltaBase": "b50fe36a324144b94441250381d3052af1cd69e6",
+      "decision": "NO_NEW_TECHNICAL_BLOCKER_FOUND_PENDING_FINAL_FULL_CI",
+      "workingTreeObservedClean": true,
+      "headObserved": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+      "productionEditsByReviewer": false,
+      "newTestsByReviewerOnFinalHead": "NOT_RUN to avoid contention with final full CI; final delta read-only review + producer artifacts examined",
+      "findings": [],
+      "reviewConclusions": [
+        "Public battlefieldTerrain exposes only public map bonuses and public player slot ids; assignedTerrainOccupants preserves holes and filters non-active/non-present players. No hidden hand, credential or private choice fields added.",
+        "Remote and local adapters use authoritative terrain bonuses/occupant indices; MatchTable preserves empty high slots and renders no-slot players in overflow. Payment1/3 screenshots visually show correct+1/+3 slot, respectively, with+5 empty.",
+        "Static aura optimization does not alter admitted selector guards: direct pack lookup equals definition lookup for physical s.cards. Cheap predicate rejects noncandidate definitions before active test; phase/scope/lifecycle rejection logic remains in place.",
+        "Historical archive assertion revisions are targeted: FM01 validates unique selected identity and lineage instead of banning later unrelated cards; Kayneth normalizes only one explicitly authorized scope text and retains frozen hash for all other bytes.",
+        "Kintoki now asserts first return already applied before optional second return and additionally preserves second-card zone and mana/VP checks; matches existing sequential resolution rather than disabling behavior assertion.",
+        "Asset-loader warning remains asserted using isolated missing-source workspace, without assuming local assets absent; blocking-issues check remains.",
+        "Command-seal regression fixture moved to canonical allowed battlefield origin; actual origin rejection boundaries remain elsewhere.",
+        "Action-turn regression handles projected optional response via Session, preserves scored history, uses normal pump and keeps round_end/no-double-scoring assertion.",
+        "Original natural-game30000ms timeout and performance threshold remain unchanged; no disabled/skipped test or timeout relaxation found in delta."
+      ],
+      "producerArtifactEvidence": {
+        "focusedRecovery": {
+          "passed": 85,
+          "failed": 0,
+          "sourceBinding": "Artifact reviewed; no embedded sourceSha in Vitest JSON, not independently reexecuted on final head."
+        },
+        "flowRecovery": {
+          "passed": 41,
+          "failed": 0,
+          "sourceBinding": "Artifact reviewed; same provenance limit."
+        },
+        "browser": {
+          "passed": 2,
+          "payments": [
+            1,
+            3
+          ],
+          "realHttpWs": true,
+          "freshServerProcess": true,
+          "staleRevisionRejected": true,
+          "durableRestoreAndPageReload": true,
+          "boundedFixture": true,
+          "scope": "Bounded Gate C using real production Inferno activation after explicit state setup; not natural whole-game browser acceptance or public-network proof.",
+          "sourceBinding": "Reviewed checked-in final test and producer logs/results/screenshots; artifacts themselves omit candidate SHA. Coordinator must preserve run/source provenance in final receipt."
+        },
+        "historicalFullCi": {
+          "source": "aab32073",
+          "naturalExitCode": 1,
+          "passed": 1849,
+          "failed": 6,
+          "rpcErrors": 0,
+          "meaning": "Historical failure retained, never promoted to final PASS."
+        },
+        "finalFullCi": {
+          "source": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+          "state": "RUNNING_OR_AWAITING_FINAL_RECEIPT",
+          "observedLog": "full-ci-82ac9a0d.log present; final JSON absent at review",
+          "passClaim": false
+        }
+      },
+      "remainingGateConditions": [
+        "Final exact SHA full npm run test:ci must naturally exit0; running/partial logs are not PASS.",
+        "If final candidate changes production/test files, rebind relevant review and CI evidence.",
+        "Human merge approval still required; no new merge authorization, PR689 must remain OPEN under existing instruction."
+      ],
+      "coverageLimits": [
+        "R1/R2/R3 bounded reviews retained individually; their counts are not added into full-roster acceptance.",
+        "109 scoped identities and118 pack identities remain inventory, not execution/printed-clause credit.",
+        "Eresh deployment-location and action-stage-only exemption clauses remain outside whole-card acceptance.",
+        "No claim full game/all combinations/all hidden-information flows, all restores or Sakura/public HTTPS/WSS verified.",
+        "Independent final review does not replace fullCI or user approval."
+      ],
+      "evidenceSha256": {
+        "browser-r3-slots.log": "1f7b82a4355d4995cd395a70f4ca6ac6791a0ba5e5ace7e4c7736c743574ddb7",
+        "ci-recovery-focused.json": "f4e00b6de28ad97ce9f30363bc9ef249a6d41244cd0428c50fd7fee3452f9ceb",
+        "ci-recovery-flow.json": "aa5838db5721afa03cfa9e9df206fd146734892346a99917c0babf50bc0b833e",
+        "full-ci-aab32073.json": "e3aaa49e7055ecc26cd42e89818196a7016382f4dec2897f4f0f00c405ba89a9",
+        "full-ci-aab32073.log": "1d3f86d6301bffd1d494fe483e15b54b69792e19c12a91412151ceea8f221cbd",
+        "browser-r3/fd-seven-roster-repair-Inf-045cf-ives-a-fresh-server-process/result.json": "f4fc8c9180051b91a2b9bc77b9e86e18c51a7fb3f88f0ac0a47d44a5194d6041",
+        "browser-r3/fd-seven-roster-repair-Inf-4a483-ives-a-fresh-server-process/result.json": "fe9f44ea19ac546a930072a6e36391781e9f05c071cb555bc5eac7a35ce41403",
+        "browser-r3/fd-seven-roster-repair-Inf-045cf-ives-a-fresh-server-process/inferno-paid-recovered.png": "3a5ce40169c803742522ae3da61b9995417b5299f2ff8ff1b8257e709c68a36d",
+        "browser-r3/fd-seven-roster-repair-Inf-4a483-ives-a-fresh-server-process/inferno-paid-recovered.png": "a7ceec6f382c03d89ea4ec0875a3868616c53d8b9128f9cc1169f580f5e8e5a7"
+      }
+    },
+    "independentFinalEvidenceReview": {
+      "taskId": "A-ACCEPT-06-REPAIR-FINAL-INDEPENDENT-ADDENDUM",
+      "reviewedUtc": "2026-11-02T01:34:09.660831+00:00",
+      "candidateSha": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+      "technicalMain": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+      "decision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+      "scope": "Read-only final receipt, statistics, provenance and artifact consistency review supplementing unchanged final-integrated-independent.json; no test rerun, new source audit, or production edit.",
+      "findings": [],
+      "finalCi": {
+        "receiptNaturalExitCode": 0,
+        "total": 1855,
+        "passed": 1855,
+        "failed": 0,
+        "skipped": 0,
+        "todo": 0,
+        "assertionCountIndependentlyCounted": 1855,
+        "candidateAndEndHeadMatch": true,
+        "recordedStartAndEndClean": true
+      },
+      "supplemental": {
+        "receiptExitCodes": {
+          "client-suite": 0,
+          "server-suite": 0,
+          "client-build": 0,
+          "browser-slots": 0,
+          "authoring-adjacent": 0
+        },
+        "clientPassed": 63,
+        "serverPassed": 24,
+        "browserPassed": 2,
+        "authoringPassed": 23,
+        "authoringActualFiles": [
+          "fm01-source-play-basic-draw-authoring.test.ts",
+          "kintoki-authoring.test.ts"
+        ],
+        "typecheckExitCode": 0,
+        "contentValidateExitCode": 0,
+        "sourceAssetsLog": "7 masters, 7 servants, 20 events, 0 blocking issues; no standalone natural-exit receipt field independently available in reviewed files"
+      },
+      "generatedContent": {
+        "originalAssetsPresentExitCode": 1,
+        "originalFailureRetained": true,
+        "exactArchiveCommit": "82ac9a0deeee7fa6d15a21a989f0d16ff44b9c4d",
+        "unmodifiedNoLocalAssetsCommandExitCode": 0,
+        "threeGeneratedArtifactsByteExactAcrossArchiveSnapshotAndWorktree": true,
+        "differencePaths": 94,
+        "removedNonblockingSourceAssetWarnings": 93,
+        "entityIssueCodeDifferencePaths": 93,
+        "meaning": "Assets-dependent evidence-report metadata differs; fixture and content-library hashes unchanged. No promotion of original exit1 to PASS."
+      },
+      "browser": {
+        "payments": [
+          1,
+          3
+        ],
+        "boundedFixture": true,
+        "realProductionAbilityActivation": true,
+        "realHttpWs": true,
+        "freshProcessRestore": true,
+        "bothErrorsEmpty": true,
+        "screenshots": "Exist and hash bound; no new visual inspection in this addendum. Prior independent visual review preserved."
+      },
+      "naturalGameArtifact": {
+        "stateInjected": false,
+        "steps": 679,
+        "distinctAbilityIds": 19,
+        "restores": 1,
+        "round": 11,
+        "stopReason": "match_complete",
+        "winner": "p6",
+        "meaning": "Producer artifact checked; no independent rerun and no complete ability-clause credit."
+      },
+      "witnessMatrix": {
+        "selectedIdentities": 109,
+        "knownFailedRowsRepaired": 22,
+        "allReferencedCurrentWitnessStatusesMatchFinalCi": true,
+        "originalMatrixHashMatches": true,
+        "rawPreviousCoverageStatusCounts": {
+          "NO_EXECUTION_WITNESS_IN_PRIMARY": 12,
+          "BOUNDED_SOURCE_ASSERTIONS_NOT_CURRENT_PASS": 77,
+          "INSUFFICIENT_EFFECT_WITNESS": 3,
+          "None": 17
+        },
+        "historicalCoverageBoundary": "Original 75 partial / 11 no-witness and Shinji exclusion remain uncredited; raw previousCoverageStatus field counts are a separate categorization and are not equated to those historical buckets."
+      },
+      "provenance": {
+        "all12ProducerReceiptHashesMatch": true,
+        "currentObservedHeadMatches": true,
+        "currentStatus": "Two reservation manifests and task manifest modified; one report untracked, all docs paths. Runtime receipt clean status is historical run status, not current docs status.",
+        "reviewerChangedSourceOrOldReports": false,
+        "testsRerun": false
+      },
+      "clarifications": [
+        "94 diff paths correspond to 93 nonblocking SOURCE_ASSET_UNVERIFIED warnings and 93 entity issueCodes changes, not 94 warnings.",
+        "Authoring command names Medusa but log reports only FM01 and Kintoki, 23 tests in two files; no Medusa execution credit."
+      ],
+      "limits": [
+        "No whole ability, whole printed clause, all combinations, all 943+1, or all roster PASS.",
+        "Original partial/no-witness conditions and Shinji master-change exclusion persist; no migration credit.",
+        "Public-network Sakura/TLS HTTPS/WSS NOT_RUN.",
+        "No new merge approval; PR 689 must remain OPEN under existing instruction. PR state not remotely rechecked in this addendum.",
+        "Reservation remains GRANTED, source frozen; no implicit release.",
+        "Bounded IMPLEMENTATION_ACCEPTED_CANDIDATE only; final-integrated-independent original review remains immutable."
+      ],
+      "evidenceSha256": {
+        "full-ci-82ac9a0d-receipt.json": "f9baad5119c13c4bd0422f64217e4a69ec06471b2bd1313b74a3b372abdcec0f",
+        "full-ci-82ac9a0d.json": "eae665745f10d8e42ad34577d610bd1634c41bfe6fe694909996cd97c1ee2f9c",
+        "full-ci-82ac9a0d.log": "554cacf5ff1c6d890e43afee5adefe2432703a1e960f06af579b7dce60fff5c9",
+        "final-supplemental-receipt.json": "aa06e1f37d4a59bbde073b1110cd59ea98df438cb49cfd70fb1320e92c922fde",
+        "final-supplemental-rest-receipt.json": "07005fbb91a8975d88d67ff9079be09a482da52ce5e5ad307908cc8579ec598a",
+        "generated-no-local-assets-receipt.json": "e73e55be376491de64a03aee05461ac0c7253c5851ecff49feebb4200cab95aa",
+        "final-generated-no-local-assets.log": "d19937d8604ea2bf6945c2783d712fd006b05158c35c631eb8a0f1cdb844ce5b",
+        "generated-asset-presence-diff.json": "5e597cc2f2b793dcaceac179a004b6f62d46b634a08708e7b94834c284ecc2a1",
+        "final-source-assets.log": "e61791dc2adc8bc8e08d8aab75e44cbf27d40d3e4cea44e96d6c056c4c601861",
+        "active-seven-game.json": "abc2c9ecda9b7e123e71f946be7ba0ba0d79678ff4bac4b661d92c5e6a4cf212",
+        "repair-witness-matrix.json": "8e5cc75c9c513001ea4bd316b06931312331409479c9ea945efb12a4302ecff8",
+        "final-integrated-independent.json": "7e624a206ecf83a6dfb4e446939fec4644d1b331d66f401a6fd92da8c9baf4b6",
+        "browser-final/.last-run.json": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+        "browser-final/fd-seven-roster-repair-Inf-045cf-ives-a-fresh-server-process/inferno-paid-recovered.png": "7ad35e1e383ffc14986b5651bcae158eb4a9d5f45680680bb1d4c47d7d0de59e",
+        "browser-final/fd-seven-roster-repair-Inf-045cf-ives-a-fresh-server-process/result.json": "f4fc8c9180051b91a2b9bc77b9e86e18c51a7fb3f88f0ac0a47d44a5194d6041",
+        "browser-final/fd-seven-roster-repair-Inf-4a483-ives-a-fresh-server-process/inferno-paid-recovered.png": "59b028a57c9a1f458157442af72c8363208ac7d9557986a8dbe1dd1bce0038a0",
+        "browser-final/fd-seven-roster-repair-Inf-4a483-ives-a-fresh-server-process/result.json": "fe9f44ea19ac546a930072a6e36391781e9f05c071cb555bc5eac7a35ce41403"
+      }
+    },
+    "producerReceiptSha256": "b3d0ef17c0d0d49dd54835a7128595eefed02a379e509bc280b63a56da388aa0",
+    "humanMergeApproval": false,
+    "migrationCreditDelta": 0,
+    "overallGameAcceptance": false
+  },
+  "humanMergeApproval": false,
+  "overallGameAcceptance": false,
+  "migrationCreditDelta": 0
+}

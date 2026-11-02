@@ -80,7 +80,7 @@ describe('Kintoki evidence-backed archive', () => {
     expect(rules.projectAbilityState(revealState, 'p2').players[0]!.servantPackage?.id).toBe('servant.kintoki');
   });
 
-  it('resolves Golden Eater by collecting targets before paying and counting actual moved Golden Impacts', () => {
+  it('settles Golden Eater first return before the optional paid second return and counts actual moved cards', () => {
     const s = setup();
     s.players[0]!.locationId = 'miyama_town';
     const eater = add(s, skill(3));
@@ -96,7 +96,10 @@ describe('Kintoki evidence-backed archive', () => {
     let decision = rules.projectAbilityState(s, 'p1').pendingDecision!;
     expect(decision.candidates).toEqual(expect.arrayContaining([firstImpact, secondImpact]));
     expect(rules.dispatchAbilityCommand(s, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: [firstImpact] }).ok).toBe(true);
-    expect(s.cards.find(c => c.instanceId === firstImpact)!.zone).toBe('removed_from_game');
+    expect(s.cards.find(c => c.instanceId === firstImpact)!.zone).toBe('skill');
+    expect(s.cards.find(c => c.instanceId === secondImpact)!.zone).toBe('removed_from_game');
+    expect(s.players[0]!.vp).toBe(2);
+    expect(s.players[0]!.mana).toBe(7);
 
     decision = rules.projectAbilityState(s, 'p1').pendingDecision!;
     expect(decision.min).toBe(0);
