@@ -1,3 +1,4 @@
+import { hasLiveFaceUpCardsPerRoundLimit } from '../../src/ability/face-up-cards-per-round';
 import { describe, expect, it } from 'vitest';
 import { processAbilityEvent } from '../../src/ability/interpreter';
 import { resolveBattlefield, projectCurrentPlayerPowers } from '../../src/core/combat-resolver';
@@ -6,6 +7,19 @@ import { restoreMatchSession } from '../../src/match-session';
 import { activate, active, card, dispatch, fixture, playPair, player, rejectAtomically } from './seven-roster-test-helpers';
 
 describe('A-ACCEPT-06 repair permission and payment boundaries', () => {
+  it('rejects unrelated and off-board face-up cap sources before reading runtime state', () => {
+    const { session, playerId, sourceId } = fixture('master.kayneth.skill.double-master');
+    const prototype = card(session, sourceId);
+    let reads = 0;
+    for (let i = 0; i < 100; i++) {
+      const id = `irrelevant-face-up-source-${i}`;
+      session.state.cards.push({ ...prototype, instanceId: id, definitionId: 'basic.luck', zone: i % 2 ? 'deck' : 'attack_area' });
+      Object.defineProperty(session.state.abilityRuntime!.cardState, id, { configurable: true, enumerable: true,
+        get() { reads++; return { active: true, faceDown: false }; } });
+    }
+    expect(hasLiveFaceUpCardsPerRoundLimit(session.state, playerId)).toBe(false);
+    expect(reads).toBe(0);
+  });
   it('Eresh absent Protection placement activates its fixed field effect without pretending that it was played', () => {
     const { session, playerId, sourceId } = fixture('servant.ereshkigal.skill.sc-ereshkigal-3');
     active(session, sourceId);
