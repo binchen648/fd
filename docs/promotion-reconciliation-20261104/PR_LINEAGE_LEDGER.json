@@ -395176,7 +395176,18 @@
           672,
           674,
           676
-        ]
+        ],
+        "candidateCommitAssessment": {
+          "candidateSha": "96d3951b5b2d5bf8a3e0da35a32006e6bf50125e",
+          "candidateCommitParent": "95fb965063fae404b836eae2b908c8ae2df6aae5",
+          "candidateCommitPaths": [
+            "docs/phase3/arthur-sc3-scoped-candidate-report.md",
+            "docs/phase3/arthur-sc3-scoped-candidate.json"
+          ],
+          "candidateCommitIsAncestorOfPr680Head": true,
+          "pr680HeadSha": "37bfa4335119ef51904e21b46a1939393d8b9af7",
+          "reviewFinding": "The named candidate commit is a documentation/JSON artifact point; it does not itself carry Runtime/Content/Data implementation. PR #680 and #681 effective deltas remain documentation/evidence only."
+        }
       },
       "currentMain": {
         "exactHeadOrMergeAnchor": null,
@@ -395225,7 +395236,11 @@
           }
         ],
         "labels": [],
-        "requestedReviewers": []
+        "requestedReviewers": [],
+        "explicitCandidateShas": [
+          "96d3951b5b2d5bf8a3e0da35a32006e6bf50125e",
+          "37bfa4335119ef51904e21b46a1939393d8b9af7"
+        ]
       },
       "ci": {
         "latestHeadStatusRollup": null,
@@ -395928,7 +395943,18 @@
           672,
           674,
           676
-        ]
+        ],
+        "candidateCommitAssessment": {
+          "candidateSha": "96d3951b5b2d5bf8a3e0da35a32006e6bf50125e",
+          "candidateCommitParent": "95fb965063fae404b836eae2b908c8ae2df6aae5",
+          "candidateCommitPaths": [
+            "docs/phase3/arthur-sc3-scoped-candidate-report.md",
+            "docs/phase3/arthur-sc3-scoped-candidate.json"
+          ],
+          "candidateCommitIsAncestorOfPr680Head": true,
+          "pr680HeadSha": "37bfa4335119ef51904e21b46a1939393d8b9af7",
+          "reviewFinding": "The named candidate commit is a documentation/JSON artifact point; it does not itself carry Runtime/Content/Data implementation. PR #680 and #681 effective deltas remain documentation/evidence only."
+        }
       },
       "currentMain": {
         "exactHeadOrMergeAnchor": null,
@@ -395966,7 +395992,11 @@
           }
         ],
         "labels": [],
-        "requestedReviewers": []
+        "requestedReviewers": [],
+        "explicitCandidateShas": [
+          "96d3951b5b2d5bf8a3e0da35a32006e6bf50125e",
+          "37bfa4335119ef51904e21b46a1939393d8b9af7"
+        ]
       },
       "ci": {
         "latestHeadStatusRollup": null,
@@ -396239,5 +396269,6 @@
       "classificationRationale": "Distinct documentation/evidence diff; keep as provenance, not a functional Promotion PR by itself.",
       "promotionReady": false
     }
-  ]
+  ],
+  "promotionReadinessDefinition": "promotionReady is false for every historical PR in this audit. It is reserved for a newly reconstructed final Promotion candidate with current-main ancestry, closed dependencies, authorized scope, applicable checks, behavioral tests, and formal independent GitHub review; historical PR metadata alone never sets it true."
 }
