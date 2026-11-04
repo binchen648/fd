@@ -11,6 +11,10 @@
 
 三个路径计数集合有重叠。下列逐条记录包含全部 393 条 BLOCKED PR 的独立增量路径和原因。
 
+## 产品增量与写入权限交叉
+
+账本中 345 条 `product/runtime/content/data` BLOCKED 增量全部触及 forbidden 或 A-RECOVER-04 reserved 路径：343 条触及 forbidden，82 条触及 reserved，80 条同时触及两者；263 条仅 forbidden，2 条仅 reserved，0 条不触及这两类路径。因此当前没有权限范围内的产品增量可安全重放。相关 Owner 授权或释放后，仍需从届时最新 main 重做语义和行为审查。
+
 ## 当前授权和 Owner
 
 - 当前 manifest `docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json` 仍标 active `A-RECOVER-04`, state `GRANTED`；Owner 为 Global Technical Lead / Product A Builder `/root`。具体资源及 26 个 reserved files 见机器 ledger 和 `A-RECOVER-04.json`。

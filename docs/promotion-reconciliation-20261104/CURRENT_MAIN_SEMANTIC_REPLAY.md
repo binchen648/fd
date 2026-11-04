@@ -8,6 +8,10 @@
 
 没有将任何旧 PR 整包 cherry-pick，也没有修改生产代码。结构和依赖审计没有找到已审查、授权允许、依赖闭合且可直接在当前 main Promotion 的技能增量。没有证明 main 包含的功能继续标 `BLOCKED`；这不等于这些功能已完成。
 
+### 产品增量权限扫描
+
+账本中 345 条 `product/runtime/content/data` BLOCKED 增量全部触及至少一项当前禁止路径或 A-RECOVER-04 reservation：343 条触及 forbidden 路径，82 条触及 reserved 路径，80 条同时触及两类；即 263 条仅触及 forbidden、2 条仅触及 reservation、0 条不触及这两类路径。该计数来自每条增量路径与当前 task manifest 的逐项交叉，不是测试结果。当前没有可在本任务权限内重放的产品类历史增量；待 Owner 授权/释放后必须重新从当时最新 main 审查。
+
 | 分类 | 数量 | 当前处理 |
 |---|---:|---|
 | ALREADY_INCLUDED | 20 | 精确 anchor 且触及文件未变化，不重放。 |
