@@ -11,8 +11,8 @@
 | `ALREADY_INCLUDED` | 20 | 当前 main 有精确 head/merge anchor，且锚点触及文件无后续内容变化。仅证明文件延续，不代表语义验收。 |
 | `DUPLICATE` | 8 | 重复实现/相同 Tree 或只增加文档证据；证据文件仍完整记录。 |
 | `SUPERSEDED` | 110 | A-sync/Review/accounting/evidence PR 无独立产品实现增量；关联 Candidate 和 main 状态分开记录。 |
-| `VALID_DELTA` | 139 | 124 条文档/证据/审计素材，15 条来源审计工具/测试差异；不等于已验收的技能 Promotion。 |
-| `BLOCKED` | 378 | 受权限、main 后续变更或证据缺口阻塞；不推定保留/通过。 |
+| `VALID_DELTA` | 124 | 仅文档/证据/审计素材；不等于已验收的技能 Promotion。 |
+| `BLOCKED` | 393 | 包含受权限、main 后续变更、证据缺口及来源审计工具所需 data 输入缺失；不推定保留/通过。 |
 | `REJECTED` | 0 | 没有充分证据把任何 PR 归为应拒绝。 |
 | **合计** | **655** | 目标作者的全部历史 PR。 |
 
@@ -2596,7 +2596,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/43。
 - Base `0ed2d4113e060c3fc41d08852a617e2e5c2eeedd` (`codex/s-p3-source-evidence-chaos-r1`); Head `1a6c44172cfa38974c6fe0e724f694f064054451` (`codex/a-p3-chaos-source-evidence-audit-r1`); Merge Base `0ed2d4113e060c3fc41d08852a617e2e5c2eeedd`; commits `1`.
-- 独立增量对比 PR `—` / SHA `0ed2d4113e060c3fc41d08852a617e2e5c2eeedd`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `0ed2d4113e060c3fc41d08852a617e2e5c2eeedd`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#42](https://github.com/binchen648/fd/pull/42)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 1；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `40e145a35c2f90c9eef3076078a96500b145ab02e5b02421fd39315dbb9a390a`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -2764,7 +2764,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/46。
 - Base `22e29dfc6e794ee94884c5a3874e404f3953af7f` (`codex/s-p3-source-evidence-chaos-r2`); Head `4d6ea656ff8d1c97d4186e04b41e4630d4cfd381` (`codex/a-p3-chaos-source-evidence-audit-r2`); Merge Base `22e29dfc6e794ee94884c5a3874e404f3953af7f`; commits `2`.
-- 独立增量对比 PR `—` / SHA `22e29dfc6e794ee94884c5a3874e404f3953af7f`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `22e29dfc6e794ee94884c5a3874e404f3953af7f`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#45](https://github.com/binchen648/fd/pull/45)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `b5c5cc7caac4986dbd8a20596c0f0bb961b2138a58336932a6be23b02733c2ba`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -2946,7 +2946,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/49。
 - Base `f439b3241bb5999e90fd7cf638b569081f2b148c` (`codex/s-p3-source-evidence-bazett-r2`); Head `9b03a32642c64d064334fad0857ac2f566838659` (`codex/a-p3-bazett-source-evidence-audit-r1`); Merge Base `f439b3241bb5999e90fd7cf638b569081f2b148c`; commits `2`.
-- 独立增量对比 PR `—` / SHA `f439b3241bb5999e90fd7cf638b569081f2b148c`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `f439b3241bb5999e90fd7cf638b569081f2b148c`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#48](https://github.com/binchen648/fd/pull/48)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `7e5780992195cb058c8727d0c7c5a7357883e3e814bc95d3ac521776edcd409f`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -3124,7 +3124,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/52。
 - Base `0dcc1f94297f2198f0f4152742c585032931390a` (`codex/s-p3-source-evidence-bazett-r3`); Head `3b55b10d5847e156031d2f22906c9b3c4d9dbe73` (`codex/a-p3-bazett-source-evidence-audit-r2`); Merge Base `0dcc1f94297f2198f0f4152742c585032931390a`; commits `2`.
-- 独立增量对比 PR `—` / SHA `0dcc1f94297f2198f0f4152742c585032931390a`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `0dcc1f94297f2198f0f4152742c585032931390a`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#51](https://github.com/binchen648/fd/pull/51)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `385c68c08f6164a48e89d3703fb7fbf7d35b25ab680096802002d38021e3eae1`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -3310,7 +3310,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/55。
 - Base `fd0711d2a3215e27a17f57a9a20771417376f21c` (`codex/s-p3-source-evidence-wodime-r1`); Head `17cb0c431843de3fa4ced11416ab21e473a2e672` (`codex/a-p3-wodime-source-evidence-audit-r1`); Merge Base `fd0711d2a3215e27a17f57a9a20771417376f21c`; commits `2`.
-- 独立增量对比 PR `—` / SHA `fd0711d2a3215e27a17f57a9a20771417376f21c`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `fd0711d2a3215e27a17f57a9a20771417376f21c`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#54](https://github.com/binchen648/fd/pull/54)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `74feb03f8c34cf2536662a0ad8d8aabd966ee27819faa908872d33360ef26962`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -3491,7 +3491,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/58。
 - Base `fc2d7845e513af0aa0cd61f95bb96e1d51d4bcd5` (`codex/s-p3-source-evidence-wodime-r2`); Head `b384786277495bbec423423dd6283deaba2f1d12` (`codex/a-p3-wodime-source-evidence-audit-r2`); Merge Base `fc2d7845e513af0aa0cd61f95bb96e1d51d4bcd5`; commits `2`.
-- 独立增量对比 PR `—` / SHA `fc2d7845e513af0aa0cd61f95bb96e1d51d4bcd5`；5 个原文件、5 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `fc2d7845e513af0aa0cd61f95bb96e1d51d4bcd5`；5 个原文件、5 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#57](https://github.com/binchen648/fd/pull/57)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 3；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `3ab68a2c5c0f88643de5f941359606ab0bfb32c564bcf61146c4244ddcd65a85`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -3680,7 +3680,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/61。
 - Base `84d4182e73cd31d330e35bac695bf4aa2e684e68` (`codex/s-p3-source-evidence-ophelia-r1`); Head `fd0723c715da9cd126369afc71c92f2d81eabd77` (`codex/a-p3-ophelia-source-evidence-audit-r1`); Merge Base `84d4182e73cd31d330e35bac695bf4aa2e684e68`; commits `1`.
-- 独立增量对比 PR `—` / SHA `84d4182e73cd31d330e35bac695bf4aa2e684e68`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `84d4182e73cd31d330e35bac695bf4aa2e684e68`；4 个原文件、4 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#60](https://github.com/binchen648/fd/pull/60)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `0769b93cc2f16e51abe259fba7d9a555db05ef2f9e87bf98c759995a9f0aa227`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -3867,7 +3867,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/64。
 - Base `23bdad59e8cf08dd301816559ccdda493bded281` (`codex/s-p3-source-evidence-fiore-r1`); Head `fb7362c603e940c165c576614988d50bfe39d7ea` (`codex/a-p3-fiore-source-evidence-audit-r1`); Merge Base `23bdad59e8cf08dd301816559ccdda493bded281`; commits `2`.
-- 独立增量对比 PR `—` / SHA `23bdad59e8cf08dd301816559ccdda493bded281`；5 个原文件、5 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `23bdad59e8cf08dd301816559ccdda493bded281`；5 个原文件、5 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#63](https://github.com/binchen648/fd/pull/63)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 3；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `0187098b7087c1d29612cd6136e2b86becd06723c1e7e508cc113a222b6e9a4c`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -4046,7 +4046,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/67。
 - Base `855b047d860d4ba58f3d7e5d8964b87447ff2d24` (`codex/s-p3-source-evidence-fiore-r2`); Head `37384637ea701b4572d50c049743fc019d11fe6a` (`codex/a-p3-fiore-source-evidence-audit-r2`); Merge Base `855b047d860d4ba58f3d7e5d8964b87447ff2d24`; commits `3`.
-- 独立增量对比 PR `—` / SHA `855b047d860d4ba58f3d7e5d8964b87447ff2d24`；6 个原文件、6 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `855b047d860d4ba58f3d7e5d8964b87447ff2d24`；6 个原文件、6 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#66](https://github.com/binchen648/fd/pull/66)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 4；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `01e1fb1166ea3995e311f598d1e8d069e6a37c0ecf8649506eb911e047486ec7`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -4235,7 +4235,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/70。
 - Base `a1df532858c6bc38e7767d4d718bc3973462ff5a` (`codex/s-p3-source-evidence-kadoc-hinako-r1`); Head `4b4d92517238611ae10017889ecdd50d1bbb3cdb` (`codex/a-p3-kadoc-hinako-source-evidence-audit-r1`); Merge Base `a1df532858c6bc38e7767d4d718bc3973462ff5a`; commits `5`.
-- 独立增量对比 PR `—` / SHA `a1df532858c6bc38e7767d4d718bc3973462ff5a`；7 个原文件、7 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `a1df532858c6bc38e7767d4d718bc3973462ff5a`；7 个原文件、7 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#69](https://github.com/binchen648/fd/pull/69)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 5；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `170524700bc9acb72d4eaa862b01052b102f1d7a3a6b17bc0254dc413b3f35f7`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -4416,7 +4416,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/73。
 - Base `1c4f4552130d01361b5acf6543377bb2cdbd6939` (`codex/s-p3-source-evidence-kadoc-hinako-r2`); Head `6c33664359cba72ce0bc5ac414e6b677da8a9b20` (`codex/a-p3-kadoc-hinako-source-evidence-audit-r2`); Merge Base `1c4f4552130d01361b5acf6543377bb2cdbd6939`; commits `6`.
-- 独立增量对比 PR `—` / SHA `1c4f4552130d01361b5acf6543377bb2cdbd6939`；8 个原文件、8 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `1c4f4552130d01361b5acf6543377bb2cdbd6939`；8 个原文件、8 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#72](https://github.com/binchen648/fd/pull/72)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 6；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `3ccefc3d79ac697107bd8049e85ce7131ee2409ce79d0354ab85e01bb71c51e2`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -4608,7 +4608,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/76。
 - Base `0e7a4d94aa4074df1edc1342ec8069e64766a4d0` (`codex/s-p3-source-evidence-goredolf-peperoncino-r1`); Head `8a26610f4c83b8a5fda47edee461448782d1c054` (`codex/a-p3-goredolf-peperoncino-source-evidence-audit-r1`); Merge Base `0e7a4d94aa4074df1edc1342ec8069e64766a4d0`; commits `7`.
-- 独立增量对比 PR `—` / SHA `0e7a4d94aa4074df1edc1342ec8069e64766a4d0`；9 个原文件、9 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `0e7a4d94aa4074df1edc1342ec8069e64766a4d0`；9 个原文件、9 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#75](https://github.com/binchen648/fd/pull/75)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 7；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `25dc22f7e9456fe56e42ef0f7b493f7c004efaac81bc5f5b2c06ad95892cdce4`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -4802,7 +4802,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/79。
 - Base `7b37835547ac054d6e198e7742abcfd5f2293ba1` (`codex/s-p3-source-evidence-artoira-r1`); Head `88d208d4993a002f8e87220b560c79a0708dab0a` (`codex/a-p3-source-evidence-artoira-r1`); Merge Base `7b37835547ac054d6e198e7742abcfd5f2293ba1`; commits `1`.
-- 独立增量对比 PR `—` / SHA `7b37835547ac054d6e198e7742abcfd5f2293ba1`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `7b37835547ac054d6e198e7742abcfd5f2293ba1`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#78](https://github.com/binchen648/fd/pull/78)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `d3493811545bf68f7338f000b8561493c8f7ad5baecbbec4e484fd1cdf24a106`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -5315,7 +5315,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/88。
 - Base `ae38c399a415d76bbdce877badfdb59b121d10e4` (`codex/s-p3-source-evidence-chaos-s17-r1`); Head `167caa5a49458c7b0588b078986ebd1718334e72` (`codex/a-p3-source-evidence-chaos-s17-r1`); Merge Base `ae38c399a415d76bbdce877badfdb59b121d10e4`; commits `1`.
-- 独立增量对比 PR `—` / SHA `ae38c399a415d76bbdce877badfdb59b121d10e4`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `ae38c399a415d76bbdce877badfdb59b121d10e4`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#87](https://github.com/binchen648/fd/pull/87)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `0fb7d5b5b46bf7fa8317695c8206876c5559280adb8d85d17e332fbe64a4174f`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>
@@ -5564,7 +5564,7 @@
 
 - 作者 `fengling20011118-dotcom`；状态 `open`；PR https://github.com/binchen648/fd/pull/92。
 - Base `d6d07804055f8a849959f2382655039d11525c88` (`codex/s-p3-source-evidence-araya-r3`); Head `6870cd6b00fc94131c95c04ca3c389d67af41303` (`codex/a-p3-source-evidence-araya-r3`); Merge Base `d6d07804055f8a849959f2382655039d11525c88`; commits `1`.
-- 独立增量对比 PR `—` / SHA `d6d07804055f8a849959f2382655039d11525c88`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**VALID_DELTA** — Distinct incremental code/test/content diff; not independently accepted or promotion-ready.
+- 独立增量对比 PR `—` / SHA `d6d07804055f8a849959f2382655039d11525c88`；3 个原文件、3 个增量文件；类型 `source-audit tooling/tests`；**BLOCKED** — Distinct source-audit tooling/test delta, but replay is BLOCKED: its CLI/test evidence requires `data/phase3/full-roster-source-evidence-overlays.json`, absent from locked origin/main e63cdeb2a065a9f87c24039d2b08bbe059513fed; that data input is under the task-forbidden `data/**` path and its historical introducing/updating PRs are BLOCKED. Do not recreate or omit the input to make the tooling pass.
 - 关系：nearest ancestors [#91](https://github.com/binchen648/fd/pull/91)；同 Tree —；当前 main anchor `—`；锚点文件保留 `False`；后续触及/增量冲突/forbidden/reserved 路径数 `0/0/0/0`。
 - 测试文件 1；验收文件 2；CI `—`；Formal Review 0 / decision `—`；PR 正文 SHA256 `8d8a703c804c6a439a0c481dd40daa90b2e6380966d0a4b3f5157546c4c5f0b4`。
 <details><summary>完整 Base..Head 和独立增量文件/证据</summary>

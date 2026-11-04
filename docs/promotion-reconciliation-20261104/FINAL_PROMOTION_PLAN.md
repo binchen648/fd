@@ -13,7 +13,7 @@
 - PR 创建成功：没有创建功能 PR。
 - CI 与语义正确分开判断；本轮没有候选 HEAD，因此没有新 Build/Test/Policy 结论。
 - 635 条未合并作者 PR 无正式 GitHub Review；#347/#424 旧 approvals 只针对它们旧 SHA。
-- 15 条审计 tooling/test 增量可另行提取成工具 PR，但尚未在当前 main 重放、运行测试或接受独立 review。
+- 15 条 source-audit tooling/test 增量现列为 BLOCKED：缺 `data/phase3/full-roster-source-evidence-overlays.json` 且 `data/**` 禁止写入；不能单独抽取成可运行工具 PR。
 - 所有 Candidate PR 必须在将来以当时重新验证的最新 origin/main 建新分支，绑定精确 Base/Head，再跑检查并取得非 Builder 的正式 Review。
 
 ## 解除条件
@@ -27,5 +27,5 @@
 ## 基线与本轮安全边界
 
 - 基线 `e63cdeb2a065a9f87c24039d2b08bbe059513fed`，commit time `2026-11-01T00:14:47+08:00`；重新 fetch 后仍不变。
-- 分支 `codex/fengling-pr-reconciliation-20261104` 从该 SHA 起步。
+- 审计交付分支 `codex/fengling-pr-audit-delivery-20261105` 基于该 SHA 创建；本轮只改审计文档和机器账本。
 - 没有更改旧 PR Base、批量 cherry-pick、合并任何 PR 或触碰 #689/#690。
