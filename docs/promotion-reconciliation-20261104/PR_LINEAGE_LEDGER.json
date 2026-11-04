@@ -43,7 +43,9 @@
         "NO_STATUS": 16
       },
       "mergedSnapshotFreshness": "queried 2026-11-05"
-    }
+    },
+    "scopeCutoffAtUtc": "2026-11-04T16:15:47Z",
+    "scopeCutoffNote": "The seven-page REST snapshot contains 655 author PRs through #691. The audit artifact draft PR #692 was created later (2026-11-04T17:08:17Z, initial head e74a0940b3fc2e4f48ec7fcf20649f381ba4c3bf) and is explicitly excluded from the audited input set to avoid self-inclusion; it is documentation-only, not a functional Promotion PR."
   },
   "lockedBase": {
     "ref": "origin/main",
@@ -396270,5 +396272,12 @@
       "promotionReady": false
     }
   ],
-  "promotionReadinessDefinition": "promotionReady is false for every historical PR in this audit. It is reserved for a newly reconstructed final Promotion candidate with current-main ancestry, closed dependencies, authorized scope, applicable checks, behavioral tests, and formal independent GitHub review; historical PR metadata alone never sets it true."
+  "promotionReadinessDefinition": "promotionReady is false for every historical PR in this audit. It is reserved for a newly reconstructed final Promotion candidate with current-main ancestry, closed dependencies, authorized scope, applicable checks, behavioral tests, and formal independent GitHub review; historical PR metadata alone never sets it true.",
+  "reportOnlySubmissionExcluded": {
+    "number": 692,
+    "title": "docs: deliver exhaustive historical PR lineage audit",
+    "createdAtUtc": "2026-11-04T17:08:17Z",
+    "headShaAtCreation": "e74a0940b3fc2e4f48ec7fcf20649f381ba4c3bf",
+    "reason": "Created after the frozen 655-PR source snapshot; self-reporting documentation submission, excluded from its own historical input set."
+  }
 }
