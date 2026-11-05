@@ -1217,8 +1217,16 @@ function isInfernoStatusPlan(a:AuthoringAbility):boolean {
     !a.conditions.length && !a.targets.length && !a.cost.length && !a.creates.length && !a.ruleModifiers.length && !Object.keys(a.lifecycle).length && !Object.keys(a.limit).length && !Object.keys(a.visibility).length &&
     a.effects.length===1 && Object.keys(a.effects[0]!).length===4 && a.effects[0]!.type==='create_status' && a.effects[0]!.statusId==='inferno_fire' && a.effects[0]!.duration==='next_round' && a.effects[0]!.scope==='opponents_deploying_to_this_battlefield';
 }
+/** Shared denial contract; both action projection and dispatch use the latest state. */
+function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbility,event?:AbilityEvent):{code:string;message:string}|undefined {
+ const ctx=context(s,sourceId,a.id,event);
+ if(isFixedControllerManaCostComponent(a)&&!hasAvailableManaForFixedCosts(s,ctx,a))return {code:'insufficient_mana',message:`Ability requires ${Number(a.cost[0]!.amount)} mana plus any mandatory printed play cost`};
+ if((normalizeSquareAccelPlan(a)||normalizeSealPlan(a,definition(s,sourceId)?.cardType)?.kind==='movement')&&!hasMandatoryTargetAvailability(s,ctx,a))return {code:'no_legal_target',message:'Required target or mandatory continuation is unavailable'};
+ return undefined;
+}
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (activationContractFailure(s,sourceId,a,event)) return false;
   if (a.id==='sc-tomoe-2.inferno-fire' && (!isInfernoStatusPlan(a) || !isBattlefield(s,player(s,card(s,sourceId).controllerPlayerId).locationId))) return false;
   if (a.id === 'square-accel.combat' && (!normalizeSquareAccelPlan(a) || !hasMandatoryTargetAvailability(s, context(s,sourceId,a.id,event),a))) return false;
   const sealPlan = normalizeSealPlan(a, definition(s, sourceId)?.cardType);
@@ -5116,6 +5124,10 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const requestedAbility = requestedSource
         ? runtime(s).pack.cards[requestedSource.definitionId]?.abilities.find((ability) => ability.id === command.abilityId)
         : undefined;
+      if (requestedAbility) {
+        const denied=activationContractFailure(s,command.cardInstanceId,requestedAbility);
+        if (denied) reject(denied.code,denied.message);
+      }
       if (requestedAbility && isCardZoneCoreDirectActionRouteCandidate(requestedAbility) &&
         !isCardZoneCoreDirectActionSemantic(requestedAbility)) {
         reject('resolution_failed', 'Unsupported Card Zone result-binding semantic shape.');
