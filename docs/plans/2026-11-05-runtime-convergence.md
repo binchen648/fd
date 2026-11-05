@@ -15,3 +15,7 @@
 9. Write FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md with migration ledger, files/functions, measured test outcomes, limitations, exact candidate and Reviewer decision. Mark ACCEPTED only if all scoped gates pass. Stop without merge.
 
 Each batch uses red -> minimal implementation -> green; no changed timeout, disabled test or relaxed expected result. Reports distinguish implementation candidate from independent acceptance. No permission inferred over another worktree. A failing test outside this contract remains an explicit unresolved issue, never a skipped PASS.
+
+## 下一轮测试调度（2026-11-05 用户更新）
+
+下一轮采用 [FD 三级技能测试与验收规范](fd-tiered-skill-acceptance.md)：Level 1 为日常技能定向验证，Level 2 按依赖/多步骤交互执行，Level 3 在关键节点复用 A-MATCH-03 的七人 11 回合基线，不逐技能重复整局。使用逐技能验收矩阵，必须断言实际规则效果和投影。此项为后续调度更新，不追溯更改上方历史执行计划、既有失败或正式集成门禁。
