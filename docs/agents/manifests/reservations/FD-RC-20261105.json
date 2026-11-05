@@ -69,6 +69,12 @@
     "unrelated Medusa candidate content"
   ],
   "releaseBasis": "docs/agents/manifests/releases/P3-B-TO-FD-RC-20261105.json",
-  "candidateState": "NOT_IMPLEMENTED",
-  "mergeAuthorized": false
+  "candidateState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "mergeAuthorized": false,
+  "candidateSHA": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
+  "acceptance": "NOT_ACCEPTED",
+  "integrationAllowed": false,
+  "runtimeWritesFrozen": true,
+  "reservationReleased": false,
+  "independentReview": "docs/contracts/runtime-convergence/independent/final-independent-review.json"
 }
