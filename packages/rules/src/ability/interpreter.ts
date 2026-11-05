@@ -1,3 +1,4 @@
+import { normalizeSquareAccelPlan } from './square-accel-contract';
 import { normalizeSealPlan } from './seal-runtime-contract';
 import type { GameState, PhaseName } from '../schema/game';
 import type { CardInstance } from '../schema/card';
@@ -1211,6 +1212,7 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (a.id === 'square-accel.combat' && (!normalizeSquareAccelPlan(a) || !hasMandatoryTargetAvailability(s, context(s,sourceId,a.id,event),a))) return false;
   const sealPlan = normalizeSealPlan(a, definition(s, sourceId)?.cardType);
   if (isCommandSpellCard(s, sourceId) && ['command-spell.free-move', 'command-spell.power-victory'].includes(a.id) && !sealPlan) return false;
   if (sealPlan?.kind === 'movement' && !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
@@ -3107,6 +3109,17 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
   installOpponentCloseToOneServerAuthority(s, queue);
   stageNextOpponentCloseToOneDecision(s);
 }
+/** Canonical self-close consumer: an owner's required close is not opponent prevention. */
+function closeOwnAttack(s: GameState, controllerId:string, instanceId:string):void {
+ const target=card(s,instanceId),d=definition(s,instanceId),r=runtime(s),state=r.cardState[instanceId];
+ if(target.controllerPlayerId!==controllerId||target.zone!=='attack_area'||!d||!state?.active||state.faceDown)reject('illegal_target','Required own attack is no longer active');
+ state.active=false;clearTransientCardTransformState(s,instanceId);
+ const limiter=perGamePlayLimit(d);
+ if(isResidualAttackCardDefinition(d)&&limiter&&(r.abilityUsage[`play:${instanceId}:${limiter.key}`]??0)>=limiter.uses){target.zone='removed_from_game';target.visibility={scope:'public'};state.faceDown=false;}
+ else if(['servant_skill','master_skill'].includes(d.cardType)){moveCard(s,instanceId,'skill');target.controllerPlayerId=target.ownerPlayerId;state.faceDown=false;}
+ else {state.faceDown=true;target.visibility={scope:'owner_only',ownerPlayerId:target.ownerPlayerId};}
+ r.events.push({type:'attack_closed',playerId:controllerId,sourceCardId:instanceId});
+}
 function closeOpponentCardForCloseToOne(s: GameState, decisionPlayerId: string, instanceId: string): void {
   const target = card(s, instanceId);
   const r = runtime(s);
@@ -4100,7 +4113,8 @@ function hasMandatoryTargetAvailability(s: GameState, ctx: EffectContext, a: Aut
   for (const target of a.targets) {
     const count = node(target.count);
     const min = Number(count.min ?? 1);
-    if (min > 0 && candidates(s, ctx, target).length < min) return false;
+    const selections = {...ctx.selections}; delete selections[str(target.id)];
+    if (min > 0 && candidates(s, {...ctx,selections}, target).length < min) return false;
   }
   return true;
 }
@@ -4284,6 +4298,24 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   applyResolutionSnapshots(s, ctx, a);
+  const squarePlan = normalizeSquareAccelPlan(a);
+  if (a.id === 'square-accel.combat') {
+    if (!squarePlan || !hasMandatoryTargetAvailability(s,ctx,a)) reject('no_legal_target','Square Accel requires an active attack and a face-down Origin Bullet');
+    for (const target of a.targets) {
+      const selected = ctx.selections[str(target.id)];
+      const selections={...ctx.selections}; delete selections[str(target.id)];
+      if (selected && (selected.length !== 1 || !candidates(s,{...ctx,selections},target).includes(selected[0]!))) reject('illegal_target','Square Accel selection is no longer legal');
+    }
+    const pending = findPendingTarget(s,ctx,a,effects);
+    if (pending) { runtime(s).pendingDecision=pending; return; }
+    const closeId=ctx.selections[squarePlan.closeTarget]?.[0],bulletId=ctx.selections[squarePlan.activateTarget]?.[0];
+    if (!closeId || !bulletId || closeId===bulletId) reject('illegal_target','Square Accel requires two distinct attacks');
+    closeOwnAttack(s,ctx.controllerId,closeId);
+    const bullet=card(s,bulletId);const state=runtime(s).cardState[bulletId]!;
+    state.active=true;state.faceDown=false;bullet.visibility={scope:'public'};
+    runtime(s).events.push({type:'square_accel_resolved',playerId:ctx.controllerId,sourceCardId:ctx.sourceCardId,cardInstanceId:bulletId});
+    return;
+  }
   const sealPlan = normalizeSealPlan(a, definition(s, ctx.sourceCardId)?.cardType);
   if (sealPlan) {
     if (sealPlan.kind === 'movement') {
@@ -5326,6 +5358,11 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         }
       } else {
         const pendingSource = card(s, d.context.sourceCardId);
+        if (d.context.abilityId === 'square-accel.combat' && (pendingSource.controllerPlayerId !== d.context.controllerId ||
+            player(s,d.context.controllerId).status !== 'active' || phase(s) !== 'combat' || !normalizeSquareAccelPlan(abilityDefinition(s,pendingSource.instanceId,d.context.abilityId)))) {
+          reject('illegal_action','Square Accel source or phase changed before selection');
+        }
+
         if (definition(s, pendingSource.instanceId)?.cardType === 'command_spell' && ['command-spell.free-move','command-spell.power-victory'].includes(d.context.abilityId)) {
           const pendingAbility = abilityDefinition(s, pendingSource.instanceId, d.context.abilityId);
           if (pendingSource.controllerPlayerId !== d.context.controllerId || player(s,d.context.controllerId).status !== 'active' ||

@@ -87,7 +87,7 @@
               "scope": { "zone": "attack_area", "controller": "self" },
               "constraints": [{ "type": "is_attack" }, { "type": "card_active" }] },
             { "id": "bullet_to_activate", "type": "card_instance", "count": 1,
-              "scope": { "zone": "skill", "controller": "self" },
+              "scope": { "zone": "attack_area", "controller": "self" },
               "constraints": [{ "type": "has_card_id", "cardId": "master.kiritsugu.deck.origin-bullet" }, { "type": "card_face_down" }] }
           ],
           "effects": [

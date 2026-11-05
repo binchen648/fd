@@ -4100,7 +4100,7 @@
                 "type": "card_instance",
                 "count": 1,
                 "scope": {
-                  "zone": "skill",
+                  "zone": "attack_area",
                   "controller": "self"
                 },
                 "constraints": [
@@ -11749,11 +11749,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "78e94bdfb28913aeca25cd45823b21219dd959bbb703fa0b26b78650ee086e52",
+    "definitionHash": "0703fe09fbde2716ad64d95407fd81e2d4a6e831e04c63292b31ce02d7f0dad0",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "78e94bdfb28913aeca25cd45823b21219dd959bbb703fa0b26b78650ee086e52"
+      "definitionHash": "0703fe09fbde2716ad64d95407fd81e2d4a6e831e04c63292b31ce02d7f0dad0"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
