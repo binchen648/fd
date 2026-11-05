@@ -1223,9 +1223,10 @@ function convergenceSourceAvailable(s:GameState,sourceId:string,a:AuthoringAbili
  const seal=d?.cardType==='command_spell';
  const square=a.id==='square-accel.combat';
  if(!seal&&!square)return true;
- if(!c||c.zone!=='skill'||c.ownerPlayerId!==c.controllerPlayerId)return false;
+ if(!c||c.zone!=='skill'||c.ownerPlayerId!==c.controllerPlayerId||runtime(s).cardState[sourceId]?.faceDown)return false;
  const owner=s.players.find(p=>p.id===c.controllerPlayerId&&p.status==='active');
- return !!owner&&(seal?d?.id===`${owner.masterCardId}.command-spell`:d?.id==='master.kiritsugu.skill.square-accel'&&owner.masterCardId==='master.kiritsugu');
+ const authoredOwner=(d as ExecutableCardDefinition|undefined)?.ownerId;
+ return !!owner&&(!authoredOwner||owner.masterCardId===authoredOwner)&&(!square||d?.cardType==='master_skill');
 }
 /** Shared denial contract; both action projection and dispatch use the latest state. */
 function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbility,event?:AbilityEvent):{code:string;message:string}|undefined {
@@ -1233,7 +1234,7 @@ function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbilit
  if(!convergenceSourceAvailable(s,sourceId,a))return {code:'invalid_source',message:'Ability source is not in its current owner skill zone'};
  const first=a.effects[0],ref=first?.type==='move_player'?str(first.to):str(first?.target)||str(first?.targetRef);
  const firstTarget=a.targets.find(t=>t.id===ref);
- if(firstTarget&&Number(node(firstTarget.count).min??firstTarget.count??1)>0&&!candidates(s,ctx,firstTarget).length)return {code:'no_legal_target',message:'The required initial target is unavailable'};
+ if(firstTarget&&Number(node(firstTarget.count).min??firstTarget.count??1)>0&&!candidates(s,ctx,firstTarget).length)return {code:'illegal_action',message:'The required initial target is unavailable'};
 
  if(isFixedControllerManaCostComponent(a)&&!hasAvailableManaForFixedCosts(s,ctx,a))return {code:'insufficient_mana',message:`Ability requires ${Number(a.cost[0]!.amount)} mana plus any mandatory printed play cost`};
  if((normalizeSquareAccelPlan(a)||normalizeSealPlan(a,definition(s,sourceId)?.cardType)?.kind==='movement')&&!hasMandatoryTargetAvailability(s,ctx,a))return {code:'no_legal_target',message:'Required target or mandatory continuation is unavailable'};

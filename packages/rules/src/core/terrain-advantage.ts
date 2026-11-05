@@ -1,4 +1,3 @@
-import {terrainIndexes} from '../ability/terrain-state';
 import type { GameState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getLocationById } from './map-engine';
@@ -63,7 +62,16 @@ function isTerrainSuppressedByAuthoredDuel(state: GameState, battlefieldId: Loca
 }
 
 export function assignedTerrainSlotIndex(state: GameState, battlefieldId: LocationId, playerId: string): number | undefined {
-  return terrainIndexes(state,playerId,battlefieldId)[0];
+  // This metric is a defensive pure read, not snapshot admission. Invalid other
+  // slots do not change the identity/value of this player's printed slot.
+  const assignments=modeState(state).terrainAssignments;
+  if (!assignments || typeof assignments!=='object') return undefined;
+  const slots=(assignments as Record<string,unknown>)[battlefieldId];
+  if (!Array.isArray(slots)) return undefined;
+  const actor=state.players.find(p=>p.id===playerId && p.status==='active' && p.locationId===battlefieldId);
+  if (!actor) return undefined;
+  const index=slots.indexOf(playerId),count=getLocationById(state.map,state.locationConfig,battlefieldId)?.terrainBonuses?.length??0;
+  return index>=0 && index<count ? index : undefined;
 }
 
 export function terrainBonusAt(
