@@ -47,6 +47,11 @@ function setup(mana = 8): GameState {
   state.players[1]!.locationId = 'shinto';
   state.players[0]!.mana = mana;
   rules.initializeAbilityRuntime(state, pack, { seed: 9804 });
+  // Register the actual production declaration; assertions remain unchanged.
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+      .filter(([id]) => ['basic.luck'].includes(id)),
+  ));
   return state;
 }
 

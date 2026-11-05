@@ -87,6 +87,11 @@ function setup(): GameState {
   state.players[1]!.locationId = 'shinto';
   state.players[2]!.locationId = 'miyama_town';
   rules.initializeAbilityRuntime(state, pack, { seed: 45 });
+  // Register the actual production declaration; assertions remain unchanged.
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+      .filter(([id]) => ['basic.luck'].includes(id)),
+  ));
   state.cards.push({
     instanceId: SOURCE_ID,
     definitionId: SOURCE_DEF,
@@ -363,6 +368,11 @@ describe('P3-FB2-45 pre-battle defeat by current-round attack attribute', () => 
       state.players[0]!.locationId = 'miyama_town';
       state.players[1]!.locationId = 'miyama_town';
       rules.initializeAbilityRuntime(state, olgaPack, { seed: 4501 });
+      // Register the actual production declaration; assertions remain unchanged.
+      Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+        Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+          .filter(([id]) => ['basic.luck'].includes(id)),
+      ));
       state.cards.push({
         instanceId: 'return-silence-source',
         definitionId: 'master.olga-marie.skill.trismegistus-grief',

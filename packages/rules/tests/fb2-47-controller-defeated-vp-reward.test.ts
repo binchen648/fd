@@ -83,6 +83,11 @@ function setup(abilities: RuleNode[] = [rewardAbility()], activeSeats: number[] 
   state.round.activePhase = 'battle';
   for (const player of state.players) player.locationId = 'miyama_town';
   rules.initializeAbilityRuntime(state, pack, { seed: 4701 });
+  // Register the actual production declaration; assertions remain unchanged.
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+      .filter(([id]) => ['basic.luck'].includes(id)),
+  ));
   addRewardSource(state, 'p1');
   return state;
 }
@@ -460,6 +465,11 @@ describe('P3-FB2-47 controller-defeated fixed VP reward', () => {
     state.players[1]!.locationId = 'shinto';
     state.players[1]!.vp = 0;
     rules.initializeAbilityRuntime(state, pack, { seed: 4702 });
+    // Register the actual production declaration; assertions remain unchanged.
+    Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+      Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+        .filter(([id]) => ['basic.luck'].includes(id)),
+    ));
     state.cards.push({
       instanceId: 'prebattle-source', definitionId: 'fixture.fb2-47.prebattle', ownerPlayerId: 'p1', controllerPlayerId: 'p1',
       zone: 'attack_area', visibility: { scope: 'public' },
@@ -499,6 +509,11 @@ describe('P3-FB2-47 controller-defeated fixed VP reward', () => {
     for (const player of state.players.slice(0, 3)) player.locationId = 'shinto';
     state.players[0]!.servantCardId = 'servant.corday';
     rules.initializeAbilityRuntime(state, pack, { seed: 4703 });
+    // Register the actual production declaration; assertions remain unchanged.
+    Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+      Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+        .filter(([id]) => ['basic.luck'].includes(id)),
+    ));
     const cordayId = 'servant.corday.skill.sc-corday-1';
     state.cards.push({
       instanceId: 'corday-presence', definitionId: cordayId, ownerPlayerId: 'p1', controllerPlayerId: 'p1',
