@@ -40,9 +40,12 @@ export function listDeploymentHooks(): DeploymentHook[] {
 }
 
 /** Active hooks whose status applies to `playerId` at `locationId`. */
-export function deploymentHooksFor(state: GameState, _playerId: PlayerId, locationId: string): DeploymentHook[] {
+export function deploymentHooksFor(state: GameState, playerId: PlayerId, locationId: string): DeploymentHook[] {
   return statusesOf(state)
-    .filter((status) => status.locationId === undefined || status.locationId === locationId)
+    .filter((status) => (status.locationId === undefined || status.locationId === locationId) &&
+      (status.startsAtRound === undefined || state.round.roundNumber >= status.startsAtRound) &&
+      (status.expiresAtRound === undefined || state.round.roundNumber < status.expiresAtRound) &&
+      (status.id !== 'inferno_fire' || status.sourceControllerId !== playerId))
     .map((status) => hooks.get(status.id))
     .filter((hook): hook is DeploymentHook => !!hook)
     .filter((hook) => isStatusActive(state, hook.statusId));
@@ -56,7 +59,7 @@ export interface DeploymentSlots {
 
 /**
  * Resolve usable terrain slots for a deployment.
- * Base terrain number of slot `index` is `index + 1`; a slot is unusable when its base
+ * Base terrain number is the map printed terrain value; a slot is unusable when its base
  * number exceeds the paid bid ("基础地利数高于其支付战果数的地利位置视为已被占据").
  */
 export function deploymentSlots(state: GameState, playerId: PlayerId, locationId: string,
@@ -70,7 +73,8 @@ export function deploymentSlots(state: GameState, playerId: PlayerId, locationId
   for (const hook of active) {
     if (hook.statusId !== 'inferno_fire') continue;
     const paid = Math.max(0, Math.min(bid, hook.maxBid));
-    usable = usable.filter((index) => index + 1 <= paid);
+    const printed = state.map.locations.find(location => location.id === locationId)?.terrainBonuses ?? [];
+    usable = usable.filter((index) => typeof printed[index] === 'number' && printed[index]! <= paid);
   }
   const blockedReason = usable.length === 0
     ? '所有地利槽的基础地利数高于支付战果数，视为已被占据'
@@ -78,7 +82,7 @@ export function deploymentSlots(state: GameState, playerId: PlayerId, locationId
   return { usableSlotIndexes: usable, maxBid, ...(blockedReason ? { blockedReason } : {}) };
 }
 
-/** Inferno fire: opponents deploying here may pay up to 5 VP to unlock slots 1..bid. */
+/** Inferno fire: opponents may pay up to 5 VP to unlock printed terrain values at most bid. */
 registerDeploymentHook({
   statusId: 'inferno_fire',
   maxBid: 5,

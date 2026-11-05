@@ -1,3 +1,4 @@
+import {terrainIndexes} from '../ability/terrain-state';
 import type { GameState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getLocationById } from './map-engine';
@@ -62,14 +63,7 @@ function isTerrainSuppressedByAuthoredDuel(state: GameState, battlefieldId: Loca
 }
 
 export function assignedTerrainSlotIndex(state: GameState, battlefieldId: LocationId, playerId: string): number | undefined {
-  const assignments = modeState(state).terrainAssignments;
-  if (!assignments || typeof assignments !== 'object') return undefined;
-  const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
-  if (!Array.isArray(assigned)) return undefined;
-  const index = assigned.indexOf(playerId);
-  if (index < 0) return undefined;
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
+  return terrainIndexes(state,playerId,battlefieldId)[0];
 }
 
 export function terrainBonusAt(

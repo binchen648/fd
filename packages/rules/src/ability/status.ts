@@ -24,6 +24,7 @@ export interface ActiveStatus {
   sourceCardId?: string;
   sourceAbilityId?: string;
   appliedRound: number;
+  startsAtRound?: number;
   expiresAtRound?: number;
   locationId?: string;
   stacks: number;
@@ -114,6 +115,7 @@ export function installStatus(state: GameState, input: InstallStatusInput): void
     id: input.id,
     sourceControllerId: input.controllerId,
     appliedRound,
+    startsAtRound: duration === 'next_round' ? appliedRound + 1 : appliedRound,
     stacks: 1,
     ...(expiresAtRound !== undefined ? { expiresAtRound } : {}),
     ...(input.sourceCardId ? { sourceCardId: input.sourceCardId } : {}),
@@ -142,6 +144,7 @@ export function isStatusActive(state: GameState, id: string, playerId?: PlayerId
   return statusesOf(state).some((status) => {
     if (status.id !== id) return false;
     if (playerId && status.sourceControllerId !== playerId) return false;
+    if (status.startsAtRound !== undefined && round < status.startsAtRound) return false;
     if (status.expiresAtRound !== undefined && round >= status.expiresAtRound) return false;
     if (lifecycleOf(status.id)?.cleanup === 'while_source_active' && status.sourceCardId && !sourceInPlay(state, status.sourceCardId)) return false;
     return true;

@@ -1,3 +1,4 @@
+import {releaseTerrain} from './terrain-state';
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getEnabledLocations } from '../core/map-engine';
@@ -2169,17 +2170,7 @@ function terrainState(state: GameState): GameState & TerrainModeState {
 }
 
 function removeTerrainAssignment(state: GameState & TerrainModeState, playerId: PlayerId): boolean {
-  const assignments = state.modeState?.terrainAssignments;
-  if (!assignments) return false;
-  for (const [locationId, assigned] of Object.entries(assignments)) {
-    if (!assigned) continue;
-    const next = assigned.filter((id) => id !== playerId);
-    if (next.length !== assigned.length) {
-      assignments[locationId as LocationId] = next;
-      return true;
-    }
-  }
-  return false;
+  return releaseTerrain(state,playerId);
 }
 
 function findPlayer(state: GameState, playerId: PlayerId): PlayerState {

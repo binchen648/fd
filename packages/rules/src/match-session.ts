@@ -1,3 +1,4 @@
+import {assignDeploymentTerrain,occupiedTerrainSlots,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
 import { resolveStandardRoundEnd, type StandardMatchOutcome } from './core/elimination-resolver';
 import {
   advanceAbilityPhase,
@@ -1106,6 +1107,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   const restoredState = value as unknown as GameState;
+  try { normalizeTerrainState(structuredClone(restoredState)); } catch { return false; }
   const actionTurns = (value.modeState as Record<string, unknown> | undefined)?.actionTurns;
   if (actionTurns !== undefined) {
     if (!isRestoreRecord(actionTurns) || actionTurns.version !== 1 || !isRestoreSafeInteger(actionTurns.round, 1) ||
@@ -1611,10 +1613,8 @@ function terrainSlotCount(state: GameState, locationId: LocationId): number {
     .find((location) => location.id === locationId)?.terrainBonuses?.length ?? 0;
 }
 
-function assignedTerrainOccupants(state: GameState, locationId: LocationId): string[] {
-  const assigned = terrainAssignmentsOf(state)[locationId] ?? [];
-  return assigned.filter((playerId) =>
-    state.players.some((player) => player.id === playerId && player.status === 'active' && player.locationId === locationId));
+function assignedTerrainOccupants(state: GameState, locationId: LocationId): Array<string|null> {
+  return occupiedTerrainSlots(state,locationId);
 }
 
 function projectInteractionWindows(state: GameState, viewerId: string): MatchInteractionWindow[] {
@@ -1881,12 +1881,9 @@ export class MatchSession {
       if (!slotCount) return [{ type: 'deploy_player' as const, locationId: location.id }];
       const slots = deploymentSlots(this.state, playerId, location.id, slotCount, 0);
       if (slots.maxBid === 0) return [{ type: 'deploy_player' as const, locationId: location.id }];
-      // A hook is active: the player takes the next terrain slot (occupancy + 1), so the bid
-      // must cover that slot number. Paying is capped by the hook and by the player's VP.
-      const nextSlotNumber = assignedTerrainOccupants(this.state, location.id).length + 1;
       const maxBid = Math.min(slots.maxBid, player.vp);
-      if (maxBid < nextSlotNumber) return [];
-      return [{ type: 'deploy_player' as const, locationId: location.id, terrainBid: nextSlotNumber, maxTerrainBid: maxBid }];
+      // Zero payment/no terrain remains legal battlefield entry; payment is a choice.
+      return [{ type: 'deploy_player' as const, locationId: location.id, terrainBid: 0, maxTerrainBid: maxBid }];
     });
   }
 
@@ -1981,24 +1978,12 @@ export class MatchSession {
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
     const slotCount = terrainSlotCount(this.state, locationId);
     let paidBid = 0;
-    if (slotCount) {
-      const slots = deploymentSlots(this.state, playerId, locationId, slotCount, 0);
-      if (slots.maxBid > 0) {
-        const nextSlotNumber = assignedTerrainOccupants(this.state, locationId).length + 1;
-        if (terrainBid !== undefined && (!Number.isInteger(terrainBid) || terrainBid < 0)) {
-          return rejection('invalid_bid', 'Terrain bid must be a non-negative integer');
-        }
-        if (slots.maxBid < nextSlotNumber) {
-          return rejection('illegal_deployment', slots.blockedReason ?? 'No terrain slot is affordable here');
-        }
-        const bid = Math.min(terrainBid ?? 0, slots.maxBid);
-        if (bid > player.vp) return rejection('insufficient_vp', 'Not enough victory points for the terrain bid');
-        if (bid < nextSlotNumber) {
-          return rejection('illegal_deployment', `Terrain slot ${nextSlotNumber} requires a bid of at least ${nextSlotNumber}`);
-        }
-        paidBid = bid;
-      }
-    }
+    if (terrainBid !== undefined && (!Number.isSafeInteger(terrainBid) || terrainBid < 0)) return rejection('invalid_bid','Terrain bid must be a non-negative safe integer');
+    const slots = deploymentSlots(this.state,playerId,locationId,slotCount,terrainBid ?? 0);
+    if ((terrainBid ?? 0) > slots.maxBid) return rejection('invalid_bid','Terrain bid exceeds the rule maximum');
+    if ((terrainBid ?? 0) > player.vp) return rejection('insufficient_vp','Not enough victory points for the terrain bid');
+    paidBid = terrainBid ?? 0;
+    releaseTerrain(this.state,playerId);
     player.locationId = locationId;
     if (paidBid > 0) {
       player.vp = Math.max(0, player.vp - paidBid);
@@ -2011,7 +1996,7 @@ export class MatchSession {
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
     processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId });
     if (deployedLocation?.tags.includes('battlefield')) {
-      this.assignTerrainOnDeployment(playerId, locationId);
+      this.assignTerrainOnDeployment(playerId, locationId, slots.usableSlotIndexes);
       processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     this.consumeAppliedDirectives();
@@ -2025,16 +2010,8 @@ export class MatchSession {
     };
   }
 
-  private assignTerrainOnDeployment(playerId: string, locationId: LocationId): void {
-    const slotCount = terrainSlotCount(this.state, locationId);
-    if (!slotCount) return;
-    const assignments = terrainAssignmentsOf(this.state);
-    const current = assignedTerrainOccupants(this.state, locationId).slice(0, slotCount);
-    if (current.includes(playerId) || current.length >= slotCount) {
-      assignments[locationId] = current;
-      return;
-    }
-    assignments[locationId] = [...current, playerId];
+  private assignTerrainOnDeployment(playerId: string, locationId: LocationId, allowed: number[]): void {
+    assignDeploymentTerrain(this.state,playerId,locationId,allowed);
   }
 
   passPriority(playerId: string): DispatchResult {

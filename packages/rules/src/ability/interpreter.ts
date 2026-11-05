@@ -1,3 +1,4 @@
+import {releaseTerrain} from './terrain-state';
 import { normalizeSquareAccelPlan } from './square-accel-contract';
 import { normalizeSealPlan } from './seal-runtime-contract';
 import type { GameState, PhaseName } from '../schema/game';
@@ -14,7 +15,7 @@ import { checkExtendedCondition, resolveExtendedEffect } from './extended-effect
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute } from '../core/rule-overrides';
 import { boundCardInfo } from './binding-cards';
-import { cleanupStatuses } from './status';
+import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
 import { node, nodes, str } from './loader';
@@ -1210,8 +1211,15 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
         effect.directive === 'command_spells_used_in_preparation_phase')));
   return usesAdvanceCommandSpells ? 'advance' : basePhase;
 }
+function isInfernoStatusPlan(a:AuthoringAbility):boolean {
+  return a.id==='sc-tomoe-2.inferno-fire' && a.kind==='phase_action' && a.execution.mode==='automatic' && !(a.bindings?.length) &&
+    Object.keys(a.activation).length===3 && a.activation.phase==='action' && a.activation.opens==='controller_action_window' && a.activation.requiresSourceState==='active' &&
+    !a.conditions.length && !a.targets.length && !a.cost.length && !a.creates.length && !a.ruleModifiers.length && !Object.keys(a.lifecycle).length && !Object.keys(a.limit).length && !Object.keys(a.visibility).length &&
+    a.effects.length===1 && Object.keys(a.effects[0]!).length===4 && a.effects[0]!.type==='create_status' && a.effects[0]!.statusId==='inferno_fire' && a.effects[0]!.duration==='next_round' && a.effects[0]!.scope==='opponents_deploying_to_this_battlefield';
+}
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (a.id==='sc-tomoe-2.inferno-fire' && (!isInfernoStatusPlan(a) || !isBattlefield(s,player(s,card(s,sourceId).controllerPlayerId).locationId))) return false;
   if (a.id === 'square-accel.combat' && (!normalizeSquareAccelPlan(a) || !hasMandatoryTargetAvailability(s, context(s,sourceId,a.id,event),a))) return false;
   const sealPlan = normalizeSealPlan(a, definition(s, sourceId)?.cardType);
   if (isCommandSpellCard(s, sourceId) && ['command-spell.free-move', 'command-spell.power-victory'].includes(a.id) && !sealPlan) return false;
@@ -1807,6 +1815,7 @@ function shortestPath(s: GameState, from: string, to: string): string[] {
   return [from, to];
 }
 function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: string | undefined, to: string | undefined, movementAlreadyLogged = false): void {
+  if (from !== to) releaseTerrain(s,playerId);
   if (!from || !to || from === to) return;
   const path = shortestPath(s, from, to);
   const distance = Math.max(0, path.length - 1);
@@ -1874,6 +1883,7 @@ function applyEntryTerrainGrant(s: GameState, moverId: string, locationId: strin
     const key = `${effect.sourceId}:${moverId}`;
     if (granted.includes(key)) continue;
     for (const playerId of occupants) {
+      if (!playerId) continue;
       bonuses.push({
         playerId, bonus: Number(effect.amount ?? 0), locationId,
         sourceId: effect.sourceId, expiresAtRound: s.round.roundNumber + 1,
@@ -4298,6 +4308,11 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   applyResolutionSnapshots(s, ctx, a);
+  if (a.id === 'sc-tomoe-2.inferno-fire') {
+    if (!isInfernoStatusPlan(a) || !isBattlefield(s,player(s,ctx.controllerId).locationId)) reject('illegal_action','Inferno requires its canonical typed battlefield status plan');
+    installStatus(s,{id:'inferno_fire',controllerId:ctx.controllerId,duration:'next_round',sourceCardId:ctx.sourceCardId,sourceAbilityId:ctx.abilityId,locationId:player(s,ctx.controllerId).locationId!});
+    return;
+  }
   const squarePlan = normalizeSquareAccelPlan(a);
   if (a.id === 'square-accel.combat') {
     if (!squarePlan || !hasMandatoryTargetAvailability(s,ctx,a)) reject('no_legal_target','Square Accel requires an active attack and a face-down Origin Bullet');

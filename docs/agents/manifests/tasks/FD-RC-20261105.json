@@ -54,7 +54,8 @@
     "docs/agents/manifests/**/FD-RC-20261105.json",
     "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md",
     "packages/rules/src/ability/seal-runtime-contract.ts",
-    "packages/rules/src/ability/square-accel-contract.ts"
+    "packages/rules/src/ability/square-accel-contract.ts",
+    "packages/rules/src/ability/status.ts"
   ],
   "forbidden": [
     "D:/fd/** (source read only)",
