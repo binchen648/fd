@@ -418,6 +418,7 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
   NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction | DeclareBattleParticipationAction;
 
 export interface AbilityPlayerView {
+  terrainSlots?: Record<string,{bonuses:number[];occupants:Array<string|null>}>;
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   actionTurn?: ActionTurnProgress;
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];

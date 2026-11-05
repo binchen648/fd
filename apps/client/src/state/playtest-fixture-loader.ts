@@ -147,6 +147,7 @@ export interface PlaytestClientFixture {
     capacityLabel?: string;
     workshopManaSlots?: number[];
     terrainSlots?: number[];
+    terrainOccupants?: Array<string|null>;
     contestVp?: number;
     reconVp?: number;
     moveCostToNext?: number;

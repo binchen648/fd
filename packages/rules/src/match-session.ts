@@ -1,4 +1,4 @@
-import {assignDeploymentTerrain,occupiedTerrainSlots,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
+import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
 import { resolveStandardRoundEnd, type StandardMatchOutcome } from './core/elimination-resolver';
 import {
   advanceAbilityPhase,
@@ -1613,9 +1613,6 @@ function terrainSlotCount(state: GameState, locationId: LocationId): number {
     .find((location) => location.id === locationId)?.terrainBonuses?.length ?? 0;
 }
 
-function assignedTerrainOccupants(state: GameState, locationId: LocationId): Array<string|null> {
-  return occupiedTerrainSlots(state,locationId);
-}
 
 function projectInteractionWindows(state: GameState, viewerId: string): MatchInteractionWindow[] {
   const view = projectAbilityState(state, viewerId);
@@ -1883,7 +1880,7 @@ export class MatchSession {
       if (slots.maxBid === 0) return [{ type: 'deploy_player' as const, locationId: location.id }];
       const maxBid = Math.min(slots.maxBid, player.vp);
       // Zero payment/no terrain remains legal battlefield entry; payment is a choice.
-      return [{ type: 'deploy_player' as const, locationId: location.id, terrainBid: 0, maxTerrainBid: maxBid }];
+      return Array.from({length:maxBid+1},(_,bid)=>({type:'deploy_player' as const,locationId:location.id,terrainBid:bid,maxTerrainBid:maxBid}));
     });
   }
 

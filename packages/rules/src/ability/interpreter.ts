@@ -1,4 +1,4 @@
-import {releaseTerrain} from './terrain-state';
+import {releaseTerrain,occupiedTerrainSlots} from './terrain-state';
 import { normalizeSquareAccelPlan } from './square-accel-contract';
 import { normalizeSealPlan } from './seal-runtime-contract';
 import type { GameState, PhaseName } from '../schema/game';
@@ -1217,15 +1217,31 @@ function isInfernoStatusPlan(a:AuthoringAbility):boolean {
     !a.conditions.length && !a.targets.length && !a.cost.length && !a.creates.length && !a.ruleModifiers.length && !Object.keys(a.lifecycle).length && !Object.keys(a.limit).length && !Object.keys(a.visibility).length &&
     a.effects.length===1 && Object.keys(a.effects[0]!).length===4 && a.effects[0]!.type==='create_status' && a.effects[0]!.statusId==='inferno_fire' && a.effects[0]!.duration==='next_round' && a.effects[0]!.scope==='opponents_deploying_to_this_battlefield';
 }
+/** Innate master sources remain usable only in their owner's current skill zone. */
+function convergenceSourceAvailable(s:GameState,sourceId:string,a:AuthoringAbility):boolean {
+ const c=s.cards.find(c=>c.instanceId===sourceId),d=definition(s,sourceId);
+ const seal=d?.cardType==='command_spell';
+ const square=a.id==='square-accel.combat';
+ if(!seal&&!square)return true;
+ if(!c||c.zone!=='skill'||c.ownerPlayerId!==c.controllerPlayerId)return false;
+ const owner=s.players.find(p=>p.id===c.controllerPlayerId&&p.status==='active');
+ return !!owner&&(seal?d?.id===`${owner.masterCardId}.command-spell`:d?.id==='master.kiritsugu.skill.square-accel'&&owner.masterCardId==='master.kiritsugu');
+}
 /** Shared denial contract; both action projection and dispatch use the latest state. */
 function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbility,event?:AbilityEvent):{code:string;message:string}|undefined {
  const ctx=context(s,sourceId,a.id,event);
+ if(!convergenceSourceAvailable(s,sourceId,a))return {code:'invalid_source',message:'Ability source is not in its current owner skill zone'};
+ const first=a.effects[0],ref=first?.type==='move_player'?str(first.to):str(first?.target)||str(first?.targetRef);
+ const firstTarget=a.targets.find(t=>t.id===ref);
+ if(firstTarget&&Number(node(firstTarget.count).min??firstTarget.count??1)>0&&!candidates(s,ctx,firstTarget).length)return {code:'no_legal_target',message:'The required initial target is unavailable'};
+
  if(isFixedControllerManaCostComponent(a)&&!hasAvailableManaForFixedCosts(s,ctx,a))return {code:'insufficient_mana',message:`Ability requires ${Number(a.cost[0]!.amount)} mana plus any mandatory printed play cost`};
  if((normalizeSquareAccelPlan(a)||normalizeSealPlan(a,definition(s,sourceId)?.cardType)?.kind==='movement')&&!hasMandatoryTargetAvailability(s,ctx,a))return {code:'no_legal_target',message:'Required target or mandatory continuation is unavailable'};
  return undefined;
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (!convergenceSourceAvailable(s,sourceId,a)) return false;
   if (activationContractFailure(s,sourceId,a,event)) return false;
   if (a.id==='sc-tomoe-2.inferno-fire' && (!isInfernoStatusPlan(a) || !isBattlefield(s,player(s,card(s,sourceId).controllerPlayerId).locationId))) return false;
   if (a.id === 'square-accel.combat' && (!normalizeSquareAccelPlan(a) || !hasMandatoryTargetAvailability(s, context(s,sourceId,a.id,event),a))) return false;
@@ -2742,7 +2758,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
           eventSource.definitionId !== placement.eventCardId || eventSource.locationId !== placement.locationId) return false;
     }
     const ability = restoredAbility(s, decision.context.sourceCardId, decision.context.abilityId);
-    if (!ability || !contextVariablesBelongToAbility(ability, decision.context) ||
+    if (!ability || !convergenceSourceAvailable(s, decision.context.sourceCardId, ability) || !contextVariablesBelongToAbility(ability, decision.context) ||
         !inputVariableCalculationsMatch(s, ability, decision.context)) return false;
     const targetIds = new Set(ability.targets.map((target) => str(target.id)).filter(Boolean));
     if (Object.entries(decision.context.selections).some(([targetId, selectedIds]) =>
@@ -4978,6 +4994,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
     .map(([playerId, cards]) => ({ playerId, cards: cards.map((entry) => ({ ...entry })) }));
   const view: AbilityPlayerView = { revision: r.revision, phase: s.round.activePhase, round: s.round.roundNumber,
     legalActions: exists ? getLegalActions(s, viewerId) : [],
+    terrainSlots: Object.fromEntries(getEnabledLocations(s.map,s.locationConfig).filter(l=>l.terrainBonuses?.length).map(l=>[l.id,{bonuses:[...l.terrainBonuses!],occupants:occupiedTerrainSlots(s,l.id)}])),
     ...(exists && regularTurn(s, viewerId) ? { actionTurn: regularTurn(s, viewerId)! } : {}),
     players: s.players.map(p => {
       const character = r.pack.characters?.[p.servantCardId];
@@ -5385,7 +5402,7 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         }
       } else {
         const pendingSource = card(s, d.context.sourceCardId);
-        if (d.context.abilityId === 'square-accel.combat' && (pendingSource.controllerPlayerId !== d.context.controllerId ||
+        if (d.context.abilityId === 'square-accel.combat' && (!convergenceSourceAvailable(s,pendingSource.instanceId,abilityDefinition(s,pendingSource.instanceId,d.context.abilityId)) || pendingSource.controllerPlayerId !== d.context.controllerId ||
             player(s,d.context.controllerId).status !== 'active' || phase(s) !== 'combat' || !normalizeSquareAccelPlan(abilityDefinition(s,pendingSource.instanceId,d.context.abilityId)))) {
           reject('illegal_action','Square Accel source or phase changed before selection');
         }

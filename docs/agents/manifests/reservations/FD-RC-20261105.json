@@ -55,7 +55,10 @@
     "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md",
     "packages/rules/src/ability/seal-runtime-contract.ts",
     "packages/rules/src/ability/square-accel-contract.ts",
-    "packages/rules/src/ability/status.ts"
+    "packages/rules/src/ability/status.ts",
+    "apps/client/src/pages/MatchTable.tsx",
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts"
   ],
   "forbidden": [
     "D:/fd/** (source read only)",

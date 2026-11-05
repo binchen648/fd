@@ -1,3 +1,4 @@
+import {processAbilityEvent} from '../../../src/ability/interpreter';
 import {describe,it,expect} from 'vitest';
 import {fixture,activate,choose,active,player,rejectAtomically} from './helpers';
 import {projectCurrentPlayerPowers} from '../../../src/core/combat-resolver';
@@ -25,4 +26,13 @@ describe('RC03 aggregate power seals',()=>{
 
 describe('Seal typed boundaries',()=>{
  it.each(['controller','seals','origin'] as const)('pending movement rejects changed %s atomically',change=>{const f=seal('kayneth');activate(f.session,f.playerId,f.sourceId,'command-spell.free-move');const d=f.session.getPlayerView(f.playerId).pendingDecision!;if(change==='controller')f.session.state.cards.find(c=>c.instanceId===f.sourceId)!.controllerPlayerId='p99';if(change==='seals')(player(f.session,f.playerId) as any).commandSpells=0;if(change==='origin')player(f.session,f.playerId).locationId='magic_workshop';rejectAtomically(f.session,f.playerId,{type:'choose_target',decisionId:d.id,selectedIds:['shinto']});});
+});
+
+describe('RC source availability',()=>{
+ it.each(['discard','removed_from_game'])('rejects unavailable seal source in %s',zone=>{const f=seal('kayneth');f.session.state.cards.find(c=>c.instanceId===f.sourceId)!.zone=zone;expect(f.session.getPlayerView(f.playerId).legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===f.sourceId)).toBe(false);rejectAtomically(f.session,f.playerId,{type:'activate_ability',cardInstanceId:f.sourceId,abilityId:'command-spell.power-victory'});});
+ it('rejects removed source after suspending movement',()=>{const f=seal('kayneth');activate(f.session,f.playerId,f.sourceId,'command-spell.free-move');const d=f.session.getPlayerView(f.playerId).pendingDecision!;f.session.state.cards.find(c=>c.instanceId===f.sourceId)!.zone='removed_from_game';rejectAtomically(f.session,f.playerId,{type:'choose_target',decisionId:d.id,selectedIds:['shinto']});expect(()=>restoreMatchSession(f.session.serializeSession())).toThrow();});
+});
+
+describe('Personal seal reward consumer',()=>{
+ it.each(['kayneth','gatou','olga-marie'])('%s two consumed seals each pay personal2VP exactly once, after pre-battle restore',master=>{const f=seal(master);activate(f.session,f.playerId,f.sourceId,'command-spell.power-victory');activate(f.session,f.playerId,f.sourceId,'command-spell.power-victory');const restored=restoreMatchSession(f.session.serializeSession());const other=restored.state.players.find(p=>p.id!==f.playerId)!.id;const event={id:'rc03-same-result',type:'after_battle_result_determined',battlefieldId:'miyama_town',battleParticipantIds:[f.playerId,other],battleResult:{winners:[f.playerId],loserIds:[other]}};processAbilityEvent(restored.state,event);const rewards=restored.state.abilityRuntime!.events.filter(e=>e.type==='command_spell_victory_reward'&&e.playerId===f.playerId);expect(rewards).toHaveLength(2);expect(rewards.reduce((n,e)=>n+(e.delta??0),0)).toBe(4);const vp=player(restored,f.playerId).vp;processAbilityEvent(restored.state,event);expect(player(restored,f.playerId).vp).toBe(vp);expect(restored.state.abilityRuntime!.events.filter(e=>e.type==='command_spell_victory_reward')).toHaveLength(2);});
 });

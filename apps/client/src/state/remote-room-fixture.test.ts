@@ -77,3 +77,5 @@ describe('remote room fixture · battle participation toggle (D5)', () => {
     expect(fixture.availableActions.every((action) => action.ownerPlayerId === 'p1')).toBe(true);
   });
 });
+
+it('preserves authoritative public terrain holes rather than assigning by player order',()=>{const p=buildProjection();p.match!.view.terrainSlots={miyama_town:{bonuses:[3,1],occupants:[null,'p1']}};const f=projectRemoteRoomFixture(p)!;const l=f.locations.find(l=>l.id==='miyama_town')!;expect(l.terrainOccupants).toEqual([null,'p1']);});
