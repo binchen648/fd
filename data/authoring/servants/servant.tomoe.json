@@ -384,10 +384,18 @@
           },
           "effects": [
             {
-              "type": "reduce_opponents_power",
-              "amount": 5,
-              "condition": "opponent_has_no_terrain",
-              "scope": "same_battlefield"
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "operation": "add",
+                "aggregate": "total",
+                "amount": -5,
+                "duration": "this_round",
+                "scope": {
+                  "subject": "opponents_same_battlefield",
+                  "constraints": [{ "type": "opponent_has_no_terrain" }]
+                }
+              }
             }
           ],
           "execution": {

@@ -396,10 +396,13 @@
           "activation": {
             "trigger": "while_active"
           },
-          "effects": [
+          "ruleModifiers": [
             {
-              "type": "movement_rule_override",
-              "rule": "reverse_arrow_movement"
+              "id": "reverse_arrow_movement",
+              "printedClause": "被动：你的【急行】可以反向移动。",
+              "operation": "add",
+              "rule": "movement.reverse_arrows",
+              "scope": { "subject": "controller" }
             }
           ],
           "execution": {

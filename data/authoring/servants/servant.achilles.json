@@ -159,11 +159,19 @@
           "effects": [
             {
               "type": "opponents_random_discard",
-              "count": 1
+              "count": 1,
+              "bind": "discarded"
             },
             {
-              "type": "set_opponent_power_to_zero",
-              "condition": "not_luck_or_agility"
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "operation": "set",
+                "aggregate": "total",
+                "amount": 0,
+                "duration": "this_round",
+                "scope": { "targetsFromBinding": { "binding": "discarded", "flag": "lacks_luck_or_agility" } }
+              }
             }
           ],
           "execution": {
@@ -244,15 +252,15 @@
               "options": [
                 {
                   "id": "discard_hand",
-                  "label": "对手随机弃置一张手牌"
+                  "label": "与你位于同一战场的对手立即随机弃置一张手牌"
                 },
                 {
                   "id": "forbid_skills",
-                  "label": "对手无法使用技能牌"
+                  "label": "与你位于同一战场的对手无法使用技能牌"
                 },
                 {
                   "id": "hide_true_name",
-                  "label": "花费3点魔力隐藏真名"
+                  "label": "花费3点魔力，隐藏你的从者真名直至回合结束"
                 }
               ]
             }

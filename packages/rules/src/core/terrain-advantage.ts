@@ -10,11 +10,12 @@ function hasActiveBasicCardAtBattlefield(
   state: GameState,
   playerId: string,
   battlefieldId: LocationId,
-  definitionId: string,
+  rule: string,
 ): boolean {
   return state.cards.some((card) =>
     card.controllerPlayerId === playerId &&
-    card.definitionId === definitionId &&
+    state.abilityRuntime?.pack.cards[card.definitionId]?.abilities.some((ability) =>
+      ability.ruleModifiers.some((modifier) => modifier.rule === rule)) &&
     card.zone === 'attack_area' &&
     state.players.some((player) => player.id === playerId && player.locationId === battlefieldId) &&
     state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
@@ -22,14 +23,15 @@ function hasActiveBasicCardAtBattlefield(
 }
 
 export function hasRemoteOperationBonus(state: GameState, playerId: string, battlefieldId: LocationId): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, 'basic.preparation');
+  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, 'terrain.multiplier');
 }
 
 function terrainMultiplierForPlayer(state: GameState, playerId: string): number {
   const entries = modeState(state).terrainMultipliers;
   const authoredMultiplier = !Array.isArray(entries) ? 1 : entries.reduce((multiplier, entry) => {
     if (!entry || typeof entry !== 'object') return multiplier;
-    const candidate = entry as { playerId?: string; multiplier?: number };
+    const candidate = entry as { playerId?: string; multiplier?: number; expiresAtRound?: number };
+    if (candidate.expiresAtRound !== undefined && state.round.roundNumber >= candidate.expiresAtRound) return multiplier;
     return candidate.playerId === playerId && typeof candidate.multiplier === 'number'
       ? multiplier * candidate.multiplier
       : multiplier;
@@ -79,7 +81,16 @@ export function terrainBonusAt(
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.terrainBonuses?.length || isTerrainSuppressedByAuthoredDuel(state, battlefieldId, playerId)) return undefined;
   const baseValue = location.terrainBonuses[terrainSlotIndex];
-  return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) : undefined;
+  const entries = modeState(state).terrainBonuses;
+  const extra = !Array.isArray(entries) ? 0 : entries.reduce((sum, entry) => {
+    if (!entry || typeof entry !== 'object') return sum;
+    const candidate = entry as { playerId?: string; bonus?: number; locationId?: string; expiresAtRound?: number };
+    if (candidate.playerId !== playerId || typeof candidate.bonus !== 'number') return sum;
+    if (candidate.locationId !== undefined && candidate.locationId !== battlefieldId) return sum;
+    if (candidate.expiresAtRound !== undefined && state.round.roundNumber >= candidate.expiresAtRound) return sum;
+    return sum + candidate.bonus;
+  }, 0);
+  return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) + extra : undefined;
 }
 
 export function currentDeploymentBonus(state: GameState, playerId: string): number {

@@ -859,6 +859,262 @@
   ],
   "cards": [
     {
+      "id": "event.moon_holy_grail.cheat_device",
+      "name": "作弊器",
+      "cardType": "event",
+      "printedReward": 3,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "timing": [
+        "battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "printedText": "局势牌不会禁止此战场宝具的使用。",
+      "effects": [
+        {
+          "type": "protect_noble_phantasm_usage",
+          "scope": "this_battlefield",
+          "fromRestrictionSource": "situation_card"
+        }
+      ],
+      "capability": {
+        "status": "PARTIAL",
+        "supportedDimensions": [
+          "trait",
+          "restriction_source",
+          "battlefield_scope"
+        ],
+        "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
+      },
+      "source": {
+        "htmPath": "chm-extract/月之圣杯.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205545_209.png",
+        "imageIndex": 8,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.moon_holy_grail.close_quarters",
+      "name": "短兵相接",
+      "cardType": "event",
+      "printedReward": 3,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "timing": [
+        "battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "printedText": "力量与敏捷攻击于此战场获得+2威力。同时控制具有力量属性和另一张具有敏捷属性攻击的玩家额外获得+4合计威力。",
+      "effects": [
+        {
+          "type": "dual_attribute_power_bonus",
+          "scope": "this_battlefield",
+          "attributes": [
+            "strength",
+            "agility"
+          ],
+          "perAttackBonus": 2,
+          "combinedControlBonus": 4,
+          "requiresDistinctAttacksForCombinedBonus": true
+        }
+      ],
+      "capability": {
+        "status": "PARTIAL",
+        "supportedDimensions": [
+          "attribute",
+          "power_modifier"
+        ],
+        "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
+      },
+      "source": {
+        "htmPath": "chm-extract/月之圣杯.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205435_568.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.moon_holy_grail.core_intrusion",
+      "name": "核心骇入",
+      "cardType": "event",
+      "printedReward": 2,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "timing": [
+        "battle",
+        "after_battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "printedText": "基础攻击于此战场获得+2威力。此战场的胜者可以选择自己的一张基础攻击获得“残留”直至下次进行战斗。",
+      "effects": [
+        {
+          "type": "basic_attack_power_bonus",
+          "amount": 2,
+          "scope": "this_battlefield"
+        },
+        {
+          "type": "grant_residual_attack",
+          "recipient": "battlefield_winner",
+          "target": "one_owned_basic_attack",
+          "optional": true,
+          "duration": "until_next_battle"
+        }
+      ],
+      "capability": {
+        "status": "PARTIAL",
+        "supportedDimensions": [
+          "power_modifier",
+          "winner_target"
+        ],
+        "hostRulingReason": "Residual attack lifecycle and tied-winner handling are not yet connected to the rules engine."
+      },
+      "ambiguities": [
+        {
+          "field": "effects.grant_residual_attack.recipient",
+          "description": "牌面使用单数“此战场的胜者”；若存在多名并列胜者，是每名胜者各选择一张基础攻击，还是整张事件只执行一次，需要用户确认。",
+          "source": {
+            "htmPath": "chm-extract/月之圣杯.htm",
+            "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205447_609.png",
+            "imageIndex": 18,
+            "reviewedAgainstImage": true
+          },
+          "requiresConfirmation": true
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/月之圣杯.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205447_609.png",
+        "imageIndex": 18,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.moon_holy_grail.merged_vortex",
+      "name": "嵌合涡流",
+      "cardType": "event",
+      "printedReward": 2,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "timing": [
+        "action",
+        "battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "printedText": "当一名玩家移动至此战场时，此时每有一名已位于此战场的对手，该玩家便获得+1合计威力直至回合结束。玩家无法以移动从此战场离开。",
+      "effects": [
+        {
+          "type": "presence_scaling_bonus",
+          "trigger": "player_moves_to_this_battlefield",
+          "amountPerOpponentAlreadyPresent": 1,
+          "duration": "until_round_end"
+        },
+        {
+          "type": "movement_lock",
+          "scope": "players_at_this_battlefield",
+          "prohibits": "move_from_this_battlefield"
+        }
+      ],
+      "capability": {
+        "status": "PARTIAL",
+        "supportedDimensions": [
+          "trigger",
+          "duration",
+          "movement_restriction"
+        ],
+        "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
+      },
+      "source": {
+        "htmPath": "chm-extract/月之圣杯.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205523_825.png",
+        "imageIndex": 11,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "event.moon_holy_grail.superior_firepower",
+      "name": "优势火力学说",
+      "cardType": "event",
+      "printedReward": 3,
+      "applicableLocations": [
+        "deep_mountain",
+        "new_capital"
+      ],
+      "timing": [
+        "action",
+        "battle"
+      ],
+      "interactions": [
+        {
+          "kind": "automatic",
+          "visibility": "public"
+        }
+      ],
+      "printedText": "此战场的玩家获得“行动阶段：创造并激活一张你控制的基础/特殊攻击的临时复制直至你失去此效果。”",
+      "effects": [
+        {
+          "type": "temporary_attack_copy_request",
+          "timing": "action_phase",
+          "recipient": "players_at_this_battlefield",
+          "eligibleSource": "controlled_basic_or_special_attack",
+          "activation": "immediate",
+          "usesPerPlayerPerRound": 1,
+          "duration": "until_effect_lost",
+          "fallback": "host_ruling"
+        }
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Temporary copies do not yet have a complete engine lifecycle."
+      },
+      "ambiguities": [
+        {
+          "field": "effects.temporary_attack_copy_request.copy_state",
+          "description": "牌面未逐项说明临时复制是否继承来源攻击的使用次数状态、被赋予状态及其他非印刷状态，需要用户确认。",
+          "source": {
+            "htmPath": "chm-extract/月之圣杯.htm",
+            "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205441_186.png",
+            "imageIndex": 6,
+            "reviewedAgainstImage": true
+          },
+          "requiresConfirmation": true
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/月之圣杯.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205441_186.png",
+        "imageIndex": 6,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "event.waxing_moon_ritual.akasaka",
       "name": "赤坂",
       "cardType": "event",
@@ -1759,7 +2015,7 @@
       "cardType": "command_spell",
       "printedValue": 0,
       "printedCost": 0,
-      "printedText": "行动阶段：获得4魔力。行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+      "printedText": "行动阶段：获得4魔力。行动阶段：总威力+2，若你获胜，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
       "timing": [
         "action"
       ],
@@ -1778,7 +2034,7 @@
       "id": "master.gatou.overview",
       "name": "卧藤门司",
       "cardType": "master_overview",
-      "printedText": "求道者: 求道者-战斗阶段结束时，每有一名位于你所在地地点且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。冥想-你使用过令咒的回合不受其他玩家的能力影响。\n令咒: 行动阶段：获得4魔力。行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+      "printedText": "求道者: 求道者-战斗阶段结束时，每有一名位于你所在地地点且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。冥想-你使用过令咒的回合不受其他玩家的能力影响。\n令咒: 行动阶段：获得4魔力。行动阶段：总威力+2，若你获胜，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
       "capability": {
         "status": "FULL"
       },
@@ -3096,13 +3352,7 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
-              {
-                "type": "record_master_directive",
-                "directive": "low_mana_skill_cards_allowed",
-                "payload": "controller may use skill cards below 8 mana"
-              }
-            ],
+            "effects": [],
             "cost": [],
             "ruleModifiers": [
               {
@@ -3110,7 +3360,7 @@
                 "operation": "ignore",
                 "rule": "skill_zone_mana_requirement",
                 "scope": {
-                  "object": "this_card"
+                  "subject": "controller"
                 }
               }
             ],
@@ -3259,14 +3509,19 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
+            "effects": [],
+            "cost": [],
+            "ruleModifiers": [
               {
-                "type": "deployment_rule_override",
-                "rule": "must_deploy_to_lower_vp_lone_battlefield"
+                "id": "must_deploy_to_lower_vp_lone_battlefield",
+                "printedClause": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+                "operation": "require",
+                "rule": "deployment.requirement",
+                "scope": {
+                  "subject": "controller"
+                }
               }
             ],
-            "cost": [],
-            "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
             "responseWindow": {
@@ -3822,11 +4077,59 @@
               "opens": "controller_combat_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "attack_to_close",
+                "type": "card_instance",
+                "count": 1,
+                "scope": {
+                  "zone": "attack_area",
+                  "controller": "self"
+                },
+                "constraints": [
+                  {
+                    "type": "is_attack"
+                  },
+                  {
+                    "type": "card_active"
+                  }
+                ]
+              },
+              {
+                "id": "bullet_to_activate",
+                "type": "card_instance",
+                "count": 1,
+                "scope": {
+                  "zone": "skill",
+                  "controller": "self"
+                },
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "master.kiritsugu.deck.origin-bullet"
+                  },
+                  {
+                    "type": "card_face_down"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "close_active_attack_activate_face_down_origin_bullet"
+                "type": "move_card",
+                "target": "attack_to_close",
+                "to": {
+                  "zone": "attack_area"
+                },
+                "deactivate": true
+              },
+              {
+                "type": "move_card",
+                "target": "bullet_to_activate",
+                "to": {
+                  "zone": "attack_area"
+                },
+                "activate": true
               }
             ],
             "cost": [],
@@ -3883,13 +4186,84 @@
               "opens": "controller_combat_action_window",
               "requiresSourceState": "active"
             },
+            "bindings": [
+              {
+                "id": "originMana",
+                "read": "target.mana"
+              }
+            ],
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "victim",
+                "type": "player",
+                "selector": "opponents_at_same_battlefield",
+                "count": 1,
+                "constraints": [
+                  {
+                    "type": "not_controller"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "engaged_opponent_loses_one_third_mana_then_source_gains_twice_lost_power",
-                "rounding": "ceil"
+                "type": "adjust_mana",
+                "targetRef": "victim",
+                "bind": "lostMana",
+                "amount": {
+                  "op": "multiply",
+                  "args": [
+                    {
+                      "op": "ceil",
+                      "args": [
+                        {
+                          "op": "divide",
+                          "args": [
+                            {
+                              "op": "var",
+                              "var": "originMana"
+                            },
+                            3
+                          ]
+                        }
+                      ]
+                    },
+                    -1
+                  ]
+                }
+              },
+              {
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "power_bonus",
+                  "operation": "add",
+                  "duration": "this_round",
+                  "amount": {
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "op": "ceil",
+                        "args": [
+                          {
+                            "op": "divide",
+                            "args": [
+                              {
+                                "op": "var",
+                                "var": "originMana"
+                              },
+                              3
+                            ]
+                          }
+                        ]
+                      },
+                      2
+                    ]
+                  },
+                  "scope": {
+                    "subject": "source_card"
+                  }
+                }
               }
             ],
             "cost": [],
@@ -4170,8 +4544,34 @@
             "targets": [],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "gatou_battle_end_mobile_players_reward"
+                "type": "branch",
+                "branches": [
+                  {
+                    "if": {
+                      "type": "controller_won_battle"
+                    },
+                    "then": [
+                      {
+                        "type": "adjust_victory_points",
+                        "amount": {
+                          "op": "var",
+                          "var": "controller.players_moved_in_this_round"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "else": [
+                      {
+                        "type": "adjust_mana",
+                        "amount": {
+                          "op": "var",
+                          "var": "controller.players_moved_in_this_round"
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             ],
             "cost": [],
@@ -4204,14 +4604,24 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
+            "effects": [],
+            "cost": [],
+            "ruleModifiers": [
               {
-                "type": "record_master_directive",
-                "directive": "ignore_other_player_abilities_after_command_spell_this_round"
+                "id": "meditation",
+                "printedClause": "冥想-你使用过令咒的回合不受其他玩家的能力影响。",
+                "operation": "ignore",
+                "rule": "opponent_ability_effects",
+                "scope": {
+                  "subject": "controller"
+                },
+                "conditions": [
+                  {
+                    "type": "controller_used_command_spell_this_round"
+                  }
+                ]
               }
             ],
-            "cost": [],
-            "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
             "responseWindow": {
@@ -4297,7 +4707,7 @@
           {
             "id": "command-spell.power-victory",
             "kind": "phase_action",
-            "printedClause": "行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。",
+            "printedClause": "行动阶段：总威力+2，若你获胜，获得2战果。",
             "activation": {
               "phase": "action",
               "opens": "controller_action_window"
@@ -4307,7 +4717,7 @@
             "effects": [
               {
                 "type": "record_master_directive",
-                "directive": "gain_2_vp_for_each_battle_won_this_round"
+                "directive": "command_spell_victory_vp"
               },
               {
                 "type": "adjust_command_seals",
@@ -4322,7 +4732,11 @@
                 "type": "create_modifier",
                 "modifier": {
                   "type": "power_bonus",
-                  "target": "controller",
+                  "operation": "add",
+                  "aggregate": "total",
+                  "scope": {
+                    "subject": "controller"
+                  },
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -4347,6 +4761,52 @@
             }
           },
           {
+            "id": "command-spell.victory-vp",
+            "kind": "forced_trigger",
+            "printedClause": "若你获胜，获得2战果。",
+            "activation": {
+              "trigger": "after_controller_wins_battle",
+              "opens": "immediate"
+            },
+            "conditions": [
+              {
+                "type": "directive_recorded_this_round",
+                "directive": "command_spell_victory_vp"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_victory_points",
+                "amount": 2
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_round",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
             "id": "command-spell.free-move",
             "kind": "phase_action",
             "printedClause": "行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
@@ -4355,11 +4815,32 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": 1,
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "shinto",
+                      "miyama_town"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement"
+                "type": "move_player",
+                "to": "destination"
               },
               {
                 "type": "adjust_command_seals",
@@ -4418,14 +4899,17 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
+            "effects": [],
+            "cost": [],
+            "ruleModifiers": [
               {
-                "type": "record_master_directive",
-                "directive": "command_spells_used_in_preparation_phase"
+                "id": "command_spell_phase",
+                "printedClause": "令咒改为在前哨阶段使用。",
+                "operation": "add",
+                "rule": "command_spell_phase",
+                "value": "advance"
               }
             ],
-            "cost": [],
-            "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
             "responseWindow": {
@@ -4911,7 +5395,7 @@
             "effects": [
               {
                 "type": "record_master_directive",
-                "directive": "gain_2_vp_if_win_this_round"
+                "directive": "command_spell_victory_vp"
               },
               {
                 "type": "adjust_command_seals",
@@ -4926,7 +5410,11 @@
                 "type": "create_modifier",
                 "modifier": {
                   "type": "power_bonus",
-                  "target": "controller",
+                  "operation": "add",
+                  "aggregate": "total",
+                  "scope": {
+                    "subject": "controller"
+                  },
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -4951,6 +5439,52 @@
             }
           },
           {
+            "id": "command-spell.victory-vp",
+            "kind": "forced_trigger",
+            "printedClause": "若你获胜，获得2点战果。",
+            "activation": {
+              "trigger": "after_controller_wins_battle",
+              "opens": "immediate"
+            },
+            "conditions": [
+              {
+                "type": "directive_recorded_this_round",
+                "directive": "command_spell_victory_vp"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_victory_points",
+                "amount": 2
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_round",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
             "id": "command-spell.free-move",
             "kind": "phase_action",
             "printedClause": "行动阶段：无视交战状态从深山町或新都移动至任意地点。",
@@ -4959,11 +5493,32 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": 1,
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "shinto",
+                      "miyama_town"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
-                "type": "record_master_directive",
-                "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement"
+                "type": "move_player",
+                "to": "destination"
               },
               {
                 "type": "adjust_command_seals",
@@ -6513,14 +7068,19 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
+            "effects": [],
+            "cost": [],
+            "ruleModifiers": [
               {
-                "type": "movement_rule_override",
-                "rule": "reverse_arrow_movement"
+                "id": "reverse_arrow_movement",
+                "printedClause": "被动：你的【急行】可以反向移动。",
+                "operation": "add",
+                "rule": "movement.reverse_arrows",
+                "scope": {
+                  "subject": "controller"
+                }
               }
             ],
-            "cost": [],
-            "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
             "responseWindow": {
@@ -6669,11 +7229,24 @@
             "effects": [
               {
                 "type": "opponents_random_discard",
-                "count": 1
+                "count": 1,
+                "bind": "discarded"
               },
               {
-                "type": "set_opponent_power_to_zero",
-                "condition": "not_luck_or_agility"
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "power_bonus",
+                  "operation": "set",
+                  "aggregate": "total",
+                  "amount": 0,
+                  "duration": "this_round",
+                  "scope": {
+                    "targetsFromBinding": {
+                      "binding": "discarded",
+                      "flag": "lacks_luck_or_agility"
+                    }
+                  }
+                }
               }
             ],
             "cost": [],
@@ -6749,15 +7322,15 @@
                 "options": [
                   {
                     "id": "discard_hand",
-                    "label": "对手随机弃置一张手牌"
+                    "label": "与你位于同一战场的对手立即随机弃置一张手牌"
                   },
                   {
                     "id": "forbid_skills",
-                    "label": "对手无法使用技能牌"
+                    "label": "与你位于同一战场的对手无法使用技能牌"
                   },
                   {
                     "id": "hide_true_name",
-                    "label": "花费3点魔力隐藏真名"
+                    "label": "花费3点魔力，隐藏你的从者真名直至回合结束"
                   }
                 ]
               }
@@ -8235,10 +8808,22 @@
             "targets": [],
             "effects": [
               {
-                "type": "reduce_opponents_power",
-                "amount": 5,
-                "condition": "opponent_has_no_terrain",
-                "scope": "same_battlefield"
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "power_bonus",
+                  "operation": "add",
+                  "aggregate": "total",
+                  "amount": -5,
+                  "duration": "this_round",
+                  "scope": {
+                    "subject": "opponents_same_battlefield",
+                    "constraints": [
+                      {
+                        "type": "opponent_has_no_terrain"
+                      }
+                    ]
+                  }
+                }
               }
             ],
             "cost": [],
@@ -9736,7 +10321,47 @@
           "window": "controller_play_card_window"
         },
         "playRequirements": [],
-        "abilities": [],
+        "abilities": [
+          {
+            "id": "basic.preparation.ranged-operation",
+            "kind": "passive",
+            "printedClause": "远隔操作-战斗阶段：此战场你的地利效果翻倍；若你赢得此战场的战斗，额外获得2战果。",
+            "activation": {
+              "trigger": "while_active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [],
+            "ruleModifiers": [
+              {
+                "operation": "set",
+                "rule": "terrain.multiplier",
+                "scope": {
+                  "subject": "controller"
+                },
+                "value": 2
+              },
+              {
+                "operation": "add",
+                "rule": "battle.winVpBonus",
+                "scope": {
+                  "subject": "controller"
+                },
+                "value": 2
+              }
+            ],
+            "cost": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {},
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
         "mode": "automatic",
         "playKind": "attack",
         "destinationZone": "attack_area"
@@ -9830,7 +10455,7 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "basic.luck.ignore-defeat",
+            "id": "basic.luck.immune-to-defeat",
             "kind": "residual",
             "printedClause": "战斗阶段：无视本次败北效果。",
             "activation": {
@@ -9838,14 +10463,17 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
+            "effects": [],
+            "ruleModifiers": [
               {
-                "type": "append_only_rule",
-                "rule": "ignore_battle_loss_effects"
+                "operation": "add",
+                "rule": "immune_to_defeat",
+                "scope": {
+                  "subject": "controller"
+                }
               }
             ],
             "cost": [],
-            "ruleModifiers": [],
             "creates": [],
             "lifecycle": {
               "cleanup": "discard_at_round_end"
@@ -9882,7 +10510,7 @@
         "playRequirements": [],
         "abilities": [
           {
-            "id": "basic.luck.ignore-defeat",
+            "id": "basic.luck.immune-to-defeat",
             "kind": "residual",
             "printedClause": "战斗阶段：无视本次败北效果。",
             "activation": {
@@ -9890,14 +10518,17 @@
             },
             "conditions": [],
             "targets": [],
-            "effects": [
+            "effects": [],
+            "ruleModifiers": [
               {
-                "type": "append_only_rule",
-                "rule": "ignore_battle_loss_effects"
+                "operation": "add",
+                "rule": "immune_to_defeat",
+                "scope": {
+                  "subject": "controller"
+                }
               }
             ],
             "cost": [],
-            "ruleModifiers": [],
             "creates": [],
             "lifecycle": {
               "cleanup": "discard_at_round_end"
@@ -10968,11 +11599,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce",
+    "definitionHash": "473750ddf5f658afe5c25aa1427ee2b29c43fab62b0cecfb4547d8258a2026e6",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "68c578e7575ff649b1b54a6532b105e3e93d6e5f7f9910b607958bf54a4ea7ce"
+      "definitionHash": "473750ddf5f658afe5c25aa1427ee2b29c43fab62b0cecfb4547d8258a2026e6"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -11225,12 +11856,19 @@
         "abilityIndex": 1,
         "path": "archives[4].cards[1].abilities[1]"
       },
-      "master.gatou.command-spell#command-spell.free-move": {
+      "master.gatou.command-spell#command-spell.victory-vp": {
         "archiveId": "master.gatou",
         "archiveIndex": 4,
         "cardIndex": 1,
         "abilityIndex": 2,
         "path": "archives[4].cards[1].abilities[2]"
+      },
+      "master.gatou.command-spell#command-spell.free-move": {
+        "archiveId": "master.gatou",
+        "archiveIndex": 4,
+        "cardIndex": 1,
+        "abilityIndex": 3,
+        "path": "archives[4].cards[1].abilities[3]"
       },
       "master.irisviel.skill.proxy-master": {
         "archiveId": "master.irisviel",
@@ -11345,12 +11983,19 @@
         "abilityIndex": 1,
         "path": "archives[6].cards[3].abilities[1]"
       },
-      "master.olga-marie.command-spell#command-spell.free-move": {
+      "master.olga-marie.command-spell#command-spell.victory-vp": {
         "archiveId": "master.olga-marie",
         "archiveIndex": 6,
         "cardIndex": 3,
         "abilityIndex": 2,
         "path": "archives[6].cards[3].abilities[2]"
+      },
+      "master.olga-marie.command-spell#command-spell.free-move": {
+        "archiveId": "master.olga-marie",
+        "archiveIndex": 6,
+        "cardIndex": 3,
+        "abilityIndex": 3,
+        "path": "archives[6].cards[3].abilities[3]"
       },
       "servant.artoriac.skill.sc-artoriac-1": {
         "archiveId": "servant.artoriac",

@@ -36,6 +36,7 @@ import { clearTransientCardTransformState } from './ability/card-instance-state'
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
+import { deploymentSlots } from './ability/deployment-hooks';
 import type {
   AbilityCommand,
   AbilityEvent,
@@ -154,6 +155,16 @@ export interface MatchZoneProjection {
   status: 'enabled' | 'empty' | 'disabled' | 'host_adjudicated';
 }
 
+/** D5 · 抵御：客户端需要的"我能否/是否已声明参战"投影。 */
+export interface MatchBattleParticipationView {
+  locationId: string;
+  sourceId: string;
+  /** 本回合是否已声明不参战。 */
+  declined: boolean;
+  /** 当前阶段是否允许声明（行动/战斗阶段）。 */
+  canDeclare: boolean;
+}
+
 export interface MatchClientState {
   matchId: string;
   contentPack: { id: string; version: number; definitionHash: string };
@@ -170,6 +181,8 @@ export interface MatchClientState {
   replay: Array<{ id: string; round: number; phase: PhaseName; revision: number; label: string }>;
   battleBreakdowns: GameState['battleResults'];
   outcome?: StandardMatchOutcome;
+  /** 仅当请求者所在地点存在「抵御」这类参战声明事件牌时出现。 */
+  battleParticipation?: MatchBattleParticipationView;
   finalRanking: Array<{ playerId: string; seat: number; vp: number; militaryResult: number; rank: number }>;
   stopReason?: MatchPauseReason;
   rejection?: DispatchResult['rejection'];
@@ -1439,15 +1452,67 @@ function eventForbiddenAttributes(eventCardId: string): string[] {
   });
 }
 
+/** D5 · 事件牌的战斗期威力规则（祸神封顶 / 盈月之仪名次加成）。 */
+export interface EventBattleRule {
+  sourceId: string;
+  locationId: string;
+  kind: 'cap_at_printed_power' | 'battle_result_rank_bonus';
+  bonuses?: number[];
+}
+
+function eventBattleRules(eventCardId: string): Array<Omit<EventBattleRule, 'locationId'>> {
+  const rules: Array<Omit<EventBattleRule, 'locationId'>> = [];
+  for (const effect of eventCardById.get(eventCardId)?.effects ?? []) {
+    const type = String(effect.type ?? '');
+    if (type === 'cap_non_highest_base_power_active_attacks_at_printed_power') {
+      rules.push({ sourceId: eventCardId, kind: 'cap_at_printed_power' });
+    }
+    if (type === 'battle_result_rank_power_bonus') {
+      const bonuses = Array.isArray(effect.bonuses) ? effect.bonuses.map(Number) : [4, 3, 2];
+      rules.push({ sourceId: eventCardId, kind: 'battle_result_rank_bonus', bonuses });
+    }
+  }
+  return rules;
+}
+
+/** D5 · 事件牌 movement_lock：`prevents` 数组或 `prohibits` 短语两种写法都认。 */
+function eventMovementLocks(eventCardId: string): { blocksEntry: boolean; blocksExit: boolean } {
+  let blocksEntry = false;
+  let blocksExit = false;
+  for (const effect of eventCardById.get(eventCardId)?.effects ?? []) {
+    if (String(effect.type ?? '') !== 'movement_lock') continue;
+    const prevents = Array.isArray(effect.prevents) ? effect.prevents.map(String) : [];
+    if (prevents.includes('enter_by_movement')) blocksEntry = true;
+    if (prevents.includes('leave_by_movement')) blocksExit = true;
+    const prohibits = String(effect.prohibits ?? '');
+    if (prohibits.includes('from_this') || prohibits.includes('move_from')) blocksExit = true;
+    if (prohibits.includes('into_this') || prohibits.includes('move_to')) blocksEntry = true;
+  }
+  return { blocksEntry, blocksExit };
+}
+
 function eventReturnsToDeck(eventCardId: string): boolean {
   return (eventCardById.get(eventCardId)?.effects ?? [])
     .some((effect) => String(effect.type ?? '') === 'return_to_event_deck_instead_of_discard_or_removal');
 }
 
+/**
+ * D5 · 事件牌效果里**已接入运行时**的类型。这是唯一事实来源：
+ * 账本自校验（`event-ledger-consistency.test.ts`）与"是否还要请主持人"共用它。
+ */
+export const AUTOMATIC_EVENT_EFFECTS = new Set([
+  'attribute_power_bonus', 'non_attribute_power_modifier', 'forbid_basic_attack_attribute_use',
+  'return_to_event_deck_instead_of_discard_or_removal', 'movement_lock',
+  'cap_non_highest_base_power_active_attacks_at_printed_power', 'battle_result_rank_power_bonus',
+  'gain_mana', 'gain_battle_result', 'recover_command_spell', 'block_entry_for_other_players',
+  'gain_total_power', 'set_attack_base_power_range_to_value',
+  'winner_only_strips_other_participants_round_rewards', 'battle_participation_choice_at_action_end',
+  'draw_and_place_another_event_here', 'grant_terrain_to_first_entry_each_other_player',
+]);
+
 function eventHasHostAdjudicatedEffects(eventCardId: string): boolean {
-  const automatic = new Set(['attribute_power_bonus', 'non_attribute_power_modifier', 'forbid_basic_attack_attribute_use', 'return_to_event_deck_instead_of_discard_or_removal']);
   return (eventCardById.get(eventCardId)?.effects ?? [])
-    .some((effect) => !automatic.has(String(effect.type ?? '')));
+    .some((effect) => !AUTOMATIC_EVENT_EFFECTS.has(String(effect.type ?? '')));
 }
 
 function visibleScope(zone: string, ownerPlayerId: string) {
@@ -1708,7 +1773,8 @@ export class MatchSession {
       return { ok: false, view: this.projectAbilityView(playerId), events: [], calculations: [],
         rejection: { code: 'battle_settling', message: 'All battle decisions are complete; resolve the pending battle settlement' } };
     }
-    if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
+    if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId, command.terrainBid);
+    if (command.type === 'declare_battle_participation') return this.dispatchBattleParticipation(playerId, command.participate);
     const privateInteractionMutation = command.type === 'choose_target' &&
       this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
     const beforeEventCount = this.state.abilityRuntime?.events.length ?? 0;
@@ -1731,12 +1797,55 @@ export class MatchSession {
       rejection: result.rejection,
     });
     this.consumeAppliedDirectives();
-    this.checkpoint(`${playerId}:${command.type}`);
+    if (result.ok) this.checkpoint(`${playerId}:${command.type}`);
     return { ...result, view: this.projectSessionView(result.view) };
   }
 
   dispatchPlayerCommand(playerId: string, command: AbilityCommand): DispatchResult {
     return this.dispatchPlayerAction(playerId, command);
+  }
+
+  /**
+   * D5 · 抵御：「行动阶段结束时，此战场的所有玩家按回合顺位选择是否参与本次战斗的战力结算」。
+   * 声明通道独立于 AbilityCommand（它不消耗窗口、不产生事件），由调用方（UI/主持人/AI）按回合顺位调用。
+   * 默认值 = 参与；声明只在"本回合、本人所在地点存在该事件牌、且仍在行动/战斗阶段"时被接受。
+   */
+  declareBattleParticipation(playerId: string, participate: boolean): boolean {
+    const player = this.state.players.find((candidate) => candidate.id === playerId && candidate.status === 'active');
+    if (!player?.locationId) return false;
+    if (!['action', 'battle'].includes(this.state.round.activePhase)) return false;
+    const events = (modeStateOf(this.state).participationEvents as Array<{ locationId?: string }> | undefined) ?? [];
+    if (!events.some((event) => event.locationId === player.locationId)) return false;
+    const modeState = modeStateOf(this.state);
+    const store = (modeState.battleParticipation as { round: number; declines: string[] } | undefined);
+    const current = store && store.round === this.state.round.roundNumber
+      ? store
+      : { round: this.state.round.roundNumber, declines: [] as string[] };
+    current.declines = participate
+      ? current.declines.filter((id) => id !== playerId)
+      : (current.declines.includes(playerId) ? current.declines : [...current.declines, playerId]);
+    modeState.battleParticipation = current;
+    this.record('battle_participation_declared', `${playerId}:${participate ? 'participate' : 'decline'}`, { playerId, participate });
+    return true;
+  }
+
+  /** D5 · 抵御：把参战声明包装成标准命令通道，UI/房间走同一条 dispatch 路径。 */
+  private dispatchBattleParticipation(playerId: string, participate: boolean): DispatchResult {
+    const view = this.projectAbilityView(playerId);
+    const base = {
+      view,
+      events: this.state.abilityRuntime?.events ?? [],
+      calculations: this.state.abilityRuntime?.calculations.find((entry) => entry.controllerId === playerId)?.lines ?? [],
+    };
+    if (!this.declareBattleParticipation(playerId, participate)) {
+      this.rejection = { code: 'declaration_not_allowed', message: 'Battle participation can only be declared during the action or battle phase, at a location with a revealed participation event' };
+      this.record('dispatch_rejected', `${playerId}:declare_battle_participation`, { participate, rejection: this.rejection });
+      return { ok: false, ...base, rejection: this.rejection };
+    }
+    this.rejection = undefined;
+    this.record('dispatch_ok', `${playerId}:declare_battle_participation`, { participate });
+    this.checkpoint(`${playerId}:declare_battle_participation`);
+    return { ok: true, ...base };
   }
 
   legalDeploymentActions(playerId: string): LegalAction[] {
@@ -1764,10 +1873,21 @@ export class MatchSession {
     const replacementLocations = this.structuralDeploymentReplacementLocations(playerId, legalLocations.map((location) => location.id));
     const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId);
     const filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
-    return (replacementLocations.length
+    const candidates = replacementLocations.length
       ? filteredLocations.filter((location) => replacementLocations.includes(location.id))
-      : filteredLocations)
-      .map((location) => ({ type: 'deploy_player' as const, locationId: location.id }));
+      : filteredLocations;
+    return candidates.flatMap((location) => {
+      const slotCount = terrainSlotCount(this.state, location.id);
+      if (!slotCount) return [{ type: 'deploy_player' as const, locationId: location.id }];
+      const slots = deploymentSlots(this.state, playerId, location.id, slotCount, 0);
+      if (slots.maxBid === 0) return [{ type: 'deploy_player' as const, locationId: location.id }];
+      // A hook is active: the player takes the next terrain slot (occupancy + 1), so the bid
+      // must cover that slot number. Paying is capped by the hook and by the player's VP.
+      const nextSlotNumber = assignedTerrainOccupants(this.state, location.id).length + 1;
+      const maxBid = Math.min(slots.maxBid, player.vp);
+      if (maxBid < nextSlotNumber) return [];
+      return [{ type: 'deploy_player' as const, locationId: location.id, terrainBid: nextSlotNumber, maxTerrainBid: maxBid }];
+    });
   }
 
   private structuralDeploymentReplacementLocations(playerId: string, legalLocationIds: LocationId[]): LocationId[] {
@@ -1780,7 +1900,9 @@ export class MatchSession {
         (card.ownerPlayerId === playerId && isAcceptedLowerVpLoneBattlefieldDeploymentAbility(ability)) ||
         ability.effects.some((effect) =>
           effect.type === 'deployment_rule_override' &&
-          effect.rule === 'must_deploy_to_lower_vp_lone_battlefield')));
+          effect.rule === 'must_deploy_to_lower_vp_lone_battlefield') ||
+        ability.ruleModifiers.some((modifier) =>
+          modifier.operation === 'require' && modifier.rule === 'deployment.requirement')));
     if (!hasReplacement) return [];
     const enabledBattlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => location.tags.includes('battlefield'))
@@ -1834,7 +1956,7 @@ export class MatchSession {
       this.logs.some(entry => entry.round === this.state.round.roundNumber && entry.type === 'battle_decisions_completed'));
   }
 
-  private dispatchDeployPlayer(playerId: string, locationId: LocationId): DispatchResult {
+  private dispatchDeployPlayer(playerId: string, locationId: LocationId, terrainBid?: number): DispatchResult {
     const view = () => this.projectAbilityView(playerId);
     const rejection = (code: string, message: string): DispatchResult => {
       this.rejection = { code, message };
@@ -1857,12 +1979,37 @@ export class MatchSession {
       return rejection('illegal_deployment', 'Selected deployment location is not legal');
     }
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
+    const slotCount = terrainSlotCount(this.state, locationId);
+    let paidBid = 0;
+    if (slotCount) {
+      const slots = deploymentSlots(this.state, playerId, locationId, slotCount, 0);
+      if (slots.maxBid > 0) {
+        const nextSlotNumber = assignedTerrainOccupants(this.state, locationId).length + 1;
+        if (terrainBid !== undefined && (!Number.isInteger(terrainBid) || terrainBid < 0)) {
+          return rejection('invalid_bid', 'Terrain bid must be a non-negative integer');
+        }
+        if (slots.maxBid < nextSlotNumber) {
+          return rejection('illegal_deployment', slots.blockedReason ?? 'No terrain slot is affordable here');
+        }
+        const bid = Math.min(terrainBid ?? 0, slots.maxBid);
+        if (bid > player.vp) return rejection('insufficient_vp', 'Not enough victory points for the terrain bid');
+        if (bid < nextSlotNumber) {
+          return rejection('illegal_deployment', `Terrain slot ${nextSlotNumber} requires a bid of at least ${nextSlotNumber}`);
+        }
+        paidBid = bid;
+      }
+    }
     player.locationId = locationId;
+    if (paidBid > 0) {
+      player.vp = Math.max(0, player.vp - paidBid);
+      this.record('deployment_bid_paid', `${playerId}:paid ${paidBid} VP at ${locationId}`, { playerId, locationId, bid: paidBid });
+    }
     this.rejection = undefined;
     this.state.abilityRuntime!.revision++;
     this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId });
     this.applyDeploymentLocationReward(playerId, locationId);
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
+    processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId });
     if (deployedLocation?.tags.includes('battlefield')) {
       this.assignTerrainOnDeployment(playerId, locationId);
       processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
@@ -2120,6 +2267,7 @@ export class MatchSession {
     const restoredCheckpointId = latestLog?.type === 'replay_restored' ? latestLog.message : undefined;
     const restoredCheckpoint = this.replay.find(entry => entry.id === restoredCheckpointId);
     if (restoredCheckpoint && !recentReplay.includes(restoredCheckpoint)) recentReplay.splice(0, 1, restoredCheckpoint);
+    const participation = this.battleParticipationView(playerId);
     return {
       matchId: this.state.id,
       contentPack: {
@@ -2145,6 +2293,23 @@ export class MatchSession {
       ...(outcome ? { outcome } : {}),
       ...(this.stopReason ? { stopReason: this.stopReason } : {}),
       ...(this.rejection ? { rejection: this.rejection } : {}),
+      ...(participation ? { battleParticipation: participation } : {}),
+    };
+  }
+
+  private battleParticipationView(playerId: string): MatchBattleParticipationView | undefined {
+    const player = this.state.players.find((candidate) => candidate.id === playerId && candidate.status === 'active');
+    if (!player?.locationId) return undefined;
+    const events = (modeStateOf(this.state).participationEvents as Array<{ locationId?: string; sourceId?: string }> | undefined) ?? [];
+    const event = events.find((candidate) => candidate.locationId === player.locationId);
+    if (!event) return undefined;
+    const store = modeStateOf(this.state).battleParticipation as { round?: number; declines?: string[] } | undefined;
+    const declined = store?.round === this.state.round.roundNumber && (store.declines ?? []).includes(playerId);
+    return {
+      locationId: player.locationId,
+      sourceId: event.sourceId ?? '',
+      declined,
+      canDeclare: ['action', 'battle'].includes(this.state.round.activePhase),
     };
   }
 
@@ -2293,6 +2458,8 @@ export class MatchSession {
     const pack = runtimeContent.rules;
     const rawCards = new Map<string, RuntimeRawCard>(Object.values(pack.cards).map((card) => [card.id, card] as const));
     const state = createSeededGameState({ activeSeats: [1, 2, 3, 4, 5, 6, 7] });
+    // 从者归属的权威载体（B-SERVANT-OWNERSHIP-CONTRACT §3）：开局由 pairings 推导，运行期只允许原语改写。
+    state.servantOwnership = Object.fromEntries(pairings.map((pairing) => [pairing.servant.id, pairing.playerId]));
     state.cards = [];
     state.round = { roundNumber: 1, activePhase: 'preparation', prioritySeat: 1 };
     state.id = 'fd-semi-auto-7p';
@@ -2353,6 +2520,8 @@ export class MatchSession {
     initializeActionTurns(state);
     processAbilityEvent(state, { id: 'match-session-game-start', type: 'game_start' });
     this.startRound(1, state);
+    // A4 口径更正：开局就摆在技能区的常规御主/从者技能不算"进入"；只有升华技被解锁
+    // （解锁效果把它放进技能区）才派发 on_card_enters_skill_zone。
     return { state, pairings, rawCards };
   }
 
@@ -2381,7 +2550,7 @@ export class MatchSession {
     return cardId;
   }
 
-  private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden'): void {
+  private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden', depth = 0): void {
     const eventCardId = this.drawEventCard(targetState);
     if (!eventCardId) return;
     const placement = {
@@ -2405,6 +2574,14 @@ export class MatchSession {
         consumed: true,
       });
       modeState.masterDirectives = masterDirectives;
+    }
+    // D5 · 庆安神前比武：「此牌出场时，抽取另一张事件牌放置于此地点」。
+    // 深度上限 4：避免链式抽取把事件牌堆抽空或自引用死循环。
+    const drawsAnother = (eventCardById.get(eventCardId)?.effects ?? [])
+      .some((effect) => String(effect.type ?? '') === 'draw_and_place_another_event_here');
+    if (drawsAnother && depth < 4) {
+      this.record('event_place_nested', `${locationId}:${eventCardId}`, { depth: depth + 1 }, targetState);
+      this.placeEvent(targetState, locationId, visibility, depth + 1);
     }
   }
 
@@ -2496,6 +2673,146 @@ export class MatchSession {
         rule: 'play_card_attribute',
       })));
     modeState.cardPlayForbids = situationForbids.concat(eventForbids);
+    // D5 · movement_lock：只有已公开的事件牌才锁移动（暗置牌不当场生效）。
+    const publicPlacements = targetState.eventPlacements.filter((placement) => placement.visibility.scope === 'public');
+    modeState.movementLocks = publicPlacements
+      .map((placement) => ({
+        sourceId: placement.eventCardId,
+        locationId: placement.locationId,
+        ...eventMovementLocks(placement.eventCardId),
+      }))
+      .filter((lock) => lock.blocksEntry || lock.blocksExit);
+    // D5 · 移动进入触发的记账规则（怒发天升：以移动进入此战场者获得 5 点合计威力）。
+    modeState.eventEntryEffects = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'gain_total_power')
+        .map((effect) => ({
+          locationId: placement.locationId,
+          sourceId: placement.eventCardId,
+          kind: 'total_power_bonus',
+          amount: Number(effect.amount ?? 0),
+        })));
+    // D5 · 白夜行：基本威力落在区间内的攻击，基本威力改为定值。
+    modeState.basePowerOverrides = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'set_attack_base_power_range_to_value')
+        .map((effect) => ({
+          sourceId: placement.eventCardId,
+          locationId: placement.locationId,
+          min: Number(effect.minBasePower ?? 0),
+          max: Number(effect.maxBasePower ?? Number.MAX_SAFE_INTEGER),
+          value: Number(effect.value ?? 0),
+        })));
+    // D5 · 酒宴：每名其他玩家首次进入时，给该战场地利位上的玩家 +2 地利。
+    modeState.entryTerrainGrants = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'grant_terrain_to_first_entry_each_other_player')
+        .map((effect) => ({
+          sourceId: placement.eventCardId,
+          locationId: placement.locationId,
+          amount: Number(effect.amount ?? 0),
+        })));
+    // D5 · 抵御：行动阶段结束时，此战场的玩家可声明是否参与战力结算。
+    modeState.participationEvents = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'battle_participation_choice_at_action_end')
+        .map(() => ({ sourceId: placement.eventCardId, locationId: placement.locationId })));
+    // D5 · 狭路相逢：已公开事件牌上的「胜者以外失去本回合获得的战果」。
+    modeState.postBattleStrips = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'winner_only_strips_other_participants_round_rewards')
+        .map(() => ({ sourceId: placement.eventCardId, locationId: placement.locationId })));
+    // D5 · 条件式入口锁：狭路相逢「非高潮回合且此战场已有 2+ 名玩家时，其他玩家无法进入」。
+    modeState.entryBlocks = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'block_entry_for_other_players')
+        .map(() => ({
+          sourceId: placement.eventCardId,
+          locationId: placement.locationId,
+          condition: 'non_climax_and_two_players' as const,
+        })));
+    // D5 · 战斗期事件规则：同样只认已公开的牌。
+    modeState.eventBattleRules = publicPlacements.flatMap((placement) =>
+      eventBattleRules(placement.eventCardId).map((rule) => ({ ...rule, locationId: placement.locationId })));
+  }
+
+  /**
+   * D5 · 事件牌战后结算（温柔乡 mana/战果、美丽之物 令咒恢复）。
+   * 只在"此战场真的发生了战斗"后由 `resolveBattlePhase` 调用；同一回合同一地点每张牌只结算一次。
+   */
+  private applyEventAfterBattleEffects(battlefieldId: LocationId): void {
+    const state = this.state;
+    const runtimeState = state.abilityRuntime;
+    if (!runtimeState) return;
+    const modeState = modeStateOf(state);
+    const applied = (modeState.eventAfterBattleApplied as Array<{ round: number; locationId: string; sourceId: string }> | undefined) ?? [];
+    const done = new Set(applied.map((entry) => `${entry.round}:${entry.locationId}:${entry.sourceId}`));
+    const playersHere = state.players.filter((player) => player.status === 'active' && player.locationId === battlefieldId);
+    const movedThisRound = (playerId: string) => runtimeState.playersMovedThisRound.some((entry) => entry.playerId === playerId);
+    for (const placement of state.eventPlacements) {
+      if (placement.locationId !== battlefieldId || placement.visibility.scope !== 'public') continue;
+      const key = `${state.round.roundNumber}:${battlefieldId}:${placement.eventCardId}`;
+      if (done.has(key)) continue;
+      const effects = eventCardById.get(placement.eventCardId)?.effects ?? [];
+      let touched = false;
+      for (const effect of effects) {
+        const type = String(effect.type ?? '');
+        const amount = Number(effect.amount ?? 0);
+        if (type === 'gain_mana' && amount) {
+          for (const player of playersHere) player.mana += amount;
+          touched = true;
+        }
+        if (type === 'gain_battle_result' && amount) {
+          for (const player of playersHere) if (!movedThisRound(player.id)) player.vp += amount;
+          touched = true;
+        }
+        if (type === 'recover_command_spell' && amount) {
+          // 印文：「本回合花费魔力超过 4 点的玩家」——数据未给出阈值字段，按印文固定 4。
+          const threshold = Number(effect.threshold ?? 4);
+          for (const player of playersHere) {
+            if ((runtimeState.manaSpentThisRound?.[player.id] ?? 0) <= threshold) continue;
+            const target = player as unknown as { commandSpells?: number };
+            target.commandSpells = Math.max(0, (target.commandSpells ?? 3) + amount);
+          }
+          touched = true;
+        }
+      }
+      if (!touched) continue;
+      done.add(key);
+      applied.push({ round: state.round.roundNumber, locationId: battlefieldId, sourceId: placement.eventCardId });
+      this.record('event_after_battle_applied', `${battlefieldId}:${placement.eventCardId}`, {
+        players: playersHere.map((player) => player.id),
+      });
+    }
+    modeState.eventAfterBattleApplied = applied;
+  }
+
+  /**
+   * D5 · 狭路相逢：「此战场发生战斗后，唯一胜者以外的参与者失去本回合获得的所有战果」。
+   * 在战斗计分之后执行，用回合起点的 vp 快照作为下限（净获得口径）。
+   */
+  private applyPostBattleStrips(): void {
+    const state = this.state;
+    const modeState = modeStateOf(state);
+    const strips = (modeState.postBattleStrips as Array<{ locationId?: string; sourceId?: string }> | undefined) ?? [];
+    if (!strips.length) return;
+    const baseline = (modeState.vpAtRoundStart as Record<string, number> | undefined) ?? {};
+    for (const strip of strips) {
+      const battle = [...state.battleResults].reverse().find((result) => result.battlefieldId === strip.locationId);
+      if (!battle) continue;
+      const winners = new Set(battle.winnerPlayerIds ?? (battle.winnerPlayerId ? [battle.winnerPlayerId] : []));
+      if (winners.size !== 1) continue; // 并列胜者没有"唯一胜者"，不剥夺
+      for (const breakdown of battle.participantBreakdowns) {
+        const playerId = breakdown.playerId;
+        if (winners.has(playerId)) continue;
+        const player = state.players.find((candidate) => candidate.id === playerId);
+        const floor = baseline[playerId];
+        if (!player || floor === undefined || player.vp <= floor) continue;
+        const lost = player.vp - floor;
+        player.vp = floor;
+        this.record('event_round_rewards_stripped', `${playerId}:${strip.sourceId}`, { playerId, lost, sourceId: strip.sourceId });
+      }
+    }
   }
 
   private discardRoundSituationAndEvents(): void {
@@ -2627,6 +2944,7 @@ export class MatchSession {
       if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
     }
     targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: startingSeat, startingSeat };
+    modeStateOf(targetState).vpAtRoundStart = Object.fromEntries(targetState.players.map(player => [player.id, player.vp]));
     for (const player of targetState.players) {
       delete player.locationId;
     }
@@ -2809,6 +3127,7 @@ export class MatchSession {
         const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
         resolvedBattles.push(structuredClone(battle));
         this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
+        this.applyEventAfterBattleEffects(battlefield.id as LocationId);
       }
       this.autoResolveNonInteractiveWindows();
     }
@@ -2825,6 +3144,7 @@ export class MatchSession {
   }
 
   private finishBattleRound(): void {
+    this.applyPostBattleStrips();
     if (this.state.round.activePhase !== 'cleanup') advanceAbilityPhase(this.state, 'cleanup', this.state.round.roundNumber);
     const runtime = this.state.abilityRuntime;
     if (runtime?.pendingDecision || runtime?.responseWindows.length || runtime?.hostRequests.length) return;

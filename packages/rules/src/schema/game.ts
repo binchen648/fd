@@ -201,6 +201,8 @@ export interface RuleOverrideState {
 
 export interface GameState {
   abilityRuntime?: import('../ability/types').AbilityRuntime;
+  /** 从者归属：servantCardId -> 持有者 playerId；null 表示无主。缺省时由会话 pairings 推导。 */
+  servantOwnership?: Record<string, string | null>;
   id: string;
   players: PlayerState[];
   round: RoundState;

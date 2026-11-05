@@ -3,7 +3,19 @@
   "name": "作弊器",
   "cardType": "event",
   "printedReward": 3,
-  "applicableLocations": ["deep_mountain", "new_capital"],
+  "applicableLocations": [
+    "deep_mountain",
+    "new_capital"
+  ],
+  "timing": [
+    "battle"
+  ],
+  "interactions": [
+    {
+      "kind": "automatic",
+      "visibility": "public"
+    }
+  ],
   "printedText": "局势牌不会禁止此战场宝具的使用。",
   "effects": [
     {
@@ -14,7 +26,11 @@
   ],
   "capability": {
     "status": "PARTIAL",
-    "supportedDimensions": ["trait", "restriction_source", "battlefield_scope"],
+    "supportedDimensions": [
+      "trait",
+      "restriction_source",
+      "battlefield_scope"
+    ],
     "hostRulingReason": "Automatic event resolution is not yet connected to the rules engine."
   },
   "source": {

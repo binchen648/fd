@@ -10,9 +10,21 @@
 
 import type { GameState } from '../schema/game';
 import type { RuleNode } from './types';
-import { node, str } from './loader';
+import { str } from './loader';
 import { clearTransientCardTransformState } from './card-instance-state';
+import { boundCardInfo } from './binding-cards';
+import { installStatus } from './status';
 
+
+/** Deterministic draw: uses the ability runtime's xorshift seed so replays stay reproducible. */
+function seededIndex(state: GameState, length: number): number {
+  const runtime = (state as any).abilityRuntime;
+  if (!runtime || typeof runtime.randomState !== 'number' || length <= 1) return 0;
+  let seed = runtime.randomState;
+  seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+  runtime.randomState = seed >>> 0;
+  return Math.floor((runtime.randomState / 0x100000000) * length);
+}
 function modeState(state: GameState): Record<string, any> {
   (state as any).modeState = (state as any).modeState || {};
   return (state as any).modeState;
@@ -28,6 +40,7 @@ function pushMasterDirective(
   store.masterDirectives = store.masterDirectives || [];
   store.masterDirectives.push({
     controllerId,
+    round: state.round.roundNumber,
     directive: str(effect.directive) || str(effect.type),
     ...payload,
     ...(effect.payload && typeof effect.payload === 'object' ? effect.payload : {}),
@@ -58,65 +71,17 @@ function selected(context: Record<string, unknown> | undefined, targetRef: strin
   return selections?.[targetRef]?.[0];
 }
 
-/** Check if a condition is met */
+/**
+ * Legacy adapter: 条件判定已全部收敛到 `interpreter` 的 `condition()`。
+ * 这里保留空实现只是为了让旧调用点继续编译；**不要再往里加条件**。
+ */
 export function checkExtendedCondition(
-  state: GameState,
-  controllerId: string,
-  condition: RuleNode,
+  _state: GameState,
+  _controllerId: string,
+  _condition: RuleNode,
   _context?: Record<string, unknown>
 ): boolean {
-  const p = state.players.find(p => p.id === controllerId);
-  if (!p) return false;
-
-  switch (str(condition.type)) {
-    case 'controller_seat_in_first_half': {
-      // Check if controller's seat is in the first half of eligible players
-      const eligiblePlayers = state.players.filter(pl => pl.status === 'active')
-        .sort((a, b) => a.seat - b.seat);
-      const firstHalfCount = Math.floor(eligiblePlayers.length / 2);
-      const playerIndex = eligiblePlayers.findIndex(pl => pl.id === controllerId);
-      return playerIndex >= 0 && playerIndex < firstHalfCount;
-    }
-    case 'controller_at_battlefield': {
-      return p.locationId === 'miyama_town' || p.locationId === 'shinto';
-    }
-    case 'controller_servant_revealed': {
-      return (state as any).abilityRuntime?.revealedServants?.includes(controllerId) ?? false;
-    }
-    case 'not_location_kind': {
-      const locationId = str(condition.locationKind);
-      return p.locationId !== locationId;
-    }
-    case 'controller_at_battlefield_with_exactly_one_opponent': {
-      const opponents = state.players.filter(pl =>
-        pl.id !== controllerId &&
-        pl.status === 'active' &&
-        pl.locationId === p.locationId
-      );
-      return (p.locationId === 'miyama_town' || p.locationId === 'shinto') && opponents.length === 1;
-    }
-    case 'controller_played_highest_cost_noble_phantasm_in_battle_this_round': {
-      // Check if the controller played the highest cost noble phantasm this round
-      const r = (state as any).abilityRuntime;
-      if (!r) return false;
-      const costs = r.noblePhantasmCostsThisRound?.[controllerId] ?? [];
-      if (costs.length === 0) return false;
-      const highestCost = Math.max(...costs.map((c: any) => c.cost));
-      // Check if any of the highest cost cards were played
-      return costs.some((c: any) => c.cost === highestCost);
-    }
-    case 'highest_cost_noble_phantasm_cost_at_least': {
-      // Check if the highest cost noble phantasm this round has cost >= value
-      const r = (state as any).abilityRuntime;
-      if (!r) return false;
-      const costs = r.noblePhantasmCostsThisRound?.[controllerId] ?? [];
-      if (costs.length === 0) return false;
-      const highestCost = Math.max(...costs.map((c: any) => c.cost));
-      return highestCost >= Number(condition.value ?? 0);
-    }
-    default:
-      return false;
-  }
+  return false;
 }
 
 /** Resolve an extended effect */
@@ -137,6 +102,9 @@ export function resolveExtendedEffect(
         pl.status === 'active' &&
         pl.locationId === p.locationId
       );
+      const discardedIds: string[] = [];
+      const affected: string[] = [];
+      const byTarget: Array<{ playerId: string; cardIds: string[]; cards: ReturnType<typeof boundCardInfo>[]; flags: Record<string, boolean> }> = [];
       for (const opponent of opponents) {
         const handCards = state.cards.filter(c =>
           c.ownerPlayerId === opponent.id &&
@@ -145,135 +113,57 @@ export function resolveExtendedEffect(
         );
         const discardCount = Math.min(count, handCards.length);
         for (let i = 0; i < discardCount; i++) {
-          const randomIndex = Math.floor(Math.random() * handCards.length);
+          const randomIndex = seededIndex(state, handCards.length);
           const card = handCards.splice(randomIndex, 1)[0];
           if (card) {
             card.zone = 'discard';
             card.visibility = { scope: 'public' };
+            discardedIds.push(card.instanceId);
           }
         }
-      }
-      break;
-    }
-    case 'lock_battlefield': {
-      // Mark the current battlefield as locked for this round
-      const locationId = p.locationId;
-      if (locationId) {
-        (state as any).modeState = (state as any).modeState || {};
-        (state as any).modeState.lockedBattlefields = (state as any).modeState.lockedBattlefields || [];
-        (state as any).modeState.lockedBattlefields.push({
-          locationId,
-          lockedBy: controllerId,
-          duration: str(effect.duration) || 'this_round'
-        });
-      }
-      break;
-    }
-    case 'exclude_from_terrain_and_external_effects': {
-      // Mark controller and opponents as immune to terrain and external effects
-      const locationId = p.locationId;
-      if (locationId) {
-        (state as any).modeState = (state as any).modeState || {};
-        (state as any).modeState.terrainImmunity = (state as any).modeState.terrainImmunity || [];
-        (state as any).modeState.terrainImmunity.push({
-          locationId,
-          immunePlayers: [controllerId, ...state.players
-            .filter(pl => pl.id !== controllerId && pl.status === 'active' && pl.locationId === locationId)
-            .map(pl => pl.id)]
-        });
-      }
-      break;
-    }
-    case 'set_opponent_power_to_zero': {
-      const opponents = state.players.filter(pl =>
-        pl.id !== controllerId &&
-        pl.status === 'active' &&
-        pl.locationId === p.locationId
-      );
-      for (const opponent of opponents) {
-        const attackCards = state.cards.filter(c =>
-          c.ownerPlayerId === opponent.id &&
-          isActiveFieldCard(state, c)
-        );
-        for (const card of attackCards) {
-          (card as any).powerModifiers = (card as any).powerModifiers || [];
-          (card as any).powerModifiers.push({
-            id: `zero-${controllerId}-${card.instanceId}`,
-            sourceId: 'extended-effect',
-            kind: 'set',
-            value: 0,
-            duration: 'round'
+        if (discardCount > 0) {
+          affected.push(opponent.id);
+          const cards = discardedIds.slice(-discardCount).map(id => boundCardInfo(state, controllerId, id));
+          const visible = cards.filter(card => !card.redacted);
+          byTarget.push({
+            playerId: opponent.id,
+            cardIds: cards.map(card => card.cardId),
+            cards,
+            flags: {
+              lacks_luck_or_agility: visible.length > 0 && visible.every(card =>
+                !(card.attributes ?? []).some(attribute => attribute === '幸运' || attribute === '敏捷')),
+            },
           });
         }
       }
-      break;
-    }
-    case 'forbid_opponents_noble_phantasm': {
-      const opponents = state.players.filter(pl =>
-        pl.id !== controllerId &&
-        pl.status === 'active' &&
-        pl.locationId === p.locationId
-      );
-      for (const opponent of opponents) {
-        (state as any).modeState = (state as any).modeState || {};
-        (state as any).modeState.forbiddenCardTypes = (state as any).modeState.forbiddenCardTypes || [];
-        (state as any).modeState.forbiddenCardTypes.push({
-          playerId: opponent.id,
-          forbiddenType: 'noble_phantasm',
-          duration: 'while_active'
-        });
+      const bindings = context?.bindings as Record<string, unknown> | undefined;
+      const bindingId = str(effect.bind);
+      if (bindings && bindingId) {
+        bindings[bindingId] = {
+          effectType: 'opponents_random_discard',
+          affectedCount: discardedIds.length,
+          affectedPlayerIds: affected,
+          affectedCardIds: discardedIds,
+          affectedCards: discardedIds.map(id => boundCardInfo(state, controllerId, id)),
+          byTarget,
+        };
       }
       break;
     }
     case 'create_status': {
-      const statusId = str(effect.statusId);
-      const duration = str(effect.duration) || 'this_round';
-      (state as any).activeStatuses = (state as any).activeStatuses || [];
-      (state as any).activeStatuses.push({
-        id: statusId,
-        sourceControllerId: controllerId,
-        duration,
-        locationId: p.locationId
+      installStatus(state, {
+        id: str(effect.statusId),
+        controllerId,
+        duration: str(effect.duration) || 'this_round',
+        ...(Number.isFinite(Number(effect.rounds)) ? { rounds: Number(effect.rounds) } : {}),
+        sourceCardId: sourceCardId(context),
+        sourceAbilityId: abilityId(context),
+        ...(p.locationId ? { locationId: p.locationId } : {}),
       });
       break;
     }
     case 'record_master_directive': {
       pushMasterDirective(state, controllerId, effect, directiveContext(context));
-      break;
-    }
-    case 'movement_rule_override': {
-      state.ruleOverrides = state.ruleOverrides || {};
-      const rule = str(effect.rule);
-      if (rule === 'reverse_arrow_movement') {
-        state.ruleOverrides.reverseArrowMovementPlayerIds = [...new Set([
-          ...(state.ruleOverrides.reverseArrowMovementPlayerIds ?? []),
-          controllerId,
-        ])];
-      }
-      break;
-    }
-    case 'deployment_rule_override': {
-      state.ruleOverrides = state.ruleOverrides || {};
-      const rule = str(effect.rule);
-      if (rule === 'must_deploy_to_battlefield') {
-        state.ruleOverrides.mustDeployToBattlefieldPlayerIds = [...new Set([
-          ...(state.ruleOverrides.mustDeployToBattlefieldPlayerIds ?? []),
-          controllerId,
-        ])];
-      }
-      break;
-    }
-    case 'adjust_command_seals': {
-      const current = Number((p as any).commandSpells ?? 3);
-      const amount = Number(effect.amount ?? 0);
-      (p as any).commandSpells = Math.max(0, current + amount);
-      pushMasterDirective(state, controllerId, effect, { ...directiveContext(context), amount, commandSpells: (p as any).commandSpells });
-      break;
-    }
-    case 'set_mana': {
-      const amount = Number(effect.amount ?? 0);
-      p.mana = Math.max(0, amount);
-      pushMasterDirective(state, controllerId, effect, { ...directiveContext(context), amount });
       break;
     }
     case 'create_independent_deck': {
@@ -384,11 +274,12 @@ export function resolveExtendedEffect(
         returnAtRoundEnd: effect.returnAtRoundEnd !== false,
       });
       if (effect.controllerCannotWinStatus) {
-        (state as any).activeStatuses = (state as any).activeStatuses || [];
-        (state as any).activeStatuses.push({
+        installStatus(state, {
           id: str(effect.controllerCannotWinStatus),
-          sourceControllerId: controllerId,
+          controllerId,
           duration: 'this_round',
+          sourceCardId: sourceCardId(context),
+          sourceAbilityId: abilityId(context),
         });
       }
       break;
@@ -423,6 +314,14 @@ export function resolveExtendedEffect(
         abilityId: abilityId(context),
         looked,
       };
+      (state as any).abilityRuntime.events.push({
+        type: 'match_deck_bottom_looked',
+        playerId: controllerId,
+        sourceCardId: sourceCardId(context),
+        abilityId: abilityId(context),
+        visibility: controllerId,
+        details: looked,
+      });
       break;
     }
     case 'swap_revealed_with_deck_bottom': {
@@ -528,6 +427,13 @@ export function resolveExtendedEffect(
         const unused = ((store.unownedServantPool as string[] | undefined) ?? [])
           .find(servantId => !state.players.some(candidate => candidate.servantCardId === servantId));
         if (unused) {
+          // B-SERVANT-OWNERSHIP-CONTRACT：归属必须随从者变更同步（否则 servantOwnership 变陈旧）
+          const previous = controller.servantCardId;
+          const ownership = (state as unknown as { servantOwnership?: Record<string, string | null> }).servantOwnership;
+          if (ownership) {
+            if (previous) ownership[previous] = null;
+            ownership[unused] = controllerId;
+          }
           controller.servantCardId = unused;
           (controller as any).commandSpells = 3;
           store.unownedServantPool = ((store.unownedServantPool as string[] | undefined) ?? []).filter(id => id !== unused);
@@ -603,6 +509,7 @@ export function resolveExtendedEffect(
       }
       break;
     }
+
     case 'close_source_card': {
       // Close the source card (move to skill for servant skills)
       const sourceCardId = (context as any)?.sourceCardId;
@@ -617,10 +524,6 @@ export function resolveExtendedEffect(
       }
       break;
     }
-    case 'choice_is': {
-      // This is handled by the branch logic, just pass through
-      break;
-    }
     case 'hide_servant_true_name': {
       // Hide servant true name
       const runtime = (state as any).abilityRuntime;
@@ -629,7 +532,6 @@ export function resolveExtendedEffect(
       }
       break;
     }
-    case 'reverse_situation_event_power_modifiers':
     case 'reverse_situation_and_event_power_modifiers': {
       // Reverse all power modifiers from situation and event cards for players at this location
       // This is Ereshkigal's Netherworld Protection effect
@@ -678,38 +580,11 @@ export function resolveExtendedEffect(
       }
       break;
     }
-    case 'create_modifier': {
-      // Create a power modifier for a target
-      const modifier = node(effect.modifier);
-      if (!modifier) break;
-      
-      const target = str(effect.target) || 'controller';
-      const playerId = target === 'controller' ? controllerId : target;
-      
-      // Find the target player's cards
-      const targetCards = state.cards.filter(c => 
-        c.ownerPlayerId === playerId && 
-        isActiveFieldCard(state, c)
-      );
-      
-      // Apply modifier to all eligible cards
-      for (const card of targetCards) {
-        const modifiers = (card as any).powerModifiers || [];
-        const modifierId = `modifier-${controllerId}-${card.instanceId}-${Date.now()}`;
-        modifiers.push({
-          id: modifierId,
-          sourceId: 'create_modifier',
-          kind: str(modifier.kind) || 'add',
-          value: Number(modifier.value ?? 0),
-          duration: str(modifier.duration) || 'round'
-        });
-        (card as any).powerModifiers = modifiers;
-      }
-      break;
+    default: {
+      // Legacy adapter 只兜底真正没人处理的类型；不再"悄悄 warn 后继续"，
+      // 否则未知效果会被当成已执行（歧义 0 的前提）。interpreter 会把它转成 reject。
+      throw new Error(`Unknown legacy effect type: ${String(effect.type ?? '')}`);
     }
-    default:
-      // Unknown effect type - log but don't throw
-      console.warn(`Unknown extended effect type: ${effect.type}`);
   }
 }
 

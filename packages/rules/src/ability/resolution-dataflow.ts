@@ -569,7 +569,8 @@ export function hasResolutionDataFlowSyntax(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(hasResolutionDataFlowSyntax);
   if (!value || typeof value !== 'object') return false;
   const current = value as Record<string, unknown>;
-  if (typeof current.bind === 'string') return true;
+  // `bind` alone is generic (any live primitive may expose a result binding); only the
+  // resolution data-flow primitives and expressions select the legacy transaction pipeline.
   if (current.expr === 'binding_field' || current.expr === 'binding_status') return true;
   if (current.type === 'remove_advantage_position' || current.type === 'noop' || current.type === 'fail_invariant') return true;
   return Object.values(current).some(hasResolutionDataFlowSyntax);

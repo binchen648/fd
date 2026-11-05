@@ -49,7 +49,12 @@
     "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/narrow-path-encounter.json",
     "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/gentle-hometown.json",
     "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/growth.json",
-    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/keian-ceremony.json"
+    "data/packs/fd-playtest-v1/cards/events/waxing-moon-ritual/keian-ceremony.json",
+    "data/packs/fd-playtest-v1/cards/events/cheat-device.json",
+    "data/packs/fd-playtest-v1/cards/events/close-quarters.json",
+    "data/packs/fd-playtest-v1/cards/events/core-intrusion.json",
+    "data/packs/fd-playtest-v1/cards/events/merged-vortex.json",
+    "data/packs/fd-playtest-v1/cards/events/superior-firepower.json"
   ],
   "authoringMasterRuleFiles": [
     "data/authoring/masters/master.ciel.json",

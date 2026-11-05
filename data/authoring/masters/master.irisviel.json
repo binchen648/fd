@@ -33,7 +33,10 @@
           "kind": "passive",
           "printedClause": "令咒改为在前哨阶段使用。",
           "activation": { "trigger": "while_active" },
-          "effects": [{ "type": "record_master_directive", "directive": "command_spells_used_in_preparation_phase" }],
+          "ruleModifiers": [
+            { "id": "command_spell_phase", "printedClause": "令咒改为在前哨阶段使用。", "operation": "add", "rule": "command_spell_phase", "value": "advance" }
+          ],
+
           "execution": { "mode": "automatic" }
         }
       ],

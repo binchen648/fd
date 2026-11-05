@@ -141,12 +141,22 @@
           "printedClause": "行动阶段：+2合计威力，若你获胜，获得2点战果。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
           "creates": [
-            { "type": "create_modifier", "modifier": { "type": "power_bonus", "target": "controller", "amount": 2, "duration": "this_round" } }
+            { "type": "create_modifier", "modifier": { "type": "power_bonus", "operation": "add", "aggregate": "total", "scope": { "subject": "controller" }, "amount": 2, "duration": "this_round" } }
           ],
           "effects": [
-            { "type": "record_master_directive", "directive": "gain_2_vp_if_win_this_round" },
+            { "type": "record_master_directive", "directive": "command_spell_victory_vp" },
             { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
           ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "command-spell.victory-vp",
+          "kind": "forced_trigger",
+          "printedClause": "若你获胜，获得2点战果。",
+          "activation": { "trigger": "after_controller_wins_battle", "opens": "immediate" },
+          "conditions": [{ "type": "directive_recorded_this_round", "directive": "command_spell_victory_vp" }],
+          "effects": [{ "type": "adjust_victory_points", "amount": 2 }],
+          "limit": { "type": "per_round", "uses": 1, "scope": "this_card" },
           "execution": { "mode": "automatic" }
         },
         {
@@ -154,8 +164,14 @@
           "kind": "phase_action",
           "printedClause": "行动阶段：无视交战状态从深山町或新都移动至任意地点。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
+          "targets": [
+            { "id": "destination", "type": "location", "count": 1, "constraints": [
+              { "type": "any_enabled_location" },
+              { "type": "from_location_in", "locationIds": ["shinto", "miyama_town"] },
+              { "type": "ignore_engagement" } ] }
+          ],
           "effects": [
-            { "type": "record_master_directive", "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement" },
+            { "type": "move_player", "to": "destination" },
             { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
           ],
           "execution": { "mode": "automatic" }

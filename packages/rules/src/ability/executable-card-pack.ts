@@ -366,16 +366,28 @@ function specialBasicDefinitions(dictionary: BasicAttackDictionary): AuthoringCa
     if (!entry || !Number.isFinite(entry.cost) || !Number.isFinite(entry.power)) {
       throw new Error(`Missing strict basic attack dictionary entry: ${id}`);
     }
-    const abilities: AuthoringAbility[] = id === 'basic.surveil' ? [{
+    const abilities: AuthoringAbility[] = id === 'basic.preparation' ? [{
+      // 远隔操作：卡面只声明规则名，结算侧（combat-resolver）读规则名，不再按卡 id 判定。
+      id: 'basic.preparation.ranged-operation', kind: 'passive',
+      printedClause: '远隔操作-战斗阶段：此战场你的地利效果翻倍；若你赢得此战场的战斗，额外获得2战果。',
+      activation: { trigger: 'while_active' }, conditions: [], targets: [], effects: [],
+      ruleModifiers: [
+        { operation: 'set', rule: 'terrain.multiplier', scope: { subject: 'controller' }, value: 2 },
+        { operation: 'add', rule: 'battle.winVpBonus', scope: { subject: 'controller' }, value: 2 },
+      ],
+      cost: [], creates: [], lifecycle: {}, responseWindow: {}, limit: {}, visibility: {},
+      execution: { mode: 'automatic', allowedOperations: [] },
+    }] : id === 'basic.surveil' ? [{
       id: 'basic.surveil.battle-dash', kind: 'phase_action', printedClause: '行动阶段：无视交战状态，沿箭头移动至下一地点。',
       activation: { phase: 'action', opens: 'controller_action_window', requiresSourceState: 'active' }, conditions: [],
       targets: [{ id: 'destination', type: 'location', count: { min: 1, max: 1 }, constraints: [{ type: 'reachable_along_arrows', maxSteps: 1 }] }],
       effects: [{ type: 'move_player', to: 'destination' }], cost: [], ruleModifiers: [], creates: [], lifecycle: {}, responseWindow: {},
       limit: { type: 'per_round', uses: 1 }, visibility: {}, execution: { mode: 'automatic', allowedOperations: [] },
     }] : id === 'basic.luck' ? [{
-      id: 'basic.luck.ignore-defeat', kind: 'residual', printedClause: '战斗阶段：无视本次败北效果。',
-      activation: { trigger: 'while_active' }, conditions: [], targets: [], effects: [{ type: 'append_only_rule', rule: 'ignore_battle_loss_effects' }],
-      cost: [], ruleModifiers: [], creates: [], lifecycle: { cleanup: 'discard_at_round_end' }, responseWindow: {}, limit: {}, visibility: {},
+      id: 'basic.luck.immune-to-defeat', kind: 'residual', printedClause: '战斗阶段：无视本次败北效果。',
+      activation: { trigger: 'while_active' }, conditions: [], targets: [], effects: [],
+      ruleModifiers: [{ operation: 'add', rule: 'immune_to_defeat', scope: { subject: 'controller' } }],
+      cost: [], creates: [], lifecycle: { cleanup: 'discard_at_round_end' }, responseWindow: {}, limit: {}, visibility: {},
       execution: { mode: 'automatic', allowedOperations: [] },
     }] : [];
     return {
@@ -859,6 +871,8 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
 
   const deferred = deferredCardIds(cards);
   for (const card of Object.values(cards)) {
+    // 升华技开局不在场：只能在解锁效果把它放进技能区之后才存在（A4 口径更正）。
+    if (card.ascensionSkill === true) deferred.add(card.id);
     if (['servant_skill', 'master_skill', 'command_spell'].includes(card.cardType) && !deferred.has(card.id)) card.initialZone = 'skill';
     validateCardReferences(card.abilities, cards, `cards.${card.id}.abilities`);
     validateAbilityTargetReferences(card, cards);

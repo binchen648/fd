@@ -17,8 +17,65 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "event.moon_holy_grail.cheat_device",
+      "displayName": "作弊器",
+      "entityKind": "event",
+      "capabilityStatus": "PARTIAL",
+      "htmPath": "chm-extract/月之圣杯.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205545_209.png",
+      "imageIndex": 8,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "event.moon_holy_grail.close_quarters",
+      "displayName": "短兵相接",
+      "entityKind": "event",
+      "capabilityStatus": "PARTIAL",
+      "htmPath": "chm-extract/月之圣杯.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205435_568.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "event.moon_holy_grail.core_intrusion",
+      "displayName": "核心骇入",
+      "entityKind": "event",
+      "capabilityStatus": "PARTIAL",
+      "htmPath": "chm-extract/月之圣杯.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205447_609.png",
+      "imageIndex": 18,
+      "reviewedAgainstImage": true,
       "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
+        "REQUIRES_CONFIRMATION"
+      ]
+    },
+    {
+      "entityId": "event.moon_holy_grail.merged_vortex",
+      "displayName": "嵌合涡流",
+      "entityKind": "event",
+      "capabilityStatus": "PARTIAL",
+      "htmPath": "chm-extract/月之圣杯.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205523_825.png",
+      "imageIndex": 11,
+      "reviewedAgainstImage": true,
+      "issueCodes": []
+    },
+    {
+      "entityId": "event.moon_holy_grail.superior_firepower",
+      "displayName": "优势火力学说",
+      "entityKind": "event",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/月之圣杯.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_205441_186.png",
+      "imageIndex": 6,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "REQUIRES_CONFIRMATION"
       ]
     },
     {
@@ -30,9 +87,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211337_375.png",
       "imageIndex": 12,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.banquet",
@@ -43,9 +98,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211256_615.png",
       "imageIndex": 6,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.beautiful_thing",
@@ -56,9 +109,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211153_351.png",
       "imageIndex": 15,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.bloody_sunset",
@@ -69,9 +120,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211243_871.png",
       "imageIndex": 5,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.curse_god",
@@ -82,9 +131,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211331_063.png",
       "imageIndex": 8,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.dark_current",
@@ -95,9 +142,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211201_975.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.edo",
@@ -108,9 +153,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211213_982.png",
       "imageIndex": 10,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.gentle_hometown",
@@ -121,9 +164,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211249_872.png",
       "imageIndex": 17,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.growth",
@@ -134,9 +175,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211325_207.png",
       "imageIndex": 18,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.keian_ceremony",
@@ -147,9 +186,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211220_295.png",
       "imageIndex": 19,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.narrow_path_encounter",
@@ -160,9 +197,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211307_792.png",
       "imageIndex": 16,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.rage_rising",
@@ -173,9 +208,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211232_480.png",
       "imageIndex": 7,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.resistance",
@@ -186,9 +219,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211237_713.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.ritual",
@@ -199,9 +230,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.sudden_loss",
@@ -212,9 +241,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211207_992.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.vengeful_spirit_barrier",
@@ -225,9 +252,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211226_007.png",
       "imageIndex": 13,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.white_night_walk",
@@ -238,9 +263,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211313_495.png",
       "imageIndex": 9,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "event.waxing_moon_ritual.yokosuka",
@@ -251,9 +274,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-27_211302_297.png",
       "imageIndex": 11,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.gatou",
@@ -264,9 +285,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222919_276.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.gatou.command-spell",
@@ -277,9 +296,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222929_556.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.gatou.overview",
@@ -290,9 +307,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222919_276.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.gatou.skill.seeker",
@@ -303,9 +318,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_222924_628.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.irisviel",
@@ -316,9 +329,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.irisviel.overview",
@@ -329,9 +340,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.irisviel.skill.conversion-magic",
@@ -342,9 +351,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200854_918.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.irisviel.skill.proxy-master",
@@ -355,9 +362,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth",
@@ -368,9 +373,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth.deck.volumen-hydrargyrum",
@@ -381,9 +384,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163104_009.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth.overview",
@@ -394,9 +395,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth.skill.alchemist",
@@ -407,9 +406,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth.skill.double-master",
@@ -420,9 +417,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kayneth.skill.pride",
@@ -433,9 +428,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_163058_193.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu",
@@ -446,9 +439,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu.deck.origin-bullet",
@@ -459,9 +450,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu.overview",
@@ -472,9 +461,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu.skill.magus-killer",
@@ -485,9 +472,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215428_559.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu.skill.square-accel",
@@ -498,9 +483,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.kiritsugu.skill.time-alter",
@@ -511,9 +494,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.maiya",
@@ -524,9 +505,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.maiya.deck.support-shot",
@@ -537,9 +516,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230935_247.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.maiya.overview",
@@ -550,9 +527,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.maiya.skill.military",
@@ -563,9 +538,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-29_230929_848.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.olga-marie",
@@ -576,9 +549,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_182248_978.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.olga-marie.command-spell",
@@ -589,9 +560,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_182310_586.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.olga-marie.overview",
@@ -602,9 +571,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_182248_978.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.olga-marie.skill.astronomical-science",
@@ -615,9 +582,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_182253_810.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.olga-marie.skill.chaldeas",
@@ -628,9 +593,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_182259_890.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.olga-marie.skill.trismegistus-grief",
@@ -641,9 +604,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_182304_865.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji",
@@ -654,9 +615,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji.overview",
@@ -667,9 +626,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji.skill.clown",
@@ -680,9 +637,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194550_681.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji.skill.drain-command",
@@ -693,9 +648,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194540_736.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji.skill.false-attendant-book",
@@ -706,9 +659,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194556_480.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "master.shinji.skill.useless-person",
@@ -719,9 +670,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles",
@@ -732,9 +681,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles.overview",
@@ -745,9 +692,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles.skill.sc-achilles-1",
@@ -758,9 +703,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164221_598.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles.skill.sc-achilles-2",
@@ -771,9 +714,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164226_270.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.achilles.skill.sc-achilles-3",
@@ -784,9 +725,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164216_582.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoria-alt",
@@ -797,9 +736,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoria-alt.overview",
@@ -810,9 +747,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
@@ -823,9 +758,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184743_358.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
@@ -836,9 +769,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_183120_208.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
@@ -849,9 +780,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-31_184737_374.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac",
@@ -862,9 +791,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194003_539.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.overview",
@@ -875,9 +802,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194003_539.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.skill.sc-artoriac-1",
@@ -888,9 +813,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194015_795.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.skill.sc-artoriac-2",
@@ -901,9 +824,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194011_668.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.skill.sc-artoriac-3",
@@ -914,9 +835,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194007_626.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.skill.sc-artoriac-4",
@@ -927,9 +846,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194020_420.png",
       "imageIndex": 4,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.skill.sc-artoriac-5",
@@ -940,9 +857,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194025_123.png",
       "imageIndex": 5,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.artoriac.skill.sc-artoriac-6",
@@ -953,9 +868,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_194029_723.png",
       "imageIndex": 6,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.drake",
@@ -966,9 +879,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.drake.overview",
@@ -979,9 +890,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.drake.skill.sc-drake-1",
@@ -992,9 +901,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192738_090.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.drake.skill.sc-drake-2",
@@ -1005,9 +912,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164710_406.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.drake.skill.sc-drake-3",
@@ -1018,9 +923,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_164715_253.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.ereshkigal",
@@ -1031,9 +934,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.ereshkigal.overview",
@@ -1044,9 +945,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.ereshkigal.skill.sc-ereshkigal-1",
@@ -1057,9 +956,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192743_490.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.ereshkigal.skill.sc-ereshkigal-2",
@@ -1070,9 +967,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111916_240.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.ereshkigal.skill.sc-ereshkigal-3",
@@ -1083,9 +978,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_111911_088.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.kintoki",
@@ -1096,9 +989,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.kintoki.overview",
@@ -1109,9 +1000,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.kintoki.skill.sc-kintoki-1",
@@ -1122,9 +1011,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.kintoki.skill.sc-kintoki-2",
@@ -1135,9 +1022,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.kintoki.skill.sc-kintoki-3",
@@ -1148,9 +1033,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.tomoe",
@@ -1161,9 +1044,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.tomoe.overview",
@@ -1174,9 +1055,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.tomoe.skill.sc-tomoe-1",
@@ -1187,9 +1066,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
       "imageIndex": 1,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.tomoe.skill.sc-tomoe-2",
@@ -1200,9 +1077,7 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192733_130.png",
       "imageIndex": 2,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     },
     {
       "entityId": "servant.tomoe.skill.sc-tomoe-3",
@@ -1213,661 +1088,22 @@
       "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160032_219.png",
       "imageIndex": 3,
       "reviewedAgainstImage": true,
-      "issueCodes": [
-        "SOURCE_ASSET_UNVERIFIED"
-      ]
+      "issueCodes": []
     }
   ],
   "issues": [
     {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event-set.waxing_moon_ritual source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
-      "entityId": "event-set.waxing_moon_ritual",
-      "field": "source.imagePath",
+      "code": "REQUIRES_CONFIRMATION",
+      "message": "event.moon_holy_grail.core_intrusion requires confirmation for effects.grant_residual_attack.recipient: 牌面使用单数“此战场的胜者”；若存在多名并列胜者，是每名胜者各选择一张基础攻击，还是整张事件只执行一次，需要用户确认。 (source: chm-extract/图包/ScreenShot_2025-10-27_205447_609.png)",
+      "entityId": "event.moon_holy_grail.core_intrusion",
+      "field": "effects.grant_residual_attack.recipient",
       "blocking": false
     },
     {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.akasaka source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211337_375.png",
-      "entityId": "event.waxing_moon_ritual.akasaka",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.banquet source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211256_615.png",
-      "entityId": "event.waxing_moon_ritual.banquet",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.beautiful_thing source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211153_351.png",
-      "entityId": "event.waxing_moon_ritual.beautiful_thing",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.bloody_sunset source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211243_871.png",
-      "entityId": "event.waxing_moon_ritual.bloody_sunset",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.curse_god source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211331_063.png",
-      "entityId": "event.waxing_moon_ritual.curse_god",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.dark_current source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211201_975.png",
-      "entityId": "event.waxing_moon_ritual.dark_current",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.edo source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211213_982.png",
-      "entityId": "event.waxing_moon_ritual.edo",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.gentle_hometown source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211249_872.png",
-      "entityId": "event.waxing_moon_ritual.gentle_hometown",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.growth source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211325_207.png",
-      "entityId": "event.waxing_moon_ritual.growth",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.keian_ceremony source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211220_295.png",
-      "entityId": "event.waxing_moon_ritual.keian_ceremony",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.narrow_path_encounter source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211307_792.png",
-      "entityId": "event.waxing_moon_ritual.narrow_path_encounter",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.rage_rising source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211232_480.png",
-      "entityId": "event.waxing_moon_ritual.rage_rising",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.resistance source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211237_713.png",
-      "entityId": "event.waxing_moon_ritual.resistance",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.ritual source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211319_640.png",
-      "entityId": "event.waxing_moon_ritual.ritual",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.sudden_loss source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211207_992.png",
-      "entityId": "event.waxing_moon_ritual.sudden_loss",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.vengeful_spirit_barrier source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211226_007.png",
-      "entityId": "event.waxing_moon_ritual.vengeful_spirit_barrier",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.white_night_walk source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211313_495.png",
-      "entityId": "event.waxing_moon_ritual.white_night_walk",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "event.waxing_moon_ritual.yokosuka source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-27_211302_297.png",
-      "entityId": "event.waxing_moon_ritual.yokosuka",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.gatou source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_222919_276.png",
-      "entityId": "master.gatou",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.gatou.command-spell source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_222929_556.png",
-      "entityId": "master.gatou.command-spell",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.gatou.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_222919_276.png",
-      "entityId": "master.gatou.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.gatou.skill.seeker source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_222924_628.png",
-      "entityId": "master.gatou.skill.seeker",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
-      "entityId": "master.irisviel",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200845_151.png",
-      "entityId": "master.irisviel.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel.skill.conversion-magic source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200854_918.png",
-      "entityId": "master.irisviel.skill.conversion-magic",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.irisviel.skill.proxy-master source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_200849_886.png",
-      "entityId": "master.irisviel.skill.proxy-master",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
-      "entityId": "master.kayneth",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.deck.volumen-hydrargyrum source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163104_009.png",
-      "entityId": "master.kayneth.deck.volumen-hydrargyrum",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163037_577.png",
-      "entityId": "master.kayneth.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.skill.alchemist source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163051_633.png",
-      "entityId": "master.kayneth.skill.alchemist",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.skill.double-master source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163045_049.png",
-      "entityId": "master.kayneth.skill.double-master",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kayneth.skill.pride source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_163058_193.png",
-      "entityId": "master.kayneth.skill.pride",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
-      "entityId": "master.kiritsugu",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.deck.origin-bullet source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
-      "entityId": "master.kiritsugu.deck.origin-bullet",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215423_544.png",
-      "entityId": "master.kiritsugu.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.skill.magus-killer source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215428_559.png",
-      "entityId": "master.kiritsugu.skill.magus-killer",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.skill.square-accel source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215437_375.png",
-      "entityId": "master.kiritsugu.skill.square-accel",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.kiritsugu.skill.time-alter source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_215432_872.png",
-      "entityId": "master.kiritsugu.skill.time-alter",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.maiya source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
-      "entityId": "master.maiya",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.maiya.deck.support-shot source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_230935_247.png",
-      "entityId": "master.maiya.deck.support-shot",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.maiya.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_230925_200.png",
-      "entityId": "master.maiya.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.maiya.skill.military source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-29_230929_848.png",
-      "entityId": "master.maiya.skill.military",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.olga-marie source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182248_978.png",
-      "entityId": "master.olga-marie",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.olga-marie.command-spell source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182310_586.png",
-      "entityId": "master.olga-marie.command-spell",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.olga-marie.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182248_978.png",
-      "entityId": "master.olga-marie.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.olga-marie.skill.astronomical-science source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182253_810.png",
-      "entityId": "master.olga-marie.skill.astronomical-science",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.olga-marie.skill.chaldeas source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182259_890.png",
-      "entityId": "master.olga-marie.skill.chaldeas",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.olga-marie.skill.trismegistus-grief source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_182304_865.png",
-      "entityId": "master.olga-marie.skill.trismegistus-grief",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shinji source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
-      "entityId": "master.shinji",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shinji.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194536_066.png",
-      "entityId": "master.shinji.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shinji.skill.clown source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194550_681.png",
-      "entityId": "master.shinji.skill.clown",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shinji.skill.drain-command source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194540_736.png",
-      "entityId": "master.shinji.skill.drain-command",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shinji.skill.false-attendant-book source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194556_480.png",
-      "entityId": "master.shinji.skill.false-attendant-book",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "master.shinji.skill.useless-person source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_194545_992.png",
-      "entityId": "master.shinji.skill.useless-person",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.achilles source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
-      "entityId": "servant.achilles",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.achilles.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164211_781.png",
-      "entityId": "servant.achilles.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.achilles.skill.sc-achilles-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164221_598.png",
-      "entityId": "servant.achilles.skill.sc-achilles-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.achilles.skill.sc-achilles-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164226_270.png",
-      "entityId": "servant.achilles.skill.sc-achilles-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.achilles.skill.sc-achilles-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164216_582.png",
-      "entityId": "servant.achilles.skill.sc-achilles-3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoria-alt source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
-      "entityId": "servant.artoria-alt",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoria-alt.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-31_184732_494.png",
-      "entityId": "servant.artoria-alt.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoria-alt.skill.sc-artoria-alt-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-31_184743_358.png",
-      "entityId": "servant.artoria-alt.skill.sc-artoria-alt-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoria-alt.skill.sc-artoria-alt-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-31_183120_208.png",
-      "entityId": "servant.artoria-alt.skill.sc-artoria-alt-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoria-alt.skill.sc-artoria-alt-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-31_184737_374.png",
-      "entityId": "servant.artoria-alt.skill.sc-artoria-alt-3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194003_539.png",
-      "entityId": "servant.artoriac",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194003_539.png",
-      "entityId": "servant.artoriac.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.skill.sc-artoriac-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194015_795.png",
-      "entityId": "servant.artoriac.skill.sc-artoriac-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.skill.sc-artoriac-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194011_668.png",
-      "entityId": "servant.artoriac.skill.sc-artoriac-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.skill.sc-artoriac-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194007_626.png",
-      "entityId": "servant.artoriac.skill.sc-artoriac-3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.skill.sc-artoriac-4 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194020_420.png",
-      "entityId": "servant.artoriac.skill.sc-artoriac-4",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.skill.sc-artoriac-5 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194025_123.png",
-      "entityId": "servant.artoriac.skill.sc-artoriac-5",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.artoriac.skill.sc-artoriac-6 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_194029_723.png",
-      "entityId": "servant.artoriac.skill.sc-artoriac-6",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.drake source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
-      "entityId": "servant.drake",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.drake.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164705_550.png",
-      "entityId": "servant.drake.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.drake.skill.sc-drake-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_192738_090.png",
-      "entityId": "servant.drake.skill.sc-drake-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.drake.skill.sc-drake-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164710_406.png",
-      "entityId": "servant.drake.skill.sc-drake-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.drake.skill.sc-drake-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_164715_253.png",
-      "entityId": "servant.drake.skill.sc-drake-3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.ereshkigal source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
-      "entityId": "servant.ereshkigal",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.ereshkigal.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_111906_400.png",
-      "entityId": "servant.ereshkigal.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.ereshkigal.skill.sc-ereshkigal-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_192743_490.png",
-      "entityId": "servant.ereshkigal.skill.sc-ereshkigal-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.ereshkigal.skill.sc-ereshkigal-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_111916_240.png",
-      "entityId": "servant.ereshkigal.skill.sc-ereshkigal-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.ereshkigal.skill.sc-ereshkigal-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_111911_088.png",
-      "entityId": "servant.ereshkigal.skill.sc-ereshkigal-3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kintoki source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
-      "entityId": "servant.kintoki",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kintoki.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_112043_708.png",
-      "entityId": "servant.kintoki.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kintoki.skill.sc-kintoki-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
-      "entityId": "servant.kintoki.skill.sc-kintoki-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kintoki.skill.sc-kintoki-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
-      "entityId": "servant.kintoki.skill.sc-kintoki-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kintoki.skill.sc-kintoki-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
-      "entityId": "servant.kintoki.skill.sc-kintoki-3",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.tomoe source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
-      "entityId": "servant.tomoe",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.tomoe.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
-      "entityId": "servant.tomoe.overview",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.tomoe.skill.sc-tomoe-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_160023_403.png",
-      "entityId": "servant.tomoe.skill.sc-tomoe-1",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.tomoe.skill.sc-tomoe-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-10-30_192733_130.png",
-      "entityId": "servant.tomoe.skill.sc-tomoe-2",
-      "field": "source.imagePath",
-      "blocking": false
-    },
-    {
-      "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.tomoe.skill.sc-tomoe-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_160032_219.png",
-      "entityId": "servant.tomoe.skill.sc-tomoe-3",
-      "field": "source.imagePath",
+      "code": "REQUIRES_CONFIRMATION",
+      "message": "event.moon_holy_grail.superior_firepower requires confirmation for effects.temporary_attack_copy_request.copy_state: 牌面未逐项说明临时复制是否继承来源攻击的使用次数状态、被赋予状态及其他非印刷状态，需要用户确认。 (source: chm-extract/图包/ScreenShot_2025-10-27_205441_186.png)",
+      "entityId": "event.moon_holy_grail.superior_firepower",
+      "field": "effects.temporary_attack_copy_request.copy_state",
       "blocking": false
     }
   ]

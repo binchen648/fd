@@ -12,12 +12,14 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, classifyCardPlay, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, classifyCardPlay, liveOngoing, subjectPlayerIds, hasActiveRuleModifier, processAbilityEvent } from '../ability/interpreter';
 import { isAcceptedRoundActiveAttackPaidCostCombatPowerAbility, isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
 import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
-import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
+import { assignedTerrainSlotIndex, terrainBonusAt } from './terrain-advantage';
+import { isStatusActive } from '../ability/status';
+import { node, nodes } from '../ability/loader';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -163,6 +165,7 @@ function getTerrainBreakdowns(
   }
   const value = terrainBonusAt(state, battlefieldId, participant.playerId, participant.terrainSlotIndex);
   if (value === undefined) {
+
     return [];
   }
 
@@ -174,29 +177,46 @@ function modeState(state: GameState): Record<string, unknown> {
 }
 
 function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
-  const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
-  return statuses.some((status) =>
-    status.id === "maiya_cannot_win_battle_this_round" &&
-    status.sourceControllerId === playerId);
+  return isStatusActive(state, 'maiya_cannot_win_battle_this_round', playerId);
 }
 
-function hasActiveBasicCardAtBattlefield(
+/**
+ * A3：战斗结算结果（战败）不可被任何卡牌豁免；Luck 免疫的是被赋予【败北】状态，
+ * 此读点只保护被赋予的败北事实（战前/气息遮断等），不改变正常输赢和军绩。
+ */
+function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime || !state.players.some((player) => player.id === playerId && player.locationId === battlefieldId)) return false;
+  return state.cards.some((source) => source.controllerPlayerId === playerId &&
+    ['skill', 'field', 'attack_area'].includes(source.zone) &&
+    runtime.cardState[source.instanceId]?.faceDown !== true && runtime.cardState[source.instanceId]?.active !== false &&
+    runtime.pack.cards[source.definitionId]?.abilities.some((ability) =>
+      ability.ruleModifiers.some((modifier) => modifier.rule === 'immune_to_defeat' && modifier.operation === 'add')));
+}
+
+/**
+ * 远隔操作（`basic.preparation`）：不再按卡 id 判定，改为"该玩家在此战场有一张**激活的**、
+ * 且声明了指定规则名的卡"。卡面通过 `ruleModifiers` 声明，resolver 只认规则名。
+ */
+function declaresRule(state: GameState, definitionId: string, rule: string): boolean {
+  const definition = state.abilityRuntime?.pack.cards[definitionId];
+  return (definition?.abilities ?? []).some((ability) =>
+    ability.ruleModifiers.some((modifier) => String((modifier as { rule?: unknown }).rule ?? '') === rule));
+}
+
+function hasActiveCardDeclaringRule(
   state: GameState,
   playerId: string,
   battlefieldId: CombatResolutionInput["battlefieldId"],
-  definitionId: string,
+  rule: string,
 ): boolean {
   return state.cards.some((card) =>
     card.controllerPlayerId === playerId &&
-    card.definitionId === definitionId &&
     card.zone === "attack_area" &&
     state.players.some((player) => player.id === playerId && player.locationId === battlefieldId) &&
     state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
-    state.abilityRuntime.cardState[card.instanceId]?.faceDown !== true);
-}
-
-function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck");
+    state.abilityRuntime?.cardState[card.instanceId]?.faceDown !== true &&
+    declaresRule(state, card.definitionId, rule));
 }
 
 function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
@@ -210,6 +230,29 @@ function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; p
       ability.effects.some((effect) => effect.type === "return_silence_battle_start"));
     return hasReturnSilenceSemantic ? [{ sourceCardId, playerId: card.controllerPlayerId }] : [];
   });
+}
+
+/** 卡面声明的胜利战果加成（默认 2，取 `battle.winVpBonus` 的 value）。 */
+function declaredWinVpBonus(
+  state: GameState,
+  playerId: string,
+  _battlefieldId: CombatResolutionInput["battlefieldId"],
+): number {
+  const card = state.cards.find((candidate) =>
+    candidate.controllerPlayerId === playerId &&
+    candidate.zone === "attack_area" &&
+    state.abilityRuntime?.cardState[candidate.instanceId]?.active === true &&
+    declaresRule(state, candidate.definitionId, "battle.winVpBonus"));
+  const definition = card ? state.abilityRuntime?.pack.cards[card.definitionId] : undefined;
+  for (const ability of definition?.abilities ?? []) {
+    for (const modifier of ability.ruleModifiers) {
+      const entry = modifier as { rule?: unknown; value?: unknown };
+      if (String(entry.rule ?? '') !== "battle.winVpBonus") continue;
+      const value = Number(entry.value ?? 2);
+      return Number.isFinite(value) ? value : 2;
+    }
+  }
+  return 2;
 }
 
 function isLegacyCombatCard(state: GameState, card: GameState["cards"][number]): boolean {
@@ -232,6 +275,7 @@ function isCombatCardZone(state: GameState, card: GameState["cards"][number]): b
   return card.zone === "attack_area" || isLegacyCombatCard(state, card);
 }
 
+
 function reverseSituationAndEventIfNeeded(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
@@ -243,7 +287,11 @@ function reverseSituationAndEventIfNeeded(
   const reversed = entries.some((entry) => {
     if (!entry || typeof entry !== "object") return false;
     const candidate = entry as { locationId?: string; exemptPlayers?: string[] };
-    return candidate.locationId === battlefieldId && !candidate.exemptPlayers?.includes(participant.playerId);
+    if (candidate.locationId !== battlefieldId) return false;
+    if (candidate.exemptPlayers?.includes(participant.playerId)) return false;
+    // 埃列什基伽勒的「不受冥界佑护影响」现在由 ruleModifiers 读取，而不是硬编码名单
+    if (hasActiveRuleModifier(state, participant.playerId, 'netherworld_protection', 'ignore')) return false;
+    return true;
   });
   if (!reversed) return breakdowns;
   return breakdowns.map((breakdown) => {
@@ -256,6 +304,135 @@ function reverseSituationAndEventIfNeeded(
   });
 }
 
+export function getTotalPowerBreakdowns(
+  state: GameState,
+  participant: CombatParticipantInput,
+): BattleModifierBreakdown[] {
+  const out: BattleModifierBreakdown[] = [];
+  if (!state.abilityRuntime) return out;
+  for (const ongoing of liveOngoing(state)) {
+    for (const modifier of ongoing.ruleModifiers) {
+      if (modifier.definition.rule !== "battle.totalPower") continue;
+      const scope = node(modifier.definition.scope);
+      const subjects = subjectPlayerIds(state, scope, modifier.controllerId, ongoing.sourceCardId);
+      if (!subjects.includes(participant.playerId)) continue;
+      const applicable = nodes(scope.constraints).every((c) => {
+        if (c.type === "opponent_has_no_terrain") return participant.terrainSlotIndex === undefined;
+        if (c.type === "is_attack") return true;
+        return false;
+      });
+      if (!applicable) continue;
+      const raw = Number(modifier.definition.value ?? 0);
+      const value = modifier.definition.operation === "set" ? raw - participant.totalPower : raw;
+      out.push({
+        source: "skill",
+        label: `${ongoing.sourceCardId}.total_power`,
+        value,
+        payload: {
+          kind: "modifier",
+          sourceType: "skill",
+          sourceId: `${ongoing.sourceCardId}.total_power`,
+          targetTag: "total_power",
+        },
+      });
+    }
+  }
+  return out;
+}
+
+/**
+ * D5 · 事件牌的战斗期威力规则。两条都由 `match-session` 解析成 `modeState.eventBattleRules`
+ * （只认已公开的事件牌），这里只做纯计算：
+ * - 祸神：基本威力最高的激活攻击之外，其余激活攻击的威力封顶到印刷威力（差额计入 breakdown）；
+ * - 盈月之仪：按战果（vp）升序名次给该玩家的激活攻击 +4/+3/+2 威力。
+ */
+function getEventBattleRuleBreakdowns(
+  state: GameState,
+  battlefieldId: CombatResolutionInput["battlefieldId"],
+  participant: CombatParticipantInput,
+): BattleModifierBreakdown[] {
+  const rules = (modeState(state).eventBattleRules as Array<{
+    sourceId: string; locationId: string; kind: string; bonuses?: number[];
+  }> | undefined) ?? [];
+  const active = rules.filter((rule) => rule.locationId === battlefieldId);
+  if (!active.length) return [];
+
+  const out: BattleModifierBreakdown[] = [];
+  const atField = state.players.filter((player) => player.status === "active" && player.locationId === battlefieldId);
+  const definitionOf = (cardId: string) => state.abilityRuntime?.pack.cards[cardId];
+  const printedPower = (card: GameState["cards"][number]): number | undefined => {
+    const base = definitionOf(card.definitionId)?.cardFace?.basePower;
+    if (typeof base === "number") return base;
+    const legacy = starterPack.servants.find((entry) => entry.id === card.definitionId);
+    return typeof legacy?.basePower === "number" ? legacy.basePower : undefined;
+  };
+  const activeAttacks = state.cards.filter((card) =>
+    isCombatCardZone(state, card) &&
+    card.visibility.scope === "public" &&
+    state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
+    atField.some((player) => player.id === card.controllerPlayerId));
+
+  for (const rule of active) {
+    if (rule.kind === "cap_at_printed_power") {
+      const bases = activeAttacks.map((card) => printedPower(card)).filter((value): value is number => value !== undefined);
+      if (!bases.length) continue;
+      const highest = Math.max(...bases);
+      const delta = activeAttacks
+        .filter((card) => card.controllerPlayerId === participant.playerId)
+        .reduce((sum, card) => {
+          const printed = printedPower(card);
+          if (printed === undefined || printed >= highest) return sum;
+          return sum + Math.min(0, printed - calculateCardPower(state, card.instanceId).value);
+        }, 0);
+      if (!delta) continue;
+      out.push({
+        source: "event",
+        label: `${rule.sourceId}.cap_at_printed_power`,
+        value: delta,
+        payload: { kind: "modifier", sourceType: "event", sourceId: `${rule.sourceId}.cap`, targetTag: "attack_power" },
+      });
+      continue;
+    }
+    if (rule.kind === "battle_result_rank_bonus") {
+      const own = activeAttacks.filter((card) => card.controllerPlayerId === participant.playerId);
+      if (!own.length) continue;
+      const ranked = atField.slice().sort((a, b) => (a.vp - b.vp) || (a.seat - b.seat));
+      const index = ranked.findIndex((player) => player.id === participant.playerId);
+      const bonus = index >= 0 ? (rule.bonuses ?? [])[index] ?? 0 : 0;
+      if (!bonus) continue;
+      out.push({
+        source: "event",
+        label: `${rule.sourceId}.battle_result_rank_bonus`,
+        value: bonus,
+        payload: { kind: "modifier", sourceType: "event", sourceId: `${rule.sourceId}.rank`, targetTag: "attack_power" },
+      });
+    }
+  }
+  return out;
+}
+
+/** D5 · 「以移动进入此地者获得 N 点合计威力」：由 `move_player` 记账，按回合过期。 */
+function getEntryTotalPowerBreakdowns(
+  state: GameState,
+  participant: CombatParticipantInput,
+): BattleModifierBreakdown[] {
+  const entries = (modeState(state).entryTotalPowerBonuses as Array<{
+    playerId?: string; amount?: number; expiresAtRound?: number; sourceId?: string;
+  }> | undefined) ?? [];
+  const round = state.round.roundNumber;
+  const total = entries
+    .filter((entry) => entry.playerId === participant.playerId && typeof entry.amount === "number" &&
+      (entry.expiresAtRound === undefined || round < entry.expiresAtRound))
+    .reduce((sum, entry) => sum + Number(entry.amount), 0);
+  if (!total) return [];
+  return [{
+    source: "event",
+    label: "event.entry.total_power",
+    value: total,
+    payload: { kind: "modifier", sourceType: "event", sourceId: "event.entry", targetTag: "total_power" },
+  }];
+}
+
 function buildParticipantBreakdown(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
@@ -263,9 +440,12 @@ function buildParticipantBreakdown(
 ): BattleParticipantBreakdown {
   const modifiers = getSituationBreakdowns(state, participant)
     .concat(getEventBreakdowns(state, battlefieldId, participant))
+    .concat(getEventBattleRuleBreakdowns(state, battlefieldId, participant))
+    .concat(getEntryTotalPowerBreakdowns(state, participant))
     .concat(getLocationBreakdowns(state, battlefieldId, participant))
     .concat(getExternalSkillBreakdowns(participant))
-    .concat(getTerrainBreakdowns(state, battlefieldId, participant));
+    .concat(getTerrainBreakdowns(state, battlefieldId, participant))
+    .concat(getTotalPowerBreakdowns(state, participant));
   const resolvedModifiers = reverseSituationAndEventIfNeeded(state, battlefieldId, participant, modifiers);
   const totalModifier = resolvedModifiers.reduce((sum, modifier) => sum + modifier.value, 0);
 
@@ -278,12 +458,32 @@ function buildParticipantBreakdown(
   };
 }
 
+/** D5 · 白夜行：基本威力落在区间内的攻击，其基本威力改为定值（authored 走 calculateCardPower，legacy 走这里）。 */
+function legacyBasePower(state: GameState, playerId: string, printedBasePower: number): number {
+  const locationId = state.players.find((player) => player.id === playerId)?.locationId;
+  if (!locationId) return printedBasePower;
+  const entries = (modeState(state).basePowerOverrides as Array<{
+    locationId?: string; min?: number; max?: number; value?: number;
+  }> | undefined) ?? [];
+  const hit = entries.find((entry) => entry.locationId === locationId &&
+    printedBasePower >= Number(entry.min ?? 0) && printedBasePower <= Number(entry.max ?? Number.MAX_SAFE_INTEGER));
+  return hit ? Number(hit.value ?? printedBasePower) : printedBasePower;
+}
+
+/** D5 · 抵御：本回合声明不参与战力结算的玩家，从参战者里剔除。 */
+function excludedBattleParticipants(state: GameState): Set<string> {
+  const store = modeState(state).battleParticipation as { round?: number; declines?: string[] } | undefined;
+  if (!store || store.round !== state.round.roundNumber) return new Set();
+  return new Set(Array.isArray(store.declines) ? store.declines : []);
+}
+
 export function deriveBattleParticipantsFromState(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
 ): CombatParticipantInput[] {
+  const excluded = excludedBattleParticipants(state);
   return state.players
-    .filter((player) => player.status === "active" && player.locationId === battlefieldId)
+    .filter((player) => player.status === "active" && player.locationId === battlefieldId && !excluded.has(player.id))
     .map((player) => {
       const publicAttackCards = state.cards.filter((card) => {
         if (card.controllerPlayerId !== player.id || !isCombatCardZone(state, card)) {
@@ -347,9 +547,10 @@ export function deriveBattleParticipantsFromState(
       }
       const participant = {
         playerId: player.id,
-        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
+        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + legacyBasePower(state, player.id, entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
+
         externalSkillEffects,
       };
       return terrainSlotIndex === undefined ? participant : { ...participant, terrainSlotIndex };
@@ -514,10 +715,14 @@ function buildBattleResultFromRanked(
     location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
-    .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))
+    .filter((playerId) => hasActiveCardDeclaringRule(state, playerId, battlefieldId, "battle.winVpBonus"))
     .map((playerId) => ({
-      playerId, delta: 2, source: "battle_vp" as const, label: "basic.preparation.win_bonus",
-    }));
+        playerId,
+        delta: declaredWinVpBonus(state, playerId, battlefieldId),
+        source: "battle_vp" as const,
+        label: "basic.preparation.win_bonus",
+      }));
+
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
   const lossEffectSuppressedPlayerIds = ranked
     .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
@@ -535,8 +740,9 @@ function buildBattleResultFromRanked(
     militaryAdjustments: ranked.map((participant) => {
       const delta = winnerPlayerIds.includes(participant.playerId)
         ? margin
-        : ignoresBattleLossEffects(state, participant.playerId, battlefieldId) ? 0 : -margin;
+        : -margin;
       return { playerId: participant.playerId, delta: Object.is(delta, -0) ? 0 : delta };
+
     }),
     participantBreakdowns: ranked,
   };
@@ -822,6 +1028,7 @@ export function resolveBattlefield(
     if (runtime && !runtime.processedEvents.includes(abilityEventId)) {
       runtime.processedEvents.push(abilityEventId);
     }
+
   }
   return {
     nextState,
