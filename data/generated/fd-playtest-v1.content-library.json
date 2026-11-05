@@ -10623,6 +10623,7 @@
                 "modifier": {
                   "type": "power_bonus",
                   "target": "controller",
+                  "aggregate": "total",
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -10646,7 +10647,31 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10656,6 +10681,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10753,6 +10783,7 @@
                 "modifier": {
                   "type": "power_bonus",
                   "target": "controller",
+                  "aggregate": "total",
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -10776,7 +10807,31 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10786,6 +10841,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -10883,6 +10943,7 @@
                 "modifier": {
                   "type": "power_bonus",
                   "target": "controller",
+                  "aggregate": "total",
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -10906,7 +10967,31 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -10916,6 +11001,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -11013,6 +11103,7 @@
                 "modifier": {
                   "type": "power_bonus",
                   "target": "controller",
+                  "aggregate": "total",
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -11036,7 +11127,31 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -11046,6 +11161,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -11143,6 +11263,7 @@
                 "modifier": {
                   "type": "power_bonus",
                   "target": "controller",
+                  "aggregate": "total",
                   "amount": 2,
                   "duration": "this_round"
                 }
@@ -11166,7 +11287,31 @@
               "opens": "controller_action_window"
             },
             "conditions": [],
-            "targets": [],
+            "targets": [
+              {
+                "id": "destination",
+                "type": "location",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "constraints": [
+                  {
+                    "type": "any_enabled_location"
+                  },
+                  {
+                    "type": "from_location_in",
+                    "locationIds": [
+                      "miyama_town",
+                      "shinto"
+                    ]
+                  },
+                  {
+                    "type": "ignore_engagement"
+                  }
+                ]
+              }
+            ],
             "effects": [
               {
                 "type": "record_master_directive",
@@ -11176,6 +11321,11 @@
                 "type": "adjust_command_seals",
                 "amount": -1,
                 "directive": "spend_command_spell"
+              },
+              {
+                "type": "move_player",
+                "player": "controller",
+                "to": "destination"
               }
             ],
             "cost": [],
@@ -11599,11 +11749,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "473750ddf5f658afe5c25aa1427ee2b29c43fab62b0cecfb4547d8258a2026e6",
+    "definitionHash": "78e94bdfb28913aeca25cd45823b21219dd959bbb703fa0b26b78650ee086e52",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "473750ddf5f658afe5c25aa1427ee2b29c43fab62b0cecfb4547d8258a2026e6"
+      "definitionHash": "78e94bdfb28913aeca25cd45823b21219dd959bbb703fa0b26b78650ee086e52"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

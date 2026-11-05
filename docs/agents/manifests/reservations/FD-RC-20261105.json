@@ -52,7 +52,8 @@
     "docs/contracts/runtime-convergence/**",
     "docs/plans/2026-11-05-runtime-convergence.md",
     "docs/agents/manifests/**/FD-RC-20261105.json",
-    "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md"
+    "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md",
+    "packages/rules/src/ability/seal-runtime-contract.ts"
   ],
   "forbidden": [
     "D:/fd/** (source read only)",

@@ -1,3 +1,4 @@
+import { normalizeSealPlan } from './seal-runtime-contract';
 import type { GameState, PhaseName } from '../schema/game';
 import type { CardInstance } from '../schema/card';
 import type { LocationId } from '../schema/location';
@@ -1210,6 +1211,9 @@ function effectiveActivationPhase(s: GameState, sourceId: string, a: AuthoringAb
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  const sealPlan = normalizeSealPlan(a, definition(s, sourceId)?.cardType);
+  if (isCommandSpellCard(s, sourceId) && ['command-spell.free-move', 'command-spell.power-victory'].includes(a.id) && !sealPlan) return false;
+  if (sealPlan?.kind === 'movement' && !hasMandatoryTargetAvailability(s, context(s, sourceId, a.id, event), a)) return false;
   if (isPlayActionStructuralCandidate(a) && !isPlayActionRouteCandidate(a)) return false;
   if (isPlaySourceCardWithCostResponseStructuralCandidate(a) && !isPlaySourceCardWithCostResponseRouteCandidate(a)) return false;
   if (isAddToAttackStructuralCandidate(a) && !isAddToAttackRouteCandidate(a)) return false;
@@ -2414,6 +2418,14 @@ function findPendingTargetRestoreSpec(
   a: AuthoringAbility,
   effects: RuleNode[],
 ): PendingTargetRestoreSpec | undefined {
+  if (normalizeSealPlan(a, definition(s, ctx.sourceCardId)?.cardType)?.kind === 'movement') {
+    const target = a.targets[0]!;
+    if (Object.prototype.hasOwnProperty.call(ctx.selections, str(target.id))) return undefined;
+    const choices = candidates(s, ctx, target);
+    if (!choices.length) reject('no_legal_target', 'No legal seal movement destination remains');
+    return {target, candidates:choices, min:1, max:1, remainingEffects:effects};
+  }
+
   for (const target of a.targets.filter(t => t.type === 'choice')) {
     const targetRef = str(target.id);
     if (Object.prototype.hasOwnProperty.call(ctx.selections, targetRef)) continue;
@@ -4272,6 +4284,21 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   applyResolutionSnapshots(s, ctx, a);
+  const sealPlan = normalizeSealPlan(a, definition(s, ctx.sourceCardId)?.cardType);
+  if (sealPlan) {
+    if (sealPlan.kind === 'movement') {
+      const pending = findPendingTarget(s, ctx, a, effects);
+      if (pending) { runtime(s).pendingDecision = pending; return; }
+      executeResolutionEffects(s, ctx, sealPlan.effects);
+      if (sealPlan.directive) pushModeDirective(s, { controllerId: ctx.controllerId, directive: sealPlan.directive, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, consumed: true });
+    } else {
+      executeResolutionEffects(s, ctx, sealPlan.effects);
+      installCreatedPowerModifier(s, ctx, sealPlan.modifier);
+      pushModeDirective(s, { controllerId: ctx.controllerId, directive: sealPlan.directive, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, settled: false });
+    }
+    return;
+  }
+
   if (isResultBindingProductionBridgeSemantic(a)) {
     executeResultBindingProductionBridge(s, ctx, a, effects);
     return;
@@ -4800,6 +4827,16 @@ function processEvent(s: GameState, event: AbilityEvent): void {
   if (!event.id) reject('invalid_event', 'Events require stable ids');
   r.processedEvents.push(event.id);
   rememberTrustedBattleResultSnapshot(r, event);
+  if (event.type === 'after_battle_result_determined' && event.battleResult) {
+    const entries = ((s as unknown as { modeState?: { masterDirectives?: Array<Record<string, unknown>> } }).modeState?.masterDirectives ?? []);
+    for (const entry of entries) {
+      if (entry.directive !== 'normalized_command_spell_victory' || entry.round !== s.round.roundNumber || entry.settled || !event.battleResult.winners.includes(String(entry.controllerId))) continue;
+      entry.settled = true;
+      const recipient = player(s, String(entry.controllerId)); recipient.vp += 2;
+      r.events.push({type:'command_spell_victory_reward',playerId:recipient.id,sourceCardId:String(entry.sourceCardId),delta:2});
+    }
+  }
+
   settlePendingRulerSealRewards(s, event);
   try { settlePendingSourceCardReturns(s, event); } catch (error) { reject('resolution_failed', error instanceof Error ? error.message : 'Source-card return failed'); }
   if (event.type === 'after_battle_result_determined') recordCurrentRoundCombatWinsFromBattleResult(s, event);
@@ -5288,6 +5325,14 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           reject('illegal_target', 'Selected targets are not legal');
         }
       } else {
+        const pendingSource = card(s, d.context.sourceCardId);
+        if (definition(s, pendingSource.instanceId)?.cardType === 'command_spell' && ['command-spell.free-move','command-spell.power-victory'].includes(d.context.abilityId)) {
+          const pendingAbility = abilityDefinition(s, pendingSource.instanceId, d.context.abilityId);
+          if (pendingSource.controllerPlayerId !== d.context.controllerId || player(s,d.context.controllerId).status !== 'active' ||
+              !normalizeSealPlan(pendingAbility, 'command_spell') || !canActivate(s,pendingSource.instanceId,pendingAbility)) {
+            reject('illegal_action','Seal source, resources or movement state changed before selection');
+          }
+        }
         const allowed = candidates(s, d.context, d.target);
         if (!Array.isArray(selected) || selected.length < d.min || selected.length > d.max || new Set(selected).size !== selected.length || selected.some(id => !allowed.includes(id))) reject('illegal_target', 'Selected targets are not legal');
       }
