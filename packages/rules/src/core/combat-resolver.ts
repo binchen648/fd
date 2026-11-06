@@ -724,16 +724,12 @@ function buildBattleResultFromRanked(
       }));
 
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
-  const lossEffectSuppressedPlayerIds = ranked
-    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
-    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
-    .map((participant) => participant.playerId);
+  // A3: immunity to assigned 【败北】 does not suppress ordinary battle-loss facts.
 
   return {
     battlefieldId, winnerPlayerIds, tied,
     ...(excludedPlayerIds.length ? { excludedPlayerIds } : {}),
     ...(presenceConcealmentDefeatedPlayerIds.length ? { presenceConcealmentDefeatedPlayerIds: [...new Set(presenceConcealmentDefeatedPlayerIds)] } : {}),
-    ...(lossEffectSuppressedPlayerIds.length ? { lossEffectSuppressedPlayerIds } : {}),
     winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
     margin, vpReward, baseVpPerWinner, eventVpPool, competitionVpPool,
     ...(vpAdjustments.length ? { vpAdjustments } : {}),
@@ -1012,18 +1008,6 @@ export function resolveBattlefield(
     });
   }
   if (settlementState.abilityRuntime && battleResult) {
-    const winners = battleResult.winnerPlayerIds;
-    const immuneLosers = participants
-      .filter((participant) => !winners.includes(participant.playerId))
-      .filter((participant) => ignoresBattleLossEffects(nextState, participant.playerId, input.battlefieldId))
-      .map((participant) => participant.playerId);
-    for (const playerId of immuneLosers) {
-      nextState.log.push({
-        type: "battle_loss_effect_ignored",
-        message: `player:${playerId}:basic_luck_ignore_loss:${input.battlefieldId}`,
-        payload: { playerId, battlefieldId: input.battlefieldId, sourceCardDefinitionId: "basic.luck" },
-      });
-    }
     const runtime = nextState.abilityRuntime;
     if (runtime && !runtime.processedEvents.includes(abilityEventId)) {
       runtime.processedEvents.push(abilityEventId);

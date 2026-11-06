@@ -432,10 +432,11 @@ describe('P3-FB2-47 controller-defeated fixed VP reward', () => {
       participants: [{ playerId: 'p1', totalPower: 2 }, { playerId: 'p2', totalPower: 5 }],
     }).nextState;
     const protectedResult = protectedSettled.battleResults.at(-1)!;
-    expect(protectedResult.lossEffectSuppressedPlayerIds).toContain('p1');
+    // A3: ordinary loss remains a defeated fact despite immunity to assigned 【败北】.
+    expect(protectedResult.lossEffectSuppressedPlayerIds ?? []).not.toContain('p1');
     rules.processAbilityEvent(protectedSettled, rootFromBattleResult(protectedSettled, protectedResult));
-    expect(protectedSettled.players[0]!.vp).toBe(2);
-    expect(protectedSettled.abilityRuntime!.processedEvents.some((id) => id.endsWith(':defeat:p1'))).toBe(false);
+    expect(protectedSettled.players[0]!.vp).toBe(5);
+    expect(protectedSettled.abilityRuntime!.processedEvents.some((id) => id.endsWith(':defeat:p1'))).toBe(true);
   });
 
   it('bridges the accepted FB2-45 pre-battle defeat settlement to the same defeated fact', () => {

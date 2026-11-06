@@ -38,7 +38,15 @@ describe('Waxing Moon Ritual event set', () => {
     expect(eventSets[0]!.id).toBe('event-set.waxing_moon_ritual');
     expect(eventSets[0]!.name).toBe('盈月之仪');
     expect(eventSets[0]!.cardIds).toHaveLength(20);
-    expect(eventCards).toHaveLength(18);
+    // Normal deck remains 18 unique definitions; supplemental registration is not deck admission.
+    const activeCards = eventCards.filter(card => eventSets[0]!.cardIds.includes(card.id));
+    expect(activeCards).toHaveLength(18);
+    expect(eventCards).toHaveLength(23);
+    expect(eventCards.filter(card => !eventSets[0]!.cardIds.includes(card.id)).map(card => card.id).sort()).toEqual([
+      'event.moon_holy_grail.cheat_device', 'event.moon_holy_grail.close_quarters',
+      'event.moon_holy_grail.core_intrusion', 'event.moon_holy_grail.merged_vortex',
+      'event.moon_holy_grail.superior_firepower',
+    ]);
 
     const slotCounts = eventSets[0]!.cardIds.reduce<Record<string, number>>((counts, id) => {
       counts[id] = (counts[id] ?? 0) + 1;
@@ -48,7 +56,7 @@ describe('Waxing Moon Ritual event set', () => {
     expect(slotCounts['event.waxing_moon_ritual.ritual']).toBe(2);
     expect(slotCounts['event.waxing_moon_ritual.vengeful_spirit_barrier']).toBe(2);
     expect(Object.values(slotCounts).reduce((sum, count) => sum + count, 0)).toBe(20);
-    expect(new Set(eventSets[0]!.cardIds)).toEqual(new Set(eventCards.map((card) => card.id)));
+    expect(new Set(eventSets[0]!.cardIds)).toEqual(new Set(activeCards.map((card) => card.id)));
   });
 
   it('preserves each event reward and source-image occurrence from the HTM page', () => {

@@ -19,6 +19,7 @@ import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
 import { node, nodes, str } from './loader';
+import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 import { isGameStartSkillProvisioningCandidate, isGameStartSkillProvisioningSemantic } from './game-start-skill-provisioning';
@@ -845,7 +846,8 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
           ? { ...s.ruleOverrides, engagedPlayerIds: (s.ruleOverrides.engagedPlayerIds ?? []).filter(id => id !== ctx.controllerId) }
           : s.ruleOverrides
         : ignoresEngagement ? { engagedPlayerIds: [] as string[] } : undefined;
-      return enabled.filter(l => l.id !== from && !locked.has(l.id) && !movementLockAt(s, l.id, ctx.controllerId).blocksEntry && constraints.every(c => locationConstraint(l, c)) && canOccupyLocation({
+      const closed = new Set(Array.isArray(modeState(s).closedLocations) ? (modeState(s).closedLocations as string[]) : []);
+      return enabled.filter(l => l.id !== from && !closed.has(l.id) && !locked.has(l.id) && !movementLockAt(s, l.id, ctx.controllerId).blocksEntry && constraints.every(c => locationConstraint(l, c)) && canOccupyLocation({
         map: s.map, config: s.locationConfig, locationId: l.id, movingPlayerId: ctx.controllerId,
         occupyingPlayerIds: s.players.filter(p => p.status === 'active' && p.id !== ctx.controllerId && p.locationId === l.id).map(p => p.id),
         ...(overrides ? { ruleOverrides: overrides } : {}),
@@ -1044,7 +1046,9 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
         : 'Unsupported current-round combat-loss absence condition shape');
     }
     case 'controller_seat_in_first_half': {
-      const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) => a.seat - b.seat);
+      const starter = s.round.startingSeat ?? 1;
+      const activePlayers = s.players.filter(candidate => candidate.status === 'active').sort((a, b) =>
+        Number(a.seat < starter) - Number(b.seat < starter) || a.seat - b.seat);
       const firstHalfCount = Math.floor(activePlayers.length / 2);
       const playerIndex = activePlayers.findIndex(candidate => candidate.id === ctx.controllerId);
       return playerIndex >= 0 && playerIndex < firstHalfCount;
@@ -1118,11 +1122,38 @@ function acceptedSkillUseForbidApplies(s: GameState, modifierControllerId: strin
   }
   return targetPlayerId !== modifierControllerId && target.zone === 'skill' && runtime(s).cardState[targetSourceId]?.faceDown === true;
 }
+/** Narrow existing normalized contract; extra phase/cost/selector semantics are not ignored. */
+function isStaticWhileActiveAttributeForbid(a: AuthoringAbility): boolean {
+  if (!['passive', 'residual'].includes(a.kind) || a.execution.mode !== 'automatic' ||
+      a.activation.trigger !== 'while_active' || Object.keys(a.activation).some(k => k !== 'trigger') ||
+      a.effects.length || a.targets.length || a.cost.length || a.creates.length || (a.bindings?.length ?? 0) ||
+      Object.keys(a.lifecycle).length || Object.keys(a.limit).length || Object.keys(a.visibility).length ||
+      Object.keys(a.responseWindow).some(k => !['order', 'passBehavior'].includes(k)) ||
+      (a.responseWindow.order !== undefined && a.responseWindow.order !== 'turn_order') ||
+      (a.responseWindow.passBehavior !== undefined && a.responseWindow.passBehavior !== 'decline_this_window') ||
+      Object.keys(a.execution).some(k => !['mode', 'allowedOperations', 'hostOps'].includes(k)) || a.ruleModifiers.length !== 1) return false;
+  if (!a.conditions.every(c => c.type === 'controller_mana_at_least' &&
+      Object.keys(c).every(k => ['type', 'value', 'negated'].includes(k)) &&
+      typeof c.value === 'number' && Number.isSafeInteger(c.value) && c.value >= 0 &&
+      (c.negated === undefined || typeof c.negated === 'boolean'))) return false;
+  for (const key of ['hostOps', 'allowedOperations']) {
+    const operations = node(a.execution)[key];
+    if (operations === undefined) continue;
+    if (!Array.isArray(operations) || (operations.length !== 0 &&
+        !(operations.length === hostOperations.length && hostOperations.every((op, i) => operations[i] === op)))) return false;
+  }
+  const m = a.ruleModifiers[0]!, scope = node(m.scope), lifecycle = node(m.lifecycle);
+  return Object.keys(m).every(k => ['id', 'printedClause', 'type', 'operation', 'rule', 'scope', 'lifecycle'].includes(k)) &&
+    (m.type === undefined || m.type === 'restriction') && m.operation === 'forbid' && m.rule === 'play_card_attribute' &&
+    scope.subject === 'engaged_opponents_same_battlefield' && typeof scope.attribute === 'string' &&
+    Object.keys(scope).every(k => ['subject', 'attribute'].includes(k)) &&
+    Object.keys(lifecycle).every(k => k === 'duration') && lifecycle.duration === 'while_active';
+}
 function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
-  // The accepted selector only restricts skill cards. Avoid scanning every source
-  // for an attack/deck card; the authoritative applicability check remains below.
+  // Attribute prohibitions include non-skill attacks; the skill-only contract
+  // keeps its narrower filter below. Both paths recheck current source state.
   const targetDefinition = definition(s, sourceId);
-  if (!targetDefinition || !['master_skill', 'servant_skill'].includes(targetDefinition.cardType)) return [];
+  if (!targetDefinition) return [];
   const rules: string[] = [];
   for (const source of s.cards) {
     // Necessary condition of the canonical active-source policy, not a substitute
@@ -1132,7 +1163,21 @@ function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, so
     const sourceDefinition = definition(s, source.instanceId);
     if (!sourceDefinition) continue;
     for (const ability of sourceDefinition.abilities) {
-      if (!isAcceptedStaticWhileActiveSkillUseForbidAbility(ability)) continue;
+      // Read this supported static declaration from its live source. Installing
+      // it once at mana<8 would either miss it or latch an obsolete condition.
+      if (isStaticWhileActiveAttributeForbid(ability)) {
+        if (!ability.conditions.every(c => condition(s, context(s, source.instanceId, ability.id), c))) continue;
+        const modifier = ability.ruleModifiers[0]!;
+        const scope = node(modifier.scope);
+        if (source.controllerPlayerId !== playerId &&
+            sameBattlefield(s, player(s, source.controllerPlayerId).locationId, player(s, playerId).locationId) &&
+            Array.isArray(targetDefinition.cardFace.attributes) && targetDefinition.cardFace.attributes.includes(str(scope.attribute))) {
+          rules.push('play_card_attribute');
+        }
+        continue;
+      }
+      if (!['master_skill', 'servant_skill'].includes(targetDefinition.cardType) ||
+          !isAcceptedStaticWhileActiveSkillUseForbidAbility(ability)) continue;
       const modifier = ability.ruleModifiers[0]!;
       if (acceptedSkillUseForbidApplies(s, source.controllerPlayerId, source.instanceId, playerId, sourceId, modifier)) rules.push('skill_use');
     }
@@ -1142,12 +1187,18 @@ function staticWhileActiveSkillUseForbidRules(s: GameState, playerId: string, so
 function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: string): string[] {
   const d = definition(s, sourceId); if (!d) return ['missing_definition'];
   const targetPlayer = player(s, playerId);
-  const ongoingRules = liveOngoing(s).flatMap(o => o.ruleModifiers).flatMap(({ controllerId, sourceCardId, definition: m }) => {
+  const ongoingRules = liveOngoing(s).flatMap(ongoing => ongoing.ruleModifiers.flatMap(({ controllerId, sourceCardId, definition: m }) => {
     const controller = player(s, controllerId); const scope = node(m.scope);
     const appliesToSameBattlefieldOpponent = ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.subject)) ||
       ['opponents_at_same_battlefield', 'engaged_opponents_same_battlefield'].includes(str(scope.object));
     if (appliesToSameBattlefieldOpponent && (controllerId === playerId || !sameBattlefield(s, controller.locationId, targetPlayer.locationId))) return [];
     if (m.operation !== 'forbid') return [];
+    const sourceAbility = definition(s, sourceCardId)?.abilities.find(a => a.id === ongoing.abilityId);
+    // Identity is source+ability, never a possibly missing/reused modifier ID.
+    // Unsupported static variants cannot fall back to an old latched snapshot.
+    if (m.rule === 'play_card_attribute' && sourceAbility?.activation.trigger === 'while_active' &&
+        ['passive', 'residual'].includes(sourceAbility.kind)) return [];
+
     if (m.rule === 'skill_use' && acceptedSkillUseForbidApplies(s, controllerId, sourceCardId, playerId, sourceId, m)) return ['skill_use'];
     if (m.rule === 'situation_restrictions' || m.rule === 'situation_play_forbid') return [str(m.rule)];
     if (m.rule === 'use_skill_card') return d.cardType === 'servant_skill' ? [str(m.rule)] : [];
@@ -1156,7 +1207,7 @@ function ongoingCardPlayForbidRules(s: GameState, playerId: string, sourceId: st
       return Array.isArray(d.cardFace.attributes) && d.cardFace.attributes.includes(attribute) ? [str(m.rule)] : [];
     }
     return [];
-  });
+  }));
   const matchRules = Array.isArray((s as unknown as { modeState?: { cardPlayForbids?: unknown[] } }).modeState?.cardPlayForbids)
     ? (s as unknown as { modeState: { cardPlayForbids: Array<{ sourceId?: string; sourceType?: string; locationId?: string; attribute?: string; rule?: string }> } }).modeState.cardPlayForbids.flatMap((entry) => {
         if (entry.locationId && entry.locationId !== targetPlayer.locationId) return [];

@@ -15,7 +15,7 @@ import {
 
 type TerrainState = GameState & {
   modeState?: {
-    terrainAssignments?: Partial<Record<LocationId, string[]>>;
+    terrainAssignments?: Partial<Record<LocationId, Array<string | null>>>;
   };
 };
 
@@ -226,7 +226,10 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
 
     expect(state.players.find((player) => player.id === 'P1')?.vp).toBe(0);
     expect(result.nextState.players.find((player) => player.id === 'P1')?.vp).toBe(2);
-    expect((result.nextState as TerrainState).modeState?.terrainAssignments?.miyama_town).toEqual([]);
+    // Preserve physical slot indexes; emptiness means no occupants, not slot deletion.
+    expect((result.nextState as TerrainState).modeState?.terrainAssignments?.miyama_town).toEqual([null, null]);
+    expect((result.nextState as TerrainState).modeState?.terrainAssignments?.miyama_town?.filter(Boolean)).toEqual([]);
+    expect(state.modeState?.terrainAssignments?.miyama_town).toEqual(['P2', 'P4']);
     expect(result.results[0]).toMatchObject({
       effectType: 'remove_advantage_position',
       status: 'applied',
