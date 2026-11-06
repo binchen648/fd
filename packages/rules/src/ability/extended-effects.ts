@@ -366,11 +366,21 @@ export function resolveExtendedEffect(
       break;
     }
     case 'soul_drag_power_bonus': {
-      const runtime = (state as any).abilityRuntime;
-      const amount = Math.ceil(state.round.roundNumber / 2);
+      const runtime = state.abilityRuntime;
+      const source = state.cards.find(card => card.instanceId === sourceCardId(context));
+      const activation = source && runtime?.cardState[source.instanceId];
+      if (!runtime || !source || !['field', 'attack_area'].includes(source.zone) ||
+          activation?.active !== true || activation.faceDown === true) break;
+      const activationRound = activation.playedRound;
+      if (!Number.isSafeInteger(activationRound) || activationRound! < 1 || activationRound! > state.round.roundNumber) {
+        throw new Error('Soul Drag requires a valid activation round');
+      }
+      const id = `${source.instanceId}:${abilityId(context)}:soul-drag`;
+      if (runtime.ongoingEffects.some(ongoing => ongoing.id === id)) break;
+      const amount = Math.ceil(activationRound! / 2);
       runtime.ongoingEffects.push({
-        id: `${sourceCardId(context)}:${abilityId(context)}:soul-drag`,
-        sourceCardId: sourceCardId(context),
+        id,
+        sourceCardId: source.instanceId,
         abilityId: abilityId(context),
         controllerId,
         starts: 'immediate',
@@ -379,13 +389,13 @@ export function resolveExtendedEffect(
         cleanup: 'when_card_leaves_active_area',
         sourceMustRemainActive: true,
         ruleModifiers: [{
-          sourceCardId: sourceCardId(context),
+          sourceCardId: source.instanceId,
           controllerId,
           definition: {
             id: 'soul_drag_power_bonus',
             operation: 'add',
-            rule: 'card.currentPower',
-            scope: { controller: 'self' },
+            rule: 'battle.totalPower',
+            scope: { subject: 'controller' },
             value: amount,
           },
         }],

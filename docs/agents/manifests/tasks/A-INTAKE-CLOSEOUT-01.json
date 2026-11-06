@@ -23,7 +23,9 @@
     "packages/rules/src/core/combat-resolver.ts",
     "packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts",
     "packages/rules/tests/nobunaga-s3-consumer-migration.test.ts",
-    "packages/rules/src/ability/interpreter.ts"
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/extended-effects.ts",
+    "packages/rules/tests/acceptance/seven-roster-aggregate-followup.test.ts"
   ],
   "ForbiddenFiles": [
     "all other production Runtime; original frozen worktree",
@@ -40,17 +42,21 @@
   "runtimeAddendum": {
     "authority": "User 2026-11-06 explicitly requests completion of A intake verification and repair of remaining issues; same Root owner of FD-RC-20261105",
     "baseCommit": "3eb03496940be9a6635dc402cd8f55e52ef2b618",
-    "scope": "A3 normal-loss producer only; independently confirmed by contract-review; no other shared source transfer; existing rotating-order condition, live closed-destination guard, supported static while-active attribute prohibition only",
+    "scope": "A3 normal-loss producer only; independently confirmed by contract-review; no other shared source transfer; existing rotating-order condition, live closed-destination guard, supported static while-active attribute prohibition only; Soul Drag aggregate consumer, activation-round snapshot and idempotent installation only",
     "reservedFiles": [
       "packages/rules/src/core/combat-resolver.ts",
-      "packages/rules/src/ability/interpreter.ts"
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/ability/extended-effects.ts"
     ],
     "frozenPredecessor": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
     "predecessorWorktreeUntouched": true,
-    "reviewRequired": true
+    "reviewRequired": true,
+    "supplementEvidence": "D:/fd-validation/a-intake-closeout-20261106/extra-combinations-final.json (3 PASS/2 FAIL)",
+    "precedingFrozenCandidate": "d5d8a489c43177db173f1a913284b7d3eb80b430"
   },
   "candidateState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
   "acceptance": "NOT_ACCEPTED",
   "runtimeWritesFrozen": true,
-  "reservationReleased": false
+  "reservationReleased": false,
+  "remainingFieldContractOwner": "DeepSeek / B lead, external proposal pending"
 }
