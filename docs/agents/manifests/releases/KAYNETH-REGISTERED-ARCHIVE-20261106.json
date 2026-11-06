@@ -1,0 +1,28 @@
+{
+  "taskId": "KAYNETH-READMISSION-01",
+  "authority": "User explicit authorization in current chat 2026-11-06",
+  "authorizationText": "授权解除 `master.kayneth.json` 原字节冻结，允许将 `b39a3c06` 中该文件的指定版本作为候选重新送审，范围为 `pride` 与 `double-master` 的已记录变化。由你记录授权、完成验证和独立审查；不直接授予接受或合并权限。",
+  "scopeCardIds": [
+    "master.kayneth.skill.pride",
+    "master.kayneth.skill.double-master"
+  ],
+  "versions": [
+    {
+      "commit": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+      "path": "data/authoring/masters/master.kayneth.json",
+      "sha256": "8047edd19f83c733e72c2b25c6c9bdf76e36a0d8005d358bbe6a2e6df4304c20",
+      "blob": "85566cc68fef031b804fe00c7fa8184afdff8a4c"
+    },
+    {
+      "commit": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "path": "data/authoring/masters/master.kayneth.json",
+      "sha256": "8007738adacc3918f349ab9edad38706a319b4d4026537bebe1f9ff240eda183",
+      "blob": "30881da2d5da7e8bcb8b0061a1b1445295941e5b"
+    }
+  ],
+  "releaseStatus": "RELEASED_FOR_REVIEW",
+  "readmission": "PENDING_INDEPENDENT_REVIEW",
+  "mergeAuthorized": false,
+  "excludedIdentity": "master.kayneth.skill.s3",
+  "noRuntimeWriteTransfer": true
+}
