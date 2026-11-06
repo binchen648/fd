@@ -1021,12 +1021,26 @@ describe('complex servant skill regressions', () => {
     expect(state.abilityRuntime!.events.some((event) => event.type === 'effect_resolved' && event.unpreventable)).toBe(true);
 
     state.abilityRuntime!.preventEffects = false;
+    // Inferno anchors its effect to this battlefield; isolate this legal source condition.
+    state.players[0]!.locationId = 'miyama_town';
     expect(play(state, inferno).ok).toBe(true);
     expect(activate(state, inferno, 'sc-tomoe-2.inferno-fire').ok).toBe(true);
     expect((state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses).toContainEqual(expect.objectContaining({
       id: 'inferno_fire',
       sourceControllerId: 'p1',
     }));
+  });
+
+  it('rejects Inferno outside a battlefield without changing state', () => {
+    const raw = archive('data/authoring/servants/servant.tomoe.json');
+    const state = setup(raw, { servantId: raw.id });
+    state.players[0]!.locationId = 'recon';
+    const inferno = add(state, 'servant.tomoe.skill.sc-tomoe-2', 'skill');
+    expect(play(state, inferno).ok).toBe(true);
+    expect(rules.getLegalActions(state,'p1').some(a=>a.type==='activate_ability'&&a.cardInstanceId===inferno&&a.abilityId==='sc-tomoe-2.inferno-fire')).toBe(false);
+    const before = structuredClone(state);
+    expect(activate(state,inferno,'sc-tomoe-2.inferno-fire').ok).toBe(false);
+    expect(state).toEqual(before);
   });
 
   it('keeps Tomoe terrain multiplier and rain of fire opponent power reduction in battle math', () => {
