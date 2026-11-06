@@ -8,7 +8,8 @@
     "docs/agents/manifests/tasks/KAYNETH-READMISSION-01.json",
     "packages/rules/tests/kayneth-s3-consumer-migration.test.ts",
     "packages/rules/tests/acceptance/kayneth-readmission.test.ts",
-    "docs/reports/2026-11-06-kayneth-readmission.md"
+    "docs/reports/2026-11-06-kayneth-readmission.md",
+    "packages/rules/tests/fixtures/kayneth-archive-e63cdeb2.json"
   ],
   "ForbiddenFiles": [
     "production Runtime",
