@@ -52,6 +52,10 @@ describe('match session gameplay regressions', () => {
     const session = createMatchSession({ seed: 20260906, humanPlayerId: 'p1' });
     const state = mutableState(session);
     setPriority(state, 'p1', 'action');
+    // L1 fixture: provide a legal battlefield origin and isolate unrelated seeded events.
+    state.players.find(player => player.id === 'p1')!.locationId = 'miyama_town';
+    state.eventPlacements = [];
+    (state as any).modeState.movementLocks = [];
     const commandSpell = state.cards.find((card) =>
       card.controllerPlayerId === 'p1' &&
       state.abilityRuntime?.pack.cards[card.definitionId]?.cardType === 'command_spell');
@@ -156,6 +160,9 @@ describe('match session gameplay regressions', () => {
     setPriority(state, 'p1', 'action');
     (state as unknown as { modeState?: { cardPlayForbids?: unknown[] } }).modeState ??= {};
     (state as unknown as { modeState: { cardPlayForbids?: unknown[] } }).modeState.cardPlayForbids = [];
+    // Positive activation fixture excludes the seeded barrier; its real lock is tested below.
+    state.eventPlacements = [];
+    (state as any).modeState.movementLocks = [];
     const player = state.players.find((candidate) => candidate.id === 'p1')!;
     player.locationId = 'miyama_town';
     player.mana = 10;
@@ -182,4 +189,29 @@ describe('match session gameplay regressions', () => {
       candidate.abilityId === 'basic.surveil.battle-dash') as ActivateAbilityAction | undefined;
     expect(action).toBeDefined();
   });
+  it('rejects a movement seal from the workshop without spending a seal', () => {
+    const session=createMatchSession({seed:20260906,humanPlayerId:'p1'});
+    setPriority(session.state,'p1','action');
+    session.state.players.find(p=>p.id==='p1')!.locationId='magic_workshop';
+    const source=session.state.cards.find(c=>c.controllerPlayerId==='p1'&&session.state.abilityRuntime!.pack.cards[c.definitionId]?.cardType==='command_spell')!;
+    session.getPlayerView('p1');const before=session.getState();
+    expect(session.getPlayerView('p1').legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===source.instanceId&&a.abilityId==='command-spell.free-move')).toBe(false);
+    expect(session.dispatchPlayerAction('p1',{type:'activate_ability',cardInstanceId:source.instanceId,abilityId:'command-spell.free-move'}).ok).toBe(false);
+    expect(session.getState()).toEqual(before);
+  });
+
+  it('keeps an active Dash unavailable under the real seeded entry/exit barrier', () => {
+    const session=createMatchSession({seed:20260906,humanPlayerId:'p1'});
+    setPriority(session.state,'p1','action');
+    session.state.players.find(p=>p.id==='p1')!.locationId='miyama_town';
+    const source=session.state.cards.find(c=>c.ownerPlayerId==='p1'&&c.definitionId==='basic.surveil')!;
+    source.zone='attack_area';source.visibility={scope:'public'};
+    session.state.abilityRuntime!.cardState[source.instanceId]={active:true,faceDown:false,playedRound:1};
+    expect((session.state as any).modeState.movementLocks).toContainEqual(expect.objectContaining({locationId:'miyama_town',blocksExit:true}));
+    session.getPlayerView('p1');const before=session.getState();
+    expect(session.getPlayerView('p1').legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===source.instanceId&&a.abilityId==='basic.surveil.battle-dash')).toBe(false);
+    expect(session.dispatchPlayerAction('p1',{type:'activate_ability',cardInstanceId:source.instanceId,abilityId:'basic.surveil.battle-dash'}).ok).toBe(false);
+    expect(session.getState()).toEqual(before);
+  });
+
 });
