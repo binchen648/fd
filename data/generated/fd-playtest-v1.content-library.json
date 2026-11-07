@@ -4231,7 +4231,8 @@
                     },
                     -1
                   ]
-                }
+                },
+                "id": "cut-mana"
               },
               {
                 "type": "create_modifier",
@@ -4240,30 +4241,22 @@
                   "operation": "add",
                   "duration": "this_round",
                   "amount": {
-                    "op": "multiply",
+                    "expr": "multiply",
                     "args": [
                       {
-                        "op": "ceil",
-                        "args": [
-                          {
-                            "op": "divide",
-                            "args": [
-                              {
-                                "op": "var",
-                                "var": "originMana"
-                              },
-                              3
-                            ]
-                          }
-                        ]
+                        "expr": "binding_field",
+                        "binding": "lostMana",
+                        "field": "actualAmount",
+                        "valueType": "number"
                       },
-                      2
+                      -2
                     ]
                   },
                   "scope": {
                     "subject": "source_card"
                   }
-                }
+                },
+                "id": "bind-power"
               }
             ],
             "cost": [],
@@ -11808,11 +11801,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "0435aec29292d4f1ef591e5c013e9b0b221d7880ed6a27ca5091e71c780dc957",
+    "definitionHash": "f9fe3349bc0b373d6c87dfda2b00cea1f320d26566b24482e5f2d6f4f7ba8f8b",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "0435aec29292d4f1ef591e5c013e9b0b221d7880ed6a27ca5091e71c780dc957"
+      "definitionHash": "f9fe3349bc0b373d6c87dfda2b00cea1f320d26566b24482e5f2d6f4f7ba8f8b"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

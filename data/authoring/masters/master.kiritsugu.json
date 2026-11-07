@@ -3,7 +3,10 @@
   "id": "master.kiritsugu",
   "name": "卫宫切嗣",
   "class": "Master",
-  "publicInformation": { "type": "master_package", "initialMana": 4 },
+  "publicInformation": {
+    "type": "master_package",
+    "initialMana": 4
+  },
   "sources": [
     {
       "id": "chm_page",
@@ -24,115 +27,339 @@
       "name": "魔术师杀手",
       "cardType": "master_skill",
       "printedText": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
       "playRequirements": [],
       "abilities": [
         {
           "id": "magus-killer.setup",
           "kind": "phase_action",
           "printedClause": "游戏开始时，将你牌库的一张牌替换为【起源弹】。",
-          "activation": { "phase": "preparation", "opens": "controller_action_window" },
+          "activation": {
+            "phase": "preparation",
+            "opens": "controller_action_window"
+          },
           "targets": [
-            { "id": "card_to_replace", "type": "card_instance", "scope": { "zone": "deck", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [{ "type": "not_card_id", "cardId": "master.kiritsugu.deck.origin-bullet" }] }
+            {
+              "id": "card_to_replace",
+              "type": "card_instance",
+              "scope": {
+                "zone": "deck",
+                "owner": "controller"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not_card_id",
+                  "cardId": "master.kiritsugu.deck.origin-bullet"
+                }
+              ]
+            }
           ],
-          "effects": [{ "type": "replace_card_in_deck", "target": "card_to_replace", "definitionId": "master.kiritsugu.deck.origin-bullet", "directive": "replace_one_deck_card_with_origin_bullet" }],
-          "execution": { "mode": "automatic" }
+          "effects": [
+            {
+              "type": "replace_card_in_deck",
+              "target": "card_to_replace",
+              "definitionId": "master.kiritsugu.deck.origin-bullet",
+              "directive": "replace_one_deck_card_with_origin_bullet"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
         }
       ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "evidence": [
+        {
+          "type": "legacy_generated_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json"
+        }
+      ]
     },
     {
       "id": "master.kiritsugu.skill.time-alter",
       "name": "固有时制御",
       "cardType": "master_skill",
       "printedText": "行动阶段：暗置打出一张牌，然后抽一张牌。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
       "playRequirements": [],
       "abilities": [
         {
           "id": "time-alter.action",
           "kind": "phase_action",
           "printedClause": "行动阶段：暗置打出一张牌，然后抽一张牌。",
-          "activation": { "phase": "action", "opens": "controller_action_window" },
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window"
+          },
           "targets": [
-            { "id": "card_to_play", "type": "card_instance", "scope": { "zone": "hand", "owner": "controller" }, "count": { "min": 1, "max": 1 }, "constraints": [{ "type": "is_attack" }] }
+            {
+              "id": "card_to_play",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "controller"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "is_attack"
+                }
+              ]
+            }
           ],
           "effects": [
-            { "type": "play_selected_cards", "target": "card_to_play", "face": "face_down" },
-            { "type": "draw_cards", "count": 1 }
+            {
+              "type": "play_selected_cards",
+              "target": "card_to_play",
+              "face": "face_down"
+            },
+            {
+              "type": "draw_cards",
+              "count": 1
+            }
           ],
-          "execution": { "mode": "automatic" }
+          "execution": {
+            "mode": "automatic"
+          }
         }
       ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "evidence": [
+        {
+          "type": "legacy_generated_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json"
+        }
+      ]
     },
     {
       "id": "master.kiritsugu.skill.square-accel",
       "name": "四倍速",
       "cardType": "master_skill",
       "printedText": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
-      "cardFace": { "cost": 0, "basePower": 0 },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "cardFace": {
+        "cost": 0,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
       "playRequirements": [],
       "abilities": [
         {
           "id": "square-accel.combat",
           "kind": "phase_action",
           "printedClause": "战斗阶段：关闭一张你激活的攻击，然后激活一张你暗置的【起源弹】。",
-          "activation": { "phase": "combat", "opens": "controller_combat_action_window" },
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
           "targets": [
-            { "id": "attack_to_close", "type": "card_instance", "count": 1,
-              "scope": { "zone": "attack_area", "controller": "self" },
-              "constraints": [{ "type": "is_attack" }, { "type": "card_active" }] },
-            { "id": "bullet_to_activate", "type": "card_instance", "count": 1,
-              "scope": { "zone": "attack_area", "controller": "self" },
-              "constraints": [{ "type": "has_card_id", "cardId": "master.kiritsugu.deck.origin-bullet" }, { "type": "card_face_down" }] }
+            {
+              "id": "attack_to_close",
+              "type": "card_instance",
+              "count": 1,
+              "scope": {
+                "zone": "attack_area",
+                "controller": "self"
+              },
+              "constraints": [
+                {
+                  "type": "is_attack"
+                },
+                {
+                  "type": "card_active"
+                }
+              ]
+            },
+            {
+              "id": "bullet_to_activate",
+              "type": "card_instance",
+              "count": 1,
+              "scope": {
+                "zone": "attack_area",
+                "controller": "self"
+              },
+              "constraints": [
+                {
+                  "type": "has_card_id",
+                  "cardId": "master.kiritsugu.deck.origin-bullet"
+                },
+                {
+                  "type": "card_face_down"
+                }
+              ]
+            }
           ],
           "effects": [
-            { "type": "move_card", "target": "attack_to_close", "to": { "zone": "attack_area" }, "deactivate": true },
-            { "type": "move_card", "target": "bullet_to_activate", "to": { "zone": "attack_area" }, "activate": true }
+            {
+              "type": "move_card",
+              "target": "attack_to_close",
+              "to": {
+                "zone": "attack_area"
+              },
+              "deactivate": true
+            },
+            {
+              "type": "move_card",
+              "target": "bullet_to_activate",
+              "to": {
+                "zone": "attack_area"
+              },
+              "activate": true
+            }
           ],
-          "execution": { "mode": "automatic" }
+          "execution": {
+            "mode": "automatic"
+          }
         }
       ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "evidence": [
+        {
+          "type": "legacy_generated_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json"
+        }
+      ]
     },
     {
       "id": "master.kiritsugu.deck.origin-bullet",
       "name": "起源弹",
       "cardType": "master_deck_card",
       "printedText": "迅捷0耗2威。[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
-      "cardFace": { "cost": 0, "basePower": 2, "attributes": ["迅捷"] },
-      "playTiming": { "phase": "action", "window": "controller_play_card_window" },
+      "cardFace": {
+        "cost": 0,
+        "basePower": 2,
+        "attributes": [
+          "迅捷"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
       "playRequirements": [],
       "abilities": [
         {
           "id": "origin-bullet.cut-bind",
           "kind": "phase_action",
           "printedClause": "[切断与结合]-战斗阶段：令一名你的交战对手失去三分之一的魔力（向上取整），然后此牌获得等同于其失去魔力值二倍的威力。",
-          "activation": { "phase": "combat", "opens": "controller_combat_action_window", "requiresSourceState": "active" },
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
           "targets": [
-            { "id": "victim", "type": "player", "selector": "opponents_at_same_battlefield", "count": 1,
-              "constraints": [{ "type": "not_controller" }] }
+            {
+              "id": "victim",
+              "type": "player",
+              "selector": "opponents_at_same_battlefield",
+              "count": 1,
+              "constraints": [
+                {
+                  "type": "not_controller"
+                }
+              ]
+            }
           ],
-          "bindings": [{ "id": "originMana", "read": "target.mana" }],
+          "bindings": [
+            {
+              "id": "originMana",
+              "read": "target.mana"
+            }
+          ],
           "effects": [
-            { "type": "adjust_mana", "targetRef": "victim", "bind": "lostMana",
-              "amount": { "op": "multiply", "args": [ { "op": "ceil", "args": [ { "op": "divide", "args": [
-                { "op": "var", "var": "originMana" }, 3 ] } ] }, -1 ] } },
-            { "type": "create_modifier", "modifier": { "type": "power_bonus", "operation": "add", "duration": "this_round",
-              "amount": { "op": "multiply", "args": [ { "op": "ceil", "args": [ { "op": "divide", "args": [
-                { "op": "var", "var": "originMana" }, 3 ] } ] }, 2 ] },
-              "scope": { "subject": "source_card" } } }
+            {
+              "type": "adjust_mana",
+              "targetRef": "victim",
+              "bind": "lostMana",
+              "amount": {
+                "op": "multiply",
+                "args": [
+                  {
+                    "op": "ceil",
+                    "args": [
+                      {
+                        "op": "divide",
+                        "args": [
+                          {
+                            "op": "var",
+                            "var": "originMana"
+                          },
+                          3
+                        ]
+                      }
+                    ]
+                  },
+                  -1
+                ]
+              },
+              "id": "cut-mana"
+            },
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "operation": "add",
+                "duration": "this_round",
+                "amount": {
+                  "expr": "multiply",
+                  "args": [
+                    {
+                      "expr": "binding_field",
+                      "binding": "lostMana",
+                      "field": "actualAmount",
+                      "valueType": "number"
+                    },
+                    -2
+                  ]
+                },
+                "scope": {
+                  "subject": "source_card"
+                }
+              },
+              "id": "bind-power"
+            }
           ],
-          "execution": { "mode": "automatic" }
+          "execution": {
+            "mode": "automatic"
+          }
         }
       ],
-      "evidence": [{ "type": "legacy_generated_content", "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json" }]
+      "evidence": [
+        {
+          "type": "legacy_generated_content",
+          "path": "D:/fd/workspaces/fate-domination-ui-redesign/src/content/generated/legacy-content.json"
+        }
+      ]
     }
   ],
-  "excludedCards": [{ "id": "master.kiritsugu.skill.ascension", "name": "冷血杀手", "reason": "user_scope_excluded_ascension" }],
-  "adapterNotes": ["升华技按用户规则排除。"]
+  "excludedCards": [
+    {
+      "id": "master.kiritsugu.skill.ascension",
+      "name": "冷血杀手",
+      "reason": "user_scope_excluded_ascension"
+    }
+  ],
+  "adapterNotes": [
+    "升华技按用户规则排除。"
+  ]
 }

@@ -1,3 +1,4 @@
+import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import { isAcceptedBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
@@ -708,6 +709,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
         responseWindow: { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
+      if (isActualLossPowerCandidate(candidateAbility) && !lowerActualLossPower(candidateAbility)) issue('effects', 'Unsupported actual-loss power sequence', id);
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);
       }

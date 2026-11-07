@@ -74,7 +74,7 @@ describe('Anchored placement actual consumers', () => {
     processAbilityEvent(restored.state,{id:'placement-deploy',type:'after_player_deployed_to_battlefield',playerId:other,locationId:'miyama_town'});
     expect(player(restored,f.playerId).mana).toBe(9);
     const ended = restoreMatchSession(restored.serializeSession());
-    ended.state.round.activePhase = 'combat';
+    ended.state.round.activePhase = 'battle';
     processAbilityEvent(ended.state,{id:'placement-end',type:'after_battle_ended',battlePhaseResolutionId:'bounded-placement-terminal',battleOutcomes:[],battleParticipantIds:ended.state.players.map(p=>p.id)});
     expect(ended.state.cards.find(c => c.instanceId === source.instanceId)!.zone).toBe('skill');
     expect(ended.state.abilityRuntime!.cardState[source.instanceId]!.boardLocationId).toBeUndefined();
@@ -86,6 +86,44 @@ describe('Anchored placement actual consumers', () => {
     player(f.session,f.playerId).locationId='magic_workshop';
     expect(f.session.getPlayerView(f.playerId).legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===f.sourceId)).toBe(false);
     rejectAtomically(f.session,f.playerId,{type:'activate_ability',cardInstanceId:f.sourceId,abilityId:'sc-ereshkigal-3.blooming-netherworld'});
+  });
+  it.each(['hand','discard','removed_from_game'])('absent field source in %s is refused by projection and dispatch', zone => {
+    const f=fixture('servant.ereshkigal.skill.sc-ereshkigal-3');active(f.session,f.sourceId);
+    f.session.state.cards.find(c=>c.definitionId==='servant.ereshkigal.skill.sc-ereshkigal-2')!.zone=zone;
+    expect(f.session.getPlayerView(f.playerId).legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===f.sourceId)).toBe(false);
+    rejectAtomically(f.session,f.playerId,{type:'activate_ability',cardInstanceId:f.sourceId,abilityId:'sc-ereshkigal-3.blooming-netherworld'});
+  });
+});
+
+describe('Actual mana loss result feeds source power in one typed resolution', () => {
+  it.each(['unknown','future','wrong-field','wrong-type'])('rejects %s result binding at raw authoring admission', variant => {
+    const archive=JSON.parse(readFileSync('data/authoring/masters/master.kiritsugu.json','utf8'));
+    const effects=archive.cards[3].abilities[0].effects;
+    const ref=effects[1].modifier.amount.args[0];
+    if(variant==='unknown')ref.binding='missing';
+    if(variant==='future')effects.reverse();
+    if(variant==='wrong-field')ref.field='requestedAmount';
+    if(variant==='wrong-type')ref.valueType='player_ids';
+    expect(loadAuthoringJson(archive).report.some(r=>r.reason.includes('actual-loss power'))).toBe(true);
+  });
+  it.each([[0,false],[1,false],[9,false],[12,false],[9,true]] as const)('mana=%i protected=%s, pending restore and repeated choice', (mana,protectedTarget) => {
+    const f=fixture('master.gatou.skill.seeker');
+    if(protectedTarget){const seal=f.session.state.cards.find(c=>c.controllerPlayerId===f.playerId&&c.definitionId==='master.gatou.command-spell')!;activate(f.session,f.playerId,seal.instanceId,'command-spell.gain-mana');}
+    f.session.state.round.activePhase='battle';
+    const attacker=f.session.state.players.find(p=>p.masterCardId==='master.kiritsugu')!;
+    attacker.locationId=player(f.session,f.playerId).locationId='miyama_town';
+    f.session.state.round.prioritySeat=attacker.seat;player(f.session,f.playerId).mana=mana;
+    const id='typed-origin-bullet';
+    f.session.state.cards.push({instanceId:id,definitionId:'master.kiritsugu.deck.origin-bullet',ownerPlayerId:attacker.id,controllerPlayerId:attacker.id,zone:'attack_area',visibility:{scope:'public'}});
+    active(f.session,id);activate(f.session,attacker.id,id,'origin-bullet.cut-bind');
+    expect(f.session.getPlayerView(attacker.id).pendingDecision!.candidates).toContain(f.playerId);
+    const restored=restoreMatchSession(f.session.serializeSession());
+    const oldDecision=restored.getPlayerView(attacker.id).pendingDecision!.id;
+    choose(restored,attacker.id,[f.playerId]);
+    const loss=protectedTarget?0:Math.ceil(mana/3);
+    expect(player(restored,f.playerId).mana).toBe(mana-loss);
+    expect(calculateCardPower(restored.state,id).value).toBe(2+loss*2);
+    rejectAtomically(restored,attacker.id,{type:'choose_target',decisionId:oldDecision,selectedIds:[f.playerId]});
   });
 });
 
@@ -152,5 +190,20 @@ describe('Exact VP cost and base terrain, actual Session', () => {
     expect((f.session.state as any).modeState.terrainAssignments.miyama_town).toEqual([]);
     f.session.state.abilityRuntime!.cardState[f.support]!.active = false;
     expect(currentDeploymentBonus(f.session.state, f.borrower)).toBe(0);
+  });
+  it.each(['duplicate-recipient','inactive-recipient','wrong-owner','balance-changed'])('revalidates exact payment when %s', variant => {
+    const f=borrowedSupport(2);
+    expect(f.session.getPlayerView(f.borrower).legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===f.support&&a.abilityId==='support-shot.suppress')).toBe(true);
+    if(variant==='duplicate-recipient')player(f.session,f.borrower).masterCardId='master.maiya';
+    if(variant==='inactive-recipient')player(f.session,f.playerId).status='eliminated';
+    if(variant==='wrong-owner')f.session.state.cards.find(c=>c.instanceId===f.support)!.ownerPlayerId=f.borrower;
+    if(variant==='balance-changed')player(f.session,f.borrower).vp=1;
+    rejectAtomically(f.session,f.borrower,{type:'activate_ability',cardInstanceId:f.support,abilityId:'support-shot.suppress'});
+  });
+  it('rolls back a valid exact fee when a downstream effect fails', () => {
+    const f=borrowedSupport(2);
+    // Deliberate executor fault injection tests Session atomicity, not a reachable authoring vulnerability.
+    f.session.state.abilityRuntime!.pack.cards['master.maiya.deck.support-shot']!.abilities[1]!.effects.push({type:'unregistered-test-effect'});
+    rejectAtomically(f.session,f.borrower,{type:'activate_ability',cardInstanceId:f.support,abilityId:'support-shot.suppress'});
   });
 });

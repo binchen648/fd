@@ -1,3 +1,4 @@
+import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import { isAcceptedBattlefieldPlacement, supportsBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
 import {releaseTerrain,occupiedTerrainSlots} from './terrain-state';
@@ -1294,6 +1295,7 @@ function battlefieldPlacementFailure(s: GameState, ctx: EffectContext, a: Author
     const targets = implicitCardTargets(s,ctx,effect.target);
     if (targets.length !== 1) return 'Field placement requires one associated physical card';
     const target = card(s,targets[0]!);
+    if (!['field','attack_area','skill'].includes(target.zone)) return 'Absent field source must remain in its associated skill zone';
     if (!supportsBattlefieldPlacement(definition(s,target.instanceId)) ||
         (definition(s,target.instanceId) as ExecutableCardDefinition | undefined)?.ownerId !== (definition(s,ctx.sourceCardId) as ExecutableCardDefinition | undefined)?.ownerId ||
         target.ownerPlayerId !== card(s,ctx.sourceCardId).ownerPlayerId || !isBattlefield(s,player(s,ctx.controllerId).locationId)) return 'Unsupported field definition, source association or battlefield';
@@ -1325,6 +1327,7 @@ function exactVpTransferPlan(s: GameState, ctx: EffectContext, cost: RuleNode): 
 /** Shared denial contract; both action projection and dispatch use the latest state. */
 function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbility,event?:AbilityEvent):{code:string;message:string}|undefined {
  const ctx=context(s,sourceId,a.id,event);
+ if(isActualLossPowerCandidate(a)&&!lowerActualLossPower(a))return {code:'unsupported',message:'Unsupported actual-loss power contract'};
  const fieldFailure=battlefieldPlacementFailure(s,ctx,a); if(fieldFailure)return {code:'invalid_source',message:fieldFailure};
  for (const cost of a.cost.filter(c => c.type === 'transfer_vp_to_owner')) if (!exactVpTransferPlan(s,ctx,cost)) return {code:'invalid_cost',message:'Exact VP cost requires a valid unique recipient and sufficient balance'};
  if(!convergenceSourceAvailable(s,sourceId,a))return {code:'invalid_source',message:'Ability source is not in its current owner skill zone'};
@@ -4360,6 +4363,7 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
       effects: normalized,
       selections: ctx.selections,
       hooks: {
+        canAffectPlayer: (state,targetId,controllerId) => !isProtectedFromOpponentEffects(state,targetId,controllerId),
         movePlayer: ({ state, playerId, targetId, toLocationId }) => {
           const movementAbility = abilityDefinition(state, ctx.sourceCardId, ctx.abilityId);
           const movementTarget = movementAbility.targets.find((target) => str(target.id) === targetId);
@@ -4455,6 +4459,17 @@ function executeFixedControllerManaCost(s: GameState, ctx: EffectContext, a: Aut
 function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): void {
   const a = abilityDefinition(s, ctx.sourceCardId, ctx.abilityId);
   applyResolutionSnapshots(s, ctx, a);
+  if (isActualLossPowerCandidate(a)) {
+    if (!lowerActualLossPower(a)) reject('unsupported','Unsupported actual-loss power sequence');
+    const pending = findPendingTarget(s,ctx,a,effects);
+    if (pending) {runtime(s).pendingDecision=pending;return;}
+    if (!applyResolutionSnapshots(s,ctx,a)) reject('illegal_target','Actual-loss target snapshot unavailable');
+    const lowered = lowerActualLossPower(a,numeric(s,ctx,a.effects[0]!.amount));
+    if (!lowered) reject('unsupported','Invalid actual-loss request amount');
+    executeResolutionEffects(s,ctx,lowered);
+    cleanupOngoing(s);
+    return;
+  }
   if (a.id === 'sc-tomoe-2.inferno-fire') {
     if (!isInfernoStatusPlan(a) || !isBattlefield(s,player(s,ctx.controllerId).locationId)) reject('illegal_action','Inferno requires its canonical typed battlefield status plan');
     installStatus(s,{id:'inferno_fire',controllerId:ctx.controllerId,duration:'next_round',sourceCardId:ctx.sourceCardId,sourceAbilityId:ctx.abilityId,locationId:player(s,ctx.controllerId).locationId!});

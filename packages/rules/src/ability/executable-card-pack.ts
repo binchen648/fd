@@ -1,3 +1,4 @@
+import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import type {
   BasicAttackDictionary,
   CompiledPlaytestContentLibrary,
@@ -515,7 +516,9 @@ function validateAbilityResolutionDataFlow(card: ExecutableCardDefinition, cards
     }
     if (!hasResolutionDataFlowSyntax(effects) && !isResourceNumericDirectActionSemantic(ability) && !isBattleLossResourceTriggerRouteCandidate(ability) && !isBattleLossServantRevealRouteCandidate(ability) && !isSharedVictoryVpTriggerRouteCandidate(ability) && !isBattleEndSourceReturnRouteCandidate(ability) && !isCardZoneCoreDirectActionRouteCandidate(ability) && !isPlayActionRouteCandidate(ability) && !isPlaySourceCardWithCostResponseStructuralCandidate(ability) && !isAddToAttackRouteCandidate(ability) && !isActivateCardByIdTrigger(ability) && !isCloseSourceCardOnPlayedTrigger(ability) && !isSetupCreateToSkillSemantic(ability) && !isResultBindingProductionBridgeRouteCandidate(ability)) continue;
     try {
-      validateResolutionDataFlowNodes(effects, path);
+      const lowered = isActualLossPowerCandidate(ability) ? lowerActualLossPower(ability) : effects;
+      if (!lowered) throw new Error('Unsupported actual-loss power sequence');
+      validateResolutionDataFlowNodes(lowered, path);
     } catch (error) {
       if (!(error instanceof DataFlowValidationError)) throw error;
       const detail = error.issues.map((issue) => `${issue.path}: ${issue.code}: ${issue.message}`).join('\n');

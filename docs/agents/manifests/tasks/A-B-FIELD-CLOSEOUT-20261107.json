@@ -25,7 +25,10 @@
     "docs/contracts/runtime-convergence/B-FIELD-FIVE-addendum.md",
     "docs/reports/2026-11-07-b-field-five-closeout.md",
     "packages/rules/src/ability/exact-vp-transfer.ts",
-    "packages/rules/src/ability/battlefield-placement.ts"
+    "packages/rules/src/ability/battlefield-placement.ts",
+    "packages/rules/src/ability/actual-loss-power.ts",
+    "packages/rules/src/ability/executable-card-pack.ts",
+    "packages/rules/tests/regression/resolution-dataflow.test.ts"
   ],
   "ForbiddenFiles": [
     "D:/fd/**",
