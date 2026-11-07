@@ -408,7 +408,8 @@
                           "subject": "controller"
                         },
                         "amount": 6,
-                        "duration": "this_round"
+                        "duration": "this_round",
+                        "sourceMustRemainActive": true
                       }
                     }
                   ]

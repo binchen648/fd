@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { advanceAbilityPhase, calculateCardPower, processAbilityEvent } from '../../src/ability/interpreter';
-import { resolveBattlefield } from '../../src/core/combat-resolver';
+import { resolveBattlefield, projectCurrentPlayerPowers } from '../../src/core/combat-resolver';
 import { currentDeploymentBonus } from '../../src/core/terrain-advantage';
 import { readFileSync } from 'node:fs';
 import { loadAuthoringJson } from '../../src/ability/loader';
@@ -65,6 +65,28 @@ describe('B field closeout: actual Session authoring consumers', () => {
 });
 
 describe('Anchored placement actual consumers', () => {
+  it.each(['false','string','selector'])('raw authoring rejects malformed source-bound aggregate %s', variant => {
+    const archive=JSON.parse(readFileSync('data/authoring/servants/servant.ereshkigal.json','utf8'));
+    const m=archive.cards[2].abilities[1].effects[0].branches[1].then[0].modifier;
+    if(variant==='false')m.sourceMustRemainActive=false;
+    if(variant==='string')m.sourceMustRemainActive='true';
+    if(variant==='selector')m.scope.onlyDefinitionId='irrelevant';
+    expect(loadAuthoringJson(archive).report.some(r=>r.reason.includes('source-bound aggregate'))).toBe(true);
+  });
+  it('Bloom aggregate bonus ends when the granting source closes without changing per-card power', () => {
+    const f=fixture('servant.ereshkigal.skill.sc-ereshkigal-3');
+    const protection=f.session.state.cards.find(c=>c.definitionId==='servant.ereshkigal.skill.sc-ereshkigal-2')!;
+    playPair(f.session,f.playerId,protection.instanceId);active(f.session,f.sourceId);
+    const baselineClosed=structuredClone(f.session.state);baselineClosed.abilityRuntime!.cardState[f.sourceId]!.active=false;
+    const expectedAfterClose=projectCurrentPlayerPowers(baselineClosed,[f.playerId])[f.playerId]!;
+    const before=projectCurrentPlayerPowers(f.session.state,[f.playerId])[f.playerId]!;
+    const cardPower=calculateCardPower(f.session.state,f.sourceId).value;
+    activate(f.session,f.playerId,f.sourceId,'sc-ereshkigal-3.blooming-netherworld');
+    expect(projectCurrentPlayerPowers(f.session.state,[f.playerId])[f.playerId]!-before).toBe(6);
+    expect(calculateCardPower(f.session.state,f.sourceId).value).toBe(cardPower);
+    f.session.state.abilityRuntime!.cardState[f.sourceId]!.active=false;
+    expect(projectCurrentPlayerPowers(f.session.state,[f.playerId])[f.playerId]!).toBe(expectedAfterClose);
+  });
   it('placement reverses actual field modifiers through restore and movement, rewards only later deployment, and cleans up', () => {
     const f = fixture('servant.ereshkigal.skill.sc-ereshkigal-3');
     active(f.session, f.sourceId);

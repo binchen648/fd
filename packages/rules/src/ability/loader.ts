@@ -282,7 +282,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
-  'placement', 'effectsFrom', 'emitPlayEvents', 'payment', 'exemptIf', 'masterId', 'controllerMasterId', 'layer',
+  'placement', 'effectsFrom', 'emitPlayEvents', 'payment', 'exemptIf', 'masterId', 'controllerMasterId', 'layer', 'sourceMustRemainActive',
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   // FB2-27 Ruler seal structural fields
   'policy', 'option', 'moveDestinations', 'rewardVp',
@@ -318,6 +318,24 @@ export function isAcceptedControllerSkillManaException(a: AuthoringAbility | Rul
     ['skill_zone_mana_requirement','skill_zone_mana_at_least'].includes(str(m.rule)) &&
     node(m.scope).subject === 'controller' && Object.keys(node(m.scope)).length === 1 &&
     Object.keys(m).every(k=>['id','printedClause','operation','rule','scope'].includes(k));
+}
+export function isAcceptedSourceBoundAggregate(n: RuleNode): boolean {
+  return n.type === 'power_bonus' && n.operation === 'add' && n.aggregate === 'total' && n.duration === 'this_round' &&
+    n.sourceMustRemainActive === true && Number.isSafeInteger(n.amount) && Number(n.amount) >= 0 &&
+    Object.keys(node(n.scope)).length === 1 && node(n.scope).subject === 'controller' &&
+    Object.keys(n).every(k=>['type','operation','aggregate','scope','amount','duration','sourceMustRemainActive'].includes(k));
+}
+function invalidSourceBoundAggregate(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(invalidSourceBoundAggregate);
+  if (!value || typeof value !== 'object') return false;
+  const n=node(value);
+  return (n.sourceMustRemainActive !== undefined && !isAcceptedSourceBoundAggregate(n)) || Object.values(n).some(invalidSourceBoundAggregate);
+}
+function containsSourceBoundAggregate(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(containsSourceBoundAggregate);
+  if (!value || typeof value !== 'object') return false;
+  const n = node(value);
+  return Object.prototype.hasOwnProperty.call(n,'sourceMustRemainActive') || Object.values(n).some(containsSourceBoundAggregate);
 }
 export function isAcceptedTerrainLayer(n: RuleNode): boolean {
   return n.type === 'terrain_bonus' && ['base','final'].includes(str(n.layer)) && n.operation === 'add' &&
@@ -575,6 +593,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       declaredResultBindings = new Set(orderedBinds);
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
       if (invalidTerrainLayer(a)) issue('effects', 'Unsupported terrain layer shape', id);
+      if (invalidSourceBoundAggregate(a) || (containsSourceBoundAggregate(a) && node(a.activation).requiresSourceState !== 'active')) issue('effects','Unsupported source-bound aggregate shape',id);
       const validatePlacement = (v: unknown): void => {
         if (Array.isArray(v)) { v.forEach(validatePlacement); return; }
         if (!v || typeof v !== 'object') return;

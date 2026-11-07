@@ -21,7 +21,7 @@ import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException } from './loader';
+import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -1793,6 +1793,7 @@ function implicitCardTargets(s: GameState, ctx: EffectContext, target: unknown):
 function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const modifier = node(effect.modifier);
   if (modifier.layer !== undefined && !isAcceptedTerrainLayer(modifier)) reject('unsupported', 'Unsupported terrain layer shape');
+  if (modifier.sourceMustRemainActive !== undefined && (!isAcceptedSourceBoundAggregate(modifier) || abilityDefinition(s,ctx.sourceCardId,ctx.abilityId).activation.requiresSourceState !== 'active' || !active(s,ctx.sourceCardId))) reject('unsupported','Unsupported source-bound aggregate shape');
   let scope = node(modifier.scope);
   const legacyTarget = str(modifier.target ?? effect.target);
   const bindingScope = node(scope.targetsFromBinding);
@@ -1857,7 +1858,7 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     runtime(s).ongoingEffects.push({
       id: nextId(s, 'created-total-power'), sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, controllerId: ctx.controllerId,
       starts: 'immediate', duration, startRound: s.round.roundNumber, expiresAtRound: s.round.roundNumber + 1,
-      cleanup: 'expire_after_duration', sourceMustRemainActive: false,
+      cleanup: 'expire_after_duration', sourceMustRemainActive: modifier.sourceMustRemainActive === true,
       ruleModifiers: [{
         sourceCardId: ctx.sourceCardId, controllerId: ctx.controllerId,
         definition: { id: str(modifier.id) || 'battle_total_power', operation, rule: 'battle.totalPower',

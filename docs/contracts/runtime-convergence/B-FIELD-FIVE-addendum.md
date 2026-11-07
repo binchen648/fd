@@ -13,3 +13,5 @@ Placement: move_card placement.kind=battlefield_effect, location=controller.loca
 Origin: lower accepted target snapshot request AST to existing typed number input after target validation. Parameterize typed mana primitive with selected victim, protection hook and same-resolution signed actualAmount. Typed source-power modifier consumes actualAmount*-2; no generic legacy fallback. Unknown/future/wrong type bindings reject before execution. Normal9->6 yields2->8, immunity yields0 delta and remains2. No persistent shadow binding store.
 
 Tests: L1 real Session actual effect/cost/projection/negative; L2 combinations/source/target changes/restore/repeat. Freeze final SHA then fullCI and seven-player L3 plus independent review. No automatic acceptance/merge.
+
+Bloom lifecycle correction (Final Rules11.7/12.2): this_round bounds the latest expiry and does not waive source validity. Explicit power_bonus aggregate=total sourceMustRemainActive=true requires an active-source ability, controller-only/add/integer/this_round shape; malformed forms reject at loader and runtime. Existing aggregate contracts without the field are unchanged.

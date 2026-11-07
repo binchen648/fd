@@ -8505,7 +8505,8 @@
                             "subject": "controller"
                           },
                           "amount": 6,
-                          "duration": "this_round"
+                          "duration": "this_round",
+                          "sourceMustRemainActive": true
                         }
                       }
                     ]
@@ -11801,11 +11802,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "f9fe3349bc0b373d6c87dfda2b00cea1f320d26566b24482e5f2d6f4f7ba8f8b",
+    "definitionHash": "a909113bc82a29eea5be522a5c755d8dc3e5543de2129c1bc6531ac52f20be34",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "f9fe3349bc0b373d6c87dfda2b00cea1f320d26566b24482e5f2d6f4f7ba8f8b"
+      "definitionHash": "a909113bc82a29eea5be522a5c755d8dc3e5543de2129c1bc6531ac52f20be34"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
