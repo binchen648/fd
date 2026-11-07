@@ -4484,15 +4484,37 @@
             "targets": [],
             "effects": [
               {
-                "type": "terrain_multiplier",
-                "value": 2
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "terrain_bonus",
+                  "operation": "add",
+                  "scope": {
+                    "subject": "controller"
+                  },
+                  "amount": 1,
+                  "duration": "this_round",
+                  "layer": "base"
+                }
               },
               {
-                "type": "transfer_vp_to_owner",
-                "amount": 2
+                "type": "terrain_multiplier",
+                "value": 2,
+                "duration": "this_round"
               }
             ],
-            "cost": [],
+            "cost": [
+              {
+                "type": "transfer_vp_to_owner",
+                "amount": 2,
+                "payment": "exact",
+                "recipient": {
+                  "masterId": "master.maiya"
+                },
+                "exemptIf": {
+                  "controllerMasterId": "master.maiya"
+                }
+              }
+            ],
             "ruleModifiers": [],
             "creates": [],
             "lifecycle": {},
@@ -11768,11 +11790,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "ad4e95c725f36370298a63a85fa80119f6d846f67b964666e1b54312d5d8df39",
+    "definitionHash": "42c0a82f6191ef2f71088a9a106826abd3d306302563d22dd7a16aedb289c79c",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "ad4e95c725f36370298a63a85fa80119f6d846f67b964666e1b54312d5d8df39"
+      "definitionHash": "42c0a82f6191ef2f71088a9a106826abd3d306302563d22dd7a16aedb289c79c"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

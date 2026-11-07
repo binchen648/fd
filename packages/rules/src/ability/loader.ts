@@ -1,3 +1,4 @@
+import { isExactVpTransferCost } from './exact-vp-transfer';
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
@@ -279,6 +280,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
+  'payment', 'exemptIf', 'masterId', 'controllerMasterId', 'layer',
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   // FB2-27 Ruler seal structural fields
   'policy', 'option', 'moveDestinations', 'rewardVp',
@@ -541,6 +543,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       walkBinds(nodes(a.effects));
       declaredResultBindings = new Set(orderedBinds);
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
+      for (const cost of nodes(a.cost)) if (cost.type === 'transfer_vp_to_owner' && !isExactVpTransferCost(cost)) issue('cost', 'Unsupported exact VP transfer cost shape', id);
       for (const snapshot of nodes(a.bindings)) {
         if (!['controller.mana', 'controller.command_seals', 'round.number', 'target.mana', 'target.command_seals'].includes(str(snapshot.read))) {
           issue('bindings.read', `Unsupported snapshot source: ${str(snapshot.read)}`, id);

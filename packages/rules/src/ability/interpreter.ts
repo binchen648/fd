@@ -1,3 +1,4 @@
+import { isExactVpTransferCost } from './exact-vp-transfer';
 import {releaseTerrain,occupiedTerrainSlots} from './terrain-state';
 import { normalizeSquareAccelPlan } from './square-accel-contract';
 import { normalizeSealPlan } from './seal-runtime-contract';
@@ -1279,9 +1280,21 @@ function convergenceSourceAvailable(s:GameState,sourceId:string,a:AuthoringAbili
  const authoredOwner=(d as ExecutableCardDefinition|undefined)?.ownerId;
  return !!owner&&(!authoredOwner||owner.masterCardId===authoredOwner)&&(!square||d?.cardType==='master_skill');
 }
+function exactVpTransferPlan(s: GameState, ctx: EffectContext, cost: RuleNode): { recipientId: string; amount: number } | undefined {
+  if (!isExactVpTransferCost(cost)) return undefined;
+  const source = card(s, ctx.sourceCardId), payer = player(s, ctx.controllerId);
+  const identity = str(node(cost.recipient).masterId);
+  const recipients = s.players.filter(p => p.status === 'active' && p.masterCardId === identity);
+  const recipient = recipients[0];
+  if (recipients.length !== 1 || !recipient || payer.status !== 'active' || !active(s, source.instanceId) ||
+      source.controllerPlayerId !== payer.id || source.ownerPlayerId !== recipient.id || (definition(s, source.instanceId) as ExecutableCardDefinition | undefined)?.ownerId !== identity) return undefined;
+  const amount = payer.masterCardId === str(node(cost.exemptIf).controllerMasterId) ? 0 : Number(cost.amount);
+  return payer.vp >= amount ? { recipientId: recipient.id, amount } : undefined;
+}
 /** Shared denial contract; both action projection and dispatch use the latest state. */
 function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbility,event?:AbilityEvent):{code:string;message:string}|undefined {
  const ctx=context(s,sourceId,a.id,event);
+ for (const cost of a.cost.filter(c => c.type === 'transfer_vp_to_owner')) if (!exactVpTransferPlan(s,ctx,cost)) return {code:'invalid_cost',message:'Exact VP cost requires a valid unique recipient and sufficient balance'};
  if(!convergenceSourceAvailable(s,sourceId,a))return {code:'invalid_source',message:'Ability source is not in its current owner skill zone'};
  const first=a.effects[0],ref=first?.type==='move_player'?str(first.to):str(first?.target)||str(first?.targetRef);
  const firstTarget=a.targets.find(t=>t.id===ref);
@@ -1790,6 +1803,7 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     for (const playerId of subjectPlayerIds(s, { subject }, ctx.controllerId, ctx.sourceCardId)) {
       store.modeState.terrainBonuses.push({
         playerId, bonus: Number(modifier.amount ?? modifier.value ?? 0),
+        ...(modifier.layer === 'base' ? { layer:'base', sourceMustRemainActive:true } : {}),
         ...(locationId ? { locationId } : {}),
         sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, duration, ...(terrainExpiry() !== undefined ? { expiresAtRound: terrainExpiry() } : {}),
       });
@@ -4862,6 +4876,8 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
         if (c.type === 'lte' && !condition(s, ctx, c)) reject('invalid_cost', 'Variable exceeds available mana');
       }
       manaCost += value;
+    } else if (cost.type === 'transfer_vp_to_owner') {
+      if (!exactVpTransferPlan(s, ctx, cost)) reject('invalid_cost', 'Cannot pay exact VP transfer cost');
     } else if (cost.type === 'move_source_card') {
       if (card(s, ctx.sourceCardId).zone !== node(cost.from).zone) reject('invalid_cost', 'Source is not in required zone');
     } else reject('unsupported', 'Unsupported ability cost');
@@ -4870,6 +4886,12 @@ function executeAbilityMutable(s: GameState, ctx: EffectContext): void {
   if (fixedControllerManaCost && isFixedControllerAdvanceDrawActionSemantic(a) &&
     !hasAvailableManaForFixedCosts(s, ctx, a)) reject('insufficient_mana', 'Insufficient mana');
   preflightFaceUpEffectPlaysAfterPreEffectMutations(s, ctx, a, manaCost, fixedControllerManaCost, names, limitType);
+  for (const cost of a.cost.filter(c => c.type === 'transfer_vp_to_owner')) {
+    const plan = exactVpTransferPlan(s, ctx, cost);
+    if (!plan) reject('invalid_cost', 'Exact VP cost changed before commit');
+    p.vp -= plan.amount;
+    player(s, plan.recipientId).vp += plan.amount;
+  }
   p.mana -= manaCost;
   if (fixedControllerManaCost && isAddToAttackRouteCandidate(a)) executeFixedControllerManaCost(s, ctx, a);
   if (names.length) runtime(s).calculations.push({ controllerId: p.id, lines: names.map(name => ({ label: name, value: ctx.variables[name]! })) });

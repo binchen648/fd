@@ -161,7 +161,10 @@ function getTerrainBreakdowns(
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
   if (participant.terrainSlotIndex === undefined) {
-    return [];
+    const bonus = terrainBonusAt(state, battlefieldId, participant.playerId, -1);
+    return bonus === undefined ? [] : [{ source: 'location',
+      label: `${battlefieldId}.base_terrain_bonus`, value: bonus,
+      payload: { kind: 'modifier', sourceType: 'location', sourceId: `${battlefieldId}.base_terrain_bonus`, targetTag: 'terrain' } }];
   }
   const value = terrainBonusAt(state, battlefieldId, participant.playerId, participant.terrainSlotIndex);
   if (value === undefined) {

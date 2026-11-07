@@ -472,6 +472,8 @@ export function resolveExtendedEffect(
         playerId: controllerId,
         multiplier,
         duration: 'this_round',
+        expiresAtRound: state.round.roundNumber + 1,
+        sourceMustRemainActive: true,
         ...directiveContext(context),
       });
       break;
