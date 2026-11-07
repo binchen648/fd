@@ -5936,13 +5936,29 @@
                   "op": "multiply",
                   "args": [
                     {
-                      "op": "count_cards",
-                      "zone": "discard",
-                      "owner": "controller",
-                      "constraints": [
+                      "op": "add",
+                      "args": [
                         {
-                          "type": "has_card_id",
-                          "cardId": "card.luck"
+                          "op": "count_cards",
+                          "zone": "discard",
+                          "owner": "controller",
+                          "constraints": [
+                            {
+                              "type": "has_card_id",
+                              "cardId": "card.luck"
+                            }
+                          ]
+                        },
+                        {
+                          "op": "count_cards",
+                          "zone": "discard",
+                          "owner": "controller",
+                          "constraints": [
+                            {
+                              "type": "has_card_id",
+                              "cardId": "basic.luck"
+                            }
+                          ]
                         }
                       ]
                     },
@@ -8515,6 +8531,9 @@
           {
             "type": "skill_zone_mana_at_least",
             "value": 8
+          },
+          {
+            "type": "controller_seat_in_first_half"
           }
         ],
         "abilities": [
@@ -11749,11 +11768,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "0703fe09fbde2716ad64d95407fd81e2d4a6e831e04c63292b31ce02d7f0dad0",
+    "definitionHash": "ad4e95c725f36370298a63a85fa80119f6d846f67b964666e1b54312d5d8df39",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "0703fe09fbde2716ad64d95407fd81e2d4a6e831e04c63292b31ce02d7f0dad0"
+      "definitionHash": "ad4e95c725f36370298a63a85fa80119f6d846f67b964666e1b54312d5d8df39"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

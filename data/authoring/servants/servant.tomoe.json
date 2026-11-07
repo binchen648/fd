@@ -131,6 +131,9 @@
         {
           "type": "skill_zone_mana_at_least",
           "value": 8
+        },
+        {
+          "type": "controller_seat_in_first_half"
         }
       ],
       "abilities": [
