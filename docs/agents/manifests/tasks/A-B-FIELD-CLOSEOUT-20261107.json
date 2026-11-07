@@ -28,7 +28,8 @@
     "packages/rules/src/ability/battlefield-placement.ts",
     "packages/rules/src/ability/actual-loss-power.ts",
     "packages/rules/src/ability/executable-card-pack.ts",
-    "packages/rules/tests/regression/resolution-dataflow.test.ts"
+    "packages/rules/tests/regression/resolution-dataflow.test.ts",
+    "packages/rules/src/ability/face-up-cards-per-round.ts"
   ],
   "ForbiddenFiles": [
     "D:/fd/**",
@@ -45,5 +46,6 @@
   "mergeAuthorized": false,
   "acceptance": "NOT_ACCEPTED",
   "independentReviewRequired": true,
-  "testPlan": "L1 real MatchSession, L2 combinations/restore/atomic rejection; fixed final SHA fullCI and seven-player L3. No skip, weakened timeouts or legacy result-binding substitute."
+  "testPlan": "L1 real MatchSession, L2 combinations/restore/atomic rejection; fixed final SHA fullCI and seven-player L3. No skip, weakened timeouts or legacy result-binding substitute.",
+  "admissionAddendum": "User continuous closeout includes prior seven diagnostics: qualify malformed raw mana exception rejection and real source validity; cap getter case is an optional ordering optimization only, not a new performance acceptance gate."
 }

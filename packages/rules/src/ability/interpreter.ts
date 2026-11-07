@@ -21,7 +21,7 @@ import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str, isAcceptedTerrainLayer } from './loader';
+import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -1094,16 +1094,14 @@ function hasPlayRuleException(d: AuthoringCard, rule: string): boolean {
     m.operation === 'ignore' && equivalent.includes(str(m.rule)) && ['this_card', 'source_card', ''].includes(str(node(m.scope).object))));
 }
 function hasControllerSkillManaException(s: GameState, controllerId: string): boolean {
+  const controller = player(s,controllerId);
+  if (controller.status !== 'active') return false;
   return s.cards.some(source => {
     if (source.controllerPlayerId !== controllerId || source.ownerPlayerId !== controllerId) return false;
-    if (!['hand', 'skill'].includes(source.zone) && !active(s, source.instanceId)) return false;
-    const d = definition(s, source.instanceId);
-    return d?.abilities.some(a => a.kind === 'passive' && a.execution.mode === 'automatic' &&
-      str(a.activation.trigger) === 'while_active' &&
-      a.conditions.every(c => condition(s, context(s, source.instanceId, a.id), c)) &&
-      a.ruleModifiers.some(m => m.operation === 'ignore' &&
-        ['skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule)) &&
-        str(node(m.scope).subject) === 'controller')) ?? false;
+    const d = definition(s,source.instanceId) as ExecutableCardDefinition | undefined;
+    if (!d || !d.abilities.some(a=>isAcceptedControllerSkillManaException(a))) return false;
+    if (d.cardType === 'master_skill') return source.zone === 'skill' && d.ownerId === controller.masterCardId && !runtime(s).cardState[source.instanceId]?.faceDown;
+    return active(s,source.instanceId);
   });
 }
 function perGamePlayLimit(d: AuthoringCard): { key: string; uses: number } | undefined {

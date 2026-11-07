@@ -302,6 +302,23 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
 
 ]);
 
+export function isControllerSkillManaExceptionCandidate(a: AuthoringAbility | RuleNode): boolean {
+  return nodes(a.ruleModifiers).some(m=>['skill_zone_mana_requirement','skill_zone_mana_at_least'].includes(str(m.rule)) && node(m.scope).subject === 'controller');
+}
+export function isAcceptedControllerSkillManaException(a: AuthoringAbility | RuleNode): boolean {
+  if (!isControllerSkillManaExceptionCandidate(a) || a.kind !== 'passive' || node(a.execution).mode !== 'automatic' ||
+      node(a.activation).trigger !== 'while_active' || Object.keys(node(a.activation)).length !== 1 ||
+      ['conditions','targets','effects','cost','creates'].some(k=>nodes((a as RuleNode)[k]).length) ||
+      ['lifecycle','visibility','limit'].some(k=>Object.keys(node((a as RuleNode)[k])).length)) return false;
+  const response = node(a.responseWindow);
+  if (Object.keys(response).some(k=>!['order','passBehavior'].includes(k)) ||
+      (response.order !== undefined && response.order !== 'turn_order') || (response.passBehavior !== undefined && response.passBehavior !== 'decline_this_window')) return false;
+  const mods=nodes(a.ruleModifiers),m=mods[0];
+  return mods.length === 1 && !!m && m.operation === 'ignore' &&
+    ['skill_zone_mana_requirement','skill_zone_mana_at_least'].includes(str(m.rule)) &&
+    node(m.scope).subject === 'controller' && Object.keys(node(m.scope)).length === 1 &&
+    Object.keys(m).every(k=>['id','printedClause','operation','rule','scope'].includes(k));
+}
 export function isAcceptedTerrainLayer(n: RuleNode): boolean {
   return n.type === 'terrain_bonus' && ['base','final'].includes(str(n.layer)) && n.operation === 'add' &&
     n.duration === 'this_round' && Number.isSafeInteger(n.amount) && Number(n.amount) >= 0 &&
@@ -709,6 +726,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
         responseWindow: { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
+      if (isControllerSkillManaExceptionCandidate(candidateAbility) && !isAcceptedControllerSkillManaException(candidateAbility)) issue('ruleModifiers', 'Unsupported controller skill mana exception shape', id);
       if (isActualLossPowerCandidate(candidateAbility) && !lowerActualLossPower(candidateAbility)) issue('effects', 'Unsupported actual-loss power sequence', id);
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {
         issue('interaction.gateway', 'Unsupported private optional hand-play interaction semantic shape', id);

@@ -8,6 +8,13 @@ import { restoreMatchSession } from '../../src/match-session';
 import { fixture, player, playPair, dispatch, rejectAtomically, activate, active, choose } from './seven-roster-test-helpers';
 
 describe('B field closeout: actual Session authoring consumers', () => {
+  it.each(['selector','lifecycle'])('raw authoring cannot widen the controller mana exception through %s', variant => {
+    const archive=JSON.parse(readFileSync('data/authoring/masters/master.kayneth.json','utf8'));
+    const a=archive.cards.find((c:any)=>c.id==='master.kayneth.skill.double-master').abilities[0];
+    if(variant==='selector')a.ruleModifiers[0].scope.onlyDefinitionId='different.skill';
+    else a.lifecycle={expiresAtRound:0};
+    expect(loadAuthoringJson(archive).report.some(r=>r.reason.includes('controller skill mana exception'))).toBe(true);
+  });
   it.each(['basic.luck', 'card.luck', 'mixed'])('Caster counts %s once per owned discard instance and recomputes after restore', kind => {
     const { session, playerId, sourceId } = fixture('servant.artoriac.skill.sc-artoriac-3');
     const other = session.state.players.find(p => p.id !== playerId)!.id;
