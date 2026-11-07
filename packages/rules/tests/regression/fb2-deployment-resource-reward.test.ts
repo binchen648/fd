@@ -209,14 +209,16 @@ describe('P3-FB2-02 deployment resource reward', () => {
       definitionId: 'servant.ereshkigal.skill.sc-ereshkigal-2',
       ownerPlayerId: 'p1',
       controllerPlayerId: 'p1',
-      zone: 'field',
+      zone: 'skill',
       visibility: { scope: 'public' },
     });
-    state.abilityRuntime!.cardState[sourceId] = {
-      active: true,
-      faceDown: false,
-      playedRound: state.round.roundNumber,
-    };
+    // Establish the actual field and anchor by normal play, rather than an unanchored active flag.
+    state.round.activePhase = 'action';
+    state.round.prioritySeat = state.players[0]!.seat;
+    state.players[0]!.locationId = 'shinto';
+    state.players[0]!.mana = 8;
+    expect(rules.dispatchAbilityCommand(state,'p1',{type:'play_card',cardInstanceId:sourceId}).ok).toBe(true);
+    state.players[0]!.mana = 4;
 
     const ereshAbility = pack.cards['servant.ereshkigal.skill.sc-ereshkigal-2']!.abilities
       .find((ability) => ability.id === 'sc-ereshkigal-2.gain-mana-on-deploy')!;

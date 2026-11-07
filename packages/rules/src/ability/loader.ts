@@ -303,7 +303,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
 ]);
 
 export function isControllerSkillManaExceptionCandidate(a: AuthoringAbility | RuleNode): boolean {
-  return nodes(a.ruleModifiers).some(m=>['skill_zone_mana_requirement','skill_zone_mana_at_least'].includes(str(m.rule)) && node(m.scope).subject === 'controller');
+  return nodes(a.ruleModifiers).some(m=>['skill_zone_mana_requirement','skill_zone_mana_at_least'].includes(str(m.rule)) && node(m.scope).subject === 'controller' && node(m.scope).object === undefined);
 }
 export function isAcceptedControllerSkillManaException(a: AuthoringAbility | RuleNode): boolean {
   if (!isControllerSkillManaExceptionCandidate(a) || a.kind !== 'passive' || node(a.execution).mode !== 'automatic' ||

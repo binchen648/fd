@@ -863,7 +863,7 @@ describe('complex servant skill regressions', () => {
     expect(play(state, protection).ok).toBe(true);
     expect((state as unknown as { modeState?: { reversedModifierLocations?: unknown[] } }).modeState?.reversedModifierLocations?.length).toBeGreaterThan(0);
 
-    rules.processAbilityEvent(state, { id: 'eresh-deploy', type: 'after_player_deployed_to_battlefield', playerId: 'p1' });
+    rules.processAbilityEvent(state, { id: 'eresh-deploy', type: 'after_player_deployed_to_battlefield', playerId: 'p1', locationId: state.players[0]!.locationId });
     expect(state.players[0]!.mana).toBe(9);
     rules.advanceAbilityPhase(state, 'battle');
     rules.processAbilityEvent(state, { id: 'eresh-battle-end', type: 'after_battle_ended', playerId: 'p1' });
@@ -901,6 +901,8 @@ describe('complex servant skill regressions', () => {
     const state = setup(raw, { servantId: raw.id });
     const protection = add(state, 'servant.ereshkigal.skill.sc-ereshkigal-2', 'skill');
     const noble = add(state, 'servant.ereshkigal.skill.sc-ereshkigal-3', 'skill');
+    // Bloom places the field card at an actual battlefield, never at recon/workshop.
+    state.players[0]!.locationId = 'miyama_town';
 
     expect(play(state, noble).ok).toBe(true);
     expect(rules.projectAbilityState(state, 'p2').players[0]!.servantPackage?.id).toBe('servant.ereshkigal');
@@ -1339,6 +1341,8 @@ describe('complex master and session regressions', () => {
     state.round.prioritySeat = 2;
     state.players[0]!.vp = 0;
     state.players[1]!.vp = 3;
+    // Standalone loadAuthoringJson fixture: provide production compiler provenance.
+    Object.assign(state.abilityRuntime!.pack.cards[supportShot.definitionId]!, {ownerId:raw.id});
     markActive(state, supportShot.instanceId);
     expect(activateFor(state, 'p2', supportShot.instanceId, 'support-shot.suppress').ok).toBe(true);
     expect((state as unknown as { modeState?: { terrainMultipliers?: Array<Record<string, unknown>> } }).modeState?.terrainMultipliers).toContainEqual(expect.objectContaining({

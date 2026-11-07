@@ -29,7 +29,9 @@
     "packages/rules/src/ability/actual-loss-power.ts",
     "packages/rules/src/ability/executable-card-pack.ts",
     "packages/rules/tests/regression/resolution-dataflow.test.ts",
-    "packages/rules/src/ability/face-up-cards-per-round.ts"
+    "packages/rules/src/ability/face-up-cards-per-round.ts",
+    "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts"
   ],
   "ForbiddenFiles": [
     "D:/fd/**",
@@ -47,5 +49,6 @@
   "acceptance": "NOT_ACCEPTED",
   "independentReviewRequired": true,
   "testPlan": "L1 real MatchSession, L2 combinations/restore/atomic rejection; fixed final SHA fullCI and seven-player L3. No skip, weakened timeouts or legacy result-binding substitute.",
-  "admissionAddendum": "User continuous closeout includes prior seven diagnostics: qualify malformed raw mana exception rejection and real source validity; cap getter case is an optional ordering optimization only, not a new performance acceptance gate."
+  "admissionAddendum": "User continuous closeout includes prior seven diagnostics: qualify malformed raw mana exception rejection and real source validity; cap getter case is an optional ordering optimization only, not a new performance acceptance gate.",
+  "fixtureMigration": "Historical standalone raw-archive tests must provide canonical source owner metadata, actual battlefield for Bloom and explicit trusted deployment location/real field play. Numeric assertions remain unchanged; independent review required."
 }

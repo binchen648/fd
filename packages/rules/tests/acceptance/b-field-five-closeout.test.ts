@@ -8,6 +8,12 @@ import { restoreMatchSession } from '../../src/match-session';
 import { fixture, player, playPair, dispatch, rejectAtomically, activate, active, choose } from './seven-roster-test-helpers';
 
 describe('B field closeout: actual Session authoring consumers', () => {
+  it.each(['servant.artoria-alt','servant.kintoki'])('keeps %s source-card-only exceptions separate from controller-wide exceptions', owner => {
+    const archive=JSON.parse(readFileSync(`data/authoring/servants/${owner}.json`,'utf8'));
+    const loaded=loadAuthoringJson(archive);
+    expect(loaded.report).toEqual([]);
+    expect(Object.values(loaded.cards).flatMap(c=>c.abilities).every(a=>a.execution.mode==='automatic')).toBe(true);
+  });
   it.each(['selector','lifecycle'])('raw authoring cannot widen the controller mana exception through %s', variant => {
     const archive=JSON.parse(readFileSync('data/authoring/masters/master.kayneth.json','utf8'));
     const a=archive.cards.find((c:any)=>c.id==='master.kayneth.skill.double-master').abilities[0];

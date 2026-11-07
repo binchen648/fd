@@ -1304,7 +1304,9 @@ function installAnchoredReversal(s: GameState, ctx: EffectContext): void {
   if (!supportsBattlefieldPlacement(definition(s,ctx.sourceCardId)) || !active(s,ctx.sourceCardId)) reject('unsupported','Unsupported static battlefield definition');
   const state = runtime(s).cardState[ctx.sourceCardId]!;
   const locationId = state.boardLocationId ?? player(s,ctx.controllerId).locationId;
-  if (!locationId || !isBattlefield(s,locationId)) reject('illegal_target','Field effect requires a battlefield');
+  // Ordinary play away from a battlefield is legal but establishes no field effect.
+  // Explicit placement is separately preflighted to require a real battlefield.
+  if (!locationId || !isBattlefield(s,locationId)) return;
   state.boardLocationId = locationId;
   const store = (s as unknown as {modeState:Record<string,unknown>}).modeState;
   const entries = (store.reversedModifierLocations as RuleNode[] | undefined) ?? [];
