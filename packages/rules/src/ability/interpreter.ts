@@ -1961,7 +1961,6 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s
   // D5 · 事件牌的「以移动进入此地者获得 N 点合计威力」：movement 入口唯一，在这里记账。
   applyEntryTotalPowerBonus(s, playerId, to);
   // D5 · 酒宴：「每名其他玩家首次进入此战场时，令位于地利位置的玩家获得 2 点地利」。
-  applyEntryTerrainGrant(s, playerId, to);
   // 曾经只在白名单里挂着、从未派发的移动类触发点：移动进入地点。
   if (!movementAlreadyLogged) s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
 }
@@ -1999,34 +1998,6 @@ function applyEntryTotalPowerBonus(s: GameState, playerId: string, locationId: s
   store.entryTotalPowerBonuses = bonuses;
 }
 
-/**
- * D5 · 酒宴：「每名其他玩家首次进入展示的此牌所在的战场时，令此战场位于地利位置的玩家获得 2 点地利」。
- * 每次 (事件, 进入者) 只结算一次；地利加成到本回合结束（与 A2「获得 N 点地利」同一读点）。
- */
-function applyEntryTerrainGrant(s: GameState, moverId: string, locationId: string): void {
-  const effects = (modeState(s).entryTerrainGrants as Array<{ locationId?: string; sourceId?: string; amount?: number }> | undefined) ?? [];
-  if (!effects.length) return;
-  const store = modeState(s);
-  const occupants = ((store.terrainAssignments as Record<string, string[]> | undefined) ?? {})[locationId] ?? [];
-  if (!occupants.length) return;
-  const granted = (store.entryTerrainGranted as string[] | undefined) ?? [];
-  const bonuses = (store.terrainBonuses as Array<Record<string, unknown>> | undefined) ?? [];
-  for (const effect of effects) {
-    if (effect.locationId !== locationId) continue;
-    const key = `${effect.sourceId}:${moverId}`;
-    if (granted.includes(key)) continue;
-    for (const playerId of occupants) {
-      if (!playerId) continue;
-      bonuses.push({
-        playerId, bonus: Number(effect.amount ?? 0), locationId,
-        sourceId: effect.sourceId, expiresAtRound: s.round.roundNumber + 1,
-      });
-    }
-    granted.push(key);
-  }
-  store.entryTerrainGranted = granted;
-  store.terrainBonuses = bonuses;
-}
 /** Resolution-start snapshots so later clauses read pre-effect values (Medea-style "original" checks). */
 export function applyResolutionSnapshots(s: GameState, ctx: EffectContext, a: AuthoringAbility): boolean {
   if (ctx.snapshotApplied) return true;

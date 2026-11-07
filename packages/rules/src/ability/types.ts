@@ -397,11 +397,6 @@ export interface DeployPlayerAction {
   /** Highest bid the player may pay here (0 / absent when no hook applies). */
   maxTerrainBid?: number;
 }
-export interface DeclareBattleParticipationAction {
-  type: 'declare_battle_participation';
-  /** true = 参与战力结算；false = 本回合不参与（可反复声明覆盖）。 */
-  participate: boolean;
-}
 export interface NormalMoveAction { type: 'normal_move'; locationId: string; manaCost?: number }
 export interface SkipNormalMoveAction { type: 'skip_normal_move' }
 export interface CompleteEmptyRegularPlayAction { type: 'complete_empty_regular_play' }
@@ -417,7 +412,7 @@ export type LegalAction = PlayCardAction | StageAttackCardAction | ConfirmStaged
 export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variables?: Record<string, number> }) |
   { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
   { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
-  NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction | DeclareBattleParticipationAction;
+  NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction;
 
 export interface AbilityPlayerView {
   terrainSlots?: Record<string,{bonuses:number[];occupants:Array<string|null>}>;

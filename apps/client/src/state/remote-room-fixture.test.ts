@@ -1,4 +1,4 @@
-import {expect,it,describe}from'vitest';
+import {expect,it}from'vitest';
 import {createMatchRoom}from'@fd/rules/match-room';
 import {projectRemoteRoomFixture}from'./remote-room-fixture';
 it('renders distinct server-authorized deployment destinations in the outpost phase',()=>{
@@ -16,10 +16,6 @@ it('renders distinct server-authorized deployment destinations in the outpost ph
 import type { MatchRoomProjection } from "@fd/rules/match-room";
 
 
-/**
- * D5 · 抵御：远程房间投影里的"参战声明"必须变成一个可点击的动作。
- * 这个测试钉住三件事：没牌没有按钮、按钮是开关、开关发出去的命令与标签一致。
- */
 type Participation = { locationId: string; sourceId: string; declined: boolean; canDeclare: boolean };
 
 const buildProjection = (participation?: Participation): MatchRoomProjection => ({
@@ -50,32 +46,9 @@ it('shows the exact VP cost and preserves the server-authorized deployment payme
   expect(action.backendCommand).toEqual(projection.match!.view.legalActions[0]);
 });
 
-describe('remote room fixture · battle participation toggle (D5)', () => {
-  it('adds no action when the viewer has no participation event', () => {
-    expect(participationActions(buildProjection())).toEqual([]);
-    expect(participationActions(buildProjection({ locationId: 'miyama_town', sourceId: 'event.x', declined: false, canDeclare: false }))).toEqual([]);
-  });
-
-  it('offers "decline" while the viewer is still participating', () => {
-    const actions = participationActions(buildProjection({ locationId: 'miyama_town', sourceId: 'event.x', declined: false, canDeclare: true }));
-    expect(actions).toHaveLength(1);
-    expect(actions[0]!.label).toBe('不参与本次战斗结算');
-    expect(actions[0]!.backendCommand).toEqual({ type: 'declare_battle_participation', participate: false });
-  });
-
-  it('offers "participate" once the viewer has declined', () => {
-    const actions = participationActions(buildProjection({ locationId: 'miyama_town', sourceId: 'event.x', declined: true, canDeclare: true }));
-    expect(actions).toHaveLength(1);
-    expect(actions[0]!.label).toBe('参与本次战斗结算');
-    expect(actions[0]!.backendCommand).toEqual({ type: 'declare_battle_participation', participate: true });
-  });
-
-  it('keeps the toggle independent from the ability action list', () => {
-    const projection = buildProjection({ locationId: 'miyama_town', sourceId: 'event.x', declined: false, canDeclare: true });
-    const fixture = projectRemoteRoomFixture(projection)!;
-    expect(fixture.availableActions.some((action) => action.kind === 'respond')).toBe(true);
-    expect(fixture.availableActions.every((action) => action.ownerPlayerId === 'p1')).toBe(true);
-  });
+it('does not expose a participation command from an old room projection', () => {
+  const oldProjection = buildProjection({ locationId: 'miyama_town', sourceId: 'event.waxing_moon_ritual.resistance', declined: false, canDeclare: true });
+  expect(participationActions(oldProjection)).toEqual([]);
 });
 
 it('preserves authoritative public terrain holes rather than assigning by player order',()=>{const p=buildProjection();p.match!.view.terrainSlots={miyama_town:{bonuses:[3,1],occupants:[null,'p1']}};const f=projectRemoteRoomFixture(p)!;const l=f.locations.find(l=>l.id==='miyama_town')!;expect(l.terrainOccupants).toEqual([null,'p1']);});

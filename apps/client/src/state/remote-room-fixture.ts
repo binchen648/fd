@@ -55,18 +55,6 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     .map((card) => card.instanceId);
   const playerLocations = new Map(match.view.players.map((player) => [player.id, player.locationId]));
   const activePhaseIndex = phaseOrder.indexOf(match.phase);
-  // D5 · 抵御：参战声明在投影里是一个开关（参与 ⇄ 不参与），不占用 ability 窗口。
-  const participation = match.battleParticipation;
-  const participationActions: ClientAvailableAction[] = participation?.canDeclare
-    ? [{
-        actionId: 'declare_battle_participation:toggle',
-        kind: 'respond',
-        ownerPlayerId: viewerId ?? '',
-        label: participation.declined ? '参与本次战斗结算' : '不参与本次战斗结算',
-        backendCommand: { type: 'declare_battle_participation', participate: participation.declined },
-      }]
-    : [];
-
   return {
     ...(match.view.actionTurn ? { actionTurn: match.view.actionTurn } : {}),
     match: {
@@ -120,7 +108,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     },
     cards,
     publicCardIds,
-    availableActions: [...match.view.legalActions.map((action, index): ClientAvailableAction => ({
+    availableActions: match.view.legalActions.map((action, index): ClientAvailableAction => ({
       actionId: `${action.type}:${index}`,
       kind: action.type === 'deploy_player' ? 'deploy' : action.type === 'normal_move' ? 'move' : action.type === 'play_card' || action.type === 'stage_attack_card' || action.type === 'activate_ability' ? 'play_card'
         : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack' ? 'pass'
@@ -142,7 +130,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
       backendCommand: action.type === 'choose_target'
         ? { type: 'choose_target', decisionId: action.decisionId, selectedIds: action.candidates.slice(0, action.min) }
         : action,
-    })), ...participationActions],
+    })),
     interactionWindows: match.interactionWindows.map((window) => ({
       id: window.id,
       kind: window.kind,

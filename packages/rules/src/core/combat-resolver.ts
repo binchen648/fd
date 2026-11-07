@@ -349,78 +349,6 @@ export function getTotalPowerBreakdowns(
   return out;
 }
 
-/**
- * D5 · 事件牌的战斗期威力规则。两条都由 `match-session` 解析成 `modeState.eventBattleRules`
- * （只认已公开的事件牌），这里只做纯计算：
- * - 祸神：基本威力最高的激活攻击之外，其余激活攻击的威力封顶到印刷威力（差额计入 breakdown）；
- * - 盈月之仪：按战果（vp）升序名次给该玩家的激活攻击 +4/+3/+2 威力。
- */
-function getEventBattleRuleBreakdowns(
-  state: GameState,
-  battlefieldId: CombatResolutionInput["battlefieldId"],
-  participant: CombatParticipantInput,
-): BattleModifierBreakdown[] {
-  const rules = (modeState(state).eventBattleRules as Array<{
-    sourceId: string; locationId: string; kind: string; bonuses?: number[];
-  }> | undefined) ?? [];
-  const active = rules.filter((rule) => rule.locationId === battlefieldId);
-  if (!active.length) return [];
-
-  const out: BattleModifierBreakdown[] = [];
-  const atField = state.players.filter((player) => player.status === "active" && player.locationId === battlefieldId);
-  const definitionOf = (cardId: string) => state.abilityRuntime?.pack.cards[cardId];
-  const printedPower = (card: GameState["cards"][number]): number | undefined => {
-    const base = definitionOf(card.definitionId)?.cardFace?.basePower;
-    if (typeof base === "number") return base;
-    const legacy = starterPack.servants.find((entry) => entry.id === card.definitionId);
-    return typeof legacy?.basePower === "number" ? legacy.basePower : undefined;
-  };
-  const activeAttacks = state.cards.filter((card) =>
-    isCombatCardZone(state, card) &&
-    card.visibility.scope === "public" &&
-    state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
-    atField.some((player) => player.id === card.controllerPlayerId));
-
-  for (const rule of active) {
-    if (rule.kind === "cap_at_printed_power") {
-      const bases = activeAttacks.map((card) => printedPower(card)).filter((value): value is number => value !== undefined);
-      if (!bases.length) continue;
-      const highest = Math.max(...bases);
-      const delta = activeAttacks
-        .filter((card) => card.controllerPlayerId === participant.playerId)
-        .reduce((sum, card) => {
-          const printed = printedPower(card);
-          if (printed === undefined || printed >= highest) return sum;
-          return sum + Math.min(0, printed - calculateCardPower(state, card.instanceId).value);
-        }, 0);
-      if (!delta) continue;
-      out.push({
-        source: "event",
-        label: `${rule.sourceId}.cap_at_printed_power`,
-        value: delta,
-        payload: { kind: "modifier", sourceType: "event", sourceId: `${rule.sourceId}.cap`, targetTag: "attack_power" },
-      });
-      continue;
-    }
-    if (rule.kind === "battle_result_rank_bonus") {
-      const own = activeAttacks.filter((card) => card.controllerPlayerId === participant.playerId);
-      if (!own.length) continue;
-      const ranked = atField.slice().sort((a, b) => (a.vp - b.vp) || (a.seat - b.seat));
-      const index = ranked.findIndex((player) => player.id === participant.playerId);
-      const bonus = index >= 0 ? (rule.bonuses ?? [])[index] ?? 0 : 0;
-      if (!bonus) continue;
-      out.push({
-        source: "event",
-        label: `${rule.sourceId}.battle_result_rank_bonus`,
-        value: bonus,
-        payload: { kind: "modifier", sourceType: "event", sourceId: `${rule.sourceId}.rank`, targetTag: "attack_power" },
-      });
-    }
-  }
-  return out;
-}
-
-/** D5 · 「以移动进入此地者获得 N 点合计威力」：由 `move_player` 记账，按回合过期。 */
 function getEntryTotalPowerBreakdowns(
   state: GameState,
   participant: CombatParticipantInput,
@@ -449,7 +377,6 @@ function buildParticipantBreakdown(
 ): BattleParticipantBreakdown {
   const modifiers = getSituationBreakdowns(state, participant)
     .concat(getEventBreakdowns(state, battlefieldId, participant))
-    .concat(getEventBattleRuleBreakdowns(state, battlefieldId, participant))
     .concat(getEntryTotalPowerBreakdowns(state, participant))
     .concat(getLocationBreakdowns(state, battlefieldId, participant))
     .concat(getExternalSkillBreakdowns(participant))
@@ -479,20 +406,12 @@ function legacyBasePower(state: GameState, playerId: string, printedBasePower: n
   return hit ? Number(hit.value ?? printedBasePower) : printedBasePower;
 }
 
-/** D5 · 抵御：本回合声明不参与战力结算的玩家，从参战者里剔除。 */
-function excludedBattleParticipants(state: GameState): Set<string> {
-  const store = modeState(state).battleParticipation as { round?: number; declines?: string[] } | undefined;
-  if (!store || store.round !== state.round.roundNumber) return new Set();
-  return new Set(Array.isArray(store.declines) ? store.declines : []);
-}
-
 export function deriveBattleParticipantsFromState(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
 ): CombatParticipantInput[] {
-  const excluded = excludedBattleParticipants(state);
   return state.players
-    .filter((player) => player.status === "active" && player.locationId === battlefieldId && !excluded.has(player.id))
+    .filter((player) => player.status === "active" && player.locationId === battlefieldId)
     .map((player) => {
       const publicAttackCards = state.cards.filter((card) => {
         if (card.controllerPlayerId !== player.id || !isCombatCardZone(state, card)) {
