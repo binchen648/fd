@@ -1,5 +1,7 @@
 # FD Runtime Convergence Final Report
 
+> 2026-11-06 后续核验：最新代码候选 `4c744e103b7c86dd1a1b3eb911c2f5e919aac5cb`，完整CI **1930 PASS /19 FAIL /0 SKIP，自然退出1**；整体仍 **NOT_ACCEPTED / Integration NO**。详见 [A侧接入验证收尾](docs/reports/2026-11-06-a-intake-closeout.md) 与逐技能矩阵。以下2026-11-05数据按历史收据保留，不代表当前候选结果。
+
 日期：2026-11-05（Asia/Shanghai）。Task：FD-RC-20261105。
 
 **结论：IMPLEMENTATION_COMPLETE_CANDIDATE / NOT_ACCEPTED；当前禁止集成。**

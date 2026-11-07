@@ -25,7 +25,9 @@
     "packages/rules/tests/nobunaga-s3-consumer-migration.test.ts",
     "packages/rules/src/ability/interpreter.ts",
     "packages/rules/src/ability/extended-effects.ts",
-    "packages/rules/tests/acceptance/seven-roster-aggregate-followup.test.ts"
+    "packages/rules/tests/acceptance/seven-roster-aggregate-followup.test.ts",
+    "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md",
+    "docs/agents/manifests/releases/KAYNETH-REGISTERED-ARCHIVE-20261106.json"
   ],
   "ForbiddenFiles": [
     "all other production Runtime; original frozen worktree",
@@ -58,5 +60,15 @@
   "acceptance": "NOT_ACCEPTED",
   "runtimeWritesFrozen": true,
   "reservationReleased": false,
-  "remainingFieldContractOwner": "DeepSeek / B lead, external proposal pending"
+  "remainingFieldContractOwner": "DeepSeek / B lead, external proposal pending",
+  "codeCandidate": "4c744e103b7c86dd1a1b3eb911c2f5e919aac5cb",
+  "verificationStatus": "EXECUTED_WITH_BLOCKERS",
+  "fullCI": {
+    "pass": 1930,
+    "fail": 19,
+    "skip": 0,
+    "exitCode": 1,
+    "candidate": "4c744e103b7c86dd1a1b3eb911c2f5e919aac5cb"
+  },
+  "integrationAllowed": false
 }

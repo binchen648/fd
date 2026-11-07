@@ -21,8 +21,14 @@
     }
   ],
   "releaseStatus": "RELEASED_FOR_REVIEW",
-  "readmission": "PENDING_INDEPENDENT_REVIEW",
+  "readmission": "SCOPED_TECHNICAL_REVIEW_COMPLETE_NOT_ACCEPTED",
   "mergeAuthorized": false,
   "excludedIdentity": "master.kayneth.skill.s3",
-  "noRuntimeWriteTransfer": true
+  "noRuntimeWriteTransfer": true,
+  "readmissionAtAuthorization": "PENDING_INDEPENDENT_REVIEW",
+  "reviewEvidence": {
+    "candidate": "3eb03496940be9a6635dc402cd8f55e52ef2b618",
+    "record": "D:/fd-validation/kayneth-readmission-20261106/review.json",
+    "scope": "Exact8007 normal valid source only; no mixed ownership or all-roster acceptance"
+  }
 }
