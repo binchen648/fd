@@ -1687,8 +1687,9 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       if (a.activation.trigger === 'after_player_deployed_to_battlefield' && supportsBattlefieldPlacement(definition(s,c.instanceId))) {
-        if (event.type === 'after_player_deployed_to_battlefield' && active(s,c.instanceId) &&
-            runtime(s).cardState[c.instanceId]?.boardLocationId === event.locationId) found.push({cardInstanceId:c.instanceId,abilityId:a.id,controllerId:c.controllerPlayerId});
+        const anchor = runtime(s).cardState[c.instanceId]?.boardLocationId;
+        if (anchor && isBattlefield(s,anchor) && event.type === 'after_player_deployed_to_battlefield' && active(s,c.instanceId) &&
+            anchor === event.locationId) found.push({cardInstanceId:c.instanceId,abilityId:a.id,controllerId:c.controllerPlayerId});
         continue;
       }
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
@@ -4597,7 +4598,8 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isGameStartFixedControllerManaSetCandidate(a)) reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
   if (a.activation.trigger === 'after_player_deployed_to_battlefield' && supportsBattlefieldPlacement(definition(s,ctx.sourceCardId))) {
-    if (!ctx.event || ctx.event.locationId !== runtime(s).cardState[ctx.sourceCardId]?.boardLocationId || !active(s,ctx.sourceCardId)) reject('illegal_target','Field deployment trigger is no longer applicable');
+    const anchor=runtime(s).cardState[ctx.sourceCardId]?.boardLocationId;
+    if (!anchor || !isBattlefield(s,anchor) || !ctx.event || ctx.event.locationId !== anchor || !active(s,ctx.sourceCardId)) reject('illegal_target','Field deployment trigger is no longer applicable');
     executeResolutionEffects(s,ctx,effects); return;
   }
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');

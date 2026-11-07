@@ -65,6 +65,17 @@ describe('B field closeout: actual Session authoring consumers', () => {
 });
 
 describe('Anchored placement actual consumers', () => {
+  it('ordinary off-battlefield play creates no deployment reward from a missing anchor or event location', () => {
+    const f=fixture('servant.ereshkigal.skill.sc-ereshkigal-2');
+    player(f.session,f.playerId).locationId='recon';player(f.session,f.playerId).mana=8;
+    playPair(f.session,f.playerId,f.sourceId);
+    const before=player(f.session,f.playerId).mana;
+    const other=f.session.state.players.find(p=>p.id!==f.playerId)!.id;
+    processAbilityEvent(f.session.state,{id:'no-anchor-no-location',type:'after_player_deployed_to_battlefield',playerId:other});
+    expect(player(f.session,f.playerId).mana).toBe(before);
+    processAbilityEvent(f.session.state,{id:'no-anchor-real-location',type:'after_player_deployed_to_battlefield',playerId:other,locationId:'shinto'});
+    expect(player(f.session,f.playerId).mana).toBe(before);
+  });
   it.each(['false','string','selector'])('raw authoring rejects malformed source-bound aggregate %s', variant => {
     const archive=JSON.parse(readFileSync('data/authoring/servants/servant.ereshkigal.json','utf8'));
     const m=archive.cards[2].abilities[1].effects[0].branches[1].then[0].modifier;
