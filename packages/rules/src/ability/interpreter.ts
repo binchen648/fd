@@ -1,3 +1,4 @@
+import { isAcceptedBattlefieldPlacement, supportsBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
 import {releaseTerrain,occupiedTerrainSlots} from './terrain-state';
 import { normalizeSquareAccelPlan } from './square-accel-contract';
@@ -19,7 +20,7 @@ import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str } from './loader';
+import { node, nodes, str, isAcceptedTerrainLayer } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -992,7 +993,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     }) ?? false;
     case 'controller_mana_at_least': case 'min_mana': return p.mana >= Number(c.value);
     case 'source_card_in_zone': return card(s, ctx.sourceCardId).zone === c.zone || (c.zone === 'field' && card(s, ctx.sourceCardId).zone === 'attack_area');
-    case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.zone === 'field');
+    case 'card_not_on_board': return !s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.controllerPlayerId === ctx.controllerId && ['field','attack_area'].includes(candidate.zone));
+    case 'card_on_controller_battlefield': return s.cards.some(candidate => candidate.definitionId === c.cardId && candidate.controllerPlayerId === ctx.controllerId && ['field','attack_area'].includes(candidate.zone) && runtime(s).cardState[candidate.instanceId]?.boardLocationId === p.locationId);
     case 'controller_at_location_kind': {
       const kind = str(c.locationKind);
       if (kind === '侦察' || kind === '侦查') return p.locationId === 'recon';
@@ -1280,6 +1282,35 @@ function convergenceSourceAvailable(s:GameState,sourceId:string,a:AuthoringAbili
  const authoredOwner=(d as ExecutableCardDefinition|undefined)?.ownerId;
  return !!owner&&(!authoredOwner||owner.masterCardId===authoredOwner)&&(!square||d?.cardType==='master_skill');
 }
+function placementEffects(value: unknown): RuleNode[] {
+  if (Array.isArray(value)) return value.flatMap(placementEffects);
+  if (!value || typeof value !== 'object') return [];
+  const n = node(value);
+  return [...(n.placement !== undefined ? [n] : []), ...Object.values(n).flatMap(placementEffects)];
+}
+function battlefieldPlacementFailure(s: GameState, ctx: EffectContext, a: AuthoringAbility): string | undefined {
+  for (const effect of placementEffects(a.effects)) {
+    if (!isAcceptedBattlefieldPlacement(effect)) return 'Unsupported battlefield placement payload';
+    const targets = implicitCardTargets(s,ctx,effect.target);
+    if (targets.length !== 1) return 'Field placement requires one associated physical card';
+    const target = card(s,targets[0]!);
+    if (!supportsBattlefieldPlacement(definition(s,target.instanceId)) ||
+        (definition(s,target.instanceId) as ExecutableCardDefinition | undefined)?.ownerId !== (definition(s,ctx.sourceCardId) as ExecutableCardDefinition | undefined)?.ownerId ||
+        target.ownerPlayerId !== card(s,ctx.sourceCardId).ownerPlayerId || !isBattlefield(s,player(s,ctx.controllerId).locationId)) return 'Unsupported field definition, source association or battlefield';
+  }
+  return undefined;
+}
+function installAnchoredReversal(s: GameState, ctx: EffectContext): void {
+  if (!supportsBattlefieldPlacement(definition(s,ctx.sourceCardId)) || !active(s,ctx.sourceCardId)) reject('unsupported','Unsupported static battlefield definition');
+  const state = runtime(s).cardState[ctx.sourceCardId]!;
+  const locationId = state.boardLocationId ?? player(s,ctx.controllerId).locationId;
+  if (!locationId || !isBattlefield(s,locationId)) reject('illegal_target','Field effect requires a battlefield');
+  state.boardLocationId = locationId;
+  const store = (s as unknown as {modeState:Record<string,unknown>}).modeState;
+  const entries = (store.reversedModifierLocations as RuleNode[] | undefined) ?? [];
+  store.reversedModifierLocations = [...entries.filter(e => e.sourceCardId !== ctx.sourceCardId),
+    {locationId,sourceCardId:ctx.sourceCardId,sourceControllerId:ctx.controllerId,exemptPlayers:[ctx.controllerId],duration:'while_active'}];
+}
 function exactVpTransferPlan(s: GameState, ctx: EffectContext, cost: RuleNode): { recipientId: string; amount: number } | undefined {
   if (!isExactVpTransferCost(cost)) return undefined;
   const source = card(s, ctx.sourceCardId), payer = player(s, ctx.controllerId);
@@ -1294,6 +1325,7 @@ function exactVpTransferPlan(s: GameState, ctx: EffectContext, cost: RuleNode): 
 /** Shared denial contract; both action projection and dispatch use the latest state. */
 function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbility,event?:AbilityEvent):{code:string;message:string}|undefined {
  const ctx=context(s,sourceId,a.id,event);
+ const fieldFailure=battlefieldPlacementFailure(s,ctx,a); if(fieldFailure)return {code:'invalid_source',message:fieldFailure};
  for (const cost of a.cost.filter(c => c.type === 'transfer_vp_to_owner')) if (!exactVpTransferPlan(s,ctx,cost)) return {code:'invalid_cost',message:'Exact VP cost requires a valid unique recipient and sufficient balance'};
  if(!convergenceSourceAvailable(s,sourceId,a))return {code:'invalid_source',message:'Ability source is not in its current owner skill zone'};
  const first=a.effects[0],ref=first?.type==='move_player'?str(first.to):str(first?.target)||str(first?.targetRef);
@@ -1651,6 +1683,11 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
   for (const c of s.cards) {
     if (!battleEventControllerEligibleAfterScoring(s, event, c.controllerPlayerId)) continue;
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
+      if (a.activation.trigger === 'after_player_deployed_to_battlefield' && supportsBattlefieldPlacement(definition(s,c.instanceId))) {
+        if (event.type === 'after_player_deployed_to_battlefield' && active(s,c.instanceId) &&
+            runtime(s).cardState[c.instanceId]?.boardLocationId === event.locationId) found.push({cardInstanceId:c.instanceId,abilityId:a.id,controllerId:c.controllerPlayerId});
+        continue;
+      }
       const matches = a.activation.trigger === event.type || (!a.activation.trigger && a.kind === 'phase_action' && a.activation.opens === event.type);
       if (event.type === 'while_active') {
         const transformed = runtime(s).transformedReturnSilenceSourceCardIds?.includes(c.instanceId) === true;
@@ -1724,7 +1761,7 @@ function moveCard(s: GameState, id: string, zone: string): number {
   const c = card(s, id); const moved = c.zone === zone ? 0 : 1; const enteredSkillZone = moved === 1 && zone === 'skill'; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
-    if (runtime(s).cardState[id]) runtime(s).cardState[id]!.active = false;
+    if (runtime(s).cardState[id]) { runtime(s).cardState[id]!.active = false; delete runtime(s).cardState[id]!.boardLocationId; }
     clearTransientCardTransformState(s, id);
     clearReturnSilenceTransformForSource(s, id);
   }
@@ -1752,6 +1789,7 @@ function implicitCardTargets(s: GameState, ctx: EffectContext, target: unknown):
 }
 function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const modifier = node(effect.modifier);
+  if (modifier.layer !== undefined && !isAcceptedTerrainLayer(modifier)) reject('unsupported', 'Unsupported terrain layer shape');
   let scope = node(modifier.scope);
   const legacyTarget = str(modifier.target ?? effect.target);
   const bindingScope = node(scope.targetsFromBinding);
@@ -2343,6 +2381,21 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'move_card': {
+      if (effect.placement !== undefined) {
+        const failure = battlefieldPlacementFailure(s,ctx,{...abilityDefinition(s,ctx.sourceCardId,ctx.abilityId),effects:[effect]});
+        if (failure) reject('unsupported',failure);
+        const id = implicitCardTargets(s,ctx,effect.target)[0]!;
+        const target = card(s,id);
+        if (['field','attack_area'].includes(target.zone)) reject('illegal_target','Field card already on board');
+        if (target.zone !== 'skill') reject('invalid_source','Placement card must remain in its associated skill zone');
+        moveCard(s,id,'field');
+        target.visibility = {scope:'public'};
+        runtime(s).cardState[id] = {active:true,faceDown:false,playedRound:s.round.roundNumber,boardLocationId:player(s,ctx.controllerId).locationId!};
+        const residual = definition(s,id)!.abilities.find(a => a.kind === 'residual')!;
+        installAnchoredReversal(s,{...ctx,sourceCardId:id,abilityId:residual.id});
+        runtime(s).events.push({type:'card_placed',playerId:ctx.controllerId,sourceCardId:ctx.sourceCardId,abilityId:ctx.abilityId,cardInstanceId:id,toZone:'field',details:{locationId:player(s,ctx.controllerId).locationId}});
+        break;
+      }
       const randomSource = str(effect.random);
       let selected: string[];
       if (randomSource) {
@@ -2477,6 +2530,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       // 升华技解锁 = 卡牌被放进技能区，这就是 A4 的进入时点。
       if (zone === 'skill') for (const id of created) emitSkillZoneEntry(s, id);
       for (const next of nodes(effect.then)) resolveEffect(s, ctx, next); break;
+    }
+    case 'reverse_situation_and_event_power_modifiers': {
+      installAnchoredReversal(s,ctx);
+      break;
     }
     case 'create_modifier': {
       installCreatedPowerModifier(s, ctx, effect);
@@ -4523,6 +4580,10 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
   if (isResourceNumericTriggerCandidate(a)) reject('resolution_failed', 'Unsupported trigger resource semantic shape');
   if (isGameStartFixedControllerManaSetCandidate(a)) reject('resolution_failed', 'Unsupported game-start fixed set-mana semantic shape');
   if (isSourcePlayBasicAttackDrawTriggerCandidate(a)) reject('resolution_failed', 'Unsupported source-play basic-attack draw trigger semantic shape');
+  if (a.activation.trigger === 'after_player_deployed_to_battlefield' && supportsBattlefieldPlacement(definition(s,ctx.sourceCardId))) {
+    if (!ctx.event || ctx.event.locationId !== runtime(s).cardState[ctx.sourceCardId]?.boardLocationId || !active(s,ctx.sourceCardId)) reject('illegal_target','Field deployment trigger is no longer applicable');
+    executeResolutionEffects(s,ctx,effects); return;
+  }
   if (isDeploymentResourceRewardCandidate(a)) reject('resolution_failed', 'Unsupported deployment resource reward semantic shape');
   if (isBattleLossResourceTriggerCandidate(a)) reject('resolution_failed', 'Unsupported battle-loss resource semantic shape');
   if (isBattleLossUnpreventableVpTriggerCandidate(a)) reject('resolution_failed', 'Unsupported unpreventable battle-loss VP semantic shape');
@@ -5123,6 +5184,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
     const physicalState = runtime(s).cardState[c.instanceId];
     view.cards.push({ instanceId: hidden ? `hidden-field-${s.cards.indexOf(c)}` : c.instanceId,
       ...(!hidden && (own || privatelyInspected || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
+      ...(!hidden && ['field','attack_area'].includes(c.zone) && physicalState?.boardLocationId ? {boardLocationId:physicalState.boardLocationId} : {}),
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
       ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });

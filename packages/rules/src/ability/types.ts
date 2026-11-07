@@ -296,6 +296,8 @@ export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   /** Actual mana charged for this physical card by its latest authoritative play. */
   paidManaOnPlay?: number;
+  /** Anchored battlefield of a placed field effect, independent of current controller location. */
+  boardLocationId?: string;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface RulerSealBinding {
@@ -422,7 +424,7 @@ export interface AbilityPlayerView {
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   actionTurn?: ActionTurnProgress;
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; boardLocationId?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

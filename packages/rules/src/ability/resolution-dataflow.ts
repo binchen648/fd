@@ -2191,6 +2191,7 @@ function moveCardInstance(transaction: AbilityResolutionTransaction, cardInstanc
     : { scope: 'owner_only', ownerPlayerId: found.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone) && transaction.workingState.abilityRuntime?.cardState[cardInstanceId]) {
     transaction.workingState.abilityRuntime.cardState[cardInstanceId]!.active = false;
+    delete transaction.workingState.abilityRuntime.cardState[cardInstanceId]!.boardLocationId;
     clearTransientCardTransformState(transaction.workingState, cardInstanceId);
   }
 }

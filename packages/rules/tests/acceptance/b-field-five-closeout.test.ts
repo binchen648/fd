@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { advanceAbilityPhase, calculateCardPower } from '../../src/ability/interpreter';
+import { advanceAbilityPhase, calculateCardPower, processAbilityEvent } from '../../src/ability/interpreter';
+import { resolveBattlefield } from '../../src/core/combat-resolver';
 import { currentDeploymentBonus } from '../../src/core/terrain-advantage';
+import { readFileSync } from 'node:fs';
+import { loadAuthoringJson } from '../../src/ability/loader';
 import { restoreMatchSession } from '../../src/match-session';
 import { fixture, player, playPair, dispatch, rejectAtomically, activate, active, choose } from './seven-roster-test-helpers';
 
@@ -48,6 +51,44 @@ describe('B field closeout: actual Session authoring consumers', () => {
   });
 });
 
+describe('Anchored placement actual consumers', () => {
+  it('placement reverses actual field modifiers through restore and movement, rewards only later deployment, and cleans up', () => {
+    const f = fixture('servant.ereshkigal.skill.sc-ereshkigal-3');
+    active(f.session, f.sourceId);
+    player(f.session,f.playerId).mana = 8;
+    const beforeEvents = f.session.state.abilityRuntime!.events.length;
+    activate(f.session,f.playerId,f.sourceId,'sc-ereshkigal-3.blooming-netherworld');
+    expect(player(f.session,f.playerId).mana).toBe(8);
+    expect(f.session.state.abilityRuntime!.events.slice(beforeEvents).some(e => e.type === 'card_played')).toBe(false);
+    const source = f.session.state.cards.find(c => c.definitionId === 'servant.ereshkigal.skill.sc-ereshkigal-2')!;
+    const other = f.session.state.players.find(p => p.id !== f.playerId)!.id;
+    expect(f.session.getPlayerView(other).cards.find(c => c.instanceId === source.instanceId)).toMatchObject({zone:'field',definitionId:source.definitionId,boardLocationId:'miyama_town'});
+    const restored = restoreMatchSession(f.session.serializeSession());
+    player(restored,f.playerId).locationId = 'shinto';
+    player(restored,other).locationId = 'miyama_town';
+    restored.state.currentSituationModifiers = [{sourceId:'actual-field-test',targetTag:'特殊',value:2}];
+    const power = () => resolveBattlefield(restored.state,{battlefieldId:'miyama_town',participants:[{playerId:other,totalPower:4,attackTags:['特殊']}]}).nextState.battleResults.at(-1)!.participantBreakdowns[0]!.modifiers.filter(m => m.source === 'situation').reduce((sum,m) => sum+m.value,0);
+    expect(power()).toBe(-2);
+    processAbilityEvent(restored.state,{id:'placement-deploy',type:'after_player_deployed_to_battlefield',playerId:other,locationId:'miyama_town'});
+    expect(player(restored,f.playerId).mana).toBe(9);
+    processAbilityEvent(restored.state,{id:'placement-deploy',type:'after_player_deployed_to_battlefield',playerId:other,locationId:'miyama_town'});
+    expect(player(restored,f.playerId).mana).toBe(9);
+    const ended = restoreMatchSession(restored.serializeSession());
+    ended.state.round.activePhase = 'combat';
+    processAbilityEvent(ended.state,{id:'placement-end',type:'after_battle_ended',battlePhaseResolutionId:'bounded-placement-terminal',battleOutcomes:[],battleParticipantIds:ended.state.players.map(p=>p.id)});
+    expect(ended.state.cards.find(c => c.instanceId === source.instanceId)!.zone).toBe('skill');
+    expect(ended.state.abilityRuntime!.cardState[source.instanceId]!.boardLocationId).toBeUndefined();
+    restored.state.abilityRuntime!.cardState[source.instanceId]!.active = false;
+    expect(power()).toBe(2);
+  });
+  it('does not offer impossible workshop placement', () => {
+    const f=fixture('servant.ereshkigal.skill.sc-ereshkigal-3');active(f.session,f.sourceId);
+    player(f.session,f.playerId).locationId='magic_workshop';
+    expect(f.session.getPlayerView(f.playerId).legalActions.some(a=>a.type==='activate_ability'&&a.cardInstanceId===f.sourceId)).toBe(false);
+    rejectAtomically(f.session,f.playerId,{type:'activate_ability',cardInstanceId:f.sourceId,abilityId:'sc-ereshkigal-3.blooming-netherworld'});
+  });
+});
+
 function borrowedSupport(vp: number) {
   const f = fixture('master.maiya.skill.military');
   player(f.session, f.playerId).locationId = 'recon';
@@ -65,6 +106,14 @@ function borrowedSupport(vp: number) {
 }
 
 describe('Exact VP cost and base terrain, actual Session', () => {
+  it.each(['bogus', 'base-with-selector', 'base-power'])('compiler rejects an unaccepted terrain layer: %s', variant => {
+    const archive = JSON.parse(readFileSync('data/authoring/masters/master.maiya.json', 'utf8'));
+    const modifier = archive.cards[1].abilities[1].effects[0].modifier;
+    if (variant === 'bogus') modifier.layer = 'bogus';
+    if (variant === 'base-with-selector') modifier.scope.onlyDefinitionId = 'irrelevant';
+    if (variant === 'base-power') modifier.type = 'power_bonus';
+    expect(loadAuthoringJson(archive).report.some(r => r.reason.includes('terrain layer'))).toBe(true);
+  });
   it.each([0, 1])('balance %i is omitted from projection and atomically refused', vp => {
     const f = borrowedSupport(vp);
     expect(f.session.getPlayerView(f.borrower).legalActions.some(a => a.type === 'activate_ability' && a.cardInstanceId === f.support && a.abilityId === 'support-shot.suppress')).toBe(false);

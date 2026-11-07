@@ -8486,21 +8486,39 @@
                         "to": {
                           "zone": "field",
                           "owner": "controller"
+                        },
+                        "placement": {
+                          "kind": "battlefield_effect",
+                          "location": "controller.location",
+                          "effectsFrom": "card_definition",
+                          "emitPlayEvents": false
                         }
                       }
                     ]
                   },
                   {
-                    "else": [
+                    "if": {
+                      "type": "card_on_controller_battlefield",
+                      "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
+                    },
+                    "then": [
                       {
                         "type": "create_modifier",
                         "modifier": {
                           "type": "power_bonus",
-                          "target": "controller",
-                          "amount": 6
+                          "operation": "add",
+                          "aggregate": "total",
+                          "scope": {
+                            "subject": "controller"
+                          },
+                          "amount": 6,
+                          "duration": "this_round"
                         }
                       }
                     ]
+                  },
+                  {
+                    "else": []
                   }
                 ]
               }
@@ -11790,11 +11808,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "42c0a82f6191ef2f71088a9a106826abd3d306302563d22dd7a16aedb289c79c",
+    "definitionHash": "0435aec29292d4f1ef591e5c013e9b0b221d7880ed6a27ca5091e71c780dc957",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "42c0a82f6191ef2f71088a9a106826abd3d306302563d22dd7a16aedb289c79c"
+      "definitionHash": "0435aec29292d4f1ef591e5c013e9b0b221d7880ed6a27ca5091e71c780dc957"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

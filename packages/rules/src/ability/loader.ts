@@ -1,3 +1,4 @@
+import { isAcceptedBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
@@ -199,7 +200,7 @@ const supportedTypes = new Set([
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
   'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
-  'create_modifier', 'not_location_kind', 'power_bonus', 'terrain_bonus', 'card_not_on_board', 'not_card_id',
+  'create_modifier', 'not_location_kind', 'power_bonus', 'terrain_bonus', 'card_not_on_board', 'card_on_controller_battlefield', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
@@ -280,7 +281,7 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'oncePerRound', 'replacement', 'deckKinds', 'revealedKind', 'targetKind', 'controllerCannotWinStatus',
   'returnAtRoundEnd', 'preserveVictoryPoints', 'sakuraMasterId', 'fallbackServantPool',
   // Phase 3A resolution/data-flow infrastructure
-  'payment', 'exemptIf', 'masterId', 'controllerMasterId', 'layer',
+  'placement', 'effectsFrom', 'emitPlayEvents', 'payment', 'exemptIf', 'masterId', 'controllerMasterId', 'layer',
   'bind', 'expr', 'binding', 'field', 'valueType', 'ids', 'reason', 'message', 'enabled', 'regular', 'climax', 'threshold', 'phase', 'targetDefinitionIds',
   // FB2-27 Ruler seal structural fields
   'policy', 'option', 'moveDestinations', 'rewardVp',
@@ -300,6 +301,18 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
 
 ]);
 
+export function isAcceptedTerrainLayer(n: RuleNode): boolean {
+  return n.type === 'terrain_bonus' && ['base','final'].includes(str(n.layer)) && n.operation === 'add' &&
+    n.duration === 'this_round' && Number.isSafeInteger(n.amount) && Number(n.amount) >= 0 &&
+    Object.keys(node(n.scope)).length === 1 && node(n.scope).subject === 'controller' &&
+    Object.keys(n).every(k => ['type','operation','scope','amount','duration','layer'].includes(k));
+}
+function invalidTerrainLayer(value: unknown): boolean {
+  if (Array.isArray(value)) return value.some(invalidTerrainLayer);
+  if (!value || typeof value !== 'object') return false;
+  const n = node(value);
+  return (n.layer !== undefined && !isAcceptedTerrainLayer(n)) || Object.values(n).some(invalidTerrainLayer);
+}
 /** Load an object or JSON text. Unsupported mechanics are retained as report entries and disabled. */
 export function loadAuthoringJson(input: unknown): AuthoringPack {
   const root = node(typeof input === 'string' ? JSON.parse(input) : structuredClone(input));
@@ -543,6 +556,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       walkBinds(nodes(a.effects));
       declaredResultBindings = new Set(orderedBinds);
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
+      if (invalidTerrainLayer(a)) issue('effects', 'Unsupported terrain layer shape', id);
+      const validatePlacement = (v: unknown): void => {
+        if (Array.isArray(v)) { v.forEach(validatePlacement); return; }
+        if (!v || typeof v !== 'object') return;
+        const n = node(v);
+        if (n.placement !== undefined && !isAcceptedBattlefieldPlacement(n)) issue('effects', 'Unsupported battlefield placement shape', id);
+        Object.values(n).forEach(validatePlacement);
+      };
+      validatePlacement(a);
       for (const cost of nodes(a.cost)) if (cost.type === 'transfer_vp_to_owner' && !isExactVpTransferCost(cost)) issue('cost', 'Unsupported exact VP transfer cost shape', id);
       for (const snapshot of nodes(a.bindings)) {
         if (!['controller.mana', 'controller.command_seals', 'round.number', 'target.mana', 'target.command_seals'].includes(str(snapshot.read))) {

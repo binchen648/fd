@@ -289,7 +289,13 @@ function reverseSituationAndEventIfNeeded(
   if (!Array.isArray(entries)) return breakdowns;
   const reversed = entries.some((entry) => {
     if (!entry || typeof entry !== "object") return false;
-    const candidate = entry as { locationId?: string; exemptPlayers?: string[] };
+    const candidate = entry as { locationId?: string; exemptPlayers?: string[]; sourceCardId?: string; sourceControllerId?: string };
+    if (candidate.sourceCardId) {
+      const source = state.cards.find(c => c.instanceId === candidate.sourceCardId);
+      const cs = state.abilityRuntime?.cardState[candidate.sourceCardId];
+      if (!source || !['field','attack_area'].includes(source.zone) || !cs?.active || cs.faceDown ||
+          source.controllerPlayerId !== candidate.sourceControllerId || cs.boardLocationId !== candidate.locationId) return false;
+    }
     if (candidate.locationId !== battlefieldId) return false;
     if (candidate.exemptPlayers?.includes(participant.playerId)) return false;
     // 埃列什基伽勒的「不受冥界佑护影响」现在由 ruleModifiers 读取，而不是硬编码名单
