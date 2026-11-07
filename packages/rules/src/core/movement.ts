@@ -1,3 +1,4 @@
+import {releaseTerrain} from '../ability/terrain-state';
 import type { GameState } from "../schema/game";
 import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/location";
 
@@ -135,6 +136,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
 
   const nextState: GameState = {
     ...state,
+    ...((state as GameState & {modeState?:Record<string,unknown>}).modeState ? {modeState:structuredClone((state as GameState & {modeState?:Record<string,unknown>}).modeState)} : {}),
     players: state.players.map((entry) =>
       entry.id === input.playerId
         ? {
@@ -157,6 +159,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     }),
   };
 
+  releaseTerrain(nextState,input.playerId);
   return {
     nextState,
     placedPlayerIds: [input.playerId],

@@ -60,6 +60,11 @@ function setup(): GameState {
   state.round.prioritySeat = 1;
   for (const player of state.players.slice(0, 3)) player.locationId = 'shinto';
   rules.initializeAbilityRuntime(state, pack, { seed: 20260916 });
+  // Register the actual production declaration; assertions remain unchanged.
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+      .filter(([id]) => ['basic.luck'].includes(id)),
+  ));
   state.cards.push({
     instanceId: sourceId,
     definitionId,

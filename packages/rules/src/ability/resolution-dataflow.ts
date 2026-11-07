@@ -1,3 +1,4 @@
+import {releaseTerrain} from './terrain-state';
 import type { GameState, PlayerState } from '../schema/game';
 import type { LocationId } from '../schema/location';
 import { getEnabledLocations } from '../core/map-engine';
@@ -24,6 +25,7 @@ export type EffectResultType =
   | 'activate_card_by_id'
   | 'close_source_card'
   | 'adjust_mana'
+  | 'create_modifier'
   | 'set_mana'
   | 'pay_mana'
   | 'adjust_command_seals'
@@ -198,6 +200,7 @@ export type KnownEffectResult =
   | EffectResultEnvelope<'activate_card_by_id', ActivateCardByIdResult>
   | EffectResultEnvelope<'close_source_card', CloseSourceCardResult>
   | EffectResultEnvelope<'adjust_mana', AdjustManaResult>
+  | EffectResultEnvelope<'create_modifier', { amount: number }>
   | EffectResultEnvelope<'set_mana', SetManaResult>
   | EffectResultEnvelope<'pay_mana', PayManaResult>
   | EffectResultEnvelope<'adjust_command_seals', AdjustCommandSealsResult>
@@ -269,6 +272,7 @@ export const resultSchemas: Record<EffectResultType, BindingFieldSchema> = {
     amount: 'number',
     status: 'status',
   },
+  create_modifier: { amount: 'number', status: 'status' },
   adjust_mana: {
     before: 'number',
     after: 'number',
@@ -340,6 +344,7 @@ export interface AbilityResolutionContext {
 }
 
 export interface AbilityResolutionHooks {
+  canAffectPlayer?: (state: GameState, targetId: string, controllerId: string) => boolean;
   movePlayer?: (input: { state: GameState; playerId: PlayerId; targetId: string; toLocationId: string }) => { fromLocationId: string; toLocationId: string; movedCount: number; emittedEventIds: string[] };
   playSelectedCards?: (input: { state: GameState; playerId: PlayerId; cardInstanceIds: string[]; faceDown: boolean }) => { playedCount: number };
   playSourceCard?: (input: { state: GameState; playerId: PlayerId; sourceCardId: string; faceDown: boolean }) => { playedCount: number; destinationZone: string };
@@ -375,7 +380,8 @@ export type ResolutionEffectNode =
   | { id: string; type: 'attach_card_to_player_attack'; cardId: string; target: string; returnAtRoundEnd: boolean; controllerCannotWinStatus: string; bind?: string }
   | { id: string; type: 'activate_card_by_id'; definitionId: string; bind?: string }
   | { id: string; type: 'close_source_card'; bind?: string }
-  | { id: string; type: 'adjust_mana'; player: 'controller'; amount: ValueExpression; bind?: string }
+  | { id: string; type: 'adjust_mana'; player: 'controller'; targetRef?: string; amount: ValueExpression; bind?: string }
+  | { id: string; type: 'create_modifier'; modifier: { type:'power_bonus'; operation:'add'; duration:'this_round'; scope:{subject:'source_card'}; amount:ValueExpression }; bind?:string }
   | { id: string; type: 'set_mana'; player: 'controller'; amount: number; bind?: string }
   | { id: string; type: 'pay_mana'; player: 'controller'; amount: ValueExpression; selection?: string; bind?: string }
   | { id: string; type: 'adjust_command_seals'; player: 'controller'; amount: ValueExpression; directive?: string; bind?: string }
@@ -526,6 +532,7 @@ const primitiveDefinitions: ResolutionPrimitive[] = [
     resultSchema: resultSchemas.adjust_mana,
     execute: adjustManaPrimitive,
   },
+  { type: 'create_modifier', resultSchema: resultSchemas.create_modifier, execute: createSourcePowerModifierPrimitive },
   {
     type: 'set_mana',
     resultSchema: resultSchemas.set_mana,
@@ -569,7 +576,8 @@ export function hasResolutionDataFlowSyntax(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(hasResolutionDataFlowSyntax);
   if (!value || typeof value !== 'object') return false;
   const current = value as Record<string, unknown>;
-  if (typeof current.bind === 'string') return true;
+  // `bind` alone is generic (any live primitive may expose a result binding); only the
+  // resolution data-flow primitives and expressions select the legacy transaction pipeline.
   if (current.expr === 'binding_field' || current.expr === 'binding_status') return true;
   if (current.type === 'remove_advantage_position' || current.type === 'noop' || current.type === 'fail_invariant') return true;
   return Object.values(current).some(hasResolutionDataFlowSyntax);
@@ -936,6 +944,9 @@ function validateEffectReferences(
       break;
     case 'set_mana':
       break;
+    case 'create_modifier':
+      validateValueExpression(effect.modifier.amount, available, unsafeBranchBindings, issues, `${path}.modifier.amount`);
+      break;
     case 'adjust_mana':
     case 'pay_mana':
     case 'adjust_command_seals':
@@ -1205,6 +1216,24 @@ function adjustVictoryPointsPrimitive(
 ): KnownEffectResult {
   if (effect.type !== 'adjust_victory_points') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
   return adjustVictoryPoints(transaction, effect);
+}
+
+function createSourcePowerModifierPrimitive(transaction: AbilityResolutionTransaction, effect: ResolutionPrimitiveNode): KnownEffectResult {
+  if (effect.type !== 'create_modifier') throw new ResolutionRuntimeError('primitive_type_mismatch', effect.type);
+  const state = transaction.workingState, ctx = transaction.context;
+  const source = state.cards.find(c => c.instanceId === ctx.sourceCardId);
+  const runtime = state.abilityRuntime;
+  if (!runtime || !source || source.controllerPlayerId !== ctx.controllerId || !['attack_area','field'].includes(source.zone) ||
+      !runtime.cardState[source.instanceId]?.active || runtime.cardState[source.instanceId]?.faceDown) throw new ResolutionRuntimeError('invalid_source','Source power modifier requires an active controlled source');
+  const amount = evaluateIntegerAmount(transaction,effect.modifier.amount,'create_modifier');
+  if (amount < 0) throw new ResolutionRuntimeError('invalid_amount','Actual-loss power bonus cannot be negative');
+  if (amount !== 0) runtime.ongoingEffects.push({
+    id:`${ctx.resolutionId}.${effect.id}`,sourceCardId:source.instanceId,abilityId:ctx.abilityId,controllerId:ctx.controllerId,
+    starts:'immediate',duration:'this_round',startRound:state.round.roundNumber,expiresAtRound:state.round.roundNumber+1,
+    cleanup:'expire_after_duration',sourceMustRemainActive:true,publicZones:[],
+    ruleModifiers:[{sourceCardId:source.instanceId,controllerId:ctx.controllerId,definition:{id:effect.id,operation:'add',rule:'card.currentPower',scope:{object:'source_card'},value:amount}}],
+  });
+  return {effectId:effect.id,effectType:'create_modifier',status:amount === 0 ? 'no_op':'applied',affectedEntities:amount===0?[]:[{kind:'card',id:source.instanceId}],payload:{amount},emittedEventIds:[]};
 }
 
 function adjustManaPrimitive(
@@ -1932,10 +1961,17 @@ function adjustMana(
   effect: Extract<ResolutionEffectNode, { type: 'adjust_mana' }>,
 ): KnownEffectResult {
   const amount = evaluateIntegerAmount(transaction, effect.amount, 'adjust_mana');
-  const player = findPlayer(transaction.workingState, transaction.context.controllerId);
+  const selected = effect.targetRef ? transaction.context.selections[effect.targetRef] : undefined;
+  if (effect.targetRef && (!selected || selected.length !== 1 || amount > 0)) throw new ResolutionRuntimeError('invalid_target','Targeted mana loss requires one selected player and nonpositive amount');
+  const targetId = selected?.[0] ?? transaction.context.controllerId;
+  const player = findPlayer(transaction.workingState, targetId);
+  const controller = findPlayer(transaction.workingState,transaction.context.controllerId);
+  if (effect.targetRef && (player.id === controller.id || player.status !== 'active' || controller.status !== 'active' ||
+      player.locationId !== controller.locationId || !getEnabledLocations(transaction.workingState.map,transaction.workingState.locationConfig).some(l=>l.id===player.locationId&&l.tags.includes('battlefield')))) throw new ResolutionRuntimeError('invalid_target','Selected mana-loss opponent is no longer in the same battlefield');
+  const permitted = !effect.targetRef || transaction.context.hooks.canAffectPlayer?.(transaction.workingState,player.id,controller.id) === true;
   const before = player.mana;
-  const grant = amount > 0 ? grantMana(transaction.workingState, player.id, amount, { source: 'generic' }) : undefined;
-  const after = grant ? grant.after : Math.max(0, before + amount);
+  const grant = permitted && amount > 0 ? grantMana(transaction.workingState, player.id, amount, { source: 'generic' }) : undefined;
+  const after = !permitted ? before : grant ? grant.after : Math.max(0, before + amount);
   if (!grant) player.mana = after;
   const actualAmount = after - before;
   const eventId = `${transaction.context.resolutionId}.${effect.id}.mana_adjusted`;
@@ -2103,6 +2139,7 @@ function evaluateValue(transaction: AbilityResolutionTransaction, expression: Va
     if (expression.field === 'before') return result.payload.before;
     if (expression.field === 'after') return result.payload.after;
   }
+  if (result.effectType === 'create_modifier' && expression.field === 'amount') return result.payload.amount;
   if (result.effectType === 'set_mana') {
     if (expression.field === 'targetAmount') return result.payload.targetAmount;
     if (expression.field === 'actualDelta') return result.payload.actualDelta;
@@ -2168,17 +2205,7 @@ function terrainState(state: GameState): GameState & TerrainModeState {
 }
 
 function removeTerrainAssignment(state: GameState & TerrainModeState, playerId: PlayerId): boolean {
-  const assignments = state.modeState?.terrainAssignments;
-  if (!assignments) return false;
-  for (const [locationId, assigned] of Object.entries(assignments)) {
-    if (!assigned) continue;
-    const next = assigned.filter((id) => id !== playerId);
-    if (next.length !== assigned.length) {
-      assignments[locationId as LocationId] = next;
-      return true;
-    }
-  }
-  return false;
+  return releaseTerrain(state,playerId);
 }
 
 function findPlayer(state: GameState, playerId: PlayerId): PlayerState {
@@ -2199,6 +2226,7 @@ function moveCardInstance(transaction: AbilityResolutionTransaction, cardInstanc
     : { scope: 'owner_only', ownerPlayerId: found.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone) && transaction.workingState.abilityRuntime?.cardState[cardInstanceId]) {
     transaction.workingState.abilityRuntime.cardState[cardInstanceId]!.active = false;
+    delete transaction.workingState.abilityRuntime.cardState[cardInstanceId]!.boardLocationId;
     clearTransientCardTransformState(transaction.workingState, cardInstanceId);
   }
 }
@@ -2363,6 +2391,12 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         amount: coerceFixedIntegerLiteral(current.amount, `${path}.amount`, issues),
         ...coerceBind(current.bind),
       };
+    case 'create_modifier': {
+      const modifier = current.modifier as Record<string,unknown> | undefined;
+      if (!modifier || modifier.type !== 'power_bonus' || modifier.operation !== 'add' || modifier.duration !== 'this_round' ||
+          JSON.stringify(modifier.scope) !== JSON.stringify({subject:'source_card'}) || Object.keys(modifier).some(k=>!['type','operation','duration','scope','amount'].includes(k))) invalidNode(path,'Unsupported typed source-power modifier shape',issues);
+      return {id,type,modifier:{type:'power_bonus',operation:'add',duration:'this_round',scope:{subject:'source_card'},amount:coerceValueExpression(modifier?.amount,`${path}.modifier.amount`,issues)},...coerceBind(current.bind)};
+    }
     case 'adjust_mana':
     case 'pay_mana':
       return {
@@ -2371,6 +2405,7 @@ function coerceResolutionEffectNode(value: unknown, path: string, issues: DataFl
         player: current.player === undefined || current.player === 'controller' ? 'controller' : reportControllerPlayer(path, issues),
         amount: coerceValueExpression(current.amount, `${path}.amount`, issues),
         ...(type === 'pay_mana' && typeof current.selection === 'string' ? { selection: current.selection } : {}),
+        ...(type === 'adjust_mana' && typeof current.targetRef === 'string' ? {targetRef:current.targetRef} : {}),
         ...coerceBind(current.bind),
       };
     case 'adjust_command_seals':

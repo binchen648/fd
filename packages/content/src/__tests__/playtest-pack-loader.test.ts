@@ -226,7 +226,9 @@ describe('playtest pack loader', () => {
     expect(loaded.masters).toHaveLength(7);
     expect(loaded.eventSets).toHaveLength(1);
     expect(loaded.eventSets[0]!.cardIds).toHaveLength(20);
-    expect(loaded.eventCards).toHaveLength(18);
+    expect(loaded.eventCards.filter(card => loaded.eventSets[0]!.cardIds.includes(card.id))).toHaveLength(18);
+    expect(loaded.eventCards).toHaveLength(23);
+    expect(new Set(loaded.eventSets[0]!.cardIds).size).toBe(18);
     expect(issues.filter((issue) => issue.blocking)).toEqual([]);
     expect(issues).toContainEqual(expect.objectContaining({
       code: 'SOURCE_ASSET_UNVERIFIED',

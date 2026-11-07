@@ -75,6 +75,10 @@ function locationModifierValue(state: GameState, playerId: string, battlefieldId
 }
 
 function addPreparation(state: GameState, playerId = 'p1') {
+  // Register the actual production rule rather than relying on a physical card ID.
+  state.abilityRuntime!.pack.cards['basic.preparation'] = structuredClone(
+    rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards['basic.preparation']!,
+  );
   const instanceId = `${playerId}-preparation`;
   state.cards.push({
     instanceId,

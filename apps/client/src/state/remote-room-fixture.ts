@@ -1,5 +1,5 @@
 import type { MatchRoomProjection } from '@fd/rules/match-room';
-import type { InspectableCard, PlaytestClientFixture } from './playtest-fixture-loader';
+import type { ClientAvailableAction, InspectableCard, PlaytestClientFixture } from './playtest-fixture-loader';
 
 const locationLabels: Record<string, string> = {
   magic_workshop: '魔术工房',
@@ -55,7 +55,6 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     .map((card) => card.instanceId);
   const playerLocations = new Map(match.view.players.map((player) => [player.id, player.locationId]));
   const activePhaseIndex = phaseOrder.indexOf(match.phase);
-
   return {
     ...(match.view.actionTurn ? { actionTurn: match.view.actionTurn } : {}),
     match: {
@@ -90,9 +89,9 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     }),
     locations: [
       { id: 'magic_workshop', name: '魔术工房', subtitle: '远程同步', occupants: occupants(playerLocations, 'magic_workshop'), mapArea: 'A2', capacityLabel: '1', workshopManaSlots: [2, 1, 1, 1], moveCostToNext: 1 },
-      { id: 'miyama_town', name: '深山町', subtitle: '远程同步', occupants: occupants(playerLocations, 'miyama_town'), mapArea: 'B2', terrainSlots: [3, 1], contestVp: 2, moveCostToNext: 2 },
+      { id: 'miyama_town', name: '深山町', subtitle: '远程同步', occupants: occupants(playerLocations, 'miyama_town'), mapArea: 'B2', terrainSlots: match.view.terrainSlots?.miyama_town?.bonuses ?? [3, 1], terrainOccupants: match.view.terrainSlots?.miyama_town?.occupants, contestVp: 2, moveCostToNext: 2 },
       { id: 'recon', name: '侦察', subtitle: '远程同步', occupants: occupants(playerLocations, 'recon'), mapArea: 'G', capacityLabel: '1', reconVp: 2 },
-      { id: 'shinto', name: '新都', subtitle: '远程同步', occupants: occupants(playerLocations, 'shinto'), mapArea: 'B3', terrainSlots: [3, 1], contestVp: 3, moveCostToNext: 2 },
+      { id: 'shinto', name: '新都', subtitle: '远程同步', occupants: occupants(playerLocations, 'shinto'), mapArea: 'B3', terrainSlots: match.view.terrainSlots?.shinto?.bonuses ?? [3, 1], terrainOccupants: match.view.terrainSlots?.shinto?.occupants, contestVp: 3, moveCostToNext: 2 },
     ],
     self: {
       masterName: match.view.players.find((player) => player.id === viewerId)?.masterCardId ?? '观战',
@@ -109,13 +108,13 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     },
     cards,
     publicCardIds,
-    availableActions: match.view.legalActions.map((action, index) => ({
+    availableActions: match.view.legalActions.map((action, index): ClientAvailableAction => ({
       actionId: `${action.type}:${index}`,
       kind: action.type === 'deploy_player' ? 'deploy' : action.type === 'normal_move' ? 'move' : action.type === 'play_card' || action.type === 'stage_attack_card' || action.type === 'activate_ability' ? 'play_card'
         : action.type === 'confirm_staged_attack' || action.type === 'cancel_staged_attack' ? 'pass'
           : 'respond',
       ownerPlayerId: viewerId ?? '',
-      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
+      label: action.type === 'deploy_player' ? `部署至 ${locationLabels[action.locationId] ?? action.locationId}${action.terrainBid ? ` · ${action.terrainBid} 战果` : ''}` : action.type === 'normal_move' ? `常规移动至 ${locationLabels[action.locationId] ?? action.locationId} · ${action.manaCost} 魔力`
         : action.type === 'skip_normal_move' ? '不进行常规移动'
         : action.type === 'complete_empty_regular_play' ? '无合法攻击牌 · 完成常规出牌'
         : action.type === 'stage_attack_card' ? action.faceDown ? '加入待确认盖放' : '加入待确认攻击'

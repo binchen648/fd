@@ -455,6 +455,24 @@ describe('DR-P01 authoritative action turn', () => {
       expect(session.state.round).toMatchObject({ activePhase: 'battle', prioritySeat: player.seat });
       expect(session.passPriority(player.id).ok).toBe(true);
     }
+    // Battle decisions may open optional post-scoring responses. Drive those real
+    // commands before asserting the round-end boundary, without rescoring battle.
+    const settledHistory=structuredClone(session.battleHistory);
+    let responses=0;
+    while(session.state.abilityRuntime!.responseWindows.length && responses<20){
+      const window=session.state.abilityRuntime!.responseWindows[0]!;
+      const decline=session.getPlayerView(window.controllerId).legalActions.find(a=>a.type==='decline_this_window');
+      expect(decline).toBeDefined();
+      const wrongOwner=session.state.players.find(p=>p.id!==window.controllerId)!.id;
+      rejectAtomically(session,decline,wrongOwner);
+      expect(command(session,decline,window.controllerId).ok).toBe(true);
+      expect(session.battleHistory).toEqual(settledHistory);
+      responses++;
+    }
+    expect(responses).toBeGreaterThan(0);
+    expect(session.state.abilityRuntime!.responseWindows).toHaveLength(0);
+    expect(session.runUntilHumanInputOrRoundEnd()).toBe('round_end');
+    expect(session.battleHistory).toEqual(settledHistory);
     expect(session.state.round.activePhase).toBe('round_end');
     const history = structuredClone(session.battleHistory);
     expect(history.length).toBeGreaterThan(0);

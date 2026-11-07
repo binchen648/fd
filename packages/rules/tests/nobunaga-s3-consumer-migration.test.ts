@@ -47,6 +47,11 @@ function setup(mana = 8): GameState {
   state.players[1]!.locationId = 'shinto';
   state.players[0]!.mana = mana;
   rules.initializeAbilityRuntime(state, pack, { seed: 9804 });
+  // Register the actual production declaration; assertions remain unchanged.
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+      .filter(([id]) => ['basic.luck'].includes(id)),
+  ));
   return state;
 }
 
@@ -240,10 +245,12 @@ describe('P3 S R98 Nobunaga s3 consumer migration', () => {
       participants: [{ playerId: 'p1', totalPower: 2 }, { playerId: 'p2', totalPower: 5 }],
     }).nextState;
     const protectedResult = protectedSettled.battleResults.at(-1)!;
-    expect(protectedResult.lossEffectSuppressedPlayerIds).toContain('p1');
+    // A3: Luck protects assigned status, not ordinary losing-player triggers.
+    expect(protectedResult.lossEffectSuppressedPlayerIds ?? []).not.toContain('p1');
     rules.processAbilityEvent(protectedSettled, rootFromBattleResult(protectedSettled, protectedResult));
-    expect(protectedSettled.players.slice(0, 2).map((player) => player.vp)).toEqual([0, 0]);
-    expect(protectedSettled.abilityRuntime!.processedEvents.some((id) => id.endsWith(':defeat:p1') || id.endsWith(':lose:p1'))).toBe(false);
+    expect(protectedSettled.players.slice(0, 2).map((player) => player.vp)).toEqual([1, 2]);
+    expect(protectedSettled.abilityRuntime!.processedEvents.some((id) => id.endsWith(':defeat:p1'))).toBe(true);
+    expect(protectedSettled.abilityRuntime!.processedEvents.some((id) => id.endsWith(':lose:p1'))).toBe(true);
   });
 
   it('fails closed on a contradictory same-result defeated fact after an authoritative root', () => {

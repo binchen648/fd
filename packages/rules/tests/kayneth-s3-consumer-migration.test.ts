@@ -53,10 +53,17 @@ function setup() {
 }
 
 describe('P3 S R79 Kayneth s3 consumer migration', () => {
-  it('adds only the canonical frozen s3 material while preserving the legacy pride product card', () => {
+  it('preserves frozen s3 provenance and separately binds the authorized registered archive candidate', () => {
     const raw = rawArchive();
     const authored = raw.cards.find((card: any) => card.id === ID);
-    const registeredText = readFileSync(resolve(ROOT, 'data/authoring/masters/master.kayneth.json'), 'utf8');
+    const registeredText = readFileSync(resolve(ROOT, 'packages/rules/tests/fixtures/kayneth-archive-e63cdeb2.json'), 'utf8').replace(/\r\n/g, '\n');
+    const currentText = readFileSync(resolve(ROOT,'data/authoring/masters/master.kayneth.json'),'utf8').replace(/\r\n/g,'\n');
+    const authorization = JSON.parse(readFileSync(resolve(ROOT,'docs/agents/manifests/releases/KAYNETH-REGISTERED-ARCHIVE-20261106.json'),'utf8'));
+    expect(authorization.releaseStatus).toBe('RELEASED_FOR_REVIEW');
+    expect(authorization.mergeAuthorized).toBe(false);
+    expect(authorization.versions[0].sha256).toBe(REGISTERED_ARCHIVE_SHA);
+    expect(hash(currentText)).toBe('8007738adacc3918f349ab9edad38706a319b4d4026537bebe1f9ff240eda183');
+    expect(hash(currentText)).toBe(authorization.versions[1].sha256);
     expect(authored).toMatchObject({
       id: ID,
       aliases: ['s3'],

@@ -3,7 +3,20 @@
   "name": "优势火力学说",
   "cardType": "event",
   "printedReward": 3,
-  "applicableLocations": ["deep_mountain", "new_capital"],
+  "applicableLocations": [
+    "deep_mountain",
+    "new_capital"
+  ],
+  "timing": [
+    "action",
+    "battle"
+  ],
+  "interactions": [
+    {
+      "kind": "automatic",
+      "visibility": "public"
+    }
+  ],
   "printedText": "此战场的玩家获得“行动阶段：创造并激活一张你控制的基础/特殊攻击的临时复制直至你失去此效果。”",
   "effects": [
     {

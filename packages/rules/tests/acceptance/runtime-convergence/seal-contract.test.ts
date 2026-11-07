@@ -1,0 +1,6 @@
+import {describe,it,expect} from 'vitest';
+import {fixture} from './helpers';
+import {normalizeSealPlan} from '../../../src/ability/seal-runtime-contract';
+describe('Closed normalized seal schema',()=>{
+ it.each(['scope','binding','execution','count','mover','directive','cost','activation','effect'] as const)('rejects extra or malformed %s',field=>{const f=fixture('master.kayneth.command-spell');const pack=f.session.state.abilityRuntime!.pack;const a=structuredClone(pack.cards['master.kayneth.command-spell']!.abilities.find(a=>a.id==='command-spell.free-move')!);expect(normalizeSealPlan(a,'command_spell')).toBeDefined();if(field==='scope')a.targets[0]!.scope={controller:'opponent'};if(field==='binding')a.bindings=[{id:'x',read:'target.mana'}];if(field==='execution')(a.execution as any).skipLegality=true;if(field==='count')(a.targets[0]!.count as any).allowOther=true;if(field==='mover')a.effects.find(e=>e.type==='move_player')!.player='opponent';if(field==='directive')a.effects[0]!.directive='ignore_all_rules';if(field==='cost')a.cost=[{type:'pay_mana',amount:1}];if(field==='activation')a.activation.phase='combat';if(field==='effect')a.effects.push({type:'adjust_victory_points',amount:999});expect(normalizeSealPlan(a,'command_spell')).toBeUndefined();});
+});

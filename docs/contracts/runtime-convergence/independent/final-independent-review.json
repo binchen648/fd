@@ -1,0 +1,164 @@
+{
+  "reviewer": "Root independent Code Reviewer (read-only implementation review)",
+  "candidate": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
+  "expectedCandidate": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
+  "base": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "endWorktreeClean": true,
+  "implementationReview": "No remaining independently reproduced RC01-05 runtime defect found after corrections; bounded to reviewed routes and evidence.",
+  "decision": "NOT_ACCEPTED",
+  "integrationAllowed": "NO",
+  "completeCI": {
+    "classification": "TEST_FAILURE",
+    "total": 1809,
+    "pass": 1784,
+    "fail": 25,
+    "skip": 0,
+    "resultSuccess": false,
+    "naturalExitCode": 1,
+    "naturalExitSource": "Root session41152 write_stdin confirmation and final-run-binding.json"
+  },
+  "focused": {
+    "pass": 66,
+    "fail": 0,
+    "skip": 0
+  },
+  "client": {
+    "pass": 66,
+    "fail": 0
+  },
+  "server": {
+    "pass": 24,
+    "fail": 0
+  },
+  "browser": {
+    "pass": 6,
+    "fail": 0,
+    "skip": 0
+  },
+  "wire": [
+    {
+      "seed": 20260907,
+      "commands": 719,
+      "round": 11,
+      "projectedRejected": 0
+    },
+    {
+      "seed": 20260904,
+      "commands": 713,
+      "round": 11,
+      "projectedRejected": 0,
+      "squareAccelExecuted": true
+    },
+    {
+      "seed": 20261105,
+      "commands": 531,
+      "round": 11,
+      "projectedRejected": 0
+    }
+  ],
+  "closedFindings": [
+    "RC01 incorrect initial contract movement origin corrected",
+    "discarded/removed scoped source is rejected at activation and pending",
+    "Square pending source-face-down mismatch corrected",
+    "reward test now directly asserts actual +4VP"
+  ],
+  "remainingGateBlockerCount": 25,
+  "failureTriage": "ci-03-independent-triage.json",
+  "sourceZoneEvidenceCorrection": "Original probe changed stale objects; old observed JSON is invalid for reproduction and preserved with explicit sidecar correction. Corrected probe refetches current state and independently verifies final rejection.",
+  "ruleProvenance": "A3 ruling text read directly from b39a3c06 docs/audits/epic01/FD-A3-LUCK-DEFEAT-SEMANTICS.md and FD-DECISION-CARDS.md. Recorded user ruling provenance, original chat not independently inspected.",
+  "bindingLimitation": "Final-run-binding.json inspected: all17 artifact hashes and lengths verified. Independent end HEAD/clean verified. Start lineage is Root commit/launch tool transcript; no dedicated pre-command status log was created or fabricated.",
+  "artifactsSHA256": {
+    "full-ci-03.json": "5704e4ad26e4f9536d1a63215671f45799f1d64a2fd69d9f28df37ed228695a2",
+    "full-ci-03.log": "b262f2b58102aade7db3065aa12adcdbcff7e724d51a76d055ad76f7680a219e",
+    "focused-final.json": "36334a4c574e92132d36fae2b84787bac3aeff77b15640ed5bd2f0cb96dd8829",
+    "client-final.json": "36ad67e5778fc117112858f4c506067bf0262b302b9c89aaa15f22b88f624e5b",
+    "server-final.json": "3fdb00cb0f9bcbdd92c32d6d58e04ea86f0190f63172b18a32eb893b625c1dad",
+    "browser/results.json": "80ab9a6b5b28756f7c2f205255995ce157d4f052dab65b7c1bcdf2c90f3c0f9e",
+    "browser-final.log": "546146b8957c3dfce0457c54d5d5dfa1b5b2daaa7bb724846bcb11e1c6e8d1f3",
+    "live-wire-final.log": "efa6409100889037a57d405ab43ab7488d16b4a96cf871b910daf96982a746ab",
+    "generated-final.log": "17b25291b366395685158da1cbce9508f9fd5bde03d4a032e2bfae3e2dd88da9",
+    "client-build-final.log": "7a2a16307bb3595d8b10fdd71b15852728b056161ddbb9b70b4279dd7caca08e",
+    "ci-03-independent-triage.json": "730b0d9ee8cd085b7eee1aef443ae202af9cc2aaab7b516369855c41ca6b360e",
+    "independent-source-zone-observation-correction.md": "3965bdb050cb530c0840e9e7c298f59d4f463e45f525e93e4343117c54cb1e4e",
+    "final-run-binding.json": "b899808db85527974bbdd3571d980eb164836beddb756ee441ed7a141e44c756"
+  },
+  "noProductionEdits": true,
+  "noHeavyTestRun": true,
+  "noMergeOrCredit": true,
+  "finalBindingVerification": {
+    "path": "final-run-binding.json",
+    "sha256": "b899808db85527974bbdd3571d980eb164836beddb756ee441ed7a141e44c756",
+    "allArtifactsVerified": true,
+    "artifactCount": 17,
+    "checks": [
+      {
+        "path": "full-ci-03.json",
+        "ok": true
+      },
+      {
+        "path": "full-ci-03.log",
+        "ok": true
+      },
+      {
+        "path": "focused-final.json",
+        "ok": true
+      },
+      {
+        "path": "client-final.json",
+        "ok": true
+      },
+      {
+        "path": "server-final.json",
+        "ok": true
+      },
+      {
+        "path": "browser/results.json",
+        "ok": true
+      },
+      {
+        "path": "browser-final.log",
+        "ok": true
+      },
+      {
+        "path": "live-wire-final.log",
+        "ok": true
+      },
+      {
+        "path": "wire-final/wire-skills-20260907.json",
+        "ok": true
+      },
+      {
+        "path": "wire-final/wire-seals-20260904.json",
+        "ok": true
+      },
+      {
+        "path": "wire-final/wire-ordinary-20261105.json",
+        "ok": true
+      },
+      {
+        "path": "build-generated-exit-receipt.json",
+        "ok": true
+      },
+      {
+        "path": "client-build-bound.log",
+        "ok": true
+      },
+      {
+        "path": "generated-bound.log",
+        "ok": true
+      },
+      {
+        "path": "source-preservation.json",
+        "ok": true
+      },
+      {
+        "path": "ci-03-independent-triage.json",
+        "ok": true
+      },
+      {
+        "path": "function-changes.json",
+        "ok": true
+      }
+    ]
+  }
+}

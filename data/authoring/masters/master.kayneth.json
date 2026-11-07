@@ -36,11 +36,9 @@
           "printedClause": "双重御主-你拥有的魔力少于8点也可以使用技能牌。",
           "activation": { "trigger": "while_active" },
           "ruleModifiers": [
-            { "id": "kayneth-low-mana-skill-exception", "operation": "ignore", "rule": "skill_zone_mana_requirement", "scope": { "object": "this_card" } }
+            { "id": "kayneth-low-mana-skill-exception", "operation": "ignore", "rule": "skill_zone_mana_requirement", "scope": { "subject": "controller" } }
           ],
-          "effects": [
-            { "type": "record_master_directive", "directive": "low_mana_skill_cards_allowed", "payload": "controller may use skill cards below 8 mana" }
-          ],
+
           "execution": { "mode": "automatic" }
         }
       ],
@@ -92,8 +90,9 @@
           "kind": "passive",
           "printedClause": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
           "activation": { "trigger": "while_active" },
-          "effects": [
-            { "type": "deployment_rule_override", "rule": "must_deploy_to_lower_vp_lone_battlefield" }
+          "ruleModifiers": [
+            { "id": "must_deploy_to_lower_vp_lone_battlefield", "printedClause": "倨傲-若你可以部署于一名战果低于你且独自位于战场的其他玩家所在的战场，则你必须部署。",
+              "operation": "require", "rule": "deployment.requirement", "scope": { "subject": "controller" } }
           ],
           "execution": { "mode": "automatic" }
         }

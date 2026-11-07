@@ -1,0 +1,26 @@
+{
+  "taskId": "RC-CI-A02",
+  "BaseCommit": "e1a05f843edd45eed8f87a405930d4920bbb8f6f",
+  "owner": "Root",
+  "status": "GRANTED",
+  "scope": "TEST_ONLY",
+  "ReservedFiles": [
+    "packages/rules/src/__tests__/match-session-regressions.test.ts",
+    "packages/rules/tests/regression/action-turn-delivery.test.ts",
+    "docs/agents/manifests/tasks/RC-CI-A02.json",
+    "docs/reports/2026-11-06-a-legality-response.md"
+  ],
+  "ForbiddenFiles": [
+    "all production Runtime files",
+    "data/**",
+    "apps/**",
+    "existing assertions/timeouts/skips"
+  ],
+  "runtimeReservationChanged": false,
+  "levels": [
+    "L1 legality fixtures",
+    "L2 response settlement"
+  ],
+  "L3": "NOT_SCHEDULED",
+  "overallAcceptance": "NOT_ACCEPTED"
+}

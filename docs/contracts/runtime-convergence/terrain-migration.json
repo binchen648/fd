@@ -1,0 +1,6 @@
+{
+  "source": "D:/fd frozen uncommitted snapshot",
+  "sha256": "18e2cd9f397b0f8082732a8e4ef0a03e2743ed8ea28bbb6273ccd358aa2b9db8",
+  "file": "packages/rules/src/ability/terrain-state.ts",
+  "acceptance": "pending; stable-slot helper only; no Medusa or other B Runtime copied"
+}

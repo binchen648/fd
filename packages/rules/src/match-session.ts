@@ -1,3 +1,4 @@
+import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
 import { resolveStandardRoundEnd, type StandardMatchOutcome } from './core/elimination-resolver';
 import {
   advanceAbilityPhase,
@@ -36,6 +37,7 @@ import { clearTransientCardTransformState } from './ability/card-instance-state'
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
+import { deploymentSlots } from './ability/deployment-hooks';
 import type {
   AbilityCommand,
   AbilityEvent,
@@ -1093,6 +1095,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (value.ruleOverrides !== undefined && !isRestoreRuleOverrides(value.ruleOverrides, playerIds, locationIds)) return false;
   if (!value.effectStack.every((entry) => isRestoreEffectStackItem(entry, playerIds))) return false;
   const restoredState = value as unknown as GameState;
+  try { normalizeTerrainState(structuredClone(restoredState)); } catch { return false; }
   const actionTurns = (value.modeState as Record<string, unknown> | undefined)?.actionTurns;
   if (actionTurns !== undefined) {
     if (!isRestoreRecord(actionTurns) || actionTurns.version !== 1 || !isRestoreSafeInteger(actionTurns.round, 1) ||
@@ -1439,15 +1442,42 @@ function eventForbiddenAttributes(eventCardId: string): string[] {
   });
 }
 
+/** D5 · 事件牌 movement_lock：`prevents` 数组或 `prohibits` 短语两种写法都认。 */
+function eventMovementLocks(eventCardId: string): { blocksEntry: boolean; blocksExit: boolean } {
+  let blocksEntry = false;
+  let blocksExit = false;
+  for (const effect of eventCardById.get(eventCardId)?.effects ?? []) {
+    if (String(effect.type ?? '') !== 'movement_lock') continue;
+    const prevents = Array.isArray(effect.prevents) ? effect.prevents.map(String) : [];
+    if (prevents.includes('enter_by_movement')) blocksEntry = true;
+    if (prevents.includes('leave_by_movement')) blocksExit = true;
+    const prohibits = String(effect.prohibits ?? '');
+    if (prohibits.includes('from_this') || prohibits.includes('move_from')) blocksExit = true;
+    if (prohibits.includes('into_this') || prohibits.includes('move_to')) blocksEntry = true;
+  }
+  return { blocksEntry, blocksExit };
+}
+
 function eventReturnsToDeck(eventCardId: string): boolean {
   return (eventCardById.get(eventCardId)?.effects ?? [])
     .some((effect) => String(effect.type ?? '') === 'return_to_event_deck_instead_of_discard_or_removal');
 }
 
+/**
+ * D5 · 事件牌效果里**已接入运行时**的类型。这是唯一事实来源：
+ * 账本自校验（`event-ledger-consistency.test.ts`）与"是否还要请主持人"共用它。
+ */
+export const AUTOMATIC_EVENT_EFFECTS = new Set([
+  'attribute_power_bonus', 'non_attribute_power_modifier', 'forbid_basic_attack_attribute_use',
+  'return_to_event_deck_instead_of_discard_or_removal', 'movement_lock',
+  'gain_mana', 'gain_battle_result', 'recover_command_spell',
+  'gain_total_power', 'set_attack_base_power_range_to_value',
+  'draw_and_place_another_event_here',
+]);
+
 function eventHasHostAdjudicatedEffects(eventCardId: string): boolean {
-  const automatic = new Set(['attribute_power_bonus', 'non_attribute_power_modifier', 'forbid_basic_attack_attribute_use', 'return_to_event_deck_instead_of_discard_or_removal']);
   return (eventCardById.get(eventCardId)?.effects ?? [])
-    .some((effect) => !automatic.has(String(effect.type ?? '')));
+    .some((effect) => !AUTOMATIC_EVENT_EFFECTS.has(String(effect.type ?? '')));
 }
 
 function visibleScope(zone: string, ownerPlayerId: string) {
@@ -1546,11 +1576,6 @@ function terrainSlotCount(state: GameState, locationId: LocationId): number {
     .find((location) => location.id === locationId)?.terrainBonuses?.length ?? 0;
 }
 
-function assignedTerrainOccupants(state: GameState, locationId: LocationId): string[] {
-  const assigned = terrainAssignmentsOf(state)[locationId] ?? [];
-  return assigned.filter((playerId) =>
-    state.players.some((player) => player.id === playerId && player.status === 'active' && player.locationId === locationId));
-}
 
 function projectInteractionWindows(state: GameState, viewerId: string): MatchInteractionWindow[] {
   const view = projectAbilityState(state, viewerId);
@@ -1708,7 +1733,7 @@ export class MatchSession {
       return { ok: false, view: this.projectAbilityView(playerId), events: [], calculations: [],
         rejection: { code: 'battle_settling', message: 'All battle decisions are complete; resolve the pending battle settlement' } };
     }
-    if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId);
+    if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId, command.terrainBid);
     const privateInteractionMutation = command.type === 'choose_target' &&
       this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
     const beforeEventCount = this.state.abilityRuntime?.events.length ?? 0;
@@ -1731,7 +1756,7 @@ export class MatchSession {
       rejection: result.rejection,
     });
     this.consumeAppliedDirectives();
-    this.checkpoint(`${playerId}:${command.type}`);
+    if (result.ok) this.checkpoint(`${playerId}:${command.type}`);
     return { ...result, view: this.projectSessionView(result.view) };
   }
 
@@ -1764,10 +1789,18 @@ export class MatchSession {
     const replacementLocations = this.structuralDeploymentReplacementLocations(playerId, legalLocations.map((location) => location.id));
     const mustBattlefield = this.state.ruleOverrides?.mustDeployToBattlefieldPlayerIds?.includes(playerId);
     const filteredLocations = mustBattlefield ? legalLocations.filter((location) => location.tags.includes('battlefield')) : legalLocations;
-    return (replacementLocations.length
+    const candidates = replacementLocations.length
       ? filteredLocations.filter((location) => replacementLocations.includes(location.id))
-      : filteredLocations)
-      .map((location) => ({ type: 'deploy_player' as const, locationId: location.id }));
+      : filteredLocations;
+    return candidates.flatMap((location) => {
+      const slotCount = terrainSlotCount(this.state, location.id);
+      if (!slotCount) return [{ type: 'deploy_player' as const, locationId: location.id }];
+      const slots = deploymentSlots(this.state, playerId, location.id, slotCount, 0);
+      if (slots.maxBid === 0) return [{ type: 'deploy_player' as const, locationId: location.id }];
+      const maxBid = Math.min(slots.maxBid, player.vp);
+      // Zero payment/no terrain remains legal battlefield entry; payment is a choice.
+      return Array.from({length:maxBid+1},(_,bid)=>({type:'deploy_player' as const,locationId:location.id,terrainBid:bid,maxTerrainBid:maxBid}));
+    });
   }
 
   private structuralDeploymentReplacementLocations(playerId: string, legalLocationIds: LocationId[]): LocationId[] {
@@ -1780,7 +1813,9 @@ export class MatchSession {
         (card.ownerPlayerId === playerId && isAcceptedLowerVpLoneBattlefieldDeploymentAbility(ability)) ||
         ability.effects.some((effect) =>
           effect.type === 'deployment_rule_override' &&
-          effect.rule === 'must_deploy_to_lower_vp_lone_battlefield')));
+          effect.rule === 'must_deploy_to_lower_vp_lone_battlefield') ||
+        ability.ruleModifiers.some((modifier) =>
+          modifier.operation === 'require' && modifier.rule === 'deployment.requirement')));
     if (!hasReplacement) return [];
     const enabledBattlefields = getEnabledLocations(this.state.map, this.state.locationConfig)
       .filter((location) => location.tags.includes('battlefield'))
@@ -1834,7 +1869,7 @@ export class MatchSession {
       this.logs.some(entry => entry.round === this.state.round.roundNumber && entry.type === 'battle_decisions_completed'));
   }
 
-  private dispatchDeployPlayer(playerId: string, locationId: LocationId): DispatchResult {
+  private dispatchDeployPlayer(playerId: string, locationId: LocationId, terrainBid?: number): DispatchResult {
     const view = () => this.projectAbilityView(playerId);
     const rejection = (code: string, message: string): DispatchResult => {
       this.rejection = { code, message };
@@ -1857,14 +1892,27 @@ export class MatchSession {
       return rejection('illegal_deployment', 'Selected deployment location is not legal');
     }
     const player = this.state.players.find((candidate) => candidate.id === playerId)!;
+    const slotCount = terrainSlotCount(this.state, locationId);
+    let paidBid = 0;
+    if (terrainBid !== undefined && (!Number.isSafeInteger(terrainBid) || terrainBid < 0)) return rejection('invalid_bid','Terrain bid must be a non-negative safe integer');
+    const slots = deploymentSlots(this.state,playerId,locationId,slotCount,terrainBid ?? 0);
+    if ((terrainBid ?? 0) > slots.maxBid) return rejection('invalid_bid','Terrain bid exceeds the rule maximum');
+    if ((terrainBid ?? 0) > player.vp) return rejection('insufficient_vp','Not enough victory points for the terrain bid');
+    paidBid = terrainBid ?? 0;
+    releaseTerrain(this.state,playerId);
     player.locationId = locationId;
+    if (paidBid > 0) {
+      player.vp = Math.max(0, player.vp - paidBid);
+      this.record('deployment_bid_paid', `${playerId}:paid ${paidBid} VP at ${locationId}`, { playerId, locationId, bid: paidBid });
+    }
     this.rejection = undefined;
     this.state.abilityRuntime!.revision++;
     this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId });
     this.applyDeploymentLocationReward(playerId, locationId);
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
+    processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId });
     if (deployedLocation?.tags.includes('battlefield')) {
-      this.assignTerrainOnDeployment(playerId, locationId);
+      this.assignTerrainOnDeployment(playerId, locationId, slots.usableSlotIndexes);
       processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
     }
     this.consumeAppliedDirectives();
@@ -1878,16 +1926,8 @@ export class MatchSession {
     };
   }
 
-  private assignTerrainOnDeployment(playerId: string, locationId: LocationId): void {
-    const slotCount = terrainSlotCount(this.state, locationId);
-    if (!slotCount) return;
-    const assignments = terrainAssignmentsOf(this.state);
-    const current = assignedTerrainOccupants(this.state, locationId).slice(0, slotCount);
-    if (current.includes(playerId) || current.length >= slotCount) {
-      assignments[locationId] = current;
-      return;
-    }
-    assignments[locationId] = [...current, playerId];
+  private assignTerrainOnDeployment(playerId: string, locationId: LocationId, allowed: number[]): void {
+    assignDeploymentTerrain(this.state,playerId,locationId,allowed);
   }
 
   passPriority(playerId: string): DispatchResult {
@@ -2293,6 +2333,8 @@ export class MatchSession {
     const pack = runtimeContent.rules;
     const rawCards = new Map<string, RuntimeRawCard>(Object.values(pack.cards).map((card) => [card.id, card] as const));
     const state = createSeededGameState({ activeSeats: [1, 2, 3, 4, 5, 6, 7] });
+    // 从者归属的权威载体（B-SERVANT-OWNERSHIP-CONTRACT §3）：开局由 pairings 推导，运行期只允许原语改写。
+    state.servantOwnership = Object.fromEntries(pairings.map((pairing) => [pairing.servant.id, pairing.playerId]));
     state.cards = [];
     state.round = { roundNumber: 1, activePhase: 'preparation', prioritySeat: 1 };
     state.id = 'fd-semi-auto-7p';
@@ -2353,6 +2395,8 @@ export class MatchSession {
     initializeActionTurns(state);
     processAbilityEvent(state, { id: 'match-session-game-start', type: 'game_start' });
     this.startRound(1, state);
+    // A4 口径更正：开局就摆在技能区的常规御主/从者技能不算"进入"；只有升华技被解锁
+    // （解锁效果把它放进技能区）才派发 on_card_enters_skill_zone。
     return { state, pairings, rawCards };
   }
 
@@ -2381,7 +2425,7 @@ export class MatchSession {
     return cardId;
   }
 
-  private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden'): void {
+  private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden', depth = 0): void {
     const eventCardId = this.drawEventCard(targetState);
     if (!eventCardId) return;
     const placement = {
@@ -2405,6 +2449,14 @@ export class MatchSession {
         consumed: true,
       });
       modeState.masterDirectives = masterDirectives;
+    }
+    // D5 · 庆安神前比武：「此牌出场时，抽取另一张事件牌放置于此地点」。
+    // 深度上限 4：避免链式抽取把事件牌堆抽空或自引用死循环。
+    const drawsAnother = (eventCardById.get(eventCardId)?.effects ?? [])
+      .some((effect) => String(effect.type ?? '') === 'draw_and_place_another_event_here');
+    if (drawsAnother && depth < 4) {
+      this.record('event_place_nested', `${locationId}:${eventCardId}`, { depth: depth + 1 }, targetState);
+      this.placeEvent(targetState, locationId, visibility, depth + 1);
     }
   }
 
@@ -2496,6 +2548,87 @@ export class MatchSession {
         rule: 'play_card_attribute',
       })));
     modeState.cardPlayForbids = situationForbids.concat(eventForbids);
+    // D5 · movement_lock：只有已公开的事件牌才锁移动（暗置牌不当场生效）。
+    const publicPlacements = targetState.eventPlacements.filter((placement) => placement.visibility.scope === 'public');
+    modeState.movementLocks = publicPlacements
+      .map((placement) => ({
+        sourceId: placement.eventCardId,
+        locationId: placement.locationId,
+        ...eventMovementLocks(placement.eventCardId),
+      }))
+      .filter((lock) => lock.blocksEntry || lock.blocksExit);
+    // D5 · 移动进入触发的记账规则（怒发天升：以移动进入此战场者获得 5 点合计威力）。
+    modeState.eventEntryEffects = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'gain_total_power')
+        .map((effect) => ({
+          locationId: placement.locationId,
+          sourceId: placement.eventCardId,
+          kind: 'total_power_bonus',
+          amount: Number(effect.amount ?? 0),
+        })));
+    // D5 · 白夜行：基本威力落在区间内的攻击，基本威力改为定值。
+    modeState.basePowerOverrides = publicPlacements.flatMap((placement) =>
+      (eventCardById.get(placement.eventCardId)?.effects ?? [])
+        .filter((effect) => String(effect.type ?? '') === 'set_attack_base_power_range_to_value')
+        .map((effect) => ({
+          sourceId: placement.eventCardId,
+          locationId: placement.locationId,
+          min: Number(effect.minBasePower ?? 0),
+          max: Number(effect.maxBasePower ?? Number.MAX_SAFE_INTEGER),
+          value: Number(effect.value ?? 0),
+        })));
+  }
+
+  /**
+   * D5 · 事件牌战后结算（温柔乡 mana/战果、美丽之物 令咒恢复）。
+   * 只在"此战场真的发生了战斗"后由 `resolveBattlePhase` 调用；同一回合同一地点每张牌只结算一次。
+   */
+  private applyEventAfterBattleEffects(battlefieldId: LocationId): void {
+    const state = this.state;
+    const runtimeState = state.abilityRuntime;
+    if (!runtimeState) return;
+    const modeState = modeStateOf(state);
+    const applied = (modeState.eventAfterBattleApplied as Array<{ round: number; locationId: string; sourceId: string }> | undefined) ?? [];
+    const done = new Set(applied.map((entry) => `${entry.round}:${entry.locationId}:${entry.sourceId}`));
+    const playersHere = state.players.filter((player) => player.status === 'active' && player.locationId === battlefieldId);
+    const movedThisRound = (playerId: string) => runtimeState.playersMovedThisRound.some((entry) => entry.playerId === playerId);
+    for (const placement of state.eventPlacements) {
+      if (placement.locationId !== battlefieldId || placement.visibility.scope !== 'public') continue;
+      const key = `${state.round.roundNumber}:${battlefieldId}:${placement.eventCardId}`;
+      if (done.has(key)) continue;
+      const effects = eventCardById.get(placement.eventCardId)?.effects ?? [];
+      let touched = false;
+      for (const effect of effects) {
+        const type = String(effect.type ?? '');
+        const amount = Number(effect.amount ?? 0);
+        if (type === 'gain_mana' && amount) {
+          for (const player of playersHere) player.mana += amount;
+          touched = true;
+        }
+        if (type === 'gain_battle_result' && amount) {
+          for (const player of playersHere) if (!movedThisRound(player.id)) player.vp += amount;
+          touched = true;
+        }
+        if (type === 'recover_command_spell' && amount) {
+          // 印文：「本回合花费魔力超过 4 点的玩家」——数据未给出阈值字段，按印文固定 4。
+          const threshold = Number(effect.threshold ?? 4);
+          for (const player of playersHere) {
+            if ((runtimeState.manaSpentThisRound?.[player.id] ?? 0) <= threshold) continue;
+            const target = player as unknown as { commandSpells?: number };
+            target.commandSpells = Math.max(0, (target.commandSpells ?? 3) + amount);
+          }
+          touched = true;
+        }
+      }
+      if (!touched) continue;
+      done.add(key);
+      applied.push({ round: state.round.roundNumber, locationId: battlefieldId, sourceId: placement.eventCardId });
+      this.record('event_after_battle_applied', `${battlefieldId}:${placement.eventCardId}`, {
+        players: playersHere.map((player) => player.id),
+      });
+    }
+    modeState.eventAfterBattleApplied = applied;
   }
 
   private discardRoundSituationAndEvents(): void {
@@ -2809,6 +2942,7 @@ export class MatchSession {
         const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
         resolvedBattles.push(structuredClone(battle));
         this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
+        this.applyEventAfterBattleEffects(battlefield.id as LocationId);
       }
       this.autoResolveNonInteractiveWindows();
     }

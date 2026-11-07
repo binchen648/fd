@@ -5,16 +5,24 @@ import { getLocationById } from './map-engine';
 function modeState(state: GameState): Record<string, unknown> {
   return (state as unknown as { modeState?: Record<string, unknown> }).modeState ?? {};
 }
+function liveTerrainEntry(state: GameState, entry: Record<string, unknown>): boolean {
+  if (typeof entry.expiresAtRound === 'number' && state.round.roundNumber >= entry.expiresAtRound) return false;
+  if (entry.sourceMustRemainActive !== true) return true;
+  const source = state.cards.find(c => c.instanceId === entry.sourceCardId);
+  return !!source && ['field','attack_area'].includes(source.zone) && source.controllerPlayerId === entry.playerId &&
+    state.abilityRuntime?.cardState[source.instanceId]?.active === true && state.abilityRuntime.cardState[source.instanceId]?.faceDown !== true;
+}
 
 function hasActiveBasicCardAtBattlefield(
   state: GameState,
   playerId: string,
   battlefieldId: LocationId,
-  definitionId: string,
+  rule: string,
 ): boolean {
   return state.cards.some((card) =>
     card.controllerPlayerId === playerId &&
-    card.definitionId === definitionId &&
+    state.abilityRuntime?.pack.cards[card.definitionId]?.abilities.some((ability) =>
+      ability.ruleModifiers.some((modifier) => modifier.rule === rule)) &&
     card.zone === 'attack_area' &&
     state.players.some((player) => player.id === playerId && player.locationId === battlefieldId) &&
     state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
@@ -22,14 +30,16 @@ function hasActiveBasicCardAtBattlefield(
 }
 
 export function hasRemoteOperationBonus(state: GameState, playerId: string, battlefieldId: LocationId): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, 'basic.preparation');
+  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, 'terrain.multiplier');
 }
 
 function terrainMultiplierForPlayer(state: GameState, playerId: string): number {
   const entries = modeState(state).terrainMultipliers;
   const authoredMultiplier = !Array.isArray(entries) ? 1 : entries.reduce((multiplier, entry) => {
     if (!entry || typeof entry !== 'object') return multiplier;
-    const candidate = entry as { playerId?: string; multiplier?: number };
+    if (!liveTerrainEntry(state, entry)) return multiplier;
+    const candidate = entry as { playerId?: string; multiplier?: number; expiresAtRound?: number };
+    if (candidate.expiresAtRound !== undefined && state.round.roundNumber >= candidate.expiresAtRound) return multiplier;
     return candidate.playerId === playerId && typeof candidate.multiplier === 'number'
       ? multiplier * candidate.multiplier
       : multiplier;
@@ -60,14 +70,16 @@ function isTerrainSuppressedByAuthoredDuel(state: GameState, battlefieldId: Loca
 }
 
 export function assignedTerrainSlotIndex(state: GameState, battlefieldId: LocationId, playerId: string): number | undefined {
-  const assignments = modeState(state).terrainAssignments;
-  if (!assignments || typeof assignments !== 'object') return undefined;
-  const assigned = (assignments as Partial<Record<string, string[]>>)[battlefieldId];
-  if (!Array.isArray(assigned)) return undefined;
-  const index = assigned.indexOf(playerId);
-  if (index < 0) return undefined;
-  const location = getLocationById(state.map, state.locationConfig, battlefieldId);
-  return index < (location?.terrainBonuses?.length ?? 0) ? index : undefined;
+  // This metric is a defensive pure read, not snapshot admission. Invalid other
+  // slots do not change the identity/value of this player's printed slot.
+  const assignments=modeState(state).terrainAssignments;
+  if (!assignments || typeof assignments!=='object') return undefined;
+  const slots=(assignments as Record<string,unknown>)[battlefieldId];
+  if (!Array.isArray(slots)) return undefined;
+  const actor=state.players.find(p=>p.id===playerId && p.status==='active' && p.locationId===battlefieldId);
+  if (!actor) return undefined;
+  const index=slots.indexOf(playerId),count=getLocationById(state.map,state.locationConfig,battlefieldId)?.terrainBonuses?.length??0;
+  return index>=0 && index<count ? index : undefined;
 }
 
 export function terrainBonusAt(
@@ -78,8 +90,19 @@ export function terrainBonusAt(
 ): number | undefined {
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.terrainBonuses?.length || isTerrainSuppressedByAuthoredDuel(state, battlefieldId, playerId)) return undefined;
-  const baseValue = location.terrainBonuses[terrainSlotIndex];
-  return typeof baseValue === 'number' ? baseValue * terrainMultiplierForPlayer(state, playerId) : undefined;
+  const baseValue = terrainSlotIndex === -1 ? 0 : location.terrainBonuses[terrainSlotIndex];
+  const entries = modeState(state).terrainBonuses;
+  const sumBonuses = (layer: 'base' | 'final'): number => !Array.isArray(entries) ? 0 : entries.reduce((sum, entry) => {
+    if (!entry || typeof entry !== 'object') return sum;
+    if (!liveTerrainEntry(state, entry) || (entry.layer === 'base' ? 'base' : 'final') !== layer) return sum;
+    const candidate = entry as { playerId?: string; bonus?: number; locationId?: string; expiresAtRound?: number };
+    if (candidate.playerId !== playerId || typeof candidate.bonus !== 'number') return sum;
+    if (candidate.locationId !== undefined && candidate.locationId !== battlefieldId) return sum;
+    if (candidate.expiresAtRound !== undefined && state.round.roundNumber >= candidate.expiresAtRound) return sum;
+    return sum + candidate.bonus;
+  }, 0);
+  if (terrainSlotIndex === -1 && sumBonuses('base') === 0) return undefined;
+  return typeof baseValue === 'number' ? (baseValue + sumBonuses('base')) * terrainMultiplierForPlayer(state, playerId) + sumBonuses('final') : undefined;
 }
 
 export function currentDeploymentBonus(state: GameState, playerId: string): number {
@@ -88,6 +111,5 @@ export function currentDeploymentBonus(state: GameState, playerId: string): numb
   const location = getLocationById(state.map, state.locationConfig, battlefieldId);
   if (!location?.tags.includes('battlefield')) return 0;
   const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, playerId);
-  if (terrainSlotIndex === undefined) return 0;
-  return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex) ?? 0;
+  return terrainBonusAt(state, battlefieldId, playerId, terrainSlotIndex ?? -1) ?? 0;
 }

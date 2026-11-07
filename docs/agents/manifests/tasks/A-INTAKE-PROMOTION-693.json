@@ -1,0 +1,31 @@
+{
+  "taskId": "A-INTAKE-PROMOTION-693",
+  "owner": "Root",
+  "status": "GRANTED",
+  "BaseCommit": "ce3311f50a8dae3be597548a1fe8aa3e3924c4ad",
+  "integrationBase": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "branch": "codex/five-field-promotion-693",
+  "worktree": "D:/fd-validation/five-field-promotion-693",
+  "authority": "User request to continue preparation of a main-targeted, verified PR; same Root continuation from frozen A-B field intake. Scope is integration blockers only.",
+  "ReservedFiles": [
+    "packages/rules/src/match-session.ts",
+    "packages/rules/src/ability/types.ts",
+    "packages/rules/src/core/combat-resolver.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/remote-room-fixture.test.ts",
+    "packages/rules/tests/acceptance/resistance-promotion.test.ts",
+    "docs/agents/manifests/tasks/A-INTAKE-PROMOTION-693.json",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/movement-locks.ts"
+  ],
+  "ForbiddenFiles": [
+    "D:/fd/**",
+    "previously frozen worktrees",
+    "other PRs and their branches",
+    "CI workflows and gate scripts"
+  ],
+  "predecessorFrozen": true,
+  "mergeAuthorized": false,
+  "scope": "Restore the existing host-adjudicated boundary for Resistance, Curse God, Banquet, Narrow Path Encounter, and Waxing Moon Ritual after independent main-relative review.",
+  "reviewEvidence": "D:/fd-validation/b-field-five-closeout-20261107/promotion-scope-review.json"
+}

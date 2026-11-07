@@ -1,0 +1,222 @@
+{
+  "base": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+  "files": [
+    {
+      "file": "apps/client/src/state/remote-room-fixture.test.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "c6eca5fdafbc106545ddae79915ea579d05c833c18619a985d9758730114ce6d",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "apps/client/src/state/remote-room-fixture.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "0d8e5d5a10ffcb9a58537dced89ff694c85f98eefc3a44eb0907444dd48d7591",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/masters/master.gatou.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "be5739bae80e4f37eb578454d594ab5b2fdd207db87b3bd67df6a61d7256b5c5",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/masters/master.irisviel.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "104525080b3ca5704c999f188114de2b7cc1d8c5981873e668485795ea363933",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/masters/master.kayneth.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "8007738adacc3918f349ab9edad38706a319b4d4026537bebe1f9ff240eda183",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/masters/master.kiritsugu.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "1ce74e684718f25db31332112c5d9663127f5fc39e5c3dbd751c06a92fd5fc24",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/masters/master.olga-marie.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "879f64aad60414894827b12b9ccba78dabb511bc3a5e007c1a06a90f55a5d12f",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/servants/servant.achilles.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "17a948f1b487f3f922fe22588e1cae39d01a2b3792a3c7061c0a182d7ccf7bda",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/servants/servant.drake.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "ebd5aff5800cf727f0b1ac718ba03cb124572941ee9178b54b96a1fee9d252f1",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/authoring/servants/servant.tomoe.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "4e7a86a122af016538cb8b35cc802d77800c4c2cb2cbf040802352eee2fbba59",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/generated/fd-playtest-v1.content-library.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "005fae4cd96fdb6eea716a460fdb87c3dc39d34ff21410026ddfdd6b2b7c56c0",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/generated/fd-playtest-v1.evidence-report.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "ee3bca51ee777d8cdb059972bcf32f45ada71830303949c1b06bf900ff3929b7",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/packs/fd-playtest-v1/cards/events/cheat-device.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "59e972c79ead643c6dfe4c55c259e0be6ae7905754e1c8f789a6d17b060d989e",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/packs/fd-playtest-v1/cards/events/close-quarters.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "e1fd81878b267976bb899cbbb10f77a89f3232dcb8c9b37b9785475ae8034953",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/packs/fd-playtest-v1/cards/events/core-intrusion.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "f60b42af8c4769abd0345c6766623f2a6e83fa0e34c6d35ac559d64a47c85f2c",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/packs/fd-playtest-v1/cards/events/merged-vortex.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "88339678ac85082e2281574941d929c6155be5d302615a49317bda4727eb57b0",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/packs/fd-playtest-v1/cards/events/superior-firepower.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "5e30bf037eaf9bde7a78bfd983ad211f445d1055747897f9060081927f834988",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "data/packs/fd-playtest-v1/pack.json",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "be83eaada09a3344330a5434cc253d5d82bf8befccb058708db5a788c542a69d",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/binding-cards.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "f342b7cb4d17d97fd8a87b7817a26f3eb379fa4b88406f4054dbb397ce81c383",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/deployment-hooks.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "5ea9e06d0fdf1c384be24af555670a11b62071df10e4662da9619ed5073ba8a0",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/executable-card-pack.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "08cd13f1122f6dd55b21262ca2818ea13e3eed3b28addef074fba5e868983650",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/extended-effects.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "3a1deb4b7ca8c871bc2a5f1ffb59e583e906a1fa3e5068c5ee1c634e9350630b",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/interpreter.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "2b2018df122f33c69ded7500cda0b7e5a7ffd130772bb4289de5e3bf287c069b",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/loader.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "eb51831fe0c55d1f59a0c36c4a4088a8b3bfd165fa7db28dbcaf8fdc95902585",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/masterless-servant.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "5dea1d099be1d2d279bda6d3ba45fd8cad90a5f4e1a64368a8636229641ed779",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/modifier-readers.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "2e90b4324e21c13d57e3a08f7eb6f1236ed63eb9feaa5235185d25c76840921c",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/movement-locks.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "2e4d512e019bc257b51cb89e70752e89ab94e045e5663073b23e50f78a654d15",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/resolution-dataflow.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "da88aeecb603b5e695e5c4b0a23d690ab87a648a957c9d48d260996f3383f420",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/state-invariants.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "23520eefbe3d08ea0baf237e62da18fe7ee4fa616537c27c6ad3cff01f8b6d0c",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/status.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "c0699a992a579a7be564cd2187d7138c9b8c5ab0e8459f70836f3094c873a72d",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/ability/types.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "1397af15487c1fdfaba8a40224178fb7bc7e77a427824b16422506803b766a1e",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/core/combat-resolver.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "3bfdecf76e7b198fc5101fa6e966666213e67c94d2cf65101a579fde7794ceb0",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/core/terrain-advantage.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "58ae6daf42cec2a13f8fc76f8a2cf788499053c059896492da369ba33429d8b0",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/match-session.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "c69a617ed5f0ef8c72a023358e5aa82ee837ca0c606a3da5c5257b64b353e125",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/phases/battle-phase.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "0c8db207088de1b41c20bf53c1b8d305a37a8b25630d24f2a51a82134bccf6c3",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    },
+    {
+      "file": "packages/rules/src/schema/game.ts",
+      "source": "b39a3c06fba757cecac2d6552789ad3291dea18f",
+      "sha256": "3715f7df7f329f84de8bceb7a0e70c16e1cfb80bad7c70c5193aae0dbccd3186",
+      "reason": "Previously tested B field integration prerequisite; no new acceptance credit"
+    }
+  ]
+}
