@@ -31,7 +31,8 @@
     "packages/rules/tests/regression/resolution-dataflow.test.ts",
     "packages/rules/src/ability/face-up-cards-per-round.ts",
     "packages/rules/tests/regression/complex-skills-regression.test.ts",
-    "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts"
+    "packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts",
+    "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md"
   ],
   "ForbiddenFiles": [
     "D:/fd/**",
@@ -50,5 +51,28 @@
   "independentReviewRequired": true,
   "testPlan": "L1 real MatchSession, L2 combinations/restore/atomic rejection; fixed final SHA fullCI and seven-player L3. No skip, weakened timeouts or legacy result-binding substitute.",
   "admissionAddendum": "User continuous closeout includes prior seven diagnostics: qualify malformed raw mana exception rejection and real source validity; cap getter case is an optional ordering optimization only, not a new performance acceptance gate.",
-  "fixtureMigration": "Historical standalone raw-archive tests must provide canonical source owner metadata, actual battlefield for Bloom and explicit trusted deployment location/real field play. Numeric assertions remain unchanged; independent review required."
+  "fixtureMigration": "Historical standalone raw-archive tests must provide canonical source owner metadata, actual battlefield for Bloom and explicit trusted deployment location/real field play. Numeric assertions remain unchanged; independent review required.",
+  "candidateState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "codeCandidate": "8b60e48b35e2df30d17d95b8c4c329c8ae645ac3",
+  "verificationStatus": "SCOPED_FINAL_VERIFICATION_PASS",
+  "runtimeWritesFrozen": true,
+  "reservationReleased": false,
+  "fullRosterAcceptance": "NOT_ACCEPTED",
+  "integrationAllowed": false,
+  "fullCI": {
+    "pass": 1997,
+    "fail": 0,
+    "skip": 0,
+    "naturalExit": 0,
+    "receipt": "D:/fd-validation/b-field-five-closeout-20261107/final-ci-3-receipt.json"
+  },
+  "independentActualVerification": {
+    "pass": 48,
+    "fail": 0,
+    "naturalExit": 0,
+    "receipt": "D:/fd-validation/b-field-five-closeout-20261107/independent-focused-receipt.json"
+  },
+  "finalReport": "docs/reports/2026-11-07-b-field-five-closeout.md",
+  "remainingWholeRosterWork": "59 identities without reconciled current per-identity execution mapping; no full94 acceptance inferred",
+  "credit": 0
 }
