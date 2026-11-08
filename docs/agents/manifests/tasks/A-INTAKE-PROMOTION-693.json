@@ -16,7 +16,14 @@
     "packages/rules/tests/acceptance/resistance-promotion.test.ts",
     "docs/agents/manifests/tasks/A-INTAKE-PROMOTION-693.json",
     "packages/rules/src/ability/interpreter.ts",
-    "packages/rules/src/ability/movement-locks.ts"
+    "packages/rules/src/ability/movement-locks.ts",
+    "AGENTS.md",
+    "docs/plans/fd-tiered-skill-acceptance.md",
+    "docs/FD-DOCUMENT-ROADMAP.md",
+    "packages/rules/src/core/movement.ts",
+    "packages/rules/tests/acceptance/event-promotion-boundaries.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-combinations.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-full-match.test.ts"
   ],
   "ForbiddenFiles": [
     "D:/fd/**",
@@ -26,6 +33,13 @@
   ],
   "predecessorFrozen": true,
   "mergeAuthorized": false,
-  "scope": "Restore the existing host-adjudicated boundary for Resistance, Curse God, Banquet, Narrow Path Encounter, and Waxing Moon Ritual after independent main-relative review.",
-  "reviewEvidence": "D:/fd-validation/b-field-five-closeout-20261107/promotion-scope-review.json"
+  "scope": "Close independent D5 promotion findings: preserve established host adjudication for unaccepted event consumers; enforce retained movement locks across ordinary and effect movement. Persist mandatory Product A tiered test scheduling.",
+  "reviewEvidence": "D:/fd-validation/b-field-five-closeout-20261107/promotion-scope-review.json",
+  "testPlan": {
+    "L1": "Real MatchSession event movement legality, atomic refusal and unsupported host-adjudicated event boundaries.",
+    "L2": "Existing movement/seal/terrain and five-field regression combinations.",
+    "L3": "One final frozen integrated candidate after L1/L2 and independent review; never per new card or local fix.",
+    "authority": "User reaffirmation 2026-11-08",
+    "layout": "Move the existing 30s eleven-round test byte-for-byte into seven-roster-full-match.test.ts; preserve all assertions, timeout, and normal test:ci discovery. Previous mixed run 171 PASS / 1 FAIL retained, not a full PASS."
+  }
 }

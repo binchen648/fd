@@ -1470,9 +1470,6 @@ function eventReturnsToDeck(eventCardId: string): boolean {
 export const AUTOMATIC_EVENT_EFFECTS = new Set([
   'attribute_power_bonus', 'non_attribute_power_modifier', 'forbid_basic_attack_attribute_use',
   'return_to_event_deck_instead_of_discard_or_removal', 'movement_lock',
-  'gain_mana', 'gain_battle_result', 'recover_command_spell',
-  'gain_total_power', 'set_attack_base_power_range_to_value',
-  'draw_and_place_another_event_here',
 ]);
 
 function eventHasHostAdjudicatedEffects(eventCardId: string): boolean {
@@ -2425,7 +2422,7 @@ export class MatchSession {
     return cardId;
   }
 
-  private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden', depth = 0): void {
+  private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden'): void {
     const eventCardId = this.drawEventCard(targetState);
     if (!eventCardId) return;
     const placement = {
@@ -2450,14 +2447,7 @@ export class MatchSession {
       });
       modeState.masterDirectives = masterDirectives;
     }
-    // D5 · 庆安神前比武：「此牌出场时，抽取另一张事件牌放置于此地点」。
-    // 深度上限 4：避免链式抽取把事件牌堆抽空或自引用死循环。
-    const drawsAnother = (eventCardById.get(eventCardId)?.effects ?? [])
-      .some((effect) => String(effect.type ?? '') === 'draw_and_place_another_event_here');
-    if (drawsAnother && depth < 4) {
-      this.record('event_place_nested', `${locationId}:${eventCardId}`, { depth: depth + 1 }, targetState);
-      this.placeEvent(targetState, locationId, visibility, depth + 1);
-    }
+
   }
 
   private applySituation(targetState: GameState, round: number): MatchSituationDefinition {
@@ -2557,78 +2547,8 @@ export class MatchSession {
         ...eventMovementLocks(placement.eventCardId),
       }))
       .filter((lock) => lock.blocksEntry || lock.blocksExit);
-    // D5 · 移动进入触发的记账规则（怒发天升：以移动进入此战场者获得 5 点合计威力）。
-    modeState.eventEntryEffects = publicPlacements.flatMap((placement) =>
-      (eventCardById.get(placement.eventCardId)?.effects ?? [])
-        .filter((effect) => String(effect.type ?? '') === 'gain_total_power')
-        .map((effect) => ({
-          locationId: placement.locationId,
-          sourceId: placement.eventCardId,
-          kind: 'total_power_bonus',
-          amount: Number(effect.amount ?? 0),
-        })));
-    // D5 · 白夜行：基本威力落在区间内的攻击，基本威力改为定值。
-    modeState.basePowerOverrides = publicPlacements.flatMap((placement) =>
-      (eventCardById.get(placement.eventCardId)?.effects ?? [])
-        .filter((effect) => String(effect.type ?? '') === 'set_attack_base_power_range_to_value')
-        .map((effect) => ({
-          sourceId: placement.eventCardId,
-          locationId: placement.locationId,
-          min: Number(effect.minBasePower ?? 0),
-          max: Number(effect.maxBasePower ?? Number.MAX_SAFE_INTEGER),
-          value: Number(effect.value ?? 0),
-        })));
-  }
-
-  /**
-   * D5 · 事件牌战后结算（温柔乡 mana/战果、美丽之物 令咒恢复）。
-   * 只在"此战场真的发生了战斗"后由 `resolveBattlePhase` 调用；同一回合同一地点每张牌只结算一次。
-   */
-  private applyEventAfterBattleEffects(battlefieldId: LocationId): void {
-    const state = this.state;
-    const runtimeState = state.abilityRuntime;
-    if (!runtimeState) return;
-    const modeState = modeStateOf(state);
-    const applied = (modeState.eventAfterBattleApplied as Array<{ round: number; locationId: string; sourceId: string }> | undefined) ?? [];
-    const done = new Set(applied.map((entry) => `${entry.round}:${entry.locationId}:${entry.sourceId}`));
-    const playersHere = state.players.filter((player) => player.status === 'active' && player.locationId === battlefieldId);
-    const movedThisRound = (playerId: string) => runtimeState.playersMovedThisRound.some((entry) => entry.playerId === playerId);
-    for (const placement of state.eventPlacements) {
-      if (placement.locationId !== battlefieldId || placement.visibility.scope !== 'public') continue;
-      const key = `${state.round.roundNumber}:${battlefieldId}:${placement.eventCardId}`;
-      if (done.has(key)) continue;
-      const effects = eventCardById.get(placement.eventCardId)?.effects ?? [];
-      let touched = false;
-      for (const effect of effects) {
-        const type = String(effect.type ?? '');
-        const amount = Number(effect.amount ?? 0);
-        if (type === 'gain_mana' && amount) {
-          for (const player of playersHere) player.mana += amount;
-          touched = true;
-        }
-        if (type === 'gain_battle_result' && amount) {
-          for (const player of playersHere) if (!movedThisRound(player.id)) player.vp += amount;
-          touched = true;
-        }
-        if (type === 'recover_command_spell' && amount) {
-          // 印文：「本回合花费魔力超过 4 点的玩家」——数据未给出阈值字段，按印文固定 4。
-          const threshold = Number(effect.threshold ?? 4);
-          for (const player of playersHere) {
-            if ((runtimeState.manaSpentThisRound?.[player.id] ?? 0) <= threshold) continue;
-            const target = player as unknown as { commandSpells?: number };
-            target.commandSpells = Math.max(0, (target.commandSpells ?? 3) + amount);
-          }
-          touched = true;
-        }
-      }
-      if (!touched) continue;
-      done.add(key);
-      applied.push({ round: state.round.roundNumber, locationId: battlefieldId, sourceId: placement.eventCardId });
-      this.record('event_after_battle_applied', `${battlefieldId}:${placement.eventCardId}`, {
-        players: playersHere.map((player) => player.id),
-      });
-    }
-    modeState.eventAfterBattleApplied = applied;
+    // Unaccepted D5 effects remain on the existing host-adjudication notice path.
+    // Do not rebuild the removed speculative stores from event placement data.
   }
 
   private discardRoundSituationAndEvents(): void {
@@ -2942,7 +2862,6 @@ export class MatchSession {
         const battle = this.state.battleResults[this.state.battleResults.length - 1]!;
         resolvedBattles.push(structuredClone(battle));
         this.record('battle_resolved', battlefield.id, battle as unknown as Record<string, unknown>);
-        this.applyEventAfterBattleEffects(battlefield.id as LocationId);
       }
       this.autoResolveNonInteractiveWindows();
     }

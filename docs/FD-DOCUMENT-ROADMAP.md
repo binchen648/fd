@@ -10,6 +10,10 @@ Consumed By: every new implementer, reviewer, handoff agent, and Hermes-style co
 Supersedes: ad hoc document discovery by scanning all of `docs/`
 Last Verified: 2026-09-08
 
+## Mandatory Product A execution update (2026-11-08)
+
+Every Product A execution must follow [tiered skill acceptance](plans/fd-tiered-skill-acceptance.md): L1 per skill, L2 for relevant combinations, L3 once at a frozen integration milestone. New cards do not require a full match per card. The historical status figures below retain their original verification date; they are not the current candidate's results.
+
 ## 1. Purpose
 
 This is the single navigation entry point for FD project documentation. It defines document authority and reading order only. It does not redefine gameplay rules, implementation design, runtime status, or acceptance truth.

@@ -1,3 +1,4 @@
+import { movementLockAt } from '../ability/movement-locks';
 import {releaseTerrain} from '../ability/terrain-state';
 import type { GameState } from "../schema/game";
 import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/location";
@@ -98,6 +99,11 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
   }
 
   if ((movementLockedByPersistentRule(state, player.id) || rulerSealMovementLocked(state, player.id)) && input.ignoreCardMovementRestrictions !== true) {
+    return failure(state, "movement_locked");
+  }
+  if (input.ignoreCardMovementRestrictions !== true &&
+      (movementLockAt(state, player.locationId, player.id).blocksExit ||
+       movementLockAt(state, input.to, player.id).blocksEntry)) {
     return failure(state, "movement_locked");
   }
   if (input.movementKind === "normal" && isPlayerEngaged(state, player.id)) {

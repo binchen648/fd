@@ -349,27 +349,6 @@ export function getTotalPowerBreakdowns(
   return out;
 }
 
-function getEntryTotalPowerBreakdowns(
-  state: GameState,
-  participant: CombatParticipantInput,
-): BattleModifierBreakdown[] {
-  const entries = (modeState(state).entryTotalPowerBonuses as Array<{
-    playerId?: string; amount?: number; expiresAtRound?: number; sourceId?: string;
-  }> | undefined) ?? [];
-  const round = state.round.roundNumber;
-  const total = entries
-    .filter((entry) => entry.playerId === participant.playerId && typeof entry.amount === "number" &&
-      (entry.expiresAtRound === undefined || round < entry.expiresAtRound))
-    .reduce((sum, entry) => sum + Number(entry.amount), 0);
-  if (!total) return [];
-  return [{
-    source: "event",
-    label: "event.entry.total_power",
-    value: total,
-    payload: { kind: "modifier", sourceType: "event", sourceId: "event.entry", targetTag: "total_power" },
-  }];
-}
-
 function buildParticipantBreakdown(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
@@ -377,7 +356,6 @@ function buildParticipantBreakdown(
 ): BattleParticipantBreakdown {
   const modifiers = getSituationBreakdowns(state, participant)
     .concat(getEventBreakdowns(state, battlefieldId, participant))
-    .concat(getEntryTotalPowerBreakdowns(state, participant))
     .concat(getLocationBreakdowns(state, battlefieldId, participant))
     .concat(getExternalSkillBreakdowns(participant))
     .concat(getTerrainBreakdowns(state, battlefieldId, participant))
@@ -392,18 +370,6 @@ function buildParticipantBreakdown(
     effectivePower: participant.totalPower + totalModifier,
     modifiers: resolvedModifiers,
   };
-}
-
-/** D5 · 白夜行：基本威力落在区间内的攻击，其基本威力改为定值（authored 走 calculateCardPower，legacy 走这里）。 */
-function legacyBasePower(state: GameState, playerId: string, printedBasePower: number): number {
-  const locationId = state.players.find((player) => player.id === playerId)?.locationId;
-  if (!locationId) return printedBasePower;
-  const entries = (modeState(state).basePowerOverrides as Array<{
-    locationId?: string; min?: number; max?: number; value?: number;
-  }> | undefined) ?? [];
-  const hit = entries.find((entry) => entry.locationId === locationId &&
-    printedBasePower >= Number(entry.min ?? 0) && printedBasePower <= Number(entry.max ?? Number.MAX_SAFE_INTEGER));
-  return hit ? Number(hit.value ?? printedBasePower) : printedBasePower;
 }
 
 export function deriveBattleParticipantsFromState(
@@ -475,7 +441,7 @@ export function deriveBattleParticipantsFromState(
       }
       const participant = {
         playerId: player.id,
-        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + legacyBasePower(state, player.id, entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
+        totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
 

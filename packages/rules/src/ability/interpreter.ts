@@ -701,12 +701,6 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     return { value: persistentLock.value, lines: [{ label: 'persistent_situation_attribute_power_lock', value: persistentLock.value }] };
   }
   const result = evaluateFormula(d?.cardFace.basePower ?? 0, s, source.controllerPlayerId, sourceId);
-  // D5 · 白夜行：「此战场基本威力 1~5 的攻击的基本威力增加或降低至 3」。
-  const override = basePowerOverride(s, player(s, source.controllerPlayerId).locationId, result.value);
-  if (override !== undefined) {
-    result.value = override;
-    result.lines.push({ label: 'base_power_override', value: override });
-  }
   for (const modifier of ((source as unknown as { powerModifiers?: Array<Record<string, unknown>> }).powerModifiers ?? [])) {
     const value = Number(modifier.value ?? 0);
     if (!Number.isFinite(value)) reject('invalid_modifier', 'Card power modifier must be finite');
@@ -735,20 +729,6 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     result.lines.push({ label: str(m.printedClause) || str(m.id), value: result.value });
   }
   return result;
-}
-
-/**
- * D5 · 白夜行：「此战场基本威力 1~5 的攻击的基本威力增加或降低至 3」。
- * 规则由 session 解析成 `modeState.basePowerOverrides`，这里只做纯查表。
- */
-function basePowerOverride(s: GameState, locationId: string | undefined, printedBase: number): number | undefined {
-  if (!locationId) return undefined;
-  const entries = (modeState(s).basePowerOverrides as Array<{
-    locationId?: string; min?: number; max?: number; value?: number;
-  }> | undefined) ?? [];
-  const hit = entries.find((entry) => entry.locationId === locationId &&
-    printedBase >= Number(entry.min ?? 0) && printedBase <= Number(entry.max ?? Number.MAX_SAFE_INTEGER));
-  return hit ? Number(hit.value ?? printedBase) : undefined;
 }
 
 function lockedBattlefieldIdsForMovement(s: GameState, playerId: string): Set<string> {  const locked = new Set<string>();
@@ -1958,10 +1938,6 @@ function recordMovementForAbilityRuntime(s: GameState, playerId: string, from: s
   r.battlefieldsPassedOrStayedThisRound[playerId] = (r.battlefieldsPassedOrStayedThisRound[playerId] ?? 0) + battlefields;
   r.playersMovedThisRound = r.playersMovedThisRound.filter(entry => entry.playerId !== playerId);
   r.playersMovedThisRound.push({ playerId, locationId: to as LocationId });
-  // D5 · 事件牌的「以移动进入此地者获得 N 点合计威力」：movement 入口唯一，在这里记账。
-  applyEntryTotalPowerBonus(s, playerId, to);
-  // D5 · 酒宴：「每名其他玩家首次进入此战场时，令位于地利位置的玩家获得 2 点地利」。
-  // 曾经只在白名单里挂着、从未派发的移动类触发点：移动进入地点。
   if (!movementAlreadyLogged) s.log.push({ type: 'movement', message: `player:${playerId}:effect_move:${from}->${to}`, payload: { playerId, from, to, movementKind: 'effect', manaSpent: 0, roundNumber: s.round.roundNumber } });
 }
 function lifecycleTransitions(s: GameState) {
@@ -1980,22 +1956,6 @@ function pushLifecycleTransition(s: GameState, ongoing: OngoingEffect, kind: 'in
     createdRevision: runtime(s).revision,
     roundId: s.round.roundNumber,
   });
-}
-
-function applyEntryTotalPowerBonus(s: GameState, playerId: string, locationId: string): void {
-  const effects = (modeState(s).eventEntryEffects as Array<{ locationId?: string; sourceId?: string; kind?: string; amount?: number }> | undefined) ?? [];
-  const matches = effects.filter((effect) =>
-    effect.locationId === locationId && effect.kind === 'total_power_bonus' && Number(effect.amount ?? 0));
-  if (!matches.length) return;
-  const store = modeState(s);
-  const bonuses = (store.entryTotalPowerBonuses as Array<Record<string, unknown>> | undefined) ?? [];
-  for (const effect of matches) {
-    bonuses.push({
-      playerId, amount: Number(effect.amount ?? 0), sourceId: effect.sourceId,
-      expiresAtRound: s.round.roundNumber + 1,
-    });
-  }
-  store.entryTotalPowerBonuses = bonuses;
 }
 
 /** Resolution-start snapshots so later clauses read pre-effect values (Medea-style "original" checks). */
