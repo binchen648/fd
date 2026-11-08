@@ -13,3 +13,9 @@ Other producer evidence:375 relevant rules/Session checks; final reveal/Room10; 
 Final complete CI and seven-browser eleven-round/fresh-process recovery gates are recorded separately in this PR's checks, final PR body and D:/fd-validation/a-chaldeas-reveal-evidence. This committed snapshot binds implementation/review evidence and does not claim those later gates passed.
 
 The two former Chaldeas runtime gaps now have bounded candidate evidence; this is not full-roster/full-game product acceptance. Original matrix history remains intact. Unaccepted event effects retain host-adjudication boundaries. SakuraFrp/public TLS/WSS is NOT_RUN pending real configuration. No automatic merge, reservation release or migration credit. D:/fd B changes and PR#689/#690 are preserved.
+
+## PR #694 review follow-up
+
+Reviewed code candidate `dcbb462ac79d92b684c515415c35a2a700ebbe18` follows `e24f032972b37bbbde28b96de2a1939eedaac7ad`. Live event advisories derive from current public placements and ignore saved legacy advisory entries. Keeping a card preserves one notice per actual public placement. Swapping never shows a notice for a replaced card unless another copy remains public. The response panel presents both available rule texts and prevents end-turn submission while the reveal is pending. Only the eligible viewer receives bottom-card details.
+
+Rules L1/L2 80 passed, client 66 passed, typecheck and client build exit 0. Independent review at the candidate ran rules 35 passed and client 40 passed. Both old-save response choices and distinct public duplicates are covered. Logs remain under D:/fd-validation/a-chaldeas-reveal-evidence/review-fixes-*.log. The previous L3 run remains bound to e24f0329. This follow-up changes projection and UI only, so no new whole-match L3 run was scheduled. Final full CI is recorded in the current PR checks.
