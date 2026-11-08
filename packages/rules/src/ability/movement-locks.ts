@@ -1,12 +1,9 @@
+import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import type { GameState } from '../schema/game';
 
-/**
- * D5 · 事件牌的移动限制运行时读点。
- *
- * 事件牌是最后一块不在 Canonical IR 上的内容：效果仍由 `match-session` 的事件表按类型
- * 消费。已接入的移动限制汇总到 `modeState`（session 在放置/揭示/回合结束时刷新），移动的候选
- * 生成与执行都读这里：
- * - `movementLocks`：无条件（怨灵结界 进+出、嵌合涡流 仅出）；
+/** Movement restrictions derive from the latest authoritative public event placements.
+ * modeState.movementLocks is a diagnostic snapshot, never authority: removal,
+ * replacement, battle reveal and restore must take effect without another cache refresh.
  */
 export interface MovementLock {
   sourceId: string;
@@ -22,10 +19,25 @@ export interface MovementLockState {
 
 const NO_LOCK: MovementLockState = { blocksEntry: false, blocksExit: false };
 
+const eventEffects = new Map((contentLibrary as unknown as {
+  cards: Array<{ id: string; effects?: Array<Record<string, unknown>> }>;
+}).cards.filter(card => card.id.startsWith('event.')).map(card => [card.id, card.effects ?? []]));
+
 export function movementLocks(state: GameState): MovementLock[] {
-  const modeState = (state as unknown as { modeState?: { movementLocks?: MovementLock[] } }).modeState;
-  const locks = modeState?.movementLocks;
-  return Array.isArray(locks) ? locks : [];
+  return (state.eventPlacements ?? []).filter(placement => placement.visibility.scope === 'public').flatMap(placement => {
+    let blocksEntry = false;
+    let blocksExit = false;
+    for (const effect of eventEffects.get(placement.eventCardId) ?? []) {
+      if (effect.type !== 'movement_lock') continue;
+      const prevents = Array.isArray(effect.prevents) ? effect.prevents.map(String) : [];
+      const prohibits = String(effect.prohibits ?? '');
+      blocksEntry ||= prevents.includes('enter_by_movement') || prohibits.includes('into_this') || prohibits.includes('move_to');
+      blocksExit ||= prevents.includes('leave_by_movement') || prohibits.includes('from_this') || prohibits.includes('move_from');
+    }
+    return blocksEntry || blocksExit
+      ? [{ sourceId: placement.eventCardId, locationId: placement.locationId, blocksEntry, blocksExit }]
+      : [];
+  });
 }
 
 export function movementLockAt(state: GameState, locationId: string | undefined, _playerId?: string): MovementLockState {

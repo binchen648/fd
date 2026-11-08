@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { AUTOMATIC_EVENT_EFFECTS, createMatchSession } from '../../src/match-session';
+import { AUTOMATIC_EVENT_EFFECTS, createMatchSession, restoreMatchSession } from '../../src/match-session';
 import { calculateCardPower } from '../../src/ability/interpreter';
-import { projectCurrentPlayerPowers } from '../../src/core/combat-resolver';
+import { projectCurrentPlayerPowers, resolveBattlefield } from '../../src/core/combat-resolver';
 import { movePlayer } from '../../src/core/movement';
 import { humans, rejectAtomically } from './seven-roster-test-helpers';
 
 // L1: bounded real Session states, unmodified production event definitions.
+const resistanceId = 'event.waxing_moon_ritual.resistance';
 const barrier = 'event.waxing_moon_ritual.vengeful_spirit_barrier';
 function movementFixture(from = 'magic_workshop') {
   const session = createMatchSession({ seed: 20260907, humanPlayerIds: humans });
@@ -145,5 +146,36 @@ describe('L2 deferred event consumers cannot leak into actual settlement', () =>
     expect(session.state.players[0]!.mana).toBe(12);
     expect(Number((session.state.players[0] as any).commandSpells)).toBe(seals);
     expect(session.state.log.some(e => e.type === 'event_after_battle_applied')).toBe(false);
+  });
+});
+
+describe('L2 movement-lock event lifecycle uses current authoritative placements', () => {
+  it.each(['removed', 'replaced'] as const)('releases a cached barrier when its placement is %s', change => {
+    const session = movementFixture();
+    placeBarrier(session);
+    expect(movePlayer(session.state, { playerId: 'p1', to: 'miyama_town', movementKind: 'effect' }).moved).toBe(false);
+    if (change === 'removed') session.state.eventPlacements = [];
+    else session.state.eventPlacements[0]!.eventCardId = resistanceId;
+    expect(session.getPlayerView('p1').legalActions).toContainEqual(expect.objectContaining({ type: 'normal_move', locationId: 'miyama_town' }));
+    expect(movePlayer(session.state, { playerId: 'p1', to: 'miyama_town', movementKind: 'effect' }).moved).toBe(true);
+  });
+
+  it('honors a hidden barrier revealed by the actual battle resolver without a cache refresh', () => {
+    const session = movementFixture();
+    placeBarrier(session, 'hidden_until_trigger');
+    expect(movePlayer(session.state, { playerId: 'p1', to: 'miyama_town', movementKind: 'effect' }).moved).toBe(true);
+    Object.assign(session.state, resolveBattlefield(session.state, { battlefieldId: 'miyama_town', revealHiddenEvents: true }).nextState);
+    expect(session.state.eventPlacements[0]!.visibility.scope).toBe('public');
+    expect(movePlayer(session.state, { playerId: 'p1', to: 'miyama_town', movementKind: 'effect' })).toMatchObject({ moved: false, reason: 'movement_locked', manaSpent: 0 });
+  });
+
+  it('restores the public barrier and ignores stale lock caches when the source is absent', () => {
+    const session = movementFixture();
+    placeBarrier(session);
+    const restored = restoreMatchSession(session.serializeSession());
+    rejectAtomically(restored, 'p1', { type: 'normal_move', locationId: 'miyama_town' });
+    restored.state.eventPlacements = [];
+    const unlocked = restoreMatchSession(restored.serializeSession());
+    expect(unlocked.getPlayerView('p1').legalActions).toContainEqual(expect.objectContaining({ type: 'normal_move', locationId: 'miyama_town' }));
   });
 });

@@ -1,3 +1,4 @@
+import { movementLocks } from './ability/movement-locks';
 import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
 import { resolveStandardRoundEnd, type StandardMatchOutcome } from './core/elimination-resolver';
 import {
@@ -1442,22 +1443,6 @@ function eventForbiddenAttributes(eventCardId: string): string[] {
   });
 }
 
-/** D5 · 事件牌 movement_lock：`prevents` 数组或 `prohibits` 短语两种写法都认。 */
-function eventMovementLocks(eventCardId: string): { blocksEntry: boolean; blocksExit: boolean } {
-  let blocksEntry = false;
-  let blocksExit = false;
-  for (const effect of eventCardById.get(eventCardId)?.effects ?? []) {
-    if (String(effect.type ?? '') !== 'movement_lock') continue;
-    const prevents = Array.isArray(effect.prevents) ? effect.prevents.map(String) : [];
-    if (prevents.includes('enter_by_movement')) blocksEntry = true;
-    if (prevents.includes('leave_by_movement')) blocksExit = true;
-    const prohibits = String(effect.prohibits ?? '');
-    if (prohibits.includes('from_this') || prohibits.includes('move_from')) blocksExit = true;
-    if (prohibits.includes('into_this') || prohibits.includes('move_to')) blocksEntry = true;
-  }
-  return { blocksEntry, blocksExit };
-}
-
 function eventReturnsToDeck(eventCardId: string): boolean {
   return (eventCardById.get(eventCardId)?.effects ?? [])
     .some((effect) => String(effect.type ?? '') === 'return_to_event_deck_instead_of_discard_or_removal');
@@ -2538,15 +2523,8 @@ export class MatchSession {
         rule: 'play_card_attribute',
       })));
     modeState.cardPlayForbids = situationForbids.concat(eventForbids);
-    // D5 · movement_lock：只有已公开的事件牌才锁移动（暗置牌不当场生效）。
-    const publicPlacements = targetState.eventPlacements.filter((placement) => placement.visibility.scope === 'public');
-    modeState.movementLocks = publicPlacements
-      .map((placement) => ({
-        sourceId: placement.eventCardId,
-        locationId: placement.locationId,
-        ...eventMovementLocks(placement.eventCardId),
-      }))
-      .filter((lock) => lock.blocksEntry || lock.blocksExit);
+    // Diagnostic snapshot only. Legality/execution derive from authoritative placements.
+    modeState.movementLocks = movementLocks(targetState);
     // Unaccepted D5 effects remain on the existing host-adjudication notice path.
     // Do not rebuild the removed speculative stores from event placement data.
   }
