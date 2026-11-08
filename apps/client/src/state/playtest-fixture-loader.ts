@@ -175,6 +175,7 @@ export interface PlaytestClientFixture {
     skills: string[];
     masterSkills?: string[];
     commandSpells?: string[];
+    commandSpellCount?: number;
     ascensionSkills?: string[];
     masterImageUrl?: string;
     servantImageUrl?: string;

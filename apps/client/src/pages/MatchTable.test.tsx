@@ -656,7 +656,7 @@ describe('MatchTable', () => {
     const user = userEvent.setup();
     render(<MatchTable fixture={fixture} />);
 
-    expect(screen.getByText('令咒区 · 1 张')).toBeInTheDocument();
+    expect(screen.getByText('令咒区 · 剩余 1 枚')).toBeInTheDocument();
     expect(screen.getByText('弃牌堆 · 1 张')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: '检视 幸运' }));
 
@@ -672,7 +672,7 @@ describe('MatchTable', () => {
     expect(screen.getByText('牌库构成')).toBeInTheDocument();
     expect(screen.getByText('手牌 · 0 张').nextElementSibling).toHaveClass('card-row--fan');
     expect(screen.getByText('御主本体技能')).toBeInTheDocument();
-    expect(screen.getByText('令咒区 · 1 张')).toBeInTheDocument();
+    expect(screen.getByText('令咒区 · 剩余 1 枚')).toBeInTheDocument();
     expect(screen.getByText('攻击区 · 1 张')).toBeInTheDocument();
     expect(screen.getByText('弃牌堆 · 1 张')).toBeInTheDocument();
   });
@@ -941,4 +941,33 @@ it('shows only the authorized deck bottom alongside the public deck count', () =
   rerender(<MatchTable fixture={projected} />);
   expect(screen.getByLabelText('事件牌堆底')).toHaveTextContent('盈月之仪');
   expect(screen.getByLabelText('局势牌堆底')).toHaveTextContent('转机');
+});
+
+it('shows remaining command seal charges independently from the ability card count', () => {
+  const projected = structuredClone(fixture);
+  Object.assign(projected.self, { commandSpellCount: 3 });
+  const { rerender } = render(<MatchTable fixture={projected} />);
+  expect(screen.getByText('令咒区 · 剩余 3 枚')).toBeInTheDocument();
+  Object.assign(projected.self, { commandSpellCount: 2 });
+  rerender(<MatchTable fixture={{ ...projected }} />);
+  expect(screen.getByText('令咒区 · 剩余 2 枚')).toBeInTheDocument();
+  Object.assign(projected.self, { commandSpellCount: 0 });
+  rerender(<MatchTable fixture={{ ...projected }} />);
+  expect(screen.getByText('令咒区 · 剩余 0 枚')).toBeInTheDocument();
+});
+
+it('resets the decision panel scroll when the player enters deployment', () => {
+  const { container, rerender } = render(<MatchTable fixture={fixture} />);
+  const panel = container.querySelector('.decision-panel')!;
+  panel.scrollTop = 500;
+  const deployment = structuredClone(fixture);
+  deployment.match.phase = '前哨阶段';
+  deployment.phaseTrack = [{ id: 'advance', label: '前哨', status: 'current' }];
+  deployment.availableActions = [{
+    actionId: 'deploy-workshop', kind: 'deploy', ownerPlayerId: deployment.match.priorityPlayerId,
+    label: '部署到 魔术工房', backendCommand: { type: 'deploy_player', locationId: 'magic_workshop' },
+  }];
+  rerender(<MatchTable fixture={deployment} />);
+  expect(panel.scrollTop).toBe(0);
+  expect(container.querySelector('.match-table--workbench-focused')).toBeNull();
 });

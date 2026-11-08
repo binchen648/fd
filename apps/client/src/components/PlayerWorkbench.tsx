@@ -19,10 +19,11 @@ export function PlayerWorkbench({ self, cards, collapsed, focused = false, onReq
   const attackArea = self.attackArea ?? [];
   const discard = self.discard ?? [];
   const commandSpells = self.commandSpells ?? [];
+  const commandSpellCount = self.commandSpellCount ?? commandSpells.length;
   const displayedHand = self.hand.filter((id) => !stagedAttackArea.includes(id));
   const zoneSummary = [
     { label: '御主技能', count: self.masterSkills?.length ?? 0 },
-    { label: '令咒', count: commandSpells.length },
+    { label: '令咒', count: commandSpellCount },
     { label: '升华技', count: self.ascensionSkills?.length ?? 0 },
     { label: '从者技能', count: self.skills.length },
     { label: '待确认', count: stagedAttackArea.length },
@@ -66,7 +67,7 @@ export function PlayerWorkbench({ self, cards, collapsed, focused = false, onReq
             <section className='workbench__master-skills workbench__zone--master'>
               <h3>御主本体技能</h3>
               <div className='card-row'>{(self.masterSkills ?? []).map((id) => byId.get(id)).filter((card): card is InspectableCard => Boolean(card)).map((card) => <CardSurface key={card.instanceId} card={card} onInspect={onInspect} compact />)}</div>
-              <h3>令咒区 · {commandSpells.length} 张</h3>
+              <h3>令咒区 · 剩余 {commandSpellCount} 枚</h3>
               <div className='card-row card-row--short'>{commandSpells.map((id) => byId.get(id)).filter((card): card is InspectableCard => Boolean(card)).map((card) => <CardSurface key={card.instanceId} card={card} onInspect={onInspect} compact />)}</div>
               <h3>升华技</h3>
               <div className='card-row card-row--short'>{(self.ascensionSkills ?? []).map((id) => byId.get(id)).filter((card): card is InspectableCard => Boolean(card)).map((card) => <CardSurface key={card.instanceId} card={card} onInspect={onInspect} compact />)}</div>

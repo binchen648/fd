@@ -1,0 +1,26 @@
+{
+  "taskId": "A-LOCAL-DEPLOYMENT-SEAL-DISPLAY",
+  "owner": "Root / Product A",
+  "status": "GRANTED",
+  "BaseCommit": "816433dd881ad5852de27cc9ce4ce3e65ca09069",
+  "branch": "codex/a-local-deployment-seal-display",
+  "worktree": "D:/fd-validation/a-chaldeas-pages-main-baseline",
+  "authority": "User local playtest report. Root serial continuation of the frontend scope after merged #694/#695. Prior commits remain frozen.",
+  "ReservedFiles": [
+    "docs/agents/manifests/tasks/A-LOCAL-DEPLOYMENT-SEAL-DISPLAY.json",
+    "apps/client/src/pages/MatchTable.tsx",
+    "apps/client/src/pages/MatchTable.test.tsx",
+    "apps/client/src/components/PlayerWorkbench.tsx",
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/remote-room-fixture.test.ts",
+    "apps/client/src/App.test.tsx"
+  ],
+  "ForbiddenFiles": ["Runtime, authoring, Interpreter, Loader, MatchSession", "D:/fd original dirty workspace", "CI workflows"],
+  "testPlan": {
+    "L1": "Authoritative command-seal quantity 3,2,0 shown separately from one ability card; deployment does not trigger clipped workbench layout.",
+    "L2": "Real default seven-player UI through preparation to Iris outpost, actual legal deployment, restored count and remote viewer mapping.",
+    "L3": "No new 11-round test for frontend-only presentation. Mandatory CI unchanged."
+  }
+}

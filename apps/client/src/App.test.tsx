@@ -6,6 +6,7 @@ import App from './App';
 import { createMatchRoom } from '@fd/rules/match-room';
 import { RemoteMatchRoomClient } from './state/match-room-client';
 import type { ClientRoomMessage } from '@fd/rules/match-room-protocol';
+import { projectSevenAuthoringSessionFixture } from './state/seven-authoring-smoke-fixture';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -24,6 +25,35 @@ async function retainOpeningCards(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('App room product shell', () => {
+  it('keeps the board and deployment controls accessible for Iris after all seven preparation turns', async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+    await user.click(screen.getAllByRole('button', { name: '与牌堆底调换' })[0]!);
+    for (let seat = 1; seat <= 7; seat++) {
+      await user.click(screen.getAllByRole('button', { name: '完成准备' })[0]!);
+      const confirmation = screen.queryByRole('alertdialog', { name: '可选能力提醒' });
+      if (confirmation) await user.click(screen.getByRole('button', { name: '仍然结束' }));
+    }
+    expect(screen.getByText(/host · p1 · connected/)).toBeInTheDocument();
+    expect(container.querySelector('.match-table--workbench-focused')).toBeNull();
+    expect(screen.getByLabelText('部署操作提示')).toHaveTextContent('部署');
+    await user.click(screen.getByRole('button', { name: '部署到 魔术工房' }));
+    expect(screen.getByText(/player · p2 · connected/)).toBeInTheDocument();
+  });
+
+  it('uses the real remaining command seals instead of counting the single command-spell card', () => {
+    const room = createMatchRoom({ seed: 20260905, hostClientId: 'host' });
+    room.selectSeat('host', 1);
+    room.startMatch('host');
+    const session = room.session!;
+    const owner = session.state.players.find(player => player.id === 'p1')!;
+    for (const remaining of [3, 2, 0]) {
+      Object.assign(owner, { commandSpells: remaining });
+      const projected = projectSevenAuthoringSessionFixture(session, owner.id);
+      expect(projected.self.commandSpells).toHaveLength(1);
+      expect(projected.self.commandSpellCount).toBe(remaining);
+    }
+  });
   it('reconnects locally using private credentials absent from the public room DTO', () => {
     const room = createMatchRoom({ roomId: 'local-private-reconnect', hostClientId: 'host' });
     room.disconnect('host');

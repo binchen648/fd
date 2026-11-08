@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { CardInspectionOverlay } from '../components/CardInspectionOverlay';
 import { CardSurface } from '../components/CardSurface';
@@ -35,6 +35,7 @@ export default function MatchTable({
   const [inspectedCard, setInspectedCard] = useState<InspectableCard | null>(null);
   const [workbenchCollapsed, setWorkbenchCollapsed] = useState(false);
   const [manualWorkbenchFocus, setManualWorkbenchFocus] = useState(false);
+  const decisionPanelRef = useRef<HTMLElement>(null);
   const [showReminder, setShowReminder] = useState(false);
   const [usingNonPriorityView, setUsingNonPriorityView] = useState(false);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
@@ -54,7 +55,12 @@ export default function MatchTable({
       )
     : [];
   const actionTurnIncomplete = !!fixture.actionTurn && (fixture.actionTurn.movement === 'pending' || fixture.actionTurn.regularPlay !== 'complete');
-  const isWorkbenchFocusWanted = !usingNonPriorityView && (
+  const hasDeploymentActions = (fixture.phaseTrack ?? []).some(phase => phase.id === 'advance' && phase.status === 'current')
+    && activeServerView.availableActions.some(action => action.backendCommand?.type === 'deploy_player');
+  useEffect(() => {
+    if (hasDeploymentActions && decisionPanelRef.current) decisionPanelRef.current.scrollTop = 0;
+  }, [hasDeploymentActions, fixture.match.round, fixture.match.phase, activeServerView.priorityPlayerId]);
+  const isWorkbenchFocusWanted = !usingNonPriorityView && !hasDeploymentActions && (
     activeServerView.availableActions.length > 0 ||
     (fixture.interactionWindows?.length ?? 0) > 0 ||
     manualWorkbenchFocus ||
@@ -138,7 +144,7 @@ export default function MatchTable({
       : fixture.match.phase.includes('战斗')
         ? '战斗'
         : '行动';
-  const decisionTitle = `完成本次${decisionPhaseLabel}`;
+  const decisionTitle = hasDeploymentActions ? '选择部署地点' : `完成本次${decisionPhaseLabel}`;
   const endDecisionLabel = decisionPhaseLabel === '行动' ? '结束行动' : `完成${decisionPhaseLabel}`;
   const renderOccupantToken = (playerId: string, className?: string) => {
     const player = fixture.players.find((candidate) => candidate.id === playerId);
@@ -383,9 +389,10 @@ export default function MatchTable({
           </div>
         </section>
 
-        <aside className='decision-panel'>
+        <aside className='decision-panel' ref={decisionPanelRef}>
           <span className='decision-panel__eyebrow'>CURRENT DECISION</span>
           <h2>{pendingReveal ? '处理揭示牌' : decisionTitle}</h2>
+          {hasDeploymentActions && <p aria-label='部署操作提示'>点击下方“部署到”按钮选择地点，完成部署后自动轮到下一位玩家。</p>}
           {pendingReveal && <div aria-label='换牌比较'>
             <p aria-label='待结算的揭示牌'>{pendingReveal.kind === 'situation' ? '局势' : '事件'}：{pendingReveal.name}</p>
             {pendingReveal.rulesText && <p aria-label='揭示牌规则'>{pendingReveal.rulesText}</p>}
