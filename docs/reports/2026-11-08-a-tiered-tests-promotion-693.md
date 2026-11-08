@@ -8,7 +8,7 @@
 - 冻结代码候选：4f18ce1d94a36af477b6279b74b1fe3606199e12。
 - Root 工作区：D:/fd-validation/five-field-promotion-693；任务 A-INTAKE-PROMOTION-693。
 - 候选相对 main 共126路径，含原有Runtime收敛、前置字段及五项字段修复；不是仅五项小补丁。
-- 独立审查绑定提交：36d7cedeecce6e3e64d40551ca1980e8e624a186；[公开审查引用](https://github.com/binchen648/fd/pull/693#issuecomment-6715941716)。协调者发布实际独立Agent证据，不冒充人类审批。
+- 原始独立审查记录：36d7cedeecce6e3e64d40551ca1980e8e624a186；Promotion协议绑定：8798531aa744f6faa0b498151bb3c2893d6b00f5（P3-A-INTAKE-PROMOTION-693映射至原任务A-INTAKE-PROMOTION-693）；[公开审查引用](https://github.com/binchen648/fd/pull/693#issuecomment-6715941716)。协调者发布实际独立Agent证据，不冒充人类审批。
 - 生产写入冻结，reservation保留，未释放或转移。D:/fd及旧冻结候选均未覆盖。
 
 ## 每次执行必须遵守的测试原则
