@@ -923,3 +923,22 @@ it('shows the authoritative standard outcome through the actual local Session pr
  render(<MatchTable fixture={projected} />);
  expect(screen.getByLabelText('正式对局结果')).toHaveTextContent('圣杯溢出：全员失败');
 });
+
+
+it('shows only the authorized deck bottom alongside the public deck count', () => {
+  const projected = structuredClone(fixture);
+  const eventDeck = projected.zones!.find(zone => zone.id === 'event_deck')!;
+  const situationDeck = { id: 'situation_deck', label: '局势牌库', cardIds: [], count: 7, status: 'enabled' as const };
+  projected.zones!.push(situationDeck);
+  const { rerender } = render(<MatchTable fixture={projected} />);
+  expect(screen.getByLabelText('事件牌库区')).toHaveTextContent('20');
+  expect(screen.getByLabelText('局势牌库区')).toHaveTextContent('7');
+  expect(screen.queryByLabelText('事件牌堆底')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('局势牌堆底')).not.toBeInTheDocument();
+
+  eventDeck.bottomCard = { id: 'event.bottom', name: '盈月之仪' };
+  Object.assign(situationDeck, { bottomCard: { id: 'situation.bottom', name: '转机' } });
+  rerender(<MatchTable fixture={projected} />);
+  expect(screen.getByLabelText('事件牌堆底')).toHaveTextContent('盈月之仪');
+  expect(screen.getByLabelText('局势牌堆底')).toHaveTextContent('转机');
+});

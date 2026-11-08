@@ -9,8 +9,9 @@
  */
 
 import type { GameState } from '../schema/game';
-import type { RuleNode } from './types';
+import type { AbilityEvent, RuleNode } from './types';
 import { str } from './loader';
+import { currentMatchDeckBottom, swapMatchReveal } from './chaldeas-reveal';
 import { clearTransientCardTransformState } from './card-instance-state';
 import { boundCardInfo } from './binding-cards';
 import { installStatus } from './status';
@@ -306,8 +307,8 @@ export function resolveExtendedEffect(
     case 'look_at_match_deck_bottoms': {
       const deckKinds = Array.isArray(effect.deckKinds) ? effect.deckKinds.map(String) : ['situation', 'event'];
       const looked: Record<string, string | undefined> = {};
-      if (deckKinds.includes('situation')) looked.situation = state.situationDeck?.[state.situationDeck.length - 1];
-      if (deckKinds.includes('event')) looked.event = state.eventDeck?.[state.eventDeck.length - 1];
+      if (deckKinds.includes('situation')) looked.situation = currentMatchDeckBottom(state, 'situation');
+      if (deckKinds.includes('event')) looked.event = currentMatchDeckBottom(state, 'event');
       modeState(state).lookedMatchDeckBottoms = {
         controllerId,
         sourceCardId: sourceCardId(context),
@@ -325,44 +326,7 @@ export function resolveExtendedEffect(
       break;
     }
     case 'swap_revealed_with_deck_bottom': {
-      const event = context?.event as { revealedKind?: string; revealedId?: string; locationId?: string } | undefined;
-      const kind = str(effect.revealedKind) || event?.revealedKind;
-      if (kind === 'situation') {
-        const bottom = state.situationDeck?.pop();
-        if (bottom && state.currentSituationCardId) {
-          const previous = state.currentSituationCardId;
-          state.currentSituationCardId = bottom;
-          state.situationDeck = [previous, ...(state.situationDeck ?? [])];
-          modeState(state).chaldeasSwaps = [...((modeState(state).chaldeasSwaps as Array<Record<string, unknown>> | undefined) ?? []), {
-            controllerId,
-            kind,
-            previous,
-            replacement: bottom,
-            sourceCardId: sourceCardId(context),
-            abilityId: abilityId(context),
-          }];
-        }
-      }
-      if (kind === 'event') {
-        const bottom = state.eventDeck?.pop();
-        const placement = state.eventPlacements.find(candidate =>
-          candidate.eventCardId === event?.revealedId &&
-          (!event?.locationId || candidate.locationId === event.locationId));
-        if (bottom && placement) {
-          const previous = placement.eventCardId;
-          placement.eventCardId = bottom;
-          state.eventDeck = [previous, ...(state.eventDeck ?? [])];
-          modeState(state).chaldeasSwaps = [...((modeState(state).chaldeasSwaps as Array<Record<string, unknown>> | undefined) ?? []), {
-            controllerId,
-            kind,
-            locationId: placement.locationId,
-            previous,
-            replacement: bottom,
-            sourceCardId: sourceCardId(context),
-            abilityId: abilityId(context),
-          }];
-        }
-      }
+      swapMatchReveal(state, sourceCardId(context), context?.event as AbilityEvent | undefined);
       break;
     }
     case 'soul_drag_power_bonus': {

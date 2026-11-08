@@ -1432,7 +1432,7 @@ describe('complex master and session regressions', () => {
     expect(state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.zone === 'discard')).toHaveLength(2);
   });
 
-  it('keeps Olga-Marie Chaldeas setup, swap response limit, Trismegistus activation, and command spells per card instance', () => {
+  it('keeps Olga-Marie Chaldeas setup, rejects an unbound swap trigger, and preserves Trismegistus and command spells', () => {
     const raw = archive('data/authoring/masters/master.olga-marie.json');
     const state = setup(raw, { masterId: raw.id });
     const astronomy = add(state, 'master.olga-marie.skill.astronomical-science', 'skill');
@@ -1498,22 +1498,11 @@ describe('complex master and session regressions', () => {
       revealedKind: 'situation',
       revealedId: 'situation.current',
     });
-    const swap = rules.getLegalActions(state, 'p1').find((candidate) =>
-      candidate.type === 'resolve_response' &&
-      candidate.cardInstanceId === chaldeas.instanceId &&
-      candidate.abilityId === 'chaldeas.swap-before-resolve');
-    expect(swap).toBeTruthy();
-    expect(rules.dispatchAbilityCommand(state, 'p1', swap!).ok).toBe(true);
-    expect((state as unknown as { modeState?: { chaldeasSwaps?: Array<Record<string, unknown>> } }).modeState?.chaldeasSwaps).toContainEqual(expect.objectContaining({
-      controllerId: 'p1',
-      kind: 'situation',
-      sourceCardId: chaldeas.instanceId,
-      abilityId: 'chaldeas.swap-before-resolve',
-    }));
-    rules.processAbilityEvent(state, { id: 'olga-revealed-card-again', type: 'before_situation_or_event_resolves', playerId: 'p1' });
-    expect(rules.getLegalActions(state, 'p1').some((candidate) =>
-      candidate.type === 'resolve_response' &&
-      candidate.abilityId === 'chaldeas.swap-before-resolve')).toBe(false);
+    // A raw trigger alone lacks MatchSession's revealed card and deck-bottom binding.
+    expect(rules.getLegalActions(state, 'p1').some(action =>
+      action.type === 'resolve_response' && action.abilityId === 'chaldeas.swap-before-resolve')).toBe(false);
+    expect(state.currentSituationCardId).toBe('situation.current');
+    expect(state.situationDeck).toEqual(['situation.top', 'situation.bottom']);
 
     expect(activate(state, commandSpell, 'command-spell.gain-mana').ok).toBe(true);
     expect(state.players[0]!.mana).toBe(8);

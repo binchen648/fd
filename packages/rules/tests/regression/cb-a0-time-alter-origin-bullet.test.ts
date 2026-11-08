@@ -7,6 +7,12 @@ const abilityId = 'time-alter.action';
 type Session = ReturnType<typeof createMatchSession>;
 
 function pass(session: Session, preservedCardId?: string): void {
+  const responder = session.state.players.find(player => session.getPlayerView(player.id).legalActions.some(action => action.type === 'decline_this_window'));
+  if (responder) {
+    const keep = session.getPlayerView(responder.id).legalActions.find(action => action.type === 'decline_this_window')!;
+    expect(session.dispatchPlayerAction(responder.id, keep).ok).toBe(true);
+    return;
+  }
   const priority = session.state.players.find((player) => player.seat === session.state.round.prioritySeat)!;
   if (session.state.round.activePhase === 'action') {
     for (let step = 0; step < 10 && session.getPlayerView(priority.id).actionTurn?.regularPlay !== 'complete'; step++) {
@@ -26,7 +32,7 @@ function pass(session: Session, preservedCardId?: string): void {
 function reach(session: Session, playerId: string, phase: string): void {
   const seat = session.state.players.find((player) => player.id === playerId)!.seat;
   for (let step = 0; step < 30; step++) {
-    if (session.state.round.activePhase === phase && session.state.round.prioritySeat === seat) return;
+    if (session.state.round.activePhase === phase && session.state.round.prioritySeat === seat && !session.state.abilityRuntime!.responseWindows.length) return;
     pass(session);
   }
   throw new Error('Production phase progression did not reach the requested window');

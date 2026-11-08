@@ -98,6 +98,7 @@ export interface ClientZoneGroup {
   cardIds: string[];
   count: number;
   status?: 'enabled' | 'empty' | 'disabled' | 'host_adjudicated';
+  bottomCard?: MatchClientState['zones'][number]['bottomCard'];
 }
 
 export interface ClientReplayCheckpoint {
@@ -190,6 +191,7 @@ export interface PlaytestClientFixture {
   interactionWindows?: ClientInteractionWindow[];
   directives?: ClientDirectiveView[];
   zones?: ClientZoneGroup[];
+  pendingReveal?: MatchClientState['pendingReveal'];
   logs?: Array<{ id: string; type: string; message: string }>;
   replay?: ClientReplayCheckpoint[];
   outcome?: StandardMatchOutcome;

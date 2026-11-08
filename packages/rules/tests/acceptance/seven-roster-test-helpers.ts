@@ -5,10 +5,28 @@ import type { AbilityCommand } from '../../src/ability/types';
 export const humans = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'];
 export type Session = ReturnType<typeof createMatchSession>;
 
+/** Finish real opening choices before constructing a bounded later-phase state. */
+export function finishOpening(session: Session) {
+  for (let count = 0; session.state.round.activePhase === 'round_start' && count < 12; count++) {
+    const owner = session.projectToClientState(humans[0]).priorityPlayerId!;
+    const action = session.getPlayerView(owner).legalActions.find(a => a.type === 'decline_this_window');
+    expect(action, 'opening must have a real decline operation').toBeDefined();
+    expect(session.dispatchPlayerAction(owner, action!).ok).toBe(true);
+  }
+  expect(session.state.round.activePhase).not.toBe('round_start');
+}
+
+export function createPostOpeningSession(options?: Parameters<typeof createMatchSession>[0]) {
+  const session = createMatchSession(options);
+  finishOpening(session);
+  return session;
+}
+
 /** Bounded Gate B fixture, NOT a naturally reached seven-player match. Definitions
  * are the unmodified production pack. Only starting phase/resources/zones change. */
 export function fixture(definitionId: string) {
   const session = createMatchSession({ seed: 20260907, humanPlayerIds: humans });
+  finishOpening(session);
   const source = session.state.cards.find(c => c.definitionId === definitionId)!;
   expect(source, definitionId).toBeDefined();
   const playerId = source.controllerPlayerId;

@@ -1,0 +1,49 @@
+{
+  "task": "A-CHALDEAS-REVEAL-RESPONSE",
+  "candidate": "7aa766e42689bdbc0201ee0c28b909782239db9f",
+  "productionCandidate": "66c63ecb67a729daa8ed437a1281b5a19fa596a8",
+  "base": "041b638bec465f8d6f511d8b881abf05a86a2dee",
+  "targetMain": "c3b1196462ec2615486295f449b3c33881d9a714",
+  "decision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "blockingFindings": [],
+  "finalHeadClean": true,
+  "productionDiffAfterReview": [],
+  "independentRuns": [
+    {
+      "fail": 0,
+      "pass": 55,
+      "head": "66c63ecb67a729daa8ed437a1281b5a19fa596a8",
+      "exitCode": 0,
+      "skip": 0,
+      "file": "independent-rules.json"
+    },
+    {
+      "fail": 0,
+      "pass": 39,
+      "head": "66c63ecb67a729daa8ed437a1281b5a19fa596a8",
+      "exitCode": 0,
+      "skip": 0,
+      "file": "independent-client.json"
+    },
+    {
+      "fail": 0,
+      "pass": 24,
+      "head": "66c63ecb67a729daa8ed437a1281b5a19fa596a8",
+      "exitCode": 0,
+      "skip": 0,
+      "file": "independent-server.json"
+    },
+    {
+      "fail": 0,
+      "pass": 18,
+      "head": "7aa766e42689bdbc0201ee0c28b909782239db9f",
+      "exitCode": 0,
+      "skip": 0,
+      "file": "independent-final-head.json"
+    }
+  ],
+  "level3": "NOT_RUN_BY_REVIEWER",
+  "fullCI": "NOT_RUN_BY_REVIEWER",
+  "mergeAuthorized": false,
+  "reservationReleased": false
+}

@@ -55,6 +55,21 @@ it('durably restores seven real identities and rejects stale/duplicate commands 
   const host = credentials[0]; const c = await connect(port, host.clientId, host.reconnectToken);
   c.ws.send(JSON.stringify({ type: 'client:start_match' }));
   await c.next(m => m.type === 'server:projection' && m.projection.status === 'running');
+  // Preserve the original preparation/end-turn contract by completing new
+  // optional opening responses through authenticated sockets first.
+  for (let i = 0; server.hub.getRoom('restart').session!.state.round.activePhase === 'round_start' && i < 12; i++) {
+    const projected = server.hub.project('restart', 's1');
+    const owner = projected.seats.find(seat => seat.playerId === projected.match!.priorityPlayerId)!.clientId!;
+    const credential = credentials.find(item => item.clientId === owner)!;
+    const responder = await connect(port, owner, credential.reconnectToken);
+    const match = server.hub.project('restart', owner).match!;
+    const command = match.view.legalActions.find(action => action.type === 'decline_this_window');
+    expect(command).toBeDefined();
+    responder.ws.send(JSON.stringify({ type: 'client:dispatch_command', expectedRevision: match.view.revision, command }));
+    await responder.next(m => m.type === 'server:projection' && m.projection.match.view.revision > match.view.revision);
+    responder.ws.close();
+  }
+  expect(server.hub.project('restart', 's1').match!.phase).toBe('preparation');
   const before = server.hub.project('restart', 's1').match!;
   await server.close(); servers.splice(servers.indexOf(server), 1);
   const restored = start(file); const newPort = await restored.listen();

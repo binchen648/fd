@@ -1,0 +1,31 @@
+{
+  "task": "A-CHALDEAS-REVEAL-RESPONSE",
+  "candidate": "edda4992c6f86885a6413ae2695d9e37ea9a444b",
+  "previousCandidate": "7aa766e42689bdbc0201ee0c28b909782239db9f",
+  "productionCandidate": "66c63ecb67a729daa8ed437a1281b5a19fa596a8",
+  "decision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "blockingFindings": [],
+  "sourceDiffEmpty": true,
+  "headVerified": true,
+  "worktreeClean": true,
+  "independentRun": {
+    "fail": 0,
+    "evidence": "independent-edda4992-fixtures.json",
+    "exitCode": 0,
+    "pass": 51,
+    "skip": 0
+  },
+  "priorFullCI": {
+    "skip": 0,
+    "fail": 39,
+    "head": "7aa766e42689bdbc0201ee0c28b909782239db9f",
+    "exitCode": 1,
+    "classification": "TEST_FAILURE",
+    "pass": 2007,
+    "reportedBy": "coordinator"
+  },
+  "fullCIAtFinalHead": "NOT_RUN_BY_REVIEWER",
+  "level3": "NOT_RUN_BY_REVIEWER",
+  "mergeAuthorized": false,
+  "reservationReleased": false
+}

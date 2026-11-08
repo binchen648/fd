@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { createMatchSession, restoreMatchSession } from '../../src/match-session';
+import { restoreMatchSession } from '../../src/match-session';
+import { createPostOpeningSession as createMatchSession, finishOpening } from '../acceptance/seven-roster-test-helpers';
 import { createMatchRoom, restoreMatchRoom } from '../../src/match-room';
 import { createMatchRoomHub } from '../../src/match-room-hub';
 
@@ -17,6 +18,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
   it('rotates once into the next round without moving physical seats', () => {
     const s = ending();
     expect(s.runUntilHumanInputOrStop()).toBe('human_input');
+    finishOpening(s);
     expect(s.state.round).toMatchObject({roundNumber: 2, activePhase: 'preparation', prioritySeat: 2, startingSeat: 2});
     expect(s.state.players.map(p => p.seat)).toEqual([1,2,3,4,5,6,7]);
     expect(s.runUntilHumanInputOrStop()).toBe('human_input');
@@ -30,7 +32,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
     expect(s.state.round.prioritySeat).toBe(2);
   });
   it('uses rotated order for every phase and visits lower seats before ending', () => {
-    const s = ending(); s.runUntilHumanInputOrStop();
+    const s = ending(); s.runUntilHumanInputOrStop(); finishOpening(s);
     for (const id of ['p2','p3','p4','p5','p6','p7','p1']) {
       expect(s.projectToClientState().priorityPlayerId).toBe(id);
       expect(s.passPriority(id).ok).toBe(true);
@@ -62,6 +64,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
     expect(s.dispatchPlayerAction('p1',action).ok).toBe(true);
     s.runUntilHumanInputOrStop();
     const restored=restoreMatchSession(s.serializeSession());
+    finishOpening(restored);
     expect(restored.runUntilHumanInputOrStop()).toBe('human_input');
     expect(restored.state.round).toMatchObject({roundNumber:2,prioritySeat:2,startingSeat:2});
     expect(restored.logs.filter(l=>l.type==='round_start'&&l.round===2)).toHaveLength(1);
@@ -76,6 +79,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
   it('resolves round8 cutoff before rotating and never grants an eliminated seat a turn', () => {
     const s=ending(8,7); s.state.players.forEach((p,i)=>p.vp=7-i);
     s.runUntilHumanInputOrStop();
+    finishOpening(s);
     expect(s.state.players.filter(p=>p.status==='active').map(p=>p.id)).toEqual(['p1','p2','p3','p4']);
     expect(s.state.round).toMatchObject({roundNumber:9,prioritySeat:1,startingSeat:1});
     for(const id of ['p1','p2','p3','p4']) expect(s.passPriority(id).ok).toBe(true);
@@ -92,12 +96,13 @@ describe('A-ROUND-02 standard product round transitions', () => {
     const action=restored.getPlayerView('p1').legalActions.find(a=>a.type==='decline_this_window')!;
     expect(restored.dispatchPlayerAction('p1',action).ok).toBe(true);
     expect(restored.runUntilHumanInputOrStop()).toBe('human_input');
+    finishOpening(restored);
     expect(restored.state.round).toMatchObject({roundNumber:2,prioritySeat:2});
     expect(restored.logs.filter(l=>l.type==='round_cards_discarded'&&l.round===1)).toHaveLength(1);
     expect(restored.logs.filter(l=>l.type==='standard_round_end_resolved'&&l.round===1)).toHaveLength(1);
   });
   it('awards workshop slots by deployment occupancy after rotation, not physical seat', () => {
-    const s=ending();s.runUntilHumanInputOrStop();
+    const s=ending();s.runUntilHumanInputOrStop();finishOpening(s);
     for(const id of ['p2','p3','p4','p5','p6','p7','p1'])s.passPriority(id);
     const mode=(s.state as any).modeState;mode.closedLocations=[];mode.deploymentLimitOnly={};
     s.state.players.forEach(p=>p.mana=0);
@@ -124,6 +129,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
     const decline=s.getPlayerView('p1').legalActions.find(a=>a.type==='decline_this_window')!;
     expect(s.dispatchPlayerAction('p1',decline).ok).toBe(true);
     expect(s.runUntilHumanInputOrStop()).toBe('human_input');
+    finishOpening(s);
     expect(s.state.round).toMatchObject({roundNumber:2,activePhase:'preparation',prioritySeat:2});
     expect(s.logs.filter(l=>l.type==='situation_applied'&&l.round===2)).toHaveLength(1);
     expect(s.logs.filter(l=>l.type==='round_start'&&l.round===2)).toHaveLength(1);
@@ -137,6 +143,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
     const action=restored.getPlayerView('p1').legalActions.find(a=>a.type==='decline_this_window')!;
     expect(restored.dispatchPlayerAction('p1',action).ok).toBe(true);
     expect(restored.runUntilHumanInputOrStop()).toBe('human_input');
+    finishOpening(restored);
     expect(restored.state.round).toMatchObject({roundNumber:2,activePhase:'preparation',prioritySeat:2});
     expect(restored.logs.filter(l=>l.type==='round_start'&&l.round===2)).toHaveLength(1);
   });
@@ -158,26 +165,29 @@ describe('A-ROUND-02 standard product round transitions', () => {
   it('host replay restore of the automatic round-end checkpoint resumes the room', () => {
     const room=createMatchRoom({hostClientId:'host',seed:20260904});
     for(let seat=1;seat<=7;seat++){const id=seat===1?'host':`seat-${seat}`;if(seat!==1)room.joinRoom({clientId:id,displayName:id,role:'player'});room.selectSeat(id,seat);}
-    room.startMatch('host');const s=room.session!;
+    room.startMatch('host');const s=room.session!;finishOpening(s);
     Object.assign(s.state.round,{roundNumber:1,activePhase:'battle',prioritySeat:7,startingSeat:1});
     s.state.players.forEach(p=>delete p.locationId);s.state.abilityRuntime!.hostRequests=[];s.state.abilityRuntime!.responseWindows=[];delete s.state.abilityRuntime!.pendingDecision;
     expect(room.endClientTurn('seat-7').ok).toBe(true);
     const end=s.replay.find(e=>e.label==='round 1 end')!;
     expect(room.restoreToReplayCheckpoint('host',end.id)).toBe(true);
+    finishOpening(room.session!);
     expect(room.getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
   });
   it('continues a signed durable round-end save from the old product room flow', () => {
     const room=createMatchRoom({roomId:'durable-boundary',hostClientId:'host',seed:20260904});
     for(let seat=1;seat<=7;seat++){const id=seat===1?'host':`seat-${seat}`;if(seat!==1)room.joinRoom({clientId:id,displayName:id,role:'player'});room.selectSeat(id,seat);}
-    room.startMatch('host');const s=room.session!;
+    room.startMatch('host');const s=room.session!;finishOpening(s);
     Object.assign(s.state.round,{roundNumber:1,activePhase:'battle',prioritySeat:7,startingSeat:1});
     s.state.players.forEach(p=>delete p.locationId);s.state.abilityRuntime!.hostRequests=[];s.state.abilityRuntime!.responseWindows=[];delete s.state.abilityRuntime!.pendingDecision;
     // Old room flow stops here, before invoking the product runner.
     expect(s.passPriority('p7').ok).toBe(true);
     const saved=room.serializeRoom();expect(saved.session!.state.round.activePhase).toBe('round_end');
     const restored=restoreMatchRoom(saved,room.getPersistenceContext());
+    finishOpening(restored.session!);
     expect(restored.getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
     const hub=createMatchRoomHub();hub.restore({version:1,rooms:[saved]});
+    finishOpening(hub.getRoom(room.roomId).session!);
     expect(hub.getRoom(room.roomId).getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
   });
   it('room existing end-turn command crosses the boundary to the next human seat', () => {
@@ -188,6 +198,7 @@ describe('A-ROUND-02 standard product round transitions', () => {
     s.state.abilityRuntime!.responseWindows=[];s.state.abilityRuntime!.hostRequests=[];delete s.state.abilityRuntime!.pendingDecision;
     s.state.players.forEach(p=>delete p.locationId);
     expect(room.endClientTurn('host').ok).toBe(true);
+    finishOpening(s);
     expect(room.getProjection('host').match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
   });
 });

@@ -109,8 +109,15 @@ export default function MatchTable({
   const abilityPromptActions = activeServerView.availableActions.filter((action) =>
     action.backendCommand?.type === 'activate_ability' && !dismissedAbilityPrompts[action.actionId],
   );
-  const eventDeckCount = zones.find((zone) => zone.id === 'event_deck')?.count ?? 0;
-  const situationDeckCount = zones.find((zone) => zone.id === 'situation_deck')?.count ?? 0;
+  const eventDeck = zones.find(zone => zone.id === 'event_deck');
+  const situationDeck = zones.find(zone => zone.id === 'situation_deck');
+  const pendingReveal = fixture.pendingReveal;
+  const canSwapReveal = fixture.availableActions.some(action =>
+    action.backendCommand?.type === 'resolve_response' && action.backendCommand.abilityId === 'chaldeas.swap-before-resolve');
+  const swapBottom = pendingReveal && canSwapReveal
+    ? (pendingReveal.kind === 'situation' ? situationDeck : eventDeck)?.bottomCard
+    : undefined;
+  const endTurnDisabled = actionTurnIncomplete || !!fixture.outcome || !!pendingReveal;
   const selectedPlayerMasterSkills = (selectedPlayer?.publicMasterSkillIds ?? [])
     .map((id) => cardsById.get(id))
     .filter((card): card is InspectableCard => Boolean(card));
@@ -269,6 +276,7 @@ export default function MatchTable({
     });
   };
   const endTurn = () => {
+    if (endTurnDisabled) return;
     if (fixture.optionalAbilityReminder) {
       setShowReminder(true);
       return;
@@ -336,7 +344,8 @@ export default function MatchTable({
           <header><span>FATE / DOMINATION</span><strong>冬木灵脉战域</strong><small>移动费用 1 · 工房容量 4 · 战场人数不限</small></header>
           <div className='location-grid'>
             <section className='map-deck-cell map-deck-cell--situation' aria-label='局势牌库区'>
-              <span>A1</span><strong>局势牌库</strong><b>{situationDeckCount}</b>
+              <span>A1</span><strong>局势牌库</strong><b>{situationDeck?.count ?? 0}</b>
+              {situationDeck?.bottomCard && <small aria-label='局势牌堆底'>牌堆底：{situationDeck.bottomCard.name}</small>}
             </section>
             {workshop ? (
               <article aria-label={workshop.name} className={`location-node location-node--${workshop.id}`}>
@@ -365,7 +374,8 @@ export default function MatchTable({
               </article>
             ) : null}
             <section className='map-deck-cell map-deck-cell--event' aria-label='事件牌库区'>
-              <span>B1</span><strong>事件牌库</strong><small>盈月之仪</small><b>{eventDeckCount}</b>
+              <span>B1</span><strong>事件牌库</strong><small>盈月之仪</small><b>{eventDeck?.count ?? 0}</b>
+              {eventDeck?.bottomCard && <small aria-label='事件牌堆底'>牌堆底：{eventDeck.bottomCard.name}</small>}
             </section>
             {miyama ? renderLocation(miyama) : null}
             {recon ? renderLocation(recon) : null}
@@ -375,7 +385,12 @@ export default function MatchTable({
 
         <aside className='decision-panel'>
           <span className='decision-panel__eyebrow'>CURRENT DECISION</span>
-          <h2>{decisionTitle}</h2>
+          <h2>{pendingReveal ? '处理揭示牌' : decisionTitle}</h2>
+          {pendingReveal && <div aria-label='换牌比较'>
+            <p aria-label='待结算的揭示牌'>{pendingReveal.kind === 'situation' ? '局势' : '事件'}：{pendingReveal.name}</p>
+            {pendingReveal.rulesText && <p aria-label='揭示牌规则'>{pendingReveal.rulesText}</p>}
+            {swapBottom && <p aria-label='可交换堆底牌规则'>可交换堆底 · {swapBottom.name}：{swapBottom.rulesText}</p>}
+          </div>}
           {fixture.actionTurn ? <p aria-label='行动回合进度'>{fixture.actionTurn.movement === 'pending' ? '先常规移动或选择不移动' : fixture.actionTurn.regularPlay === 'pending' ? '移动已完成 · 请选择完整常规出牌批次' : '常规出牌已完成 · 可使用阶段能力或结束行动'}</p> : null}
           {currentPlayer?.totalPower !== undefined ? <p aria-label='当前公开合计威力'>合计威力 {currentPlayer.totalPower}</p> : null}
           <p>检查手牌与技能区。只有规则端返回的操作会出现在卡牌检视层。</p>
@@ -643,7 +658,7 @@ export default function MatchTable({
               })}
             </section>
           ) : null}
-          {usingNonPriorityView ? <p className='decision-panel__waiting'>等待当前玩家完成{decisionPhaseLabel}</p> : <button className='decision-panel__confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete || !!fixture.outcome}>{endDecisionLabel}</button>}
+          {usingNonPriorityView ? <p className='decision-panel__waiting'>等待当前玩家完成{decisionPhaseLabel}</p> : <button className='decision-panel__confirm' type='button' onClick={endTurn} disabled={endTurnDisabled}>{endDecisionLabel}</button>}
         </aside>
       </div>
 
@@ -669,7 +684,7 @@ export default function MatchTable({
       />
 
       {isWorkbenchFocused && !usingNonPriorityView ? (
-        <button className='workbench-confirm' type='button' onClick={endTurn} disabled={actionTurnIncomplete || !!fixture.outcome}>
+        <button className='workbench-confirm' type='button' onClick={endTurn} disabled={endTurnDisabled}>
           <span>CONFIRM</span>
           <strong>{endDecisionLabel}</strong>
         </button>
@@ -683,7 +698,7 @@ export default function MatchTable({
             <span>OPTIONAL WINDOW</span><h2>可选能力提醒</h2><p>{fixture.optionalAbilityReminder}</p>
             <div>
               <button type='button' onClick={() => setShowReminder(false)}>返回检查</button>
-              <button type='button' onClick={() => { setShowReminder(false); onEndTurn(); }}>仍然结束</button>
+              <button type='button' disabled={endTurnDisabled} onClick={() => { setShowReminder(false); if (!endTurnDisabled) onEndTurn(); }}>仍然结束</button>
             </div>
           </section>
         </div>

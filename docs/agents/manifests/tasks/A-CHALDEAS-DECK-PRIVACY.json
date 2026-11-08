@@ -1,0 +1,46 @@
+{
+  "taskId": "A-CHALDEAS-DECK-PRIVACY",
+  "BaseCommit": "c3b1196462ec2615486295f449b3c33881d9a714",
+  "branch": "codex/a-chaldeas-deck-privacy",
+  "worktree": "D:/fd-validation/post-693-acceptance",
+  "owner": "Root / Product A",
+  "status": "GRANTED",
+  "authority": "User directs the next A-line work immediately after the disclosed exact authorization and privacy-first sequence. Root is the same owner of the integrated prior tasks.",
+  "scopedPredecessors": [
+    {
+      "taskId": "A-INTAKE-PROMOTION-693",
+      "merged": "c3b1196462ec2615486295f449b3c33881d9a714",
+      "frozenHead": "23756b93d9ff4ee408d4fc7285fc68b89f2de881"
+    },
+    {
+      "taskId": "A-RECOVER-04",
+      "merged": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+      "frozenHead": "8dfa71ec9ebb43c26da846efacf8b941a53deb46"
+    }
+  ],
+  "transfer": "Root schedules only the MatchSession and MatchTable projection slice for this branch. Prior owner worktrees are clean and frozen; no wholesale release. P3-B-MEDUSA user freeze/release applies, preserved D:/fd changes excluded. The same A-RECOVER-04 owner also scopes the HTTP create endpoint for ordinary remote-room seed generation. User-managed original workspace remains excluded.",
+  "ReservedFiles": [
+    "docs/agents/manifests/tasks/A-CHALDEAS-DECK-PRIVACY.json",
+    "packages/rules/src/match-session.ts",
+    "packages/rules/tests/acceptance/chaldeas-deck-privacy.test.ts",
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "apps/client/src/pages/MatchTable.tsx",
+    "apps/client/src/pages/MatchTable.test.tsx",
+    "apps/server/src/match-server.ts",
+    "apps/server/src/match-server.test.ts",
+    "apps/client/src/App.tsx",
+    "apps/client/src/App.test.tsx"
+  ],
+  "scope": "Keep live event and situation deck IDs and shuffle seed out of shared projection; eligible Chaldeas holder sees only current known deck bottoms. Client uses authoritative projection.",
+  "testPlan": {
+    "L1": "Actual production MatchSession, deck counts, owner-only bottoms, live source/owner/visibility, seed and stored history redaction, UI rendering.",
+    "L2": "Same projection via room, spectator, recovery and reconnect with source eligibility changed. Ordinary HTTP room seeds are server-owned, not derived from the room ID, and survive serialization. Explicit seeded fixtures retain replay behavior.",
+    "L3": "Deferred to frozen reveal-response integration or normal mandatory CI, no whole-match reruns per skill."
+  },
+  "forbidden": [
+    "D:/fd dirty B workspace",
+    "production rules or authoring outside listed files",
+    "merge or migration credit"
+  ]
+}

@@ -50,8 +50,11 @@ test('seven browser seats reconnect to a fresh server process and continue the c
     await pages[0]!.getByRole('button', { name: '开始', exact: true }).click();
     await expect.poll(() => latest.filter(p => p?.projection.status === 'running').length).toBe(7);
     const firstRevision = latest[0]!.projection.match!.view.revision;
-    await pages[0]!.locator('.decision-panel__confirm').click();
-    const optional = pages[0]!.getByRole('alertdialog', { name: '可选能力提醒' });
+    const firstActor = Number(latest[0]!.projection.match!.priorityPlayerId!.slice(1)) - 1;
+    const firstReveal = latest[firstActor]!.projection.match!.pendingReveal;
+    if (firstReveal) await pages[firstActor]!.getByRole('button', { name: '保留揭示牌', exact: true }).first().click();
+    else await pages[firstActor]!.locator('.decision-panel__confirm').click();
+    const optional = pages[firstActor]!.getByRole('alertdialog', { name: '可选能力提醒' });
     if (await optional.isVisible()) await optional.getByRole('button', { name: '仍然结束', exact: true }).click();
     await expect.poll(() => latest.filter(p => p!.projection.match!.view.revision > firstRevision).length).toBe(7);
     const before = latest.map(p => ({ revision: p!.projection.match!.view.revision, round: p!.projection.match!.round, phase: p!.projection.match!.phase,
@@ -67,7 +70,8 @@ test('seven browser seats reconnect to a fresh server process and continue the c
     }
     const actor = Number(latest[0]!.projection.match!.priorityPlayerId!.slice(1)) - 1;
     const revision = latest[actor]!.projection.match!.view.revision;
-    await pages[actor]!.locator('.decision-panel__confirm').click();
+    if (latest[actor]!.projection.match!.pendingReveal) await pages[actor]!.getByRole('button', { name: '保留揭示牌', exact: true }).first().click();
+    else await pages[actor]!.locator('.decision-panel__confirm').click();
     await expect.poll(() => latest.every(p => p!.projection.match!.view.revision > revision)).toBe(true);
     expect(errors).toEqual([]);
     await pages[0]!.screenshot({ path: info.outputPath('seven-player-recovered.png'), fullPage: true });
