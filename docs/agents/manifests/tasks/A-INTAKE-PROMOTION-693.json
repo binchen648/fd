@@ -51,5 +51,6 @@
   "productionWritingFrozen": true,
   "reservationReleased": false,
   "independentDecision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
-  "integrationState": "Final L3 passed; final GitHub checks pending. No merge authorization."
+  "integrationState": "Final L3 passed; final GitHub checks pending. No merge authorization.",
+  "promotionProtocolTaskId": "P3-A-INTAKE-PROMOTION-693"
 }
