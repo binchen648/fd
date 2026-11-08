@@ -255,6 +255,26 @@ describe('match websocket server', () => {
     inbox.socket.close();
     reconnected.socket.close();
   });
+  it('gives ordinary HTTP rooms private shuffle seeds while preserving explicit deterministic rooms', async () => {
+    serverHandle = createMatchServer();
+    const port = await serverHandle.listen();
+    const hub = serverHandle.hub;
+    const endpoint = `http://127.0.0.1:${port}/rooms`;
+    const first = await postJson<RoomHttpResponse>(endpoint, { roomId: 'private-shuffle-a', hostClientId: 'host' });
+    const second = await postJson<RoomHttpResponse>(endpoint, { roomId: 'private-shuffle-b', hostClientId: 'host' });
+    const seeded = await postJson<RoomHttpResponse>(endpoint, { roomId: 'explicit-shuffle', hostClientId: 'host', seed: 20260907 });
+    const firstRoom = hub.getRoom(first.roomId);
+    const secondRoom = hub.getRoom(second.roomId);
+    expect(firstRoom.seed).not.toBe(secondRoom.seed);
+    expect(hub.getRoom(seeded.roomId).seed).toBe(20260907);
+    hub.selectSeat(first.roomId, 'host', 1);
+    hub.startMatch(first.roomId, 'host');
+    expect(firstRoom.session!.seed).toBe(firstRoom.seed);
+    expect(firstRoom.serializeRoom().seed).toBe(firstRoom.seed);
+    expect(hub.project(first.roomId, 'host').match).not.toHaveProperty('seed');
+    expect(hub.project(first.roomId, 'host').match?.logs.find(log => log.type === 'session_start')?.payload).not.toHaveProperty('seed');
+  });
+
   it('rejects empty/default/invalid HTTP room IDs without replacing the running default room', async () => {
     serverHandle = createMatchServer();
     const port = await serverHandle.listen();

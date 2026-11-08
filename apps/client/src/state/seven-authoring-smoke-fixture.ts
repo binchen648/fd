@@ -760,6 +760,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       cardIds: zone.cardIds,
       count: zone.count,
       status: zone.status,
+      ...(zone.bottomCard ? { bottomCard: zone.bottomCard } : {}),
     })),
     logs: projected.logs.map((entry) => ({ id: entry.id, type: entry.type, message: entry.message })),
     replay: projected.replay.map((entry) => ({

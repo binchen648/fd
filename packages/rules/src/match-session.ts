@@ -155,12 +155,13 @@ export interface MatchZoneProjection {
   cardIds: string[];
   count: number;
   status: 'enabled' | 'empty' | 'disabled' | 'host_adjudicated';
+  /** Only projected to a player whose current ability can see this deck bottom. */
+  bottomCard?: { id: string; name: string };
 }
 
 export interface MatchClientState {
   matchId: string;
   contentPack: { id: string; version: number; definitionHash: string };
-  seed: number;
   humanPlayerId: string;
   round: number;
   phase: PhaseName;
@@ -1383,6 +1384,11 @@ const climaxSituations: MatchSituationDefinition[] = [
 ];
 
 const situationById = new Map([...nonClimaxSituations, ...climaxSituations].map((situation) => [situation.id, situation] as const));
+
+function ordinarySituationDeck(state: GameState): string[] {
+  // Fixed rounds 9–11 are scheduled separately even in snapshots that append their IDs.
+  return (state.situationDeck ?? []).filter(id => situationById.get(id)?.isClimax !== true);
+}
 const eventCards = (contentLibrary as { cards?: RuntimeEventCard[] }).cards ?? [];
 const eventCardById = new Map(eventCards.filter((card) => card.id.startsWith('event.')).map((card) => [card.id, card] as const));
 const eventDeckTemplate = ((contentLibrary as { eventSets?: Array<{ id: string; cardIds: string[] }> }).eventSets ?? [])
@@ -1674,7 +1680,7 @@ export class MatchSession {
     this.state = built.state;
     this.pairings = built.pairings;
     this.rawCards = built.rawCards;
-    this.record('session_start', '7-player authoring match session started', { seed: this.seed, pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
+    this.record('session_start', '7-player authoring match session started', { pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
     this.consumeAppliedDirectives();
     if (initializeReplay) this.checkpoint('game start');
     this.replayCaptureEnabled = true;
@@ -2149,7 +2155,6 @@ export class MatchSession {
         version: runtimeContent.pack.version,
         definitionHash: runtimeContent.rules.definitionHash,
       },
-      seed: this.seed,
       humanPlayerId: this.humanPlayerId,
       round: this.state.round.roundNumber,
       phase: this.state.round.activePhase,
@@ -2177,14 +2182,21 @@ export class MatchSession {
     for (const eventId of hiddenEventIds) projected.message = projected.message.split(eventId).join('hidden-event');
     let payload = projected.payload;
     if (!payload) return projected;
+    if (entry.type === 'situation_pre_discard' && Array.isArray(payload.burned)) {
+      payload = { count: payload.burned.length };
+    }
     if (entry.type === 'cards_drawn' && payload.playerId !== viewerId) {
       payload = { playerId: payload.playerId, handLimit: payload.handLimit,
         drawCount: Array.isArray(payload.drawn) ? payload.drawn.length : 0 };
     }
-    if (entry.type === 'session_start' && Array.isArray(payload.pairings)) {
-      payload.pairings = payload.pairings.map((pairing: Record<string, unknown>) =>
-        pairing.playerId === viewerId || this.state.abilityRuntime?.revealedServants.includes(String(pairing.playerId))
-          ? pairing : { playerId: pairing.playerId, master: pairing.master });
+    if (entry.type === 'session_start') {
+      // Older saves stored the shuffle seed in the startup log.
+      delete payload.seed;
+      if (Array.isArray(payload.pairings)) {
+        payload.pairings = payload.pairings.map((pairing: Record<string, unknown>) =>
+          pairing.playerId === viewerId || this.state.abilityRuntime?.revealedServants.includes(String(pairing.playerId))
+            ? pairing : { playerId: pairing.playerId, master: pairing.master });
+      }
     }
     if (Array.isArray(payload.events)) payload.events = payload.events.filter((event: Record<string, unknown>) => typeof event.visibility !== 'string' || event.visibility === viewerId);
     const command = payload.command as Record<string, unknown> | undefined;
@@ -2387,7 +2399,7 @@ export class MatchSession {
     targetState.burnedSituationCardIds = shuffled.slice(0, 2);
     targetState.situationDeck = shuffled.slice(2).concat(climaxSituations.map((situation) => situation.id));
     targetState.situationDiscardPile = [...targetState.burnedSituationCardIds];
-    this.record('situation_pre_discard', 'burn two non-climax situations', { burned: targetState.burnedSituationCardIds }, targetState);
+    this.record('situation_pre_discard', 'burn two non-climax situations', { count: targetState.burnedSituationCardIds.length }, targetState);
   }
 
   private drawEventCard(targetState: GameState): string | undefined {
@@ -2456,7 +2468,7 @@ export class MatchSession {
       name: resolvedSituation.name,
       mana: resolvedSituation.mana,
       isClimax: Boolean(resolvedSituation.isClimax),
-      remaining: targetState.situationDeck?.length ?? 0,
+      remaining: ordinarySituationDeck(targetState).length,
     }, targetState);
     return resolvedSituation;
   }
@@ -2868,6 +2880,23 @@ export class MatchSession {
     this.checkpoint(`round ${this.state.round.roundNumber} end`);
   }
 
+  private canPeekMatchDeckBottoms(playerId: string): boolean {
+    const state = this.state;
+    if (!state.players.some(player => player.id === playerId && player.status === 'active' && player.masterCardId === 'master.olga-marie')) return false;
+    return state.cards.some(card => {
+      if (card.definitionId !== 'master.olga-marie.skill.chaldeas' ||
+          card.ownerPlayerId !== playerId || card.controllerPlayerId !== playerId) return false;
+      const source = state.abilityRuntime?.cardState[card.instanceId];
+      if (source?.faceDown) return false;
+      const available = card.zone === 'skill' ||
+        ((card.zone === 'field' || card.zone === 'attack_area') && source?.active === true);
+      const definition = state.abilityRuntime?.pack.cards[card.definitionId];
+      return available && definition?.abilities.some(ability =>
+        ability.id === 'chaldeas.peek-bottoms' && ability.execution.mode === 'automatic' &&
+        ability.effects.some(effect => effect.type === 'look_at_match_deck_bottoms')) === true;
+    });
+  }
+
   private projectZones(playerId: string): MatchZoneProjection[] {
     const s = this.state;
     const pairing = this.pairings.find((candidate) => candidate.playerId === playerId);
@@ -2875,6 +2904,12 @@ export class MatchSession {
       .map((card) => card.id);
     const own = (zoneName: string) => (card: GameState['cards'][number]) => card.ownerPlayerId === playerId && card.zone === zoneName;
     const mayViewHiddenEvents = canViewFaceDownEvents(s, playerId);
+    const mayPeekBottoms = this.canPeekMatchDeckBottoms(playerId);
+    const situationDeck = ordinarySituationDeck(s);
+    const eventBottomId = mayPeekBottoms ? s.eventDeck?.at(-1) : undefined;
+    const situationBottomId = mayPeekBottoms ? situationDeck.at(-1) : undefined;
+    const eventBottom = eventBottomId ? eventCardById.get(eventBottomId) : undefined;
+    const situationBottom = situationBottomId ? situationById.get(situationBottomId) : undefined;
     const visibleEventPlacementIds = s.eventPlacements
       .filter((event) => event.visibility.scope !== 'hidden_until_trigger' || mayViewHiddenEvents)
       .map((event) => event.eventCardId);
@@ -2897,12 +2932,16 @@ export class MatchSession {
       zone(s, 'discard', '弃牌', own('discard')),
       ...(mayViewOpponentDiscards ? [{ id: 'opponent_discard', label: '对手弃牌', cardIds: opponentDiscardIds, count: opponentDiscardIds.length, status: opponentDiscardIds.length ? 'enabled' as const : 'empty' as const }] : []),
       zone(s, 'removed_from_game', '移除', own('removed_from_game')),
-      { id: 'event_deck', label: '事件牌库', cardIds: s.eventDeck ?? [], count: (s.eventDeck ?? []).length, status: 'enabled' },
+      { id: 'event_deck', label: '事件牌库', cardIds: [], count: s.eventDeck?.length ?? 0, status: 'enabled',
+        ...(eventBottom ? { bottomCard: { id: eventBottom.id, name: eventBottom.name } } : {}) },
       { id: 'event_placements', label: '事件放置', cardIds: visibleEventPlacementIds, count: s.eventPlacements.length, status: s.eventPlacements.length ? 'enabled' : 'empty' },
       { id: 'event_discard', label: '事件弃牌', cardIds: (s.eventDiscardPile ?? []).map((event) => event.eventCardId), count: s.eventDiscardPile?.length ?? 0, status: s.eventDiscardPile?.length ? 'enabled' : 'empty' },
-      { id: 'situation_deck', label: '局势牌库', cardIds: s.situationDeck ?? [], count: (s.situationDeck ?? []).length, status: 'enabled' },
+      { id: 'situation_deck', label: '局势牌库', cardIds: [], count: situationDeck.length, status: 'enabled',
+        ...(situationBottom ? { bottomCard: { id: situationBottom.id, name: situationBottom.name } } : {}) },
       { id: 'current_situation', label: '当前局势', cardIds: s.currentSituationCardId ? [s.currentSituationCardId] : [], count: s.currentSituationCardId ? 1 : 0, status: s.currentSituationCardId ? 'enabled' : 'empty' },
-      { id: 'situation_discard', label: '局势弃牌/烧毁', cardIds: s.situationDiscardPile ?? [], count: (s.situationDiscardPile ?? []).length, status: s.situationDiscardPile?.length ? 'enabled' : 'empty' },
+      { id: 'situation_discard', label: '局势弃牌/烧毁',
+        cardIds: (s.situationDiscardPile ?? []).filter(id => !s.burnedSituationCardIds?.includes(id)),
+        count: s.situationDiscardPile?.length ?? 0, status: s.situationDiscardPile?.length ? 'enabled' : 'empty' },
       zone(s, 'generated_cards', '生成牌', (card) => card.zone === 'generated' || card.zone === 'looked_cards'),
       zone(s, 'independent_deck', '独立牌堆', (card) => card.ownerPlayerId === playerId && card.zone === 'independent_deck'),
       { id: 'unowned_servant_pool', label: '无主从者池', cardIds: [], count: 0, status: 'host_adjudicated' },

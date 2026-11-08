@@ -95,7 +95,7 @@ describe('App room product shell', () => {
 
   it('creates a remote room from the lobby and persists a launch URL', async () => {
     const user = userEvent.setup();
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       ok: true,
       json: async () => ({
         roomId: 'fd-remote-test',
@@ -114,6 +114,8 @@ describe('App room product shell', () => {
     expect(link).toHaveAttribute('href', expect.stringContaining('remote=1'));
     expect(link).toHaveAttribute('href', expect.stringContaining('roomId=fd-remote-test'));
     expect(window.localStorage.getItem('fd.remote.match-room.connection')).toContain('token-host');
+    const request = fetchSpy.mock.calls[0]?.[1];
+    expect(JSON.parse(String(request?.body))).not.toHaveProperty('seed');
   });
 
   it('joins a remote room from the lobby as a player client', async () => {

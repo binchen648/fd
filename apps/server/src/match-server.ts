@@ -1,9 +1,11 @@
+import { randomInt } from 'node:crypto';
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { URL } from 'node:url';
 import { WebSocket, WebSocketServer, type RawData } from 'ws';
 import { RoomStore } from './room-store';
 import {
   createMatchRoomHub,
+  resolveMatchRoomId,
   type ClientRoomMessage,
   type CreateRoomHttpRequest,
   type JoinRoomHttpRequest,
@@ -131,8 +133,8 @@ export function createMatchServer(input: { hub?: MatchRoomHub; stateFile?: strin
         const body = await readBody(request) as CreateRoomHttpRequest;
         assertStorage();
         const projection = hub.createRoom({
-          ...(body.roomId !== undefined ? { roomId: body.roomId } : {}),
-          ...(body.seed !== undefined ? { seed: body.seed } : {}),
+          roomId: resolveMatchRoomId(body),
+          seed: body.seed ?? randomInt(1, 2 ** 32),
           ...(body.hostClientId ? { hostClientId: body.hostClientId } : {}),
           ...(body.hostName ? { hostName: body.hostName } : {}),
         });

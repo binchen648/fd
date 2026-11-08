@@ -109,8 +109,8 @@ export default function MatchTable({
   const abilityPromptActions = activeServerView.availableActions.filter((action) =>
     action.backendCommand?.type === 'activate_ability' && !dismissedAbilityPrompts[action.actionId],
   );
-  const eventDeckCount = zones.find((zone) => zone.id === 'event_deck')?.count ?? 0;
-  const situationDeckCount = zones.find((zone) => zone.id === 'situation_deck')?.count ?? 0;
+  const eventDeck = zones.find(zone => zone.id === 'event_deck');
+  const situationDeck = zones.find(zone => zone.id === 'situation_deck');
   const selectedPlayerMasterSkills = (selectedPlayer?.publicMasterSkillIds ?? [])
     .map((id) => cardsById.get(id))
     .filter((card): card is InspectableCard => Boolean(card));
@@ -336,7 +336,8 @@ export default function MatchTable({
           <header><span>FATE / DOMINATION</span><strong>冬木灵脉战域</strong><small>移动费用 1 · 工房容量 4 · 战场人数不限</small></header>
           <div className='location-grid'>
             <section className='map-deck-cell map-deck-cell--situation' aria-label='局势牌库区'>
-              <span>A1</span><strong>局势牌库</strong><b>{situationDeckCount}</b>
+              <span>A1</span><strong>局势牌库</strong><b>{situationDeck?.count ?? 0}</b>
+              {situationDeck?.bottomCard && <small aria-label='局势牌堆底'>牌堆底：{situationDeck.bottomCard.name}</small>}
             </section>
             {workshop ? (
               <article aria-label={workshop.name} className={`location-node location-node--${workshop.id}`}>
@@ -365,7 +366,8 @@ export default function MatchTable({
               </article>
             ) : null}
             <section className='map-deck-cell map-deck-cell--event' aria-label='事件牌库区'>
-              <span>B1</span><strong>事件牌库</strong><small>盈月之仪</small><b>{eventDeckCount}</b>
+              <span>B1</span><strong>事件牌库</strong><small>盈月之仪</small><b>{eventDeck?.count ?? 0}</b>
+              {eventDeck?.bottomCard && <small aria-label='事件牌堆底'>牌堆底：{eventDeck.bottomCard.name}</small>}
             </section>
             {miyama ? renderLocation(miyama) : null}
             {recon ? renderLocation(recon) : null}

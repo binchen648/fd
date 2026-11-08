@@ -98,6 +98,7 @@ export interface ClientZoneGroup {
   cardIds: string[];
   count: number;
   status?: 'enabled' | 'empty' | 'disabled' | 'host_adjudicated';
+  bottomCard?: { id: string; name: string };
 }
 
 export interface ClientReplayCheckpoint {
