@@ -2905,9 +2905,10 @@ export class MatchSession {
     const own = (zoneName: string) => (card: GameState['cards'][number]) => card.ownerPlayerId === playerId && card.zone === zoneName;
     const mayViewHiddenEvents = canViewFaceDownEvents(s, playerId);
     const mayPeekBottoms = this.canPeekMatchDeckBottoms(playerId);
+    const eventDeck = s.eventDeck ?? [];
     const situationDeck = ordinarySituationDeck(s);
-    const eventBottomId = mayPeekBottoms ? s.eventDeck?.at(-1) : undefined;
-    const situationBottomId = mayPeekBottoms ? situationDeck.at(-1) : undefined;
+    const eventBottomId = mayPeekBottoms ? eventDeck[eventDeck.length - 1] : undefined;
+    const situationBottomId = mayPeekBottoms ? situationDeck[situationDeck.length - 1] : undefined;
     const eventBottom = eventBottomId ? eventCardById.get(eventBottomId) : undefined;
     const situationBottom = situationBottomId ? situationById.get(situationBottomId) : undefined;
     const visibleEventPlacementIds = s.eventPlacements
@@ -2932,7 +2933,7 @@ export class MatchSession {
       zone(s, 'discard', '弃牌', own('discard')),
       ...(mayViewOpponentDiscards ? [{ id: 'opponent_discard', label: '对手弃牌', cardIds: opponentDiscardIds, count: opponentDiscardIds.length, status: opponentDiscardIds.length ? 'enabled' as const : 'empty' as const }] : []),
       zone(s, 'removed_from_game', '移除', own('removed_from_game')),
-      { id: 'event_deck', label: '事件牌库', cardIds: [], count: s.eventDeck?.length ?? 0, status: 'enabled',
+      { id: 'event_deck', label: '事件牌库', cardIds: [], count: eventDeck.length, status: 'enabled',
         ...(eventBottom ? { bottomCard: { id: eventBottom.id, name: eventBottom.name } } : {}) },
       { id: 'event_placements', label: '事件放置', cardIds: visibleEventPlacementIds, count: s.eventPlacements.length, status: s.eventPlacements.length ? 'enabled' : 'empty' },
       { id: 'event_discard', label: '事件弃牌', cardIds: (s.eventDiscardPile ?? []).map((event) => event.eventCardId), count: s.eventDiscardPile?.length ?? 0, status: s.eventDiscardPile?.length ? 'enabled' : 'empty' },
