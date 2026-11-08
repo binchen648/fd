@@ -3,13 +3,14 @@ import { AUTOMATIC_EVENT_EFFECTS, createMatchSession, restoreMatchSession } from
 import { calculateCardPower } from '../../src/ability/interpreter';
 import { projectCurrentPlayerPowers, resolveBattlefield } from '../../src/core/combat-resolver';
 import { movePlayer } from '../../src/core/movement';
-import { humans, rejectAtomically } from './seven-roster-test-helpers';
+import { finishOpening, humans, rejectAtomically } from './seven-roster-test-helpers';
 
 // L1: bounded real Session states, unmodified production event definitions.
 const resistanceId = 'event.waxing_moon_ritual.resistance';
 const barrier = 'event.waxing_moon_ritual.vengeful_spirit_barrier';
 function movementFixture(from = 'magic_workshop') {
   const session = createMatchSession({ seed: 20260907, humanPlayerIds: humans });
+  finishOpening(session);
   session.state.round.activePhase = 'action';
   session.state.round.prioritySeat = session.state.players[0]!.seat;
   session.state.eventPlacements = [];
@@ -84,10 +85,17 @@ describe('L1 unaccepted D5 automation remains on the established host notice pat
     expect(session.state.eventDeck).toEqual([barrier]);
     expect(session.state.log.some(e => e.type === 'event_place_nested')).toBe(false);
     const notices = ((session.state as any).modeState.masterDirectives as any[]).filter(e => e.eventCardId === eventId);
-    expect(notices).toContainEqual(expect.objectContaining({ directive: 'event_effect_host_review' }));
+    expect(notices).toEqual([]);
     const otherView = JSON.stringify(session.getPlayerView('p2'));
     expect(otherView).not.toContain(eventId);
     expect(otherView).not.toContain('event_place_nested');
+    (session as any).finishActionReveal();
+    const owner = session.projectToClientState('p1').priorityPlayerId!;
+    const keep = session.getPlayerView(owner).legalActions.find(a => a.type === 'decline_this_window')!;
+    expect(keep).toBeDefined();
+    expect(session.dispatchPlayerAction(owner, keep).ok).toBe(true);
+    expect(((session.state as any).modeState.masterDirectives as any[]).filter(e => e.eventCardId === eventId))
+      .toEqual([expect.objectContaining({ directive: 'event_effect_host_review' })]);
   });
 });
 

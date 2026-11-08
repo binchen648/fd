@@ -14,6 +14,15 @@ afterEach(() => {
   window.history.replaceState({}, '', '/');
 });
 
+async function retainOpeningCards(user: ReturnType<typeof userEvent.setup>) {
+  for (let i = 0; i < 12; i++) {
+    const keep = screen.queryAllByRole('button', { name: '保留揭示牌' })[0];
+    if (!keep) return;
+    await user.click(keep);
+  }
+  throw new Error('Opening did not finish after the real decline operations');
+}
+
 describe('App room product shell', () => {
   it('reconnects locally using private credentials absent from the public room DTO', () => {
     const room = createMatchRoom({ roomId: 'local-private-reconnect', hostClientId: 'host' });
@@ -53,6 +62,10 @@ describe('App room product shell', () => {
 
     expect(screen.getByLabelText('对局房间')).toBeInTheDocument();
     expect(screen.getByText('实战进行中')).toBeInTheDocument();
+    expect(screen.getByText(/player · p4 · connected/)).toBeInTheDocument();
+    expect(screen.getByLabelText('待结算的揭示牌')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: '与牌堆底调换' })[0]).toBeEnabled();
+    await retainOpeningCards(user);
     expect(screen.getByText(/host · p1 · connected/)).toBeInTheDocument();
     expect(screen.getByLabelText('七人选座').querySelectorAll('span')).toHaveLength(7);
     expect(screen.getByLabelText('七人选座').querySelectorAll('.is-human')).toHaveLength(7);
@@ -67,6 +80,7 @@ describe('App room product shell', () => {
   it('saves, restores, and switches between followed player and spectator projections', async () => {
     const user = userEvent.setup();
     render(<App />);
+    await retainOpeningCards(user);
 
     await user.click(screen.getByRole('button', { name: '保存' }));
     expect(screen.getByRole('button', { name: '恢复' })).toBeEnabled();
@@ -81,9 +95,23 @@ describe('App room product shell', () => {
     expect(screen.getByText(/spectator · 观战 · connected/)).toBeInTheDocument();
   });
 
+  it('restores an opening response and executes its actual local swap before following preparation', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const revealed = screen.getByLabelText('待结算的揭示牌').textContent;
+    await user.click(screen.getByRole('button', { name: '保存' }));
+    await user.click(screen.getByRole('button', { name: '恢复' }));
+    expect(screen.getByLabelText('待结算的揭示牌')).toHaveTextContent(revealed!);
+    await user.click(screen.getAllByRole('button', { name: '与牌堆底调换' })[0]!);
+    expect(screen.queryByLabelText('待结算的揭示牌')).not.toBeInTheDocument();
+    expect(screen.getByText(/host · p1 · connected/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '完成准备' })).toBeEnabled();
+  });
+
   it('ends the current local decision and follows the next player client', async () => {
     const user = userEvent.setup();
     render(<App />);
+    await retainOpeningCards(user);
 
     await user.click(screen.getByRole('button', { name: /^(结束行动|完成准备|完成前哨|完成战斗)$/ }));
     const forceEnd = screen.queryByRole('button', { name: '仍然结束' });

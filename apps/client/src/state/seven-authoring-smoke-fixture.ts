@@ -406,6 +406,7 @@ function buildServantDeckView(
 }
 
 function actionLabel(action: LegalAction, rawCards?: MatchSession['rawCards'], state?: RulesGameState): string {
+  if (action.type === 'decline_this_window' && (state as RulesGameState & { modeState?: { matchReveal?: unknown } })?.modeState?.matchReveal) return '保留揭示牌';
   if (action.type === 'normal_move') return `常规移动至 ${locationLabels[action.locationId as keyof typeof locationLabels] ?? action.locationId} · ${action.manaCost} 魔力`;
   if (action.type === 'skip_normal_move') return '不进行常规移动';
   if (action.type === 'complete_empty_regular_play') return '无合法攻击牌 · 完成常规出牌';
@@ -417,6 +418,7 @@ function actionLabel(action: LegalAction, rawCards?: MatchSession['rawCards'], s
   if (action.type === 'activate_ability') return `发动能力 ${action.abilityId}`;
   if (action.type === 'choose_target') return '选择目标';
   if (action.type === 'resolve_response') {
+    if (action.abilityId === 'chaldeas.swap-before-resolve') return '与牌堆底调换';
     const cardName = rawCards?.get(state?.cards.find((card) => card.instanceId === action.cardInstanceId)?.definitionId ?? '')?.name;
     return cardName ? `发动响应：${cardName}` : `发动响应：${action.abilityId}`;
   }
@@ -635,7 +637,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
     match: {
       round: state.round.roundNumber,
       phase: phaseLabels[state.round.activePhase] ?? state.round.activePhase,
-      priorityPlayerId: currentPlayerId,
+      priorityPlayerId: projected.pendingReveal ? projected.priorityPlayerId : currentPlayerId,
     },
     phaseTrack: phaseOrder.map((phaseId) => {
       const currentIndex = phaseOrder.indexOf(state.round.activePhase);
@@ -754,6 +756,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       label: directive.label,
       payload: directive.payload,
     })),
+    ...(projected.pendingReveal ? { pendingReveal: projected.pendingReveal } : {}),
     zones: projected.zones.map((zone) => ({
       id: zone.id,
       label: zone.label,

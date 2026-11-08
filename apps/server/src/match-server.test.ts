@@ -168,6 +168,16 @@ function nextMessage(socket: WebSocket, messages: ServerRoomMessage[], predicate
 }
 
 describe('match websocket server', () => {
+  function finishOpening(room: ReturnType<ReturnType<typeof createMatchServer>['hub']['getRoom']>) {
+    for (let i = 0; room.session!.state.round.activePhase === 'round_start' && i < 12; i++) {
+      const projection = room.getProjection('host');
+      const client = projection.seats.find(seat => seat.playerId === projection.match!.priorityPlayerId)!.clientId!;
+      const action = room.getProjection(client).match!.view.legalActions.find(action => action.type === 'decline_this_window')!;
+      expect(action).toBeDefined();
+      expect(room.dispatchClientCommand(client, action).ok).toBe(true);
+    }
+    expect(room.session!.state.round.activePhase).toBe('preparation');
+  }
   it('crosses a seven-human round boundary and rejects stale/duplicate end-turn after reconnect', async () => {
     serverHandle=createMatchServer(); const port=await serverHandle.listen(0); const hub=serverHandle.hub;
     const roomId='round-transition';hub.createRoom({roomId,hostClientId:'host',seed:20260904});
@@ -177,6 +187,7 @@ describe('match websocket server', () => {
       hub.selectSeat(roomId,id,seat);
     }
     hub.startMatch(roomId,'host'); const room=hub.getRoom(roomId);const session=room.session!;
+    finishOpening(room);
     Object.assign(session.state.round,{roundNumber:1,activePhase:'battle',prioritySeat:7,startingSeat:1});
     session.state.players.forEach(p=>delete p.locationId);
     session.state.abilityRuntime!.responseWindows=[];session.state.abilityRuntime!.hostRequests=[];delete session.state.abilityRuntime!.pendingDecision;
@@ -191,6 +202,7 @@ describe('match websocket server', () => {
     inbox.socket.send(JSON.stringify(command));
     await inbox.next(m=>m.type==='server:error'&&m.requestId==='end-round');
     expect(session.serializeSession()).toEqual(before);
+    finishOpening(room);
     inbox.socket.close();await new Promise(resolve=>inbox.socket.once('close',resolve));
     const next=await connectSocket(url);const view=await next.next(m=>m.type==='server:projection');
     expect(view.type==='server:projection'&&view.projection.match).toMatchObject({round:2,phase:'preparation',priorityPlayerId:'p2'});
@@ -211,6 +223,7 @@ describe('match websocket server', () => {
     }
     hub.startMatch('dr-p01-transport', 'host');
     const room = hub.getRoom('dr-p01-transport');
+    finishOpening(room);
     const session = room.session!;
     session.state.round.activePhase = 'action';
     session.state.round.prioritySeat = 1;

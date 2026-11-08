@@ -191,6 +191,7 @@ export interface PlaytestClientFixture {
   interactionWindows?: ClientInteractionWindow[];
   directives?: ClientDirectiveView[];
   zones?: ClientZoneGroup[];
+  pendingReveal?: MatchClientState['pendingReveal'];
   logs?: Array<{ id: string; type: string; message: string }>;
   replay?: ClientReplayCheckpoint[];
   outcome?: StandardMatchOutcome;

@@ -378,6 +378,9 @@ export default function MatchTable({
         <aside className='decision-panel'>
           <span className='decision-panel__eyebrow'>CURRENT DECISION</span>
           <h2>{decisionTitle}</h2>
+          {fixture.pendingReveal && <p aria-label='待结算的揭示牌'>
+            {fixture.pendingReveal.kind === 'situation' ? '局势' : '事件'}：{fixture.pendingReveal.name}
+          </p>}
           {fixture.actionTurn ? <p aria-label='行动回合进度'>{fixture.actionTurn.movement === 'pending' ? '先常规移动或选择不移动' : fixture.actionTurn.regularPlay === 'pending' ? '移动已完成 · 请选择完整常规出牌批次' : '常规出牌已完成 · 可使用阶段能力或结束行动'}</p> : null}
           {currentPlayer?.totalPower !== undefined ? <p aria-label='当前公开合计威力'>合计威力 {currentPlayer.totalPower}</p> : null}
           <p>检查手牌与技能区。只有规则端返回的操作会出现在卡牌检视层。</p>

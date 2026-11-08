@@ -4,7 +4,14 @@ import {projectRemoteRoomFixture}from'./remote-room-fixture';
 it('renders distinct server-authorized deployment destinations in the outpost phase',()=>{
  const room=createMatchRoom({seed:20260904,hostClientId:'seat-1'});
  for(let seat=1;seat<=7;seat++){const id=`seat-${seat}`;if(seat>1)room.joinRoom({clientId:id,displayName:id,role:'player'});room.selectSeat(id,seat);}
- room.startMatch('seat-1');for(let seat=1;seat<=7;seat++)expect(room.endClientTurn(`seat-${seat}`).ok).toBe(true);
+ room.startMatch('seat-1');
+ for(let i=0;room.session!.state.round.activePhase==='round_start'&&i<12;i++){
+  const owner=room.getProjection('seat-1').match!.priorityPlayerId;
+  const client=room.getProjection('seat-1').seats.find(seat=>seat.playerId===owner)!.clientId!;
+  const action=room.getProjection(client).match!.view.legalActions.find(action=>action.type==='decline_this_window')!;
+  expect(action).toBeDefined();expect(room.dispatchClientCommand(client,action).ok).toBe(true);
+ }
+ for(let seat=1;seat<=7;seat++)expect(room.endClientTurn(`seat-${seat}`).ok).toBe(true);
  const projection=room.getProjection('seat-1'),fixture=projectRemoteRoomFixture(projection)!;
  const actions=fixture.availableActions.filter(a=>a.backendCommand?.type==='deploy_player');
  expect(actions.length).toBeGreaterThan(1);expect(actions.every(a=>a.kind==='deploy')).toBe(true);

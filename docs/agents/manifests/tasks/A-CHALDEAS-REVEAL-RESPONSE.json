@@ -1,0 +1,42 @@
+{
+  "taskId": "A-CHALDEAS-REVEAL-RESPONSE",
+  "owner": "Root / Product A",
+  "status": "GRANTED",
+  "BaseCommit": "041b638bec465f8d6f511d8b881abf05a86a2dee",
+  "branch": "codex/a-chaldeas-reveal-response",
+  "worktree": "D:/fd-validation/post-693-acceptance",
+  "authority": "User continuation of the previously reviewed Chaldeas privacy-first sequence. Root serial handoff of the same shared paths, privacy candidate preserved at its own branch. B release from Runtime convergence remains applicable.",
+  "ReservedFiles": [
+    "docs/agents/manifests/tasks/A-CHALDEAS-REVEAL-RESPONSE.json",
+    "packages/rules/src/match-session.ts",
+    "packages/rules/src/ability/chaldeas-reveal.ts",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/extended-effects.ts",
+    "packages/rules/tests/acceptance/chaldeas-reveal-response.test.ts",
+    "packages/rules/tests/acceptance/chaldeas-deck-privacy.test.ts",
+    "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "apps/client/src/pages/MatchTable.tsx",
+    "apps/client/src/pages/MatchTable.test.tsx",
+    "apps/client/src/state/playtest-fixture-loader.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/seven-authoring-smoke-fixture.ts",
+    "packages/rules/tests/acceptance/seven-roster-test-helpers.ts",
+    "packages/rules/tests/acceptance/runtime-convergence/helpers.ts",
+    "packages/rules/tests/acceptance/event-promotion-boundaries.test.ts",
+    "apps/client/src/App.test.tsx",
+    "apps/client/src/state/remote-room-fixture.test.ts",
+    "apps/server/src/match-server.test.ts",
+    "apps/server/src/room-store.test.ts"
+  ],
+  "testPlan": {
+    "L1": "Legal owner window, live source/bottom, no mutation on wrong actor/stale response, exact physical deck swap.",
+    "L2": "Round-opening situation and public events, Shinto reveal before action, response persistence and once-per-round.",
+    "L3": "Once after frozen reviewed shared phase integration, no per-skill matches."
+  },
+  "forbidden": [
+    "D:/fd dirty B workspace",
+    "previously frozen commits and review receipts",
+    "CI/test weakening",
+    "merge or credit"
+  ]
+}
