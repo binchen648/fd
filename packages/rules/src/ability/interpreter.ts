@@ -1,3 +1,4 @@
+import { CHALDEAS_SWAP, maySwapMatchReveal } from './chaldeas-reveal';
 import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import { isAcceptedBattlefieldPlacement, supportsBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
@@ -1321,6 +1322,7 @@ function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbilit
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (a.id === CHALDEAS_SWAP && !maySwapMatchReveal(s, sourceId, event)) return false;
   if (!convergenceSourceAvailable(s,sourceId,a)) return false;
   if (activationContractFailure(s,sourceId,a,event)) return false;
   if (a.id==='sc-tomoe-2.inferno-fire' && (!isInfernoStatusPlan(a) || !isBattlefield(s,player(s,card(s,sourceId).controllerPlayerId).locationId))) return false;
@@ -1582,7 +1584,8 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
   }
   const window = r.responseWindows[0];
   if (window) return window.controllerId === playerId ? [
-    ...window.choices.filter(c => canActivate(s, c.cardInstanceId, abilityDefinition(s, c.cardInstanceId, c.abilityId), window.event))
+    ...window.choices.filter(c => (c.abilityId !== CHALDEAS_SWAP || maySwapMatchReveal(s, c.cardInstanceId, window.event)) &&
+      canActivate(s, c.cardInstanceId, abilityDefinition(s, c.cardInstanceId, c.abilityId), window.event))
       .map(c => ({ type: 'resolve_response' as const, windowId: window.id, cardInstanceId: c.cardInstanceId, abilityId: c.abilityId })),
     { type: 'decline_this_window', windowId: window.id },
   ] : [];

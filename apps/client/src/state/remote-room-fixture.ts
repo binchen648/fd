@@ -121,7 +121,8 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         : action.type === 'confirm_staged_attack' ? '确认打出攻击区'
           : action.type === 'cancel_staged_attack' ? '取消待确认攻击'
             : action.type === 'activate_ability' ? `发动能力 ${action.abilityId}`
-            : action.type,
+            : action.type === 'resolve_response' && action.abilityId === 'chaldeas.swap-before-resolve' ? '与牌堆底调换'
+              : action.type === 'decline_this_window' && match.pendingReveal ? '保留揭示牌' : action.type,
       sourceCardInstanceId: 'cardInstanceId' in action ? action.cardInstanceId : undefined,
       targetId: 'candidates' in action ? action.candidates[0] : undefined,
       targetCandidates: 'candidates' in action ? action.candidates : undefined,
@@ -153,7 +154,8 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
           : action.type === 'confirm_staged_attack' ? '确认打出攻击区'
             : action.type === 'cancel_staged_attack' ? '取消待确认攻击'
               : action.type === 'activate_ability' ? `发动能力 ${action.abilityId}`
-              : action.type,
+              : action.type === 'resolve_response' && action.abilityId === 'chaldeas.swap-before-resolve' ? '与牌堆底调换'
+                : action.type === 'decline_this_window' && match.pendingReveal ? '保留揭示牌' : action.type,
         targetId: 'candidates' in action ? action.candidates[0] : undefined,
         targetCandidates: 'candidates' in action ? action.candidates : undefined,
         minTargets: 'min' in action ? action.min : undefined,
@@ -165,6 +167,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     })),
     directives: match.directives,
     zones: match.zones,
+    ...(match.pendingReveal ? { pendingReveal: match.pendingReveal } : {}),
     logs: match.logs.map((entry) => ({ id: entry.id, type: entry.type, message: entry.message })),
     replay: match.replay.map((entry) => ({
       id: entry.id,

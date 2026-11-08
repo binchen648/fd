@@ -1,6 +1,6 @@
 ﻿import { describe, expect, it } from 'vitest';
 
-import { createMatchSession } from '../../src/match-session';
+import { createPostOpeningSession as createMatchSession } from '../acceptance/seven-roster-test-helpers';
 import {
   advanceAbilityPhase,
   getLegalActions,

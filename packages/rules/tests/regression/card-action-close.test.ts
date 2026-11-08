@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { createMatchSession } from '../../src/match-session';
+import { createPostOpeningSession as createMatchSession } from '../acceptance/seven-roster-test-helpers';
 import { isCloseSourceCardOnPlayedTrigger, processAbilityEvent } from '../../src/ability/interpreter';
 import type { AuthoringAbility } from '../../src/ability/types';
 

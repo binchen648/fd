@@ -3,12 +3,12 @@ import { describe, expect, it } from 'vitest';
 import {
   advanceAbilityPhase,
   applyBattleScoring,
-  createMatchSession,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
   processAbilityEvent,
   restoreMatchSession,
   resolveBattlefield,
 } from '../../src/index';
+import { createPostOpeningSession as createMatchSession } from '../acceptance/seven-roster-test-helpers';
 
 const OLGA_PLAYER_ID = 'p4';
 const ASTRONOMY_ID = 'master.olga-marie.skill.astronomical-science';

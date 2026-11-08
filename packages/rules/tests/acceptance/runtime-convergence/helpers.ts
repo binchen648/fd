@@ -1,6 +1,7 @@
 import { expect } from 'vitest';
 import { createMatchSession } from '../../../src/match-session';
 import type { AbilityCommand } from '../../../src/ability/types';
+import { finishOpening } from '../seven-roster-test-helpers';
 
 export const humans = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'];
 export type Session = ReturnType<typeof createMatchSession>;
@@ -9,6 +10,7 @@ export type Session = ReturnType<typeof createMatchSession>;
  * are the unmodified production pack. Only starting phase/resources/zones change. */
 export function fixture(definitionId: string) {
   const session = createMatchSession({ seed: 20260907, humanPlayerIds: humans });
+  finishOpening(session);
   const source = session.state.cards.find(c => c.definitionId === definitionId)!;
   expect(source, definitionId).toBeDefined();
   const playerId = source.controllerPlayerId;

@@ -1,3 +1,4 @@
+import { CHALDEAS_REVEAL, CHALDEAS_SWAP, chaldeasSource, currentMatchDeckBottom, matchReveal, ordinarySituationDeck, type MatchReveal } from './ability/chaldeas-reveal';
 import { movementLocks } from './ability/movement-locks';
 import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
 import { resolveStandardRoundEnd, type StandardMatchOutcome } from './core/elimination-resolver';
@@ -82,6 +83,7 @@ interface MatchSituationDefinition {
 interface RuntimeEventCard {
   id: string;
   name: string;
+  printedText?: string;
   printedReward?: number;
   effects?: Array<Record<string, unknown>>;
 }
@@ -155,12 +157,13 @@ export interface MatchZoneProjection {
   cardIds: string[];
   count: number;
   status: 'enabled' | 'empty' | 'disabled' | 'host_adjudicated';
+  /** Only projected to a player whose current ability can see this deck bottom. */
+  bottomCard?: { id: string; name: string; rulesText?: string };
 }
 
 export interface MatchClientState {
   matchId: string;
   contentPack: { id: string; version: number; definitionHash: string };
-  seed: number;
   humanPlayerId: string;
   round: number;
   phase: PhaseName;
@@ -169,6 +172,7 @@ export interface MatchClientState {
   interactionWindows: MatchInteractionWindow[];
   directives: MatchDirectiveView[];
   zones: MatchZoneProjection[];
+  pendingReveal?: { kind: 'situation' | 'event'; id: string; name: string; rulesText?: string; locationId?: LocationId };
   logs: MatchSessionLogEntry[];
   replay: Array<{ id: string; round: number; phase: PhaseName; revision: number; label: string }>;
   battleBreakdowns: GameState['battleResults'];
@@ -1107,6 +1111,30 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
           !(progress.movement === 'pending' && progress.regularPlay === 'complete') &&
           Object.keys(progress).length === 2 && Object.keys(progress).every(key => ['movement', 'regularPlay'].includes(key)))) return false;
   }
+  const reveal = matchReveal(restoredState);
+  const opening = (value.modeState as Record<string, unknown> | undefined)?.roundOpening;
+  if (opening !== undefined && (!isRestoreRecord(opening) || !isRestoreSafeInteger(opening.nextEvent) ||
+      opening.nextEvent > 8 || !reveal || restoredState.round.activePhase !== 'round_start')) return false;
+  if (reveal !== undefined) {
+    if (!isRestoreRecord(reveal) || reveal.round !== restoredState.round.roundNumber ||
+        typeof reveal.eventId !== 'string' || !playerIds.has(reveal.controllerId) || !instanceIds.has(reveal.sourceId) ||
+        reveal.chosenId !== reveal.originalId || typeof reveal.originalId !== 'string' || typeof reveal.bottomId !== 'string') return false;
+    if (reveal.kind === 'situation') {
+      if (!opening || !situationById.has(reveal.originalId) || !situationById.has(reveal.bottomId)) return false;
+    } else if (reveal.kind === 'event') {
+      if (!locationIds.has(reveal.locationId) || !eventIds.has(reveal.originalId) || !eventIds.has(reveal.bottomId)) return false;
+      if (reveal.placementIndex === undefined) {
+        if (!opening) return false;
+      } else if (!isRestoreSafeInteger(reveal.placementIndex) || opening || restoredState.round.activePhase !== 'action' ||
+          restoredState.eventPlacements[reveal.placementIndex]?.eventCardId !== reveal.originalId ||
+          restoredState.eventPlacements[reveal.placementIndex]?.locationId !== reveal.locationId ||
+          restoredState.eventPlacements[reveal.placementIndex]?.visibility.scope !== 'hidden_until_trigger') return false;
+    } else return false;
+    const window = restoredState.abilityRuntime?.responseWindows.find(candidate => candidate.event.id === reveal.eventId);
+    if (!window || window.controllerId !== reveal.controllerId || window.event.type !== CHALDEAS_REVEAL ||
+        window.event.revealedId !== reveal.originalId || window.event.revealedKind !== reveal.kind ||
+        !window.choices.some(choice => choice.cardInstanceId === reveal.sourceId && choice.abilityId === CHALDEAS_SWAP)) return false;
+  }
   if (!isDeferredAbilityRuntimeProvenanceValidForRestore(restoredState)) return false;
   if (restoredState.abilityRuntime?.pendingDecision &&
       !isCanonicalGenericPendingDecisionForRestore(restoredState, restoredState.abilityRuntime.pendingDecision)) return false;
@@ -1383,8 +1411,15 @@ const climaxSituations: MatchSituationDefinition[] = [
 ];
 
 const situationById = new Map([...nonClimaxSituations, ...climaxSituations].map((situation) => [situation.id, situation] as const));
+
 const eventCards = (contentLibrary as { cards?: RuntimeEventCard[] }).cards ?? [];
 const eventCardById = new Map(eventCards.filter((card) => card.id.startsWith('event.')).map((card) => [card.id, card] as const));
+
+function revealCardDetails(card: MatchSituationDefinition | RuntimeEventCard) {
+  const rulesText = 'desc' in card ? card.desc
+    : [card.printedReward !== undefined ? `战果 ${card.printedReward}。` : '', card.printedText].filter(Boolean).join(' ');
+  return { id: card.id, name: card.name, rulesText };
+}
 const eventDeckTemplate = ((contentLibrary as { eventSets?: Array<{ id: string; cardIds: string[] }> }).eventSets ?? [])
   .find((set) => set.id === 'event-set.waxing_moon_ritual')?.cardIds ?? [];
 
@@ -1547,12 +1582,6 @@ function deploymentLimitFor(state: GameState, locationId: LocationId): number | 
   return (modeStateOf(state).deploymentLimitOnly as Partial<Record<LocationId, number>> | undefined)?.[locationId];
 }
 
-function terrainAssignmentsOf(state: GameState): Partial<Record<LocationId, string[]>> {
-  const store = modeStateOf(state) as { terrainAssignments?: Partial<Record<LocationId, string[]>> };
-  store.terrainAssignments ??= {};
-  return store.terrainAssignments;
-}
-
 function terrainSlotCount(state: GameState, locationId: LocationId): number {
   return getEnabledLocations(state.map, state.locationConfig)
     .find((location) => location.id === locationId)?.terrainBonuses?.length ?? 0;
@@ -1627,7 +1656,8 @@ function projectInteractionWindows(state: GameState, viewerId: string): MatchInt
     windows.push({
       id: view.responseWindow.id,
       kind: 'response',
-      title: view.responseWindow.kind === 'choose_unique_trigger' ? '唯一触发选择' : '响应窗口',
+      title: runtimeWindow?.event.type === CHALDEAS_REVEAL ? '迦勒底亚斯：调换或保留揭示牌'
+        : view.responseWindow.kind === 'choose_unique_trigger' ? '唯一触发选择' : '响应窗口',
       controllerId: viewerId,
       sourceLabel: view.responseWindow.opens,
       ...(responseCandidates?.length ? { candidates: responseCandidates } : {}),
@@ -1674,7 +1704,7 @@ export class MatchSession {
     this.state = built.state;
     this.pairings = built.pairings;
     this.rawCards = built.rawCards;
-    this.record('session_start', '7-player authoring match session started', { seed: this.seed, pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
+    this.record('session_start', '7-player authoring match session started', { pairings: this.pairings.map((p) => ({ playerId: p.playerId, master: p.master.id, servant: p.servant.id })) });
     this.consumeAppliedDirectives();
     if (initializeReplay) this.checkpoint('game start');
     this.replayCaptureEnabled = true;
@@ -1718,6 +1748,7 @@ export class MatchSession {
     if (command.type === 'deploy_player') return this.dispatchDeployPlayer(playerId, command.locationId as LocationId, command.terrainBid);
     const privateInteractionMutation = command.type === 'choose_target' &&
       this.state.abilityRuntime?.pendingDecision?.interaction?.visibility === 'owner_only';
+    const resolvingReveal = matchReveal(this.state);
     const beforeEventCount = this.state.abilityRuntime?.events.length ?? 0;
     const result = dispatchAbilityCommand(this.state, playerId, command);
     if (!result.ok) {
@@ -1738,8 +1769,12 @@ export class MatchSession {
       rejection: result.rejection,
     });
     this.consumeAppliedDirectives();
+    if (resolvingReveal && !this.hasPendingInteraction(this.state)) {
+      if (this.state.round.activePhase === 'round_start') this.startRound(this.state.round.roundNumber, this.state, this.state.round.startingSeat);
+      if (this.state.round.activePhase === 'action') this.finishActionReveal();
+    }
     if (result.ok) this.checkpoint(`${playerId}:${command.type}`);
-    return { ...result, view: this.projectSessionView(result.view) };
+    return { ...result, view: resolvingReveal ? this.projectAbilityView(playerId) : this.projectSessionView(result.view) };
   }
 
   dispatchPlayerCommand(playerId: string, command: AbilityCommand): DispatchResult {
@@ -2047,8 +2082,8 @@ export class MatchSession {
     for (let guard = 0; guard < 2000; guard++) {
       const reason = this.runUntilHumanInputOrRoundEnd();
       if (reason === 'human_input') {
-        const player = this.priorityPlayer();
-        if (!player || player.id !== this.humanPlayerId) return reason;
+        const decisionOwner = this.state.abilityRuntime?.pendingDecision?.controllerId ?? this.state.abilityRuntime?.responseWindows[0]?.controllerId ?? this.priorityPlayer()?.id;
+        if (decisionOwner !== this.humanPlayerId) return reason;
         const action = chooseAiAction([...this.legalDeploymentActions(this.humanPlayerId), ...getLegalActions(this.state, this.humanPlayerId)]);
         if (!action) {
           this.record('human_auto_passed', `${this.humanPlayerId}:no legal action`);
@@ -2113,9 +2148,7 @@ export class MatchSession {
       if (this.state.round.activePhase === 'advance') {
         this.state.round.activePhase = 'action';
         this.state.round.prioritySeat = this.roundSeatOrder()[0]!.seat;
-        this.revealShintoEventsAtActionStart(this.state);
-        advanceAbilityPhase(this.state, 'action', this.state.round.roundNumber);
-        this.record('phase_started', `round ${this.state.round.roundNumber} action phase`);
+        this.finishActionReveal();
         return;
       }
       if (this.state.round.activePhase === 'action') {
@@ -2135,6 +2168,8 @@ export class MatchSession {
   projectToClientState(playerId = this.humanPlayerId): MatchClientState {
     const view = this.projectAbilityView(playerId);
     const outcome = this.standardOutcome();
+    const reveal = matchReveal(this.state);
+    const revealedCard = reveal?.kind === 'situation' ? situationById.get(reveal.originalId) : reveal ? eventCardById.get(reveal.originalId) : undefined;
     const hiddenEventIds = canViewFaceDownEvents(this.state, playerId) ? [] : this.state.eventPlacements
       .filter(event => event.visibility.scope !== 'public').map(event => event.eventCardId);
     const recentReplay = this.replay.slice(-40);
@@ -2149,17 +2184,21 @@ export class MatchSession {
         version: runtimeContent.pack.version,
         definitionHash: runtimeContent.rules.definitionHash,
       },
-      seed: this.seed,
       humanPlayerId: this.humanPlayerId,
       round: this.state.round.roundNumber,
       phase: this.state.round.activePhase,
-      priorityPlayerId: this.priorityPlayer()?.id ?? this.humanPlayerId,
+      priorityPlayerId: reveal?.controllerId ?? this.priorityPlayer()?.id ?? this.humanPlayerId,
       view,
       interactionWindows: projectInteractionWindows(this.state, playerId),
-      directives: this.directiveViews().map(directive => ({ ...directive,
-        ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),
-      })),
+      directives: [
+        ...this.directiveViews().map(directive => ({ ...directive,
+          ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),
+        })),
+        ...this.publicEventNotices(),
+      ],
       zones: this.projectZones(playerId),
+      ...(reveal && revealedCard ? { pendingReveal: { kind: reveal.kind, ...revealCardDetails(revealedCard),
+        ...(reveal.kind === 'event' ? { locationId: reveal.locationId } : {}) } } : {}),
       logs: this.logs.slice(-80).map(entry => this.projectLogEntry(entry, playerId)),
       replay: recentReplay,
       battleBreakdowns: this.battleHistory,
@@ -2177,14 +2216,21 @@ export class MatchSession {
     for (const eventId of hiddenEventIds) projected.message = projected.message.split(eventId).join('hidden-event');
     let payload = projected.payload;
     if (!payload) return projected;
+    if (entry.type === 'situation_pre_discard' && Array.isArray(payload.burned)) {
+      payload = { count: payload.burned.length };
+    }
     if (entry.type === 'cards_drawn' && payload.playerId !== viewerId) {
       payload = { playerId: payload.playerId, handLimit: payload.handLimit,
         drawCount: Array.isArray(payload.drawn) ? payload.drawn.length : 0 };
     }
-    if (entry.type === 'session_start' && Array.isArray(payload.pairings)) {
-      payload.pairings = payload.pairings.map((pairing: Record<string, unknown>) =>
-        pairing.playerId === viewerId || this.state.abilityRuntime?.revealedServants.includes(String(pairing.playerId))
-          ? pairing : { playerId: pairing.playerId, master: pairing.master });
+    if (entry.type === 'session_start') {
+      // Older saves stored the shuffle seed in the startup log.
+      delete payload.seed;
+      if (Array.isArray(payload.pairings)) {
+        payload.pairings = payload.pairings.map((pairing: Record<string, unknown>) =>
+          pairing.playerId === viewerId || this.state.abilityRuntime?.revealedServants.includes(String(pairing.playerId))
+            ? pairing : { playerId: pairing.playerId, master: pairing.master });
+      }
     }
     if (Array.isArray(payload.events)) payload.events = payload.events.filter((event: Record<string, unknown>) => typeof event.visibility !== 'string' || event.visibility === viewerId);
     const command = payload.command as Record<string, unknown> | undefined;
@@ -2387,7 +2433,7 @@ export class MatchSession {
     targetState.burnedSituationCardIds = shuffled.slice(0, 2);
     targetState.situationDeck = shuffled.slice(2).concat(climaxSituations.map((situation) => situation.id));
     targetState.situationDiscardPile = [...targetState.burnedSituationCardIds];
-    this.record('situation_pre_discard', 'burn two non-climax situations', { burned: targetState.burnedSituationCardIds }, targetState);
+    this.record('situation_pre_discard', 'burn two non-climax situations', { count: targetState.burnedSituationCardIds.length }, targetState);
   }
 
   private drawEventCard(targetState: GameState): string | undefined {
@@ -2410,38 +2456,29 @@ export class MatchSession {
   private placeEvent(targetState: GameState, locationId: LocationId, visibility: 'public' | 'hidden'): void {
     const eventCardId = this.drawEventCard(targetState);
     if (!eventCardId) return;
+    this.recordEventPlacement(targetState, eventCardId, locationId, visibility);
+  }
+
+  private recordEventPlacement(targetState: GameState, eventCardId: string, locationId: LocationId,
+    visibility: 'public' | 'hidden', placementIndex?: number): void {
     const placement = {
       locationId,
       eventCardId,
-      visibility: visibility === 'public' ? { scope: 'public' as const } : { scope: 'hidden_until_trigger' as const },
+      visibility: visibility === 'public'
+        ? { scope: 'public' as const, ...(placementIndex === undefined ? {} : { revealReason: 'action_start' }) }
+        : { scope: 'hidden_until_trigger' as const },
       battleModifiers: eventBattleModifiers(eventCardId),
     };
     const victoryPoints = eventVictoryPoints(eventCardId);
     if (victoryPoints !== undefined) Object.assign(placement, { victoryPoints });
-    targetState.eventPlacements.push(placement);
-    this.record('event_placed', `${locationId}:${eventCardId}`, { placement }, targetState);
-    if (eventHasHostAdjudicatedEffects(eventCardId)) {
-      const modeState = modeStateOf(targetState);
-      const masterDirectives = Array.isArray(modeState.masterDirectives) ? modeState.masterDirectives : [];
-      masterDirectives.push({
-        directive: 'event_effect_host_review',
-        eventCardId,
-        locationId,
-        timing: 'on_event_placed_or_revealed',
-        consumed: true,
-      });
-      modeState.masterDirectives = masterDirectives;
-    }
-
+    if (placementIndex === undefined) targetState.eventPlacements.push(placement);
+    else targetState.eventPlacements[placementIndex] = placement;
+    if (placementIndex === undefined) this.record('event_placed', `${locationId}:${eventCardId}`, { placement }, targetState);
+    else this.record('event_revealed', 'shinto action start reveal', { locationId, count: 1, placement }, targetState);
   }
 
-  private applySituation(targetState: GameState, round: number): MatchSituationDefinition {
-    const situationId = round <= 8
-      ? targetState.situationDeck?.shift()
-      : climaxSituations[round - 9]?.id;
-    const situation = situationById.get(situationId ?? '') ?? nonClimaxSituations[0]!;
-    targetState.currentSituationCardId = situation.id;
-    const resolvedSituation = situationById.get(targetState.currentSituationCardId ?? situation.id) ?? situation;
+  private applySituation(targetState: GameState, resolvedSituation: MatchSituationDefinition): void {
+    targetState.currentSituationCardId = resolvedSituation.id;
     delete targetState.currentSituationModifiers;
     if (resolvedSituation.battleModifiers) targetState.currentSituationModifiers = resolvedSituation.battleModifiers;
     for (const player of targetState.players) {
@@ -2456,9 +2493,8 @@ export class MatchSession {
       name: resolvedSituation.name,
       mana: resolvedSituation.mana,
       isClimax: Boolean(resolvedSituation.isClimax),
-      remaining: targetState.situationDeck?.length ?? 0,
+      remaining: ordinarySituationDeck(targetState).length,
     }, targetState);
-    return resolvedSituation;
   }
 
   private applySituationModeState(targetState: GameState, situation: MatchSituationDefinition): void {
@@ -2473,39 +2509,56 @@ export class MatchSession {
     modeState.deploymentLimitOnly = situation.deploymentLimitOnly ?? {};
   }
 
-  private placeRoundEvents(targetState: GameState, situation: MatchSituationDefinition, round: number): void {
-    targetState.eventPlacements = [];
-    if (round === 11) {
-      this.placeEvent(targetState, 'miyama_town', 'public');
-      this.placeEvent(targetState, 'miyama_town', 'public');
-      this.placeEvent(targetState, 'miyama_town', 'public');
-    } else if (round >= 9) {
-      this.placeEvent(targetState, 'miyama_town', 'public');
-      this.placeEvent(targetState, 'miyama_town', 'public');
-      this.placeEvent(targetState, 'shinto', 'public');
-      this.placeEvent(targetState, 'shinto', 'hidden');
-    } else {
-      this.placeEvent(targetState, 'miyama_town', 'public');
-      this.placeEvent(targetState, 'shinto', 'hidden');
-    }
-    if (round <= 8) {
-      for (const extraEvent of situation.extraEvents ?? []) {
-        if ((situation.closedLocations ?? []).includes(extraEvent.locationId)) continue;
-        this.placeEvent(targetState, extraEvent.locationId, extraEvent.visibility);
-      }
-    }
-    this.refreshEventForbids(targetState);
+  private roundEventSchedule(situation: MatchSituationDefinition, round: number): Array<{ locationId: LocationId; visibility: 'public' | 'hidden' }> {
+    const miyama = { locationId: 'miyama_town', visibility: 'public' } as const;
+    const hiddenShinto = { locationId: 'shinto', visibility: 'hidden' } as const;
+    if (round === 11) return [miyama, miyama, miyama];
+    if (round >= 9) return [miyama, miyama, { locationId: 'shinto', visibility: 'public' }, hiddenShinto];
+    return [miyama, hiddenShinto, ...(situation.extraEvents ?? []).filter(event => !situation.closedLocations?.includes(event.locationId))];
   }
 
-  private revealShintoEventsAtActionStart(targetState: GameState): void {
-    let revealed = 0;
-    targetState.eventPlacements = targetState.eventPlacements.map((placement) => {
-      if (placement.locationId !== 'shinto' || placement.visibility.scope !== 'hidden_until_trigger') return placement;
-      revealed++;
-      return { ...placement, visibility: { scope: 'public' as const, revealReason: 'action_start' } };
-    });
-    if (revealed) this.record('event_revealed', 'shinto action start reveal', { locationId: 'shinto', count: revealed }, targetState);
-    this.refreshEventForbids(targetState);
+  private hasPendingInteraction(state: GameState): boolean {
+    const runtime = state.abilityRuntime;
+    return !!(runtime?.pendingDecision || runtime?.responseWindows.length || runtime?.hostRequests.length);
+  }
+
+  private openMatchReveal(state: GameState, originalId: string,
+    target: { kind: 'situation' } | { kind: 'event'; locationId: LocationId; placementIndex?: number }): boolean {
+    const controller = state.players.find(player => player.masterCardId === 'master.olga-marie' && this.isHumanPlayer(player.id));
+    if (!controller) return false;
+    const source = chaldeasSource(state, controller.id, CHALDEAS_SWAP);
+    const bottomId = currentMatchDeckBottom(state, target.kind);
+    const round = state.round.roundNumber;
+    if (!source || !bottomId ||
+        (state.abilityRuntime?.abilityUsage[`${source.instanceId}:${CHALDEAS_SWAP}:round:${round}`] ?? 0) > 0) return false;
+    const eventId = `chaldeas-reveal:${round}:${state.abilityRuntime!.sequence + 1}:${state.abilityRuntime!.revision}`;
+    modeStateOf(state).matchReveal = { ...target, eventId, round, originalId, bottomId, controllerId: controller.id,
+      sourceId: source.instanceId, chosenId: originalId } satisfies MatchReveal;
+    processAbilityEvent(state, { id: eventId, type: CHALDEAS_REVEAL, playerId: controller.id,
+      revealedKind: target.kind, revealedId: originalId, ...(target.kind === 'event' ? { locationId: target.locationId } : {}) });
+    if (this.hasPendingInteraction(state)) return true;
+    delete modeStateOf(state).matchReveal;
+    return false;
+  }
+
+  private finishActionReveal(): void {
+    const state = this.state;
+    const pending = matchReveal(state);
+    if (pending?.kind === 'event' && pending.placementIndex !== undefined) {
+      const previous = state.eventPlacements[pending.placementIndex];
+      if (previous?.eventCardId === pending.originalId && previous.locationId === pending.locationId && previous.visibility.scope === 'hidden_until_trigger') {
+        this.recordEventPlacement(state, pending.chosenId, pending.locationId, 'public', pending.placementIndex);
+      }
+      delete modeStateOf(state).matchReveal;
+    }
+    for (const [index, placement] of state.eventPlacements.entries()) {
+      if (placement.locationId !== 'shinto' || placement.visibility.scope !== 'hidden_until_trigger') continue;
+      if (this.openMatchReveal(state, placement.eventCardId, { kind: 'event', locationId: placement.locationId, placementIndex: index })) return;
+      this.recordEventPlacement(state, placement.eventCardId, placement.locationId, 'public', index);
+    }
+    this.refreshEventForbids(state);
+    advanceAbilityPhase(state, 'action', state.round.roundNumber);
+    this.record('phase_started', `round ${state.round.roundNumber} action phase`);
   }
 
   private refreshEventForbids(targetState: GameState): void {
@@ -2654,22 +2707,52 @@ export class MatchSession {
       targetState.round.startingSeat = startingSeat;
       targetState.round.prioritySeat = startingSeat;
       advanceAbilityPhase(targetState, 'round_start', round);
-      const runtime = targetState.abilityRuntime;
-      if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
+      if (this.hasPendingInteraction(targetState)) return;
     }
-    targetState.round = { roundNumber: round, activePhase: 'preparation', prioritySeat: startingSeat, startingSeat };
-    for (const player of targetState.players) {
-      delete player.locationId;
+    let opening = modeStateOf(targetState).roundOpening as { nextEvent: number } | undefined;
+    if (!opening) {
+      targetState.round = { roundNumber: round, activePhase: 'round_start', prioritySeat: startingSeat, startingSeat };
+      for (const player of targetState.players) delete player.locationId;
+      modeStateOf(targetState).terrainAssignments = {};
+      targetState.eventPlacements = [];
+      delete targetState.currentSituationCardId;
+      const drawOrder = targetState.players.filter(player => player.status === 'active').sort((a, b) =>
+        Number(a.seat < startingSeat) - Number(b.seat < startingSeat) || a.seat - b.seat);
+      for (const player of drawOrder) this.drawToHandLimit(targetState, player.id);
+      opening = { nextEvent: 0 };
+      modeStateOf(targetState).roundOpening = opening;
+      const original = round <= 8 ? targetState.situationDeck?.shift() : climaxSituations[round - 9]?.id;
+      if (original && round <= 8 && this.openMatchReveal(targetState, original, { kind: 'situation' })) return;
+      const situation = situationById.get(original ?? '') ?? nonClimaxSituations[0]!;
+      this.applySituation(targetState, situation);
+      this.applySituationModeState(targetState, situation);
+    } else {
+      if (this.hasPendingInteraction(targetState)) return;
+      const pending = matchReveal(targetState);
+      if (pending?.kind === 'situation') {
+        const situation = situationById.get(pending.chosenId)!;
+        this.applySituation(targetState, situation);
+        this.applySituationModeState(targetState, situation);
+      } else if (pending?.kind === 'event') {
+        this.recordEventPlacement(targetState, pending.chosenId, pending.locationId, 'public');
+      }
+      delete modeStateOf(targetState).matchReveal;
     }
-    terrainAssignmentsOf(targetState);
-    (modeStateOf(targetState) as { terrainAssignments?: Partial<Record<LocationId, string[]>> }).terrainAssignments = {};
-    const drawOrder = targetState.players.filter(player => player.status === 'active').sort((a, b) =>
-      Number(a.seat < startingSeat) - Number(b.seat < startingSeat) || a.seat - b.seat);
-    for (const player of drawOrder) this.drawToHandLimit(targetState, player.id);
-    const situation = this.applySituation(targetState, round);
-    this.applySituationModeState(targetState, situation);
-    this.placeRoundEvents(targetState, situation, round);
-    if (targetState.abilityRuntime) advanceAbilityPhase(targetState, 'preparation', round);
+    const schedule = this.roundEventSchedule(situationById.get(targetState.currentSituationCardId!)!, round);
+    while (opening.nextEvent < schedule.length) {
+      const event = schedule[opening.nextEvent++]!;
+      if (event.visibility === 'hidden') {
+        this.placeEvent(targetState, event.locationId, 'hidden');
+        continue;
+      }
+      const original = this.drawEventCard(targetState);
+      if (!original) continue;
+      if (this.openMatchReveal(targetState, original, { kind: 'event', locationId: event.locationId })) return;
+      this.recordEventPlacement(targetState, original, event.locationId, 'public');
+    }
+    delete modeStateOf(targetState).roundOpening;
+    this.refreshEventForbids(targetState);
+    advanceAbilityPhase(targetState, 'preparation', round);
     this.record('round_start', `round ${round} started`, { situation: targetState.currentSituationCardId, events: targetState.eventPlacements, closedLocations: modeStateOf(targetState).closedLocations }, targetState);
     this.checkpoint(`round ${round} start`, targetState);
   }
@@ -2875,6 +2958,13 @@ export class MatchSession {
       .map((card) => card.id);
     const own = (zoneName: string) => (card: GameState['cards'][number]) => card.ownerPlayerId === playerId && card.zone === zoneName;
     const mayViewHiddenEvents = canViewFaceDownEvents(s, playerId);
+    const mayPeekBottoms = !!chaldeasSource(s, playerId, 'chaldeas.peek-bottoms');
+    const eventDeck = s.eventDeck ?? [];
+    const situationDeck = ordinarySituationDeck(s);
+    const eventBottomId = mayPeekBottoms ? currentMatchDeckBottom(s, 'event') : undefined;
+    const situationBottomId = mayPeekBottoms ? currentMatchDeckBottom(s, 'situation') : undefined;
+    const eventBottom = eventBottomId ? eventCardById.get(eventBottomId) : undefined;
+    const situationBottom = situationBottomId ? situationById.get(situationBottomId) : undefined;
     const visibleEventPlacementIds = s.eventPlacements
       .filter((event) => event.visibility.scope !== 'hidden_until_trigger' || mayViewHiddenEvents)
       .map((event) => event.eventCardId);
@@ -2897,12 +2987,16 @@ export class MatchSession {
       zone(s, 'discard', '弃牌', own('discard')),
       ...(mayViewOpponentDiscards ? [{ id: 'opponent_discard', label: '对手弃牌', cardIds: opponentDiscardIds, count: opponentDiscardIds.length, status: opponentDiscardIds.length ? 'enabled' as const : 'empty' as const }] : []),
       zone(s, 'removed_from_game', '移除', own('removed_from_game')),
-      { id: 'event_deck', label: '事件牌库', cardIds: s.eventDeck ?? [], count: (s.eventDeck ?? []).length, status: 'enabled' },
+      { id: 'event_deck', label: '事件牌库', cardIds: [], count: eventDeck.length, status: 'enabled',
+        ...(eventBottom ? { bottomCard: revealCardDetails(eventBottom) } : {}) },
       { id: 'event_placements', label: '事件放置', cardIds: visibleEventPlacementIds, count: s.eventPlacements.length, status: s.eventPlacements.length ? 'enabled' : 'empty' },
       { id: 'event_discard', label: '事件弃牌', cardIds: (s.eventDiscardPile ?? []).map((event) => event.eventCardId), count: s.eventDiscardPile?.length ?? 0, status: s.eventDiscardPile?.length ? 'enabled' : 'empty' },
-      { id: 'situation_deck', label: '局势牌库', cardIds: s.situationDeck ?? [], count: (s.situationDeck ?? []).length, status: 'enabled' },
+      { id: 'situation_deck', label: '局势牌库', cardIds: [], count: situationDeck.length, status: 'enabled',
+        ...(situationBottom ? { bottomCard: revealCardDetails(situationBottom) } : {}) },
       { id: 'current_situation', label: '当前局势', cardIds: s.currentSituationCardId ? [s.currentSituationCardId] : [], count: s.currentSituationCardId ? 1 : 0, status: s.currentSituationCardId ? 'enabled' : 'empty' },
-      { id: 'situation_discard', label: '局势弃牌/烧毁', cardIds: s.situationDiscardPile ?? [], count: (s.situationDiscardPile ?? []).length, status: s.situationDiscardPile?.length ? 'enabled' : 'empty' },
+      { id: 'situation_discard', label: '局势弃牌/烧毁',
+        cardIds: (s.situationDiscardPile ?? []).filter(id => !s.burnedSituationCardIds?.includes(id)),
+        count: s.situationDiscardPile?.length ?? 0, status: s.situationDiscardPile?.length ? 'enabled' : 'empty' },
       zone(s, 'generated_cards', '生成牌', (card) => card.zone === 'generated' || card.zone === 'looked_cards'),
       zone(s, 'independent_deck', '独立牌堆', (card) => card.ownerPlayerId === playerId && card.zone === 'independent_deck'),
       { id: 'unowned_servant_pool', label: '无主从者池', cardIds: [], count: 0, status: 'host_adjudicated' },
@@ -2912,7 +3006,10 @@ export class MatchSession {
 
   private directiveViews(): MatchDirectiveView[] {
     const directives = (this.modeState().masterDirectives as Array<Record<string, unknown>> | undefined) ?? [];
-    const applied = directives.map((entry, index) => classifyDirective({ id: `directive:${index + 1}`, ...entry }, true));
+    // Legacy saves stored event notices even for hidden placements. The current
+    // public placements now determine these informational notices.
+    const applied = directives.flatMap((entry, index) => entry.directive === 'event_effect_host_review'
+      ? [] : [classifyDirective({ id: `directive:${index + 1}`, ...entry }, true)]);
     const host = (this.state.abilityRuntime?.hostRequests ?? []).map((entry, index) => ({
       id: `host:${index + 1}`,
       controllerId: entry.controllerId,
@@ -2922,6 +3019,20 @@ export class MatchSession {
       payload: entry as unknown as Record<string, unknown>,
     }));
     return [...applied, ...host].filter((entry) => entry.status === 'pending' || entry.id.startsWith('directive:'));
+  }
+
+  private publicEventNotices(): MatchDirectiveView[] {
+    return this.state.eventPlacements.flatMap((placement, index) =>
+      placement.visibility.scope === 'public' && eventHasHostAdjudicatedEffects(placement.eventCardId)
+        ? [classifyDirective({
+          id: `event-notice:${this.state.round.roundNumber}:${index}`,
+          directive: 'event_effect_host_review',
+          eventCardId: placement.eventCardId,
+          locationId: placement.locationId,
+          timing: 'on_event_placed_or_revealed',
+          consumed: true,
+        }, true)]
+        : []);
   }
 
   private pendingHostDirectives(): MatchDirectiveView[] {

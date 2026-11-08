@@ -263,7 +263,6 @@ function RemoteLobbyPanel() {
         roomId,
         hostClientId: clientId,
         hostName: displayName,
-        seed: 20260905,
       }));
     } catch (error) {
       setRemoteError(error instanceof Error ? error.message : '创建联机房间失败');

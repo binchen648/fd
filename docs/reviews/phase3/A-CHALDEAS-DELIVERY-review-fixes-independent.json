@@ -1,0 +1,44 @@
+{
+  "task": "A-CHALDEAS-REVEAL-RESPONSE",
+  "pullRequest": 694,
+  "base": "e24f032972b37bbbde28b96de2a1939eedaac7ad",
+  "candidate": "dcbb462ac79d92b684c515415c35a2a700ebbe18",
+  "decision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "blockingFindings": [],
+  "worktreeCleanBeforeAndAfter": true,
+  "scope": [
+    "Restored legacy event review notices derive from current public placements only. Distinct placement indexes preserve same-location duplicate notices and public replacement semantics.",
+    "Actual reveal card rules are public. Deck bottom identity and rules remain restricted by the existing Session eligibility check. The swap comparison additionally requires a current server-authorized swap action.",
+    "Both end-turn controls and the existing reminder confirmation check the current pending reveal. The reminder confirmation path was reviewed statically.",
+    "No phase transition, restore procedure or adjudication behavior changed. Existing targeted tests retain their product assertions."
+  ],
+  "independentRuns": [
+    {
+      "pass": 35,
+      "files": [
+        "chaldeas-reveal-response.test.ts",
+        "event-promotion-boundaries.test.ts"
+      ],
+      "exitCode": 0,
+      "fail": 0,
+      "evidence": "review-fixes-independent-rules.json",
+      "skip": 0
+    },
+    {
+      "pass": 40,
+      "files": [
+        "App.test.tsx",
+        "MatchTable.test.tsx",
+        "remote-room-fixture.test.ts"
+      ],
+      "exitCode": 0,
+      "fail": 0,
+      "evidence": "review-fixes-independent-client.json",
+      "skip": 0
+    }
+  ],
+  "fullCI": "NOT_RUN_BY_REVIEWER",
+  "level3": "NOT_RUN_BY_REVIEWER",
+  "mergeAuthorized": false,
+  "reservationReleased": false
+}

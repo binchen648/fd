@@ -1,5 +1,6 @@
 import {describe,expect,it}from'vitest';
 import {createMatchSession}from'../../src/match-session';
+import {finishOpening}from'../acceptance/seven-roster-test-helpers';
 import {createMatchRoomHub}from'../../src/match-room-hub';
 import {chooseFullMatchDecision}from'../../../../e2e/support/full-seven-player-driver';
 
@@ -15,6 +16,7 @@ describe('A-MATCH-03 preparation supplies',()=>{
   const hub=createMatchRoomHub(),roomId='deployment-revision';hub.createRoom({roomId,seed:20260904,hostClientId:'seat-1'});
   for(let seat=1;seat<=7;seat++){const id=`seat-${seat}`;if(seat>1)hub.joinRoom(roomId,{clientId:id,displayName:id,role:'player'});hub.selectSeat(roomId,id,seat);}
   hub.startMatch(roomId,'seat-1');
+  finishOpening(hub.getRoom(roomId).session!);
   for(let seat=1;seat<=7;seat++)hub.endTurn(roomId,`seat-${seat}`,hub.project(roomId,`seat-${seat}`).match!.view.revision);
   const before=hub.project(roomId,'seat-1').match!.view.revision;
   expect(hub.dispatchCommand(roomId,'seat-1',{type:'deploy_player',locationId:'magic_workshop'},before).result.ok).toBe(true);

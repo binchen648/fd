@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { createMatchSession, restoreMatchSession } from '../../src/match-session';
+import { restoreMatchSession } from '../../src/match-session';
+import { createPostOpeningSession as createMatchSession } from '../acceptance/seven-roster-test-helpers';
 import type { AbilityCommand } from '../../src/ability/types';
 
 function actionSession() {
