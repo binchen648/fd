@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-CHALDEAS-DELIVERY",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/694#issuecomment-6719095438",
+  "candidateSha": "dcbb462ac79d92b684c515415c35a2a700ebbe18",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "reviewPerformedBy": "Separate read-only agent /root/chaldeas_privacy_review",
+  "reviewThreadScope": "Existing PR #694 review thread. The new independent follow-up is recorded in independentReport and the current PR description.",
+  "independentReport": "docs/reviews/phase3/A-CHALDEAS-DELIVERY-review-fixes-independent.json",
+  "scope": "Legacy advisory projection and owner-scoped reveal comparison UI; independent rules 35/0 and client 40/0.",
+  "mergeAuthorized": false
+}
