@@ -1,0 +1,16 @@
+{
+  "taskId": "A-PAGES-BROWSER-BUNDLE",
+  "owner": "Root / Product A",
+  "status": "GRANTED",
+  "BaseCommit": "c3b1196462ec2615486295f449b3c33881d9a714",
+  "branch": "codex/a-pages-browser-bundle",
+  "worktree": "D:/fd-validation/a-chaldeas-pages-main-baseline",
+  "authority": "User continuation after reproducing the production browser startup blocker on current main.",
+  "ReservedFiles": ["apps/client/vite.config.ts", "docs/agents/manifests/tasks/A-PAGES-BROWSER-BUNDLE.json"],
+  "ForbiddenFiles": ["Shared Runtime, room protocol and authoring", "PR #694 branch and original D:/fd worktree", "CI workflows"],
+  "testPlan": {
+    "L1": "Production build fails on emitted Node builtins before changing the chunk policy and passes with browser-safe chunks.",
+    "L2": "Serve the emitted dist and open the local room and remote lobby through real Chromium and WebSocket.",
+    "L3": "No new whole match needed for client build configuration. Keep full CI and exercise the actual release artifact."
+  }
+}
