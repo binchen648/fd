@@ -1,3 +1,4 @@
+import { createMatchSession } from '../../src/match-session';
 import { describe, expect, it } from 'vitest';
 
 import type { GameState } from '../../src/schema/game';
@@ -15,7 +16,7 @@ import {
 
 type TerrainState = GameState & {
   modeState?: {
-    terrainAssignments?: Partial<Record<LocationId, string[]>>;
+    terrainAssignments?: Partial<Record<LocationId, Array<string | null>>>;
   };
 };
 
@@ -156,6 +157,8 @@ function producerFor(effectType: keyof typeof resultSchemas, binding: string): R
       return { id: `produce-${binding}`, type: 'close_source_card', bind: binding };
     case 'adjust_victory_points':
       return { id: `produce-${binding}`, type: 'adjust_victory_points', player: 'controller', amount: 1, bind: binding };
+    case 'create_modifier':
+      return {id:`produce-${binding}`,type:'create_modifier',modifier:{type:'power_bonus',operation:'add',duration:'this_round',scope:{subject:'source_card'},amount:2},bind:binding};
     case 'adjust_mana':
       return { id: `produce-${binding}`, type: 'adjust_mana', player: 'controller', amount: 1, bind: binding };
     case 'set_mana':
@@ -226,7 +229,10 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
 
     expect(state.players.find((player) => player.id === 'P1')?.vp).toBe(0);
     expect(result.nextState.players.find((player) => player.id === 'P1')?.vp).toBe(2);
-    expect((result.nextState as TerrainState).modeState?.terrainAssignments?.miyama_town).toEqual([]);
+    // Preserve physical slot indexes; emptiness means no occupants, not slot deletion.
+    expect((result.nextState as TerrainState).modeState?.terrainAssignments?.miyama_town).toEqual([null, null]);
+    expect((result.nextState as TerrainState).modeState?.terrainAssignments?.miyama_town?.filter(Boolean)).toEqual([]);
+    expect(state.modeState?.terrainAssignments?.miyama_town).toEqual(['P2', 'P4']);
     expect(result.results[0]).toMatchObject({
       effectType: 'remove_advantage_position',
       status: 'applied',
@@ -390,6 +396,15 @@ describe('Phase 3A resolution data-flow infrastructure', () => {
             movementDistanceThisRound: {}, battlefieldsPassedOrStayedThisRound: {}, playRulesVersion: 'explicit-v1',
             playCounters: { round: 1, cardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} },
           };
+        }
+        if (effectType === 'create_modifier') {
+          const reference = baseState();
+          reference.cards[0]!.zone = 'attack_area';
+          // Reuse an actual Session runtime shell solely for the generic primitive schema fixture.
+          const sessionState = createMatchSession({seed:20260907,humanPlayerIds:['p1','p2','p3','p4','p5','p6','p7']}).state;
+          state.abilityRuntime = structuredClone(sessionState.abilityRuntime!);
+          state.cards = reference.cards;
+          state.abilityRuntime.cardState['synthetic-source'] = {active:true,faceDown:false,playedRound:1};
         }
         expect(() => executeResolution({
           state,

@@ -12,3 +12,43 @@ it('renders distinct server-authorized deployment destinations in the outpost ph
  expect(fixture.match.phase).toContain('前哨阶段');
  expect(actions.map(a=>a.backendCommand)).toEqual(projection.match!.view.legalActions.filter(a=>a.type==='deploy_player'));
 });
+
+import type { MatchRoomProjection } from "@fd/rules/match-room";
+
+
+type Participation = { locationId: string; sourceId: string; declined: boolean; canDeclare: boolean };
+
+const buildProjection = (participation?: Participation): MatchRoomProjection => ({
+  viewer: { playerId: 'p1' },
+  seats: [{ playerId: 'p1', displayName: 'P1', ready: true }],
+  match: {
+    round: 3,
+    phase: 'action',
+    priorityPlayerId: 'p1',
+    view: { players: [{ id: 'p1', seat: 1, vp: 2, mana: 4, masterCardId: 'master.test', handCount: 0, deckCount: 0 }], cards: [], legalActions: [], stagedAttacks: [] },
+    interactionWindows: [],
+    directives: [],
+    zones: [],
+    logs: [],
+    replay: [],
+    ...(participation ? { battleParticipation: participation } : {}),
+  },
+} as unknown as MatchRoomProjection);
+
+const participationActions = (projection: MatchRoomProjection) =>
+  (projectRemoteRoomFixture(projection)?.availableActions ?? []).filter((action) => action.actionId.startsWith('declare_battle_participation'));
+
+it('shows the exact VP cost and preserves the server-authorized deployment payment', () => {
+  const projection = buildProjection();
+  projection.match!.view.legalActions = [{ type: 'deploy_player', locationId: 'miyama_town', terrainBid: 2, maxTerrainBid: 5 }];
+  const action = projectRemoteRoomFixture(projection)!.availableActions[0]!;
+  expect(action.label).toBe('部署至 深山町 · 2 战果');
+  expect(action.backendCommand).toEqual(projection.match!.view.legalActions[0]);
+});
+
+it('does not expose a participation command from an old room projection', () => {
+  const oldProjection = buildProjection({ locationId: 'miyama_town', sourceId: 'event.waxing_moon_ritual.resistance', declined: false, canDeclare: true });
+  expect(participationActions(oldProjection)).toEqual([]);
+});
+
+it('preserves authoritative public terrain holes rather than assigning by player order',()=>{const p=buildProjection();p.match!.view.terrainSlots={miyama_town:{bonuses:[3,1],occupants:[null,'p1']}};const f=projectRemoteRoomFixture(p)!;const l=f.locations.find(l=>l.id==='miyama_town')!;expect(l.terrainOccupants).toEqual([null,'p1']);});

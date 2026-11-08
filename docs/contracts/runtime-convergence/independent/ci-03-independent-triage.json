@@ -1,0 +1,196 @@
+{
+  "candidate": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
+  "source": "full-ci-03.json",
+  "pass": 1784,
+  "fail": 25,
+  "skip": 0,
+  "overall": "TEST_FAILURE",
+  "notEnvironmentOrTimeout": true,
+  "fixedSinceCI02": [
+    "CARD_ACTION_SEMANTICS_MINIMAL_ADD_TO_ATTACK does not offer add-to-attack when no legal non-controller player target remains",
+    "CARD_ACTION_SEMANTICS_MINIMAL_PLAY does not offer Time Alter when no controller hand attack is available",
+    "P3-FB2-14 identity-free game-start RuleOverride runtime replaces command-spell action timing with advance, adds Sieg allowance prospectively, and ignores only Situation NP forbids",
+    "P3-FB2-16 required additional-play marker fails closed for append-only-only batches without offering an impossible effect-play activation",
+    "P3-FB2-21 shared terrain deployment-bonus metric uses server-owned terrain assignments and evaluates independently for different controllers and locations",
+    "P3-FB2-21 shared terrain deployment-bonus metric returns zero for authored terrain suppression, missing assignment, invalid slot, or non-battlefield location",
+    "P3-B11 result binding production bridge does not offer activation when the mandatory first target is absent"
+  ],
+  "remaining": [
+    {
+      "path": "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+      "test": "P3-FB2-34 combat reward distribution is idempotent across duplicate winning modifiers and does not multiply Remote Operation",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/fb2-45-prebattle-defeat-round-attack-attribute.test.ts",
+      "test": "P3-FB2-45 pre-battle defeat by current-round attack attribute existing battle-loss immunity cancels the defeat consequence without leaking the intent",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/fb2-45-prebattle-defeat-round-attack-attribute.test.ts",
+      "test": "P3-FB2-45 pre-battle defeat by current-round attack attribute applies and consumes a matching intent before Return Silence early settlement, including Luck immunity",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts",
+      "test": "P3-FB2-47 controller-defeated fixed VP reward bridges ordinary battle loss and Basic Luck suppression through the real resolver result",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/kayneth-s3-consumer-migration.test.ts",
+      "test": "P3 S R79 Kayneth s3 consumer migration adds only the canonical frozen s3 material while preserving the legacy pride product card",
+      "category": "B_AUTHORING_FINGERPRINT_CHANGED",
+      "note": "Imported Kayneth authoring differs from accepted frozen fingerprint; needs explicit migration evidence, not updated expected hash alone.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/match-session.test.ts",
+      "test": "MatchSession semi-auto runtime lets Luck stay in the attack area for battle power and ignore defeat effects",
+      "category": "DOCUMENTED_A3_RULE_CONTRACT_CONFLICT",
+      "note": "A3 ruling record says Luck does not waive ordinary military battle-loss penalty; old expectation delta0 conflicts. Documented user ruling exists in b39 docs, original chat not independently inspected. No expectation was changed here.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/medusa-s2-consumer-migration.test.ts",
+      "test": "P3 S R95 Medusa s2 consumer migration Basic Luck ignores the defeat while consuming the intent; repeated activation is idempotent and round advance clears stale intent",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/nobunaga-s3-consumer-migration.test.ts",
+      "test": "P3 S R98 Nobunaga s3 consumer migration bridges a real ordinary battle loss while Basic Luck suppression produces neither frozen clause",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/content/src/__tests__/fd-playtest-events.test.ts",
+      "test": "Waxing Moon Ritual event set contains one normal twenty-slot event set with eighteen unique reviewed cards",
+      "category": "B_EVENT_CONTENT_COUNT_CHANGED",
+      "note": "Migrated pack contains 23 unique event definitions vs main test18; verify active 20-slot set and provenance, do not delete production consumers or weaken count assertion.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/content/src/__tests__/playtest-pack-loader.test.ts",
+      "test": "playtest pack loader loads the complete approved roster with no blocking issues",
+      "category": "B_EVENT_CONTENT_COUNT_CHANGED",
+      "note": "Migrated pack contains 23 unique event definitions vs main test18; verify active 20-slot set and provenance, do not delete production consumers or weaken count assertion.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+      "test": "match session gameplay regressions keeps command spell effects reusable while seals remain",
+      "category": "RC01_NO_TARGET_ACTION_SUPPRESSION_VS_OLD_PROJECTION_EXPECTATION",
+      "note": "Old test expects movement ability while at invalid/empty origin; requires actual legal-origin fixture to test reusability.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/src/__tests__/match-session-regressions.test.ts",
+      "test": "match session gameplay regressions offers dash movement in action phase only after the special card is active",
+      "category": "RC05_REAL_ENTRY_EXIT_LOCK_VS_OLD_FIXTURE_EXPECTATION",
+      "note": "Independent exact old-test setup trace: seed20260906 places public Vengeful Spirit Barrier at miyama_town, movementLocks blocksEntry/blocksExit=true. Dash active and batch commits, but cannot legally leave. Script independent-dash-trace.mts proves projected omission required by current contract.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/regression/action-turn-delivery.test.ts",
+      "test": "DR-P01 authoritative action turn finishes all seven action turns before seven battle decisions, and settles only once",
+      "category": "B_NEW_REAL_RESPONSE_WINDOW_VS_OLD_AUTOPLAY_DRIVER",
+      "note": "B low-mana exemption makes Noble Bloom available; old driver stops before resolving real post-scoring response. b39 differential reproduces; do not auto-skip mandatory interaction in runtime.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex skills regression matrix keeps the seven-master strong assertion manifest aligned with authoring ability ids",
+      "category": "B_AUTHORING_ABILITY_INVENTORY_CHANGED",
+      "note": "B adds command-spell.victory-vp; main fixed list predates data. Not migration credit.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex servant skill regressions keeps Tomoe action VP, unpreventable defeat penalty, and Inferno status creation",
+      "category": "RC04_REQUIRED_BATTLEFIELD_ORIGIN_VS_RECON_FIXTURE",
+      "note": "Fixture defaults source player to recon; Inferno requires anchored battlefield. Current rejection is required by contract; old test activated unbound status.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex servant skill regressions keeps Tomoe terrain multiplier and rain of fire opponent power reduction in battle math",
+      "category": "B_AGGREGATE_VS_PER_CARD_EXPECTATION",
+      "note": "Canonical total-power reduction is now aggregate; old assertion changes printed individual card power6->1. Do not revert to per-card semantics.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex master and session regressions keeps Kayneth passives, independent deck, Volumen response, and slash modifier on backend paths",
+      "category": "B_TYPED_CONSUMERS_VS_OLD_DIRECTIVE_ASSERTIONS",
+      "note": "Old tests inspect removed bookkeeping directives; B supplies ruleModifiers/status/normalized consumer. Must validate resulting gameplay with new independent evidence.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex master and session regressions keeps Kiritsugu deck replacement directive, face-down attack action, and combat directives backend-owned",
+      "category": "RC02_REQUIRED_CONTINUATION_VS_DIRECTIVE_ONLY_FIXTURE",
+      "note": "Old test expects Square to activate with no dark bullet/active close target and only a directive. Contract now requires actual complete plan.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex master and session regressions keeps Gatou seeker directives and command-spell state changes executable",
+      "category": "B_TYPED_CONSUMERS_VS_OLD_DIRECTIVE_ASSERTIONS",
+      "note": "Old tests inspect removed bookkeeping directives; B supplies ruleModifiers/status/normalized consumer. Must validate resulting gameplay with new independent evidence.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex master and session regressions keeps Irisviel proxy timing directive and conversion-magic advance resource conversion",
+      "category": "B_TYPED_CONSUMERS_VS_OLD_DIRECTIVE_ASSERTIONS",
+      "note": "Old tests inspect removed bookkeeping directives; B supplies ruleModifiers/status/normalized consumer. Must validate resulting gameplay with new independent evidence.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "test": "complex master and session regressions keeps Olga-Marie Chaldeas setup, swap response limit, Trismegistus activation, and command spells per card instance",
+      "category": "B_TYPED_CONSUMERS_VS_OLD_DIRECTIVE_ASSERTIONS",
+      "note": "Old tests inspect removed bookkeeping directives; B supplies ruleModifiers/status/normalized consumer. Must validate resulting gameplay with new independent evidence.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/fb2-presence-concealment-pre-scoring.test.ts",
+      "test": "P3-FB2-12 Presence Concealment pre-scoring response respects Basic Luck defeat-ignore per highest target before winner recomputation",
+      "category": "BARE_BASIC_FIXTURE_MISSING_PRODUCTION_RULE_DECLARATION",
+      "note": "B switched Luck/Preparation readers from card ID to declared semantic modifiers. b39 corresponding tests explicitly register production basic definitions; current main fixtures do not. Actual behavior still requires full current contract tests.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    },
+    {
+      "path": "packages/rules/tests/regression/fb2-terrain-deployment-bonus-metric.test.ts",
+      "test": "P3-FB2-21 shared terrain deployment-bonus metric applies the existing Preparation remote-operation doubling exactly once",
+      "category": "BARE_PREPARATION_FIXTURE_MISSING_RULE_DECLARATION",
+      "note": "Fixture injects basic.preparation card instance without production terrain.multiplier definition. b39 differential reproduces. Do not restore ID-based Legacy behavior.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/fb2-terrain-deployment-bonus-metric.test.ts",
+      "test": "P3-FB2-21 shared terrain deployment-bonus metric is a pure read: metric evaluation does not mutate state, events, counters, or runtime revision",
+      "category": "BARE_PREPARATION_FIXTURE_MISSING_RULE_DECLARATION",
+      "note": "Fixture injects basic.preparation card instance without production terrain.multiplier definition. b39 differential reproduces. Do not restore ID-based Legacy behavior.",
+      "alsoFailedAgainstB39UnchangedTestProbe": true
+    },
+    {
+      "path": "packages/rules/tests/regression/resolution-dataflow.test.ts",
+      "test": "Phase 3A resolution data-flow infrastructure binds actual primitive results so downstream effects use affected count, not target count",
+      "category": "STABLE_TERRAIN_NULL_HOLES_VS_COMPACT_ARRAY_EXPECTATION",
+      "note": "New stable identity preserves [null,null] instead of compact []; do not reintroduce slot promotion. Old expectation remains unchanged.",
+      "alsoFailedAgainstB39UnchangedTestProbe": false
+    }
+  ],
+  "caution": "Failures are this candidate gate blockers, including B prerequisite/main contract conflicts. No failing assertion changed or skipped by reviewer."
+}

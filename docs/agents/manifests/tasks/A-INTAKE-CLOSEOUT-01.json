@@ -1,0 +1,74 @@
+{
+  "taskId": "A-INTAKE-CLOSEOUT-01",
+  "BaseCommit": "3eb03496940be9a6635dc402cd8f55e52ef2b618",
+  "owner": "Root / A delivery lead",
+  "status": "GRANTED",
+  "scope": "Test contract reconciliation, seven-roster skill evidence matrix, L1/L2 and final CI/L3 verification",
+  "authority": "2026-11-06 user instruction to complete A intake verification and remaining issues",
+  "ReservedFiles": [
+    "packages/rules/tests/regression/complex-skills-regression.test.ts",
+    "packages/rules/tests/regression/resolution-dataflow.test.ts",
+    "packages/rules/tests/match-session.test.ts",
+    "packages/content/src/__tests__/fd-playtest-events.test.ts",
+    "packages/content/src/__tests__/playtest-pack-loader.test.ts",
+    "packages/rules/tests/acceptance/a-intake-closeout.test.ts",
+    "docs/agents/manifests/tasks/A-INTAKE-CLOSEOUT-01.json",
+    "docs/reports/2026-11-06-a-intake-closeout.md",
+    "docs/reports/2026-11-06-seven-roster-skill-acceptance.csv",
+    "packages/rules/tests/acceptance/seven-roster-test-helpers.ts",
+    "packages/rules/tests/acceptance/seven-roster-session-effects.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-combinations.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-deployment.test.ts",
+    "packages/rules/tests/acceptance/seven-roster-repair.test.ts",
+    "packages/rules/src/core/combat-resolver.ts",
+    "packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts",
+    "packages/rules/tests/nobunaga-s3-consumer-migration.test.ts",
+    "packages/rules/src/ability/interpreter.ts",
+    "packages/rules/src/ability/extended-effects.ts",
+    "packages/rules/tests/acceptance/seven-roster-aggregate-followup.test.ts",
+    "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md",
+    "docs/agents/manifests/releases/KAYNETH-REGISTERED-ARCHIVE-20261106.json"
+  ],
+  "ForbiddenFiles": [
+    "all other production Runtime; original frozen worktree",
+    "data/**",
+    "D:/fd/**",
+    "shared Runtime reservations",
+    "PR689/690"
+  ],
+  "constraints": [
+    "No skip/timeouts weakening; old assertions migrate only against recorded rule or typed contract with stronger actual-effect witnesses",
+    "No merge or formal B acceptance inferred"
+  ],
+  "mergeAuthorized": false,
+  "runtimeAddendum": {
+    "authority": "User 2026-11-06 explicitly requests completion of A intake verification and repair of remaining issues; same Root owner of FD-RC-20261105",
+    "baseCommit": "3eb03496940be9a6635dc402cd8f55e52ef2b618",
+    "scope": "A3 normal-loss producer only; independently confirmed by contract-review; no other shared source transfer; existing rotating-order condition, live closed-destination guard, supported static while-active attribute prohibition only; Soul Drag aggregate consumer, activation-round snapshot and idempotent installation only",
+    "reservedFiles": [
+      "packages/rules/src/core/combat-resolver.ts",
+      "packages/rules/src/ability/interpreter.ts",
+      "packages/rules/src/ability/extended-effects.ts"
+    ],
+    "frozenPredecessor": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
+    "predecessorWorktreeUntouched": true,
+    "reviewRequired": true,
+    "supplementEvidence": "D:/fd-validation/a-intake-closeout-20261106/extra-combinations-final.json (3 PASS/2 FAIL)",
+    "precedingFrozenCandidate": "d5d8a489c43177db173f1a913284b7d3eb80b430"
+  },
+  "candidateState": "IMPLEMENTATION_COMPLETE_CANDIDATE",
+  "acceptance": "NOT_ACCEPTED",
+  "runtimeWritesFrozen": true,
+  "reservationReleased": false,
+  "remainingFieldContractOwner": "DeepSeek / B lead, external proposal pending",
+  "codeCandidate": "4c744e103b7c86dd1a1b3eb911c2f5e919aac5cb",
+  "verificationStatus": "EXECUTED_WITH_BLOCKERS",
+  "fullCI": {
+    "pass": 1930,
+    "fail": 19,
+    "skip": 0,
+    "exitCode": 1,
+    "candidate": "4c744e103b7c86dd1a1b3eb911c2f5e919aac5cb"
+  },
+  "integrationAllowed": false
+}

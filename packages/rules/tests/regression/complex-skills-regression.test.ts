@@ -218,6 +218,7 @@ const strongMasterAbilityIds = [
   'seeker.meditation',
   'command-spell.gain-mana',
   'command-spell.power-victory',
+  'command-spell.victory-vp',
   'command-spell.free-move',
   // Irisviel (2)
   'proxy-master.command-spell-timing',
@@ -862,7 +863,7 @@ describe('complex servant skill regressions', () => {
     expect(play(state, protection).ok).toBe(true);
     expect((state as unknown as { modeState?: { reversedModifierLocations?: unknown[] } }).modeState?.reversedModifierLocations?.length).toBeGreaterThan(0);
 
-    rules.processAbilityEvent(state, { id: 'eresh-deploy', type: 'after_player_deployed_to_battlefield', playerId: 'p1' });
+    rules.processAbilityEvent(state, { id: 'eresh-deploy', type: 'after_player_deployed_to_battlefield', playerId: 'p1', locationId: state.players[0]!.locationId });
     expect(state.players[0]!.mana).toBe(9);
     rules.advanceAbilityPhase(state, 'battle');
     rules.processAbilityEvent(state, { id: 'eresh-battle-end', type: 'after_battle_ended', playerId: 'p1' });
@@ -900,6 +901,8 @@ describe('complex servant skill regressions', () => {
     const state = setup(raw, { servantId: raw.id });
     const protection = add(state, 'servant.ereshkigal.skill.sc-ereshkigal-2', 'skill');
     const noble = add(state, 'servant.ereshkigal.skill.sc-ereshkigal-3', 'skill');
+    // Bloom places the field card at an actual battlefield, never at recon/workshop.
+    state.players[0]!.locationId = 'miyama_town';
 
     expect(play(state, noble).ok).toBe(true);
     expect(rules.projectAbilityState(state, 'p2').players[0]!.servantPackage?.id).toBe('servant.ereshkigal');
@@ -1021,12 +1024,26 @@ describe('complex servant skill regressions', () => {
     expect(state.abilityRuntime!.events.some((event) => event.type === 'effect_resolved' && event.unpreventable)).toBe(true);
 
     state.abilityRuntime!.preventEffects = false;
+    // Inferno anchors its effect to this battlefield; isolate this legal source condition.
+    state.players[0]!.locationId = 'miyama_town';
     expect(play(state, inferno).ok).toBe(true);
     expect(activate(state, inferno, 'sc-tomoe-2.inferno-fire').ok).toBe(true);
     expect((state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses).toContainEqual(expect.objectContaining({
       id: 'inferno_fire',
       sourceControllerId: 'p1',
     }));
+  });
+
+  it('rejects Inferno outside a battlefield without changing state', () => {
+    const raw = archive('data/authoring/servants/servant.tomoe.json');
+    const state = setup(raw, { servantId: raw.id });
+    state.players[0]!.locationId = 'recon';
+    const inferno = add(state, 'servant.tomoe.skill.sc-tomoe-2', 'skill');
+    expect(play(state, inferno).ok).toBe(true);
+    expect(rules.getLegalActions(state,'p1').some(a=>a.type==='activate_ability'&&a.cardInstanceId===inferno&&a.abilityId==='sc-tomoe-2.inferno-fire')).toBe(false);
+    const before = structuredClone(state);
+    expect(activate(state,inferno,'sc-tomoe-2.inferno-fire').ok).toBe(false);
+    expect(state).toEqual(before);
   });
 
   it('keeps Tomoe terrain multiplier and rain of fire opponent power reduction in battle math', () => {
@@ -1066,7 +1083,15 @@ describe('complex servant skill regressions', () => {
     expect(rules.projectAbilityState(state, 'p2').players[0]!.servantPackage?.id).toBe('servant.tomoe');
     rules.advanceAbilityPhase(state, 'battle');
     expect(activate(state, rain, 'sc-tomoe-3.rain-of-fire').ok).toBe(true);
-    expect(rules.calculateCardPower(state, opponentAttack).value).toBe(1);
+    // Printed clause reduces aggregate power, never each attack card.
+    expect(rules.calculateCardPower(state, opponentAttack).value).toBe(6);
+    const aggregate = rules.resolveBattlefield(state, { battlefieldId: 'miyama_town', participants: [
+      { playerId: 'p1', totalPower: 0, attackTags: [], terrainSlotIndex: 0 },
+      { playerId: 'p2', totalPower: 12, attackTags: [] },
+    ] }).nextState.battleResults.at(-1)!;
+    const victim = aggregate.participantBreakdowns.find(p => p.playerId === 'p2')!;
+    expect(victim.modifiers.filter(m => m.value === -5)).toHaveLength(1);
+    expect(victim.effectivePower).toBe(7);
   });
 });
 
@@ -1079,11 +1104,8 @@ describe('complex master and session regressions', () => {
     const pride = add(state, 'master.kayneth.skill.pride', 'skill');
 
     rules.processAbilityEvent(state, { id: 'kayneth-passives', type: 'while_active' });
-    expectDirective(state, 'low_mana_skill_cards_allowed', {
-      controllerId: 'p1',
-      sourceCardId: doubleMaster,
-      abilityId: 'double-master.passive',
-    });
+    expect(state.abilityRuntime!.pack.cards['master.kayneth.skill.double-master']!.abilities[0]!.ruleModifiers).toContainEqual(expect.objectContaining({ operation: 'ignore', rule: 'skill_zone_mana_requirement' }));
+    expect(state.cards.find(c => c.instanceId === doubleMaster)?.zone).toBe('skill'); // real Session consumer/payment witnesses: kayneth-readmission.test.ts
     expect(pride).toBeTruthy();
     expect(modeDirectives(state)).not.toContainEqual(expect.objectContaining({
       directive: 'must_deploy_to_lower_vp_lone_battlefield',
@@ -1244,18 +1266,27 @@ describe('complex master and session regressions', () => {
     expect(state.cards.find((card) => card.instanceId === deckCard)).toMatchObject({ zone: 'hand' });
 
     rules.advanceAbilityPhase(state, 'battle');
+    state.cards.find(c => c.instanceId === origin)!.zone = 'attack_area';
+    state.abilityRuntime!.cardState[origin] = { active: false, faceDown: true, playedRound: state.round.roundNumber };
+    state.cards.find(c => c.instanceId === attack)!.zone = 'attack_area';
+    markActive(state, attack);
     expect(activate(state, squareAccel, 'square-accel.combat').ok).toBe(true);
-    expectDirective(state, 'close_active_attack_activate_face_down_origin_bullet', {
-      controllerId: 'p1',
-      sourceCardId: squareAccel,
-      abilityId: 'square-accel.combat',
-    });
+    for (const selected of [attack, origin]) {
+      const decision = rules.projectAbilityState(state, 'p1').pendingDecision!;
+      expect(decision.candidates).toContain(selected);
+      expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: decision.id, selectedIds: [selected] }).ok).toBe(true);
+    }
+    expect(state.abilityRuntime!.cardState[attack]!.active).toBe(false);
+    expect(state.abilityRuntime!.cardState[origin]).toMatchObject({ active: true, faceDown: false });
+    state.players[0]!.locationId = 'miyama_town';
+    state.players[1]!.locationId = 'miyama_town';
+    state.players[1]!.mana = 8;
     expect(activate(state, origin, 'origin-bullet.cut-bind').ok).toBe(true);
-    expectDirective(state, 'engaged_opponent_loses_one_third_mana_then_source_gains_twice_lost_power', {
-      controllerId: 'p1',
-      sourceCardId: origin,
-      abilityId: 'origin-bullet.cut-bind',
-    });
+    const victim = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(victim.candidates).toContain('p2');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: victim.id, selectedIds: ['p2'] }).ok).toBe(true);
+    expect(state.players[1]!.mana).toBe(5);
+    expect(rules.calculateCardPower(state, origin).value).toBe(8);
   });
 
   it('keeps Maiya Support Shot creation, advance attachment, append-only rule, and suppress terrain multiplier', () => {
@@ -1310,6 +1341,8 @@ describe('complex master and session regressions', () => {
     state.round.prioritySeat = 2;
     state.players[0]!.vp = 0;
     state.players[1]!.vp = 3;
+    // Standalone loadAuthoringJson fixture: provide production compiler provenance.
+    Object.assign(state.abilityRuntime!.pack.cards[supportShot.definitionId]!, {ownerId:raw.id});
     markActive(state, supportShot.instanceId);
     expect(activateFor(state, 'p2', supportShot.instanceId, 'support-shot.suppress').ok).toBe(true);
     expect((state as unknown as { modeState?: { terrainMultipliers?: Array<Record<string, unknown>> } }).modeState?.terrainMultipliers).toContainEqual(expect.objectContaining({
@@ -1330,11 +1363,7 @@ describe('complex master and session regressions', () => {
     const commandSpell = add(state, 'master.gatou.command-spell', 'skill');
 
     rules.processAbilityEvent(state, { id: 'gatou-passive', type: 'while_active' });
-    expectDirective(state, 'ignore_other_player_abilities_after_command_spell_this_round', {
-      controllerId: 'p1',
-      sourceCardId: seeker,
-      abilityId: 'seeker.meditation',
-    });
+    expect(state.abilityRuntime!.pack.cards['master.gatou.skill.seeker']!.abilities.find(a => a.id === 'seeker.meditation')!.ruleModifiers).toContainEqual(expect.objectContaining({ rule: 'opponent_ability_effects' }));
     const gatouManaBeforeTerminal = state.players[0]!.mana;
     rules.processAbilityEvent(state, {
       id: 'gatou-battle-ended', type: 'after_battle_ended', battlePhaseResolutionId: 'battle-phase:1',
@@ -1365,25 +1394,24 @@ describe('complex master and session regressions', () => {
       ruleModifiers: expect.arrayContaining([expect.objectContaining({
         definition: expect.objectContaining({
           operation: 'add',
-          rule: 'card.currentPower',
-          scope: { controller: 'self' },
+          rule: 'battle.totalPower',
+          scope: { subject: 'controller' },
           value: 2,
         }),
       })]),
     }));
-    expectDirective(state, 'gain_2_vp_for_each_battle_won_this_round', {
-      controllerId: 'p1',
-      sourceCardId: commandSpell,
-      abilityId: 'command-spell.power-victory',
-    });
+    expect(rules.calculateCardPower(state, commandSpell).value).toBe(0); // +2 is aggregate, not printed card power.
+    const vpBefore = state.players[0]!.vp;
+    rules.processAbilityEvent(state, { id: 'gatou-actual-win', type: 'after_battle_result_determined', battlefieldId: 'miyama_town', battleParticipantIds: ['p1','p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(state.players[0]!.vp).toBe(vpBefore + 2);
 
+    state.players[0]!.locationId = 'miyama_town';
     expect(activate(state, commandSpell, 'command-spell.free-move').ok).toBe(true);
+    const movement = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(movement.candidates).toContain('magic_workshop');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: movement.id, selectedIds: ['magic_workshop'] }).ok).toBe(true);
     expect(commandSpells(state)).toBe(0);
-    expectDirective(state, 'move_from_shinto_or_miyama_to_any_location_ignore_engagement', {
-      controllerId: 'p1',
-      sourceCardId: commandSpell,
-      abilityId: 'command-spell.free-move',
-    });
+    expect(state.players[0]!.locationId).toBe('magic_workshop');
   });
 
   it('keeps Irisviel proxy timing directive and conversion-magic advance resource conversion', () => {
@@ -1396,11 +1424,8 @@ describe('complex master and session regressions', () => {
     add(state, 'fixture.irisviel-hand-2', 'hand');
 
     rules.processAbilityEvent(state, { id: 'irisviel-passive', type: 'while_active' });
-    expectDirective(state, 'command_spells_used_in_preparation_phase', {
-      controllerId: 'p1',
-      sourceCardId: proxy,
-      abilityId: 'proxy-master.command-spell-timing',
-    });
+    expect(state.abilityRuntime!.pack.cards['master.irisviel.skill.proxy-master']!.abilities[0]!.ruleModifiers).toContainEqual(expect.objectContaining({ rule: 'command_spell_phase', value: 'advance' }));
+    expect(state.cards.find(c => c.instanceId === proxy)?.zone).toBe('skill'); // real Session timing is also tested in match-session.test.ts
     expect(activate(state, conversion, 'conversion-magic.preparation').ok).toBe(true);
     expect(state.players[0]!.mana).toBe(6);
     expect(state.cards.filter((card) => card.ownerPlayerId === 'p1' && card.zone === 'hand')).toHaveLength(0);
@@ -1460,11 +1485,7 @@ describe('complex master and session regressions', () => {
       sourceCardId: chaldeas.instanceId,
       abilityId: 'chaldeas.peek-bottoms',
     });
-    expect(state.abilityRuntime!.ongoingEffects).toContainEqual(expect.objectContaining({
-      sourceCardId: trismegistus,
-      abilityId: 'trismegistus.soul-drag',
-      controllerId: 'p1',
-    }));
+    expect(state.abilityRuntime!.ongoingEffects).toContainEqual(expect.objectContaining({ sourceCardId: trismegistus, abilityId: 'trismegistus.soul-drag', controllerId: 'p1' }));
     expect(state.abilityRuntime!.transformedReturnSilenceSourceCardIds ?? []).not.toContain(trismegistus);
     expect(state.ruleOverrides?.mustDeployToBattlefieldPlayerIds ?? []).not.toContain('p1');
 
@@ -1504,18 +1525,16 @@ describe('complex master and session regressions', () => {
     });
     expect(activate(state, commandSpell, 'command-spell.power-victory').ok).toBe(true);
     expect(commandSpells(state)).toBe(1);
-    expectDirective(state, 'gain_2_vp_if_win_this_round', {
-      controllerId: 'p1',
-      sourceCardId: commandSpell,
-      abilityId: 'command-spell.power-victory',
-    });
+    const vpBefore = state.players[0]!.vp;
+    rules.processAbilityEvent(state, { id: 'olga-actual-win', type: 'after_battle_result_determined', battlefieldId: 'miyama_town', battleParticipantIds: ['p1','p2'], battleResult: { winners: ['p1'], loserIds: ['p2'] } });
+    expect(state.players[0]!.vp).toBe(vpBefore + 2);
+    state.players[0]!.locationId = 'miyama_town';
     expect(activate(state, commandSpell, 'command-spell.free-move').ok).toBe(true);
+    const movement = rules.projectAbilityState(state, 'p1').pendingDecision!;
+    expect(movement.candidates).toContain('magic_workshop');
+    expect(rules.dispatchAbilityCommand(state, 'p1', { type: 'choose_target', decisionId: movement.id, selectedIds: ['magic_workshop'] }).ok).toBe(true);
     expect(commandSpells(state)).toBe(0);
-    expectDirective(state, 'move_from_shinto_or_miyama_to_any_location_ignore_engagement', {
-      controllerId: 'p1',
-      sourceCardId: commandSpell,
-      abilityId: 'command-spell.free-move',
-    });
+    expect(state.players[0]!.locationId).toBe('magic_workshop');
   });
 
   it('projects and consumes host directives in MatchSession without allowing AI to skip the pause', () => {

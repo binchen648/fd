@@ -382,21 +382,40 @@
                       "to": {
                         "zone": "field",
                         "owner": "controller"
+                      },
+                      "placement": {
+                        "kind": "battlefield_effect",
+                        "location": "controller.location",
+                        "effectsFrom": "card_definition",
+                        "emitPlayEvents": false
                       }
                     }
                   ]
                 },
                 {
-                  "else": [
+                  "if": {
+                    "type": "card_on_controller_battlefield",
+                    "cardId": "servant.ereshkigal.skill.sc-ereshkigal-2"
+                  },
+                  "then": [
                     {
                       "type": "create_modifier",
                       "modifier": {
                         "type": "power_bonus",
-                        "target": "controller",
-                        "amount": 6
+                        "operation": "add",
+                        "aggregate": "total",
+                        "scope": {
+                          "subject": "controller"
+                        },
+                        "amount": 6,
+                        "duration": "this_round",
+                        "sourceMustRemainActive": true
                       }
                     }
                   ]
+                },
+                {
+                  "else": []
                 }
               ]
             }

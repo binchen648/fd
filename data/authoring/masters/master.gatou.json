@@ -33,7 +33,18 @@
           "printedClause": "求道者-战斗阶段结束时，每有一名位于你所在地地点且以移动进入该地点的其他玩家，你获得1点魔力。若你获胜，改为获得1点战果。",
           "activation": { "trigger": "after_battle_ended" },
           "effects": [
-            { "type": "record_master_directive", "directive": "gatou_battle_end_mobile_players_reward" }
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": { "type": "controller_won_battle" },
+                  "then": [{ "type": "adjust_victory_points", "amount": { "op": "var", "var": "controller.players_moved_in_this_round" } }]
+                },
+                {
+                  "else": [{ "type": "adjust_mana", "amount": { "op": "var", "var": "controller.players_moved_in_this_round" } }]
+                }
+              ]
+            }
           ],
           "execution": { "mode": "automatic" }
         },
@@ -42,9 +53,13 @@
           "kind": "passive",
           "printedClause": "冥想-你使用过令咒的回合不受其他玩家的能力影响。",
           "activation": { "trigger": "while_active" },
-          "effects": [
-            { "type": "record_master_directive", "directive": "ignore_other_player_abilities_after_command_spell_this_round" }
+          "ruleModifiers": [
+            { "id": "meditation", "printedClause": "冥想-你使用过令咒的回合不受其他玩家的能力影响。",
+              "operation": "ignore", "rule": "opponent_ability_effects",
+              "scope": { "subject": "controller" },
+              "conditions": [{ "type": "controller_used_command_spell_this_round" }] }
           ],
+
           "execution": { "mode": "automatic" }
         }
       ],
@@ -54,7 +69,7 @@
       "id": "master.gatou.command-spell",
       "name": "令咒",
       "cardType": "command_spell",
-      "printedText": "行动阶段：获得4魔力。行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
+      "printedText": "行动阶段：获得4魔力。行动阶段：总威力+2，若你获胜，获得2战果。行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
       "cardFace": { "cost": 0, "basePower": 0 },
       "playTiming": { "phase": "action", "window": "controller_play_card_window" },
       "playRequirements": [],
@@ -73,15 +88,25 @@
         {
           "id": "command-spell.power-victory",
           "kind": "phase_action",
-          "printedClause": "行动阶段：总威力+2，如果你本回合每赢得一场战斗，获得2战果。",
+          "printedClause": "行动阶段：总威力+2，若你获胜，获得2战果。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
           "creates": [
-            { "type": "create_modifier", "modifier": { "type": "power_bonus", "target": "controller", "amount": 2, "duration": "this_round" } }
+            { "type": "create_modifier", "modifier": { "type": "power_bonus", "operation": "add", "aggregate": "total", "scope": { "subject": "controller" }, "amount": 2, "duration": "this_round" } }
           ],
           "effects": [
-            { "type": "record_master_directive", "directive": "gain_2_vp_for_each_battle_won_this_round" },
+            { "type": "record_master_directive", "directive": "command_spell_victory_vp" },
             { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
           ],
+          "execution": { "mode": "automatic" }
+        },
+        {
+          "id": "command-spell.victory-vp",
+          "kind": "forced_trigger",
+          "printedClause": "若你获胜，获得2战果。",
+          "activation": { "trigger": "after_controller_wins_battle", "opens": "immediate" },
+          "conditions": [{ "type": "directive_recorded_this_round", "directive": "command_spell_victory_vp" }],
+          "effects": [{ "type": "adjust_victory_points", "amount": 2 }],
+          "limit": { "type": "per_round", "uses": 1, "scope": "this_card" },
           "execution": { "mode": "automatic" }
         },
         {
@@ -89,8 +114,14 @@
           "kind": "phase_action",
           "printedClause": "行动阶段：从新都或深山町移动至任意位置，无视交战状态。",
           "activation": { "phase": "action", "opens": "controller_action_window" },
+          "targets": [
+            { "id": "destination", "type": "location", "count": 1, "constraints": [
+              { "type": "any_enabled_location" },
+              { "type": "from_location_in", "locationIds": ["shinto", "miyama_town"] },
+              { "type": "ignore_engagement" } ] }
+          ],
           "effects": [
-            { "type": "record_master_directive", "directive": "move_from_shinto_or_miyama_to_any_location_ignore_engagement" },
+            { "type": "move_player", "to": "destination" },
             { "type": "adjust_command_seals", "amount": -1, "directive": "spend_command_spell" }
           ],
           "execution": { "mode": "automatic" }

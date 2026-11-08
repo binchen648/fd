@@ -185,7 +185,7 @@ describe('MatchSession semi-auto runtime', () => {
     expect(session.state.players.find((candidate) => candidate.id === 'p1')?.locationId).toBe('shinto');
   });
 
-  it('lets Luck stay in the attack area for battle power and ignore defeat effects', () => {
+  it('keeps Luck power without waiving ordinary battle-loss military penalties (A3)', () => {
     const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1', humanPlayerIds: ['p1', 'p2'] });
     session.state.round.activePhase = 'battle';
     session.state.eventPlacements = [];
@@ -209,8 +209,12 @@ describe('MatchSession semi-auto runtime', () => {
 
     expect(battle.winnerPlayerId).toBe('p2');
     expect(battle.participantBreakdowns.find((entry) => entry.playerId === 'p1')?.basePower).toBe(4);
-    expect(battle.militaryAdjustments.find((entry) => entry.playerId === 'p1')?.delta).toBe(0);
-    expect(result.nextState.log.some((entry) => entry.type === 'battle_loss_effect_ignored')).toBe(true);
+    // A3 recorded ruling: immunity to assigned 【败北】 does not waive ordinary loss.
+    const loser = battle.participantBreakdowns.find(entry => entry.playerId === 'p1')!;
+    const winner = battle.participantBreakdowns.find(entry => entry.playerId === 'p2')!;
+    expect(battle.militaryAdjustments.find(entry => entry.playerId === 'p1')?.delta).toBe(-(winner.effectivePower - loser.effectivePower));
+    expect(battle.militaryAdjustments.find(entry => entry.playerId === 'p1')!.delta).toBeLessThan(0);
+    expect(result.nextState.log.some(entry => entry.type === 'battle_loss_effect_ignored')).toBe(false);
   });
 
   it('moves round attack-area basic cards to the owner discard pile at cleanup', () => {

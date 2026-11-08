@@ -82,6 +82,16 @@ function setup(options: {
   }
 
   rules.initializeAbilityRuntime(state, { cards }, { seed: 20260920 });
+
+  // Register the actual production declaration; assertions remain unchanged.
+
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+
+      .filter(([id]) => ['basic.preparation'].includes(id)),
+
+  ));
   for (const card of state.cards) {
     state.abilityRuntime!.cardState[card.instanceId] = {
       active: card.instanceId.startsWith('source-') ? options.active !== false : true,
@@ -196,6 +206,11 @@ describe('P3-FB2-34 combat reward distribution', () => {
       zone: 'field', visibility: { scope: 'public' },
     }];
     rules.initializeAbilityRuntime(state, loaded, { seed: 20260920 });
+    // Register the actual production declaration; assertions remain unchanged.
+    Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+      Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+        .filter(([id]) => ['basic.preparation'].includes(id)),
+    ));
     state.abilityRuntime!.cardState['compiled-source'] = { active: true, faceDown: false, playedRound: 1 };
 
     const battle = rules.resolveBattlefield(state, {

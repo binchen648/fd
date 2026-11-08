@@ -352,7 +352,30 @@ export function isPlayerInCombat(state: GameState, playerId: string): boolean {
  * - 无法打出牌，但不影响使用能力或已激活牌
  * - 可以同时具有多层【败北】状态
  */
+/** A3：读取卡牌声明的「免疫被赋予【败北】」（Loader 白名单 + modifier-readers 同步登记）。 */
+function immuneToDefeatStatus(state: GameState, playerId: string): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime) return false;
+  return state.cards.some((card) => {
+    if (card.controllerPlayerId !== playerId) return false;
+    if (!["skill", "field", "attack_area"].includes(card.zone)) return false;
+    if (runtime.cardState[card.instanceId]?.faceDown === true) return false;
+    // "免疫"只在卡牌处于激活状态时成立；未激活（关闭）不提供保护。
+    // 技能区常驻卡没有 cardState 时按激活处理（与 hasActiveRuleModifier 的读取口径一致）。
+    if (runtime.cardState[card.instanceId]?.active === false) return false;
+    const definition = runtime.pack.cards[card.definitionId];
+    return (definition?.abilities ?? []).some((ability) =>
+      ability.ruleModifiers.some((modifier) => modifier.rule === "immune_to_defeat" && modifier.operation === "add"));
+  });
+}
+
 export function applyDefeatStatus(state: GameState, playerId: string): GameState {
+  if (immuneToDefeatStatus(state, playerId)) {
+    return {
+      ...state,
+      log: state.log.concat({ type: "defeat_status_immune", message: `player:${playerId}:immune_to_defeat`, payload: { playerId } }),
+    };
+  }
   return {
     ...state,
     players: state.players.map((p) =>

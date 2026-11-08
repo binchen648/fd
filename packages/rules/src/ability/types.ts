@@ -1,4 +1,6 @@
-﻿import type { PhaseName } from '../schema/game';
+import type { LocationId } from '../schema/location';
+import type { PhaseName } from '../schema/game';
+
 
 export type PlayerId = string;
 /** Raw JSON nodes are inspected by the loader, never evaluated as executable text. */
@@ -14,7 +16,10 @@ export interface AdapterReportEntry {
   cardId: string; abilityId?: string; path: string; status: ExecutionMode;
   reason: string; suggestedImplementation: string;
 }
+export interface ResolutionSnapshot { id: string; read: string }
 export interface AuthoringAbility {
+  /** Resolution-start value snapshots, read before any effect mutates state. */
+  bindings?: ResolutionSnapshot[];
   id: string; kind: string; printedClause: string; activation: RuleNode;
   conditions: RuleNode[]; targets: RuleNode[]; effects: RuleNode[]; cost: RuleNode[];
   ruleModifiers: RuleNode[]; creates: RuleNode[]; lifecycle: RuleNode;
@@ -26,6 +31,8 @@ export interface AuthoringCard {
   playTiming: RuleNode; playRequirements: RuleNode[]; abilities: AuthoringAbility[];
   initialPlacement?: 'outside_game';
   mode: ExecutionMode;
+  /** 升华技：只可能通过外部条件（从者能力等）解锁后加入技能区，开局不在场。 */
+  ascensionSkill?: boolean;
 }
 export interface ExecutableCardDefinition extends AuthoringCard {
   ownerId?: string;
@@ -66,6 +73,10 @@ export interface AbilityDefinitionPack {
   characters?: Record<string, ExecutableCharacterDefinition>;
   servantPackage?: ServantPackage;
   contentIdentity?: { packId: string; version: number; definitionHash: string };
+  /** B1 裁决：无主从者的候选全集必须来自 pack 显式登记（`PackRoster ∩ Unheld`），不得由 Runtime 扫全库。 */
+  servantRoster?: string[];
+  /** 重放一致性：roster 的版本号，随快照一起持久化。 */
+  servantRosterVersion?: string;
 }
 export interface AuthoringPack extends AbilityDefinitionPack {
   servantPackage: ServantPackage;
@@ -126,9 +137,34 @@ export interface LifecycleTransition {
   transitionId: string; lifecycleId: string; kind: 'install' | 'source_invalidated';
   causationId: string; createdRevision: number; roundId: number;
 }
+export interface BoundCardInfo {
+  cardId: string;
+  /** Card identity is always exposed; attributes/type only when the controller may see the card. */
+  redacted?: boolean;
+  attributes?: string[];
+  cardType?: string;
+}
+export interface BoundTargetResult {
+  playerId: PlayerId;
+  cardIds: string[];
+  cards: BoundCardInfo[];
+  /** Derived predicates per target, e.g. lacks_luck_or_agility. */
+  flags: Record<string, boolean>;
+}
+export interface EffectResultBinding {
+  effectType: string; affectedCount: number; affectedPlayerIds: PlayerId[];
+  affectedCardIds?: string[];
+  affectedCards?: BoundCardInfo[];
+  /** Per-target breakdown so a branch can never mix different targets' results. */
+  byTarget?: BoundTargetResult[];
+}
 export interface EffectContext {
   controllerId: PlayerId; sourceCardId: string; abilityId: string;
   variables: Record<string, number>; selections: Record<string, string[]>;
+  /** Structured results of already-executed effects, addressable by effect.bind. */
+  bindings?: Record<string, EffectResultBinding>;
+  /** Set once resolution-start snapshots have been captured (deferred until target selection). */
+  snapshotApplied?: boolean;
   event?: AbilityEvent;
   /** Present only when sourceCardId is a server-owned EventPlacement ruleInstanceId. */
   eventSource?: { ruleInstanceId: string; definitionId: string; locationId: string };
@@ -253,12 +289,15 @@ export interface SafeEvent {
   fromZone?: string;
   toZone?: string;
   movedCount?: number;
+  details?: Record<string, string | undefined>;
   revealedCards?: { instanceId: string; definitionId: string }[];
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
   /** Actual mana charged for this physical card by its latest authoritative play. */
   paidManaOnPlay?: number;
+  /** Anchored battlefield of a placed field effect, independent of current controller location. */
+  boardLocationId?: string;
   reversed?: boolean; attributeOverrides?: string[];
 }
 export interface RulerSealBinding {
@@ -282,6 +321,7 @@ export interface TrustedBattleResultSnapshot {
   winners: PlayerId[];
   loserIds: PlayerId[];
 }
+
 export interface AbilityRuntime {
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
@@ -334,6 +374,11 @@ export interface AbilityRuntime {
   battlefieldsPassedOrStayedThisRound: Record<PlayerId, number>;
   /** Successful positive mana gained in the current authoritative round. */
   manaGainedThisRound: { round: number; byPlayer: Record<PlayerId, number> };
+  /** 本回合每名玩家花费的魔力合计（用于"花费魔力最多"类选择器，D5/B1）。 */
+  manaSpentThisRound?: Record<PlayerId, number>;
+  /** Players (and their destination) that moved during the current round; used by combination fields. */
+  playersMovedThisRound: Array<{ playerId: PlayerId; locationId: LocationId }>;
+
   playRulesVersion: PlayRulesVersion;
   playCounters: RoundPlayCounters;
 }
@@ -345,7 +390,13 @@ export interface ActivateAbilityAction { type: 'activate_ability'; cardInstanceI
 export interface ChooseTargetAction { type: 'choose_target'; decisionId: string; candidates: string[]; min: number; max: number }
 export interface ResolveResponseAction { type: 'resolve_response'; windowId: string; cardInstanceId: string; abilityId: string }
 export interface DeclineWindowAction { type: 'decline_this_window'; windowId: string }
-export interface DeployPlayerAction { type: 'deploy_player'; locationId: string }
+export interface DeployPlayerAction {
+  type: 'deploy_player'; locationId: string;
+  /** VP paid to unlock terrain slots when a deployment hook is active (inferno fire). */
+  terrainBid?: number;
+  /** Highest bid the player may pay here (0 / absent when no hook applies). */
+  maxTerrainBid?: number;
+}
 export interface NormalMoveAction { type: 'normal_move'; locationId: string; manaCost?: number }
 export interface SkipNormalMoveAction { type: 'skip_normal_move' }
 export interface CompleteEmptyRegularPlayAction { type: 'complete_empty_regular_play' }
@@ -354,6 +405,7 @@ export interface ActionTurnProgress {
   regularPlay: 'pending' | 'complete';
 }
 export interface ActionTurnState { version: 1; round: number; byPlayer: Record<string, ActionTurnProgress> }
+
 export type LegalAction = PlayCardAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
   ActivateAbilityAction | ChooseTargetAction | ResolveResponseAction | DeclineWindowAction | DeployPlayerAction |
   NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction;
@@ -361,11 +413,13 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
   { type: 'choose_target'; decisionId: string; selectedIds: string[] } | ResolveResponseAction | DeclineWindowAction |
   { type: 'pass'; windowId: string } | DeployPlayerAction | StageAttackCardAction | ConfirmStagedAttackAction | CancelStagedAttackAction |
   NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction;
+
 export interface AbilityPlayerView {
+  terrainSlots?: Record<string,{bonuses:number[];occupants:Array<string|null>}>;
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   actionTurn?: ActionTurnProgress;
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[] }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; boardLocationId?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;

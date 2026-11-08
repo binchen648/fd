@@ -1,3 +1,5 @@
+import { movementLockAt } from '../ability/movement-locks';
+import {releaseTerrain} from '../ability/terrain-state';
 import type { GameState } from "../schema/game";
 import type { LocationId, MapDefinition, MatchLocationConfig } from "../schema/location";
 
@@ -99,6 +101,11 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
   if ((movementLockedByPersistentRule(state, player.id) || rulerSealMovementLocked(state, player.id)) && input.ignoreCardMovementRestrictions !== true) {
     return failure(state, "movement_locked");
   }
+  if (input.ignoreCardMovementRestrictions !== true &&
+      (movementLockAt(state, player.locationId, player.id).blocksExit ||
+       movementLockAt(state, input.to, player.id).blocksEntry)) {
+    return failure(state, "movement_locked");
+  }
   if (input.movementKind === "normal" && isPlayerEngaged(state, player.id)) {
     return failure(state, "engaged");
   }
@@ -135,6 +142,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
 
   const nextState: GameState = {
     ...state,
+    ...((state as GameState & {modeState?:Record<string,unknown>}).modeState ? {modeState:structuredClone((state as GameState & {modeState?:Record<string,unknown>}).modeState)} : {}),
     players: state.players.map((entry) =>
       entry.id === input.playerId
         ? {
@@ -157,6 +165,7 @@ export function movePlayer(state: GameState, input: MovePlayerInput): MovePlayer
     }),
   };
 
+  releaseTerrain(nextState,input.playerId);
   return {
     nextState,
     placedPlayerIds: [input.playerId],

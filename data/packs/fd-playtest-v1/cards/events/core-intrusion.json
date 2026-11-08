@@ -3,7 +3,20 @@
   "name": "核心骇入",
   "cardType": "event",
   "printedReward": 2,
-  "applicableLocations": ["deep_mountain", "new_capital"],
+  "applicableLocations": [
+    "deep_mountain",
+    "new_capital"
+  ],
+  "timing": [
+    "battle",
+    "after_battle"
+  ],
+  "interactions": [
+    {
+      "kind": "automatic",
+      "visibility": "public"
+    }
+  ],
   "printedText": "基础攻击于此战场获得+2威力。此战场的胜者可以选择自己的一张基础攻击获得“残留”直至下次进行战斗。",
   "effects": [
     {
@@ -21,7 +34,10 @@
   ],
   "capability": {
     "status": "PARTIAL",
-    "supportedDimensions": ["power_modifier", "winner_target"],
+    "supportedDimensions": [
+      "power_modifier",
+      "winner_target"
+    ],
     "hostRulingReason": "Residual attack lifecycle and tied-winner handling are not yet connected to the rules engine."
   },
   "ambiguities": [

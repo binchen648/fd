@@ -72,6 +72,11 @@ function setup(): GameState {
   state.players[2]!.locationId = 'miyama_town';
   for (const player of state.players) player.mana = 20;
   rules.initializeAbilityRuntime(state, pack, { seed: 9502 });
+  // Register the actual production declaration; assertions remain unchanged.
+  Object.assign(state.abilityRuntime!.pack.cards, Object.fromEntries(
+    Object.entries(rules.createMatchSession({ seed: 20260904 }).state.abilityRuntime!.pack.cards)
+      .filter(([id]) => ['basic.luck'].includes(id)),
+  ));
   return state;
 }
 

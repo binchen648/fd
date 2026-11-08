@@ -1,0 +1,35 @@
+{
+  "taskId": "RC-CI-01",
+  "scope": "TEST_FIXTURE_ONLY",
+  "owner": "Root / A-line coordinator",
+  "status": "GRANTED",
+  "BaseCommit": "c9e383f99eb69afd49da22a4817e629fb1a6e182",
+  "runtimeCandidate": "b052183a1f3f73afd4dfee785d9af6e6e305aed4",
+  "branch": "codex/a-b-ci-reconcile-20261105",
+  "worktree": "D:\\fd-validation\\a-b-ci-reconcile-20261105",
+  "ReservedFiles": [
+    "packages/rules/tests/fb2-34-combat-reward-distribution.test.ts",
+    "packages/rules/tests/fb2-45-prebattle-defeat-round-attack-attribute.test.ts",
+    "packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts",
+    "packages/rules/tests/medusa-s2-consumer-migration.test.ts",
+    "packages/rules/tests/nobunaga-s3-consumer-migration.test.ts",
+    "packages/rules/tests/regression/fb2-presence-concealment-pre-scoring.test.ts",
+    "packages/rules/tests/regression/fb2-terrain-deployment-bonus-metric.test.ts",
+    "docs/agents/manifests/tasks/RC-CI-01.json",
+    "docs/reports/2026-11-05-a-b-ci-reconcile.md"
+  ],
+  "ForbiddenFiles": [
+    "packages/rules/src/**",
+    "apps/**",
+    "data/**",
+    "old frozen worktrees",
+    "existing test expectations and timeouts"
+  ],
+  "authority": "User requests next-step A/B reconciliation; production reservations remain frozen, unchanged",
+  "validation": {
+    "L1": "Seven existing rule consumer suites, unchanged assertions",
+    "L2": "Defeat/terrain/reward combinations in the same suites",
+    "L3": "Not scheduled for this test-fixture-only batch; A-MATCH-03 retained"
+  },
+  "integrationAllowed": false
+}

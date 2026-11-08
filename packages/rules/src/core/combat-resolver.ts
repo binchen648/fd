@@ -12,12 +12,14 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, classifyCardPlay, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, classifyCardPlay, liveOngoing, subjectPlayerIds, hasActiveRuleModifier, processAbilityEvent } from '../ability/interpreter';
 import { isAcceptedRoundActiveAttackPaidCostCombatPowerAbility, isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
 import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
 import { logicalDayForPlayer } from './rule-overrides';
-import { assignedTerrainSlotIndex, hasRemoteOperationBonus, terrainBonusAt } from './terrain-advantage';
+import { assignedTerrainSlotIndex, terrainBonusAt } from './terrain-advantage';
+import { isStatusActive } from '../ability/status';
+import { node, nodes } from '../ability/loader';
 
 export interface CombatParticipantInput {
   playerId: string;
@@ -159,10 +161,14 @@ function getTerrainBreakdowns(
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
   if (participant.terrainSlotIndex === undefined) {
-    return [];
+    const bonus = terrainBonusAt(state, battlefieldId, participant.playerId, -1);
+    return bonus === undefined ? [] : [{ source: 'location',
+      label: `${battlefieldId}.base_terrain_bonus`, value: bonus,
+      payload: { kind: 'modifier', sourceType: 'location', sourceId: `${battlefieldId}.base_terrain_bonus`, targetTag: 'terrain' } }];
   }
   const value = terrainBonusAt(state, battlefieldId, participant.playerId, participant.terrainSlotIndex);
   if (value === undefined) {
+
     return [];
   }
 
@@ -174,29 +180,46 @@ function modeState(state: GameState): Record<string, unknown> {
 }
 
 function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
-  const statuses = (state as unknown as { activeStatuses?: Array<Record<string, unknown>> }).activeStatuses ?? [];
-  return statuses.some((status) =>
-    status.id === "maiya_cannot_win_battle_this_round" &&
-    status.sourceControllerId === playerId);
+  return isStatusActive(state, 'maiya_cannot_win_battle_this_round', playerId);
 }
 
-function hasActiveBasicCardAtBattlefield(
+/**
+ * A3：战斗结算结果（战败）不可被任何卡牌豁免；Luck 免疫的是被赋予【败北】状态，
+ * 此读点只保护被赋予的败北事实（战前/气息遮断等），不改变正常输赢和军绩。
+ */
+function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
+  const runtime = state.abilityRuntime;
+  if (!runtime || !state.players.some((player) => player.id === playerId && player.locationId === battlefieldId)) return false;
+  return state.cards.some((source) => source.controllerPlayerId === playerId &&
+    ['skill', 'field', 'attack_area'].includes(source.zone) &&
+    runtime.cardState[source.instanceId]?.faceDown !== true && runtime.cardState[source.instanceId]?.active !== false &&
+    runtime.pack.cards[source.definitionId]?.abilities.some((ability) =>
+      ability.ruleModifiers.some((modifier) => modifier.rule === 'immune_to_defeat' && modifier.operation === 'add')));
+}
+
+/**
+ * 远隔操作（`basic.preparation`）：不再按卡 id 判定，改为"该玩家在此战场有一张**激活的**、
+ * 且声明了指定规则名的卡"。卡面通过 `ruleModifiers` 声明，resolver 只认规则名。
+ */
+function declaresRule(state: GameState, definitionId: string, rule: string): boolean {
+  const definition = state.abilityRuntime?.pack.cards[definitionId];
+  return (definition?.abilities ?? []).some((ability) =>
+    ability.ruleModifiers.some((modifier) => String((modifier as { rule?: unknown }).rule ?? '') === rule));
+}
+
+function hasActiveCardDeclaringRule(
   state: GameState,
   playerId: string,
   battlefieldId: CombatResolutionInput["battlefieldId"],
-  definitionId: string,
+  rule: string,
 ): boolean {
   return state.cards.some((card) =>
     card.controllerPlayerId === playerId &&
-    card.definitionId === definitionId &&
     card.zone === "attack_area" &&
     state.players.some((player) => player.id === playerId && player.locationId === battlefieldId) &&
     state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
-    state.abilityRuntime.cardState[card.instanceId]?.faceDown !== true);
-}
-
-function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  return hasActiveBasicCardAtBattlefield(state, playerId, battlefieldId, "basic.luck");
+    state.abilityRuntime?.cardState[card.instanceId]?.faceDown !== true &&
+    declaresRule(state, card.definitionId, rule));
 }
 
 function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
@@ -210,6 +233,29 @@ function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; p
       ability.effects.some((effect) => effect.type === "return_silence_battle_start"));
     return hasReturnSilenceSemantic ? [{ sourceCardId, playerId: card.controllerPlayerId }] : [];
   });
+}
+
+/** 卡面声明的胜利战果加成（默认 2，取 `battle.winVpBonus` 的 value）。 */
+function declaredWinVpBonus(
+  state: GameState,
+  playerId: string,
+  _battlefieldId: CombatResolutionInput["battlefieldId"],
+): number {
+  const card = state.cards.find((candidate) =>
+    candidate.controllerPlayerId === playerId &&
+    candidate.zone === "attack_area" &&
+    state.abilityRuntime?.cardState[candidate.instanceId]?.active === true &&
+    declaresRule(state, candidate.definitionId, "battle.winVpBonus"));
+  const definition = card ? state.abilityRuntime?.pack.cards[card.definitionId] : undefined;
+  for (const ability of definition?.abilities ?? []) {
+    for (const modifier of ability.ruleModifiers) {
+      const entry = modifier as { rule?: unknown; value?: unknown };
+      if (String(entry.rule ?? '') !== "battle.winVpBonus") continue;
+      const value = Number(entry.value ?? 2);
+      return Number.isFinite(value) ? value : 2;
+    }
+  }
+  return 2;
 }
 
 function isLegacyCombatCard(state: GameState, card: GameState["cards"][number]): boolean {
@@ -232,6 +278,7 @@ function isCombatCardZone(state: GameState, card: GameState["cards"][number]): b
   return card.zone === "attack_area" || isLegacyCombatCard(state, card);
 }
 
+
 function reverseSituationAndEventIfNeeded(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
@@ -242,8 +289,18 @@ function reverseSituationAndEventIfNeeded(
   if (!Array.isArray(entries)) return breakdowns;
   const reversed = entries.some((entry) => {
     if (!entry || typeof entry !== "object") return false;
-    const candidate = entry as { locationId?: string; exemptPlayers?: string[] };
-    return candidate.locationId === battlefieldId && !candidate.exemptPlayers?.includes(participant.playerId);
+    const candidate = entry as { locationId?: string; exemptPlayers?: string[]; sourceCardId?: string; sourceControllerId?: string };
+    if (candidate.sourceCardId) {
+      const source = state.cards.find(c => c.instanceId === candidate.sourceCardId);
+      const cs = state.abilityRuntime?.cardState[candidate.sourceCardId];
+      if (!source || !['field','attack_area'].includes(source.zone) || !cs?.active || cs.faceDown ||
+          source.controllerPlayerId !== candidate.sourceControllerId || cs.boardLocationId !== candidate.locationId) return false;
+    }
+    if (candidate.locationId !== battlefieldId) return false;
+    if (candidate.exemptPlayers?.includes(participant.playerId)) return false;
+    // 埃列什基伽勒的「不受冥界佑护影响」现在由 ruleModifiers 读取，而不是硬编码名单
+    if (hasActiveRuleModifier(state, participant.playerId, 'netherworld_protection', 'ignore')) return false;
+    return true;
   });
   if (!reversed) return breakdowns;
   return breakdowns.map((breakdown) => {
@@ -256,6 +313,42 @@ function reverseSituationAndEventIfNeeded(
   });
 }
 
+export function getTotalPowerBreakdowns(
+  state: GameState,
+  participant: CombatParticipantInput,
+): BattleModifierBreakdown[] {
+  const out: BattleModifierBreakdown[] = [];
+  if (!state.abilityRuntime) return out;
+  for (const ongoing of liveOngoing(state)) {
+    for (const modifier of ongoing.ruleModifiers) {
+      if (modifier.definition.rule !== "battle.totalPower") continue;
+      const scope = node(modifier.definition.scope);
+      const subjects = subjectPlayerIds(state, scope, modifier.controllerId, ongoing.sourceCardId);
+      if (!subjects.includes(participant.playerId)) continue;
+      const applicable = nodes(scope.constraints).every((c) => {
+        if (c.type === "opponent_has_no_terrain") return participant.terrainSlotIndex === undefined;
+        if (c.type === "is_attack") return true;
+        return false;
+      });
+      if (!applicable) continue;
+      const raw = Number(modifier.definition.value ?? 0);
+      const value = modifier.definition.operation === "set" ? raw - participant.totalPower : raw;
+      out.push({
+        source: "skill",
+        label: `${ongoing.sourceCardId}.total_power`,
+        value,
+        payload: {
+          kind: "modifier",
+          sourceType: "skill",
+          sourceId: `${ongoing.sourceCardId}.total_power`,
+          targetTag: "total_power",
+        },
+      });
+    }
+  }
+  return out;
+}
+
 function buildParticipantBreakdown(
   state: GameState,
   battlefieldId: CombatResolutionInput["battlefieldId"],
@@ -265,7 +358,8 @@ function buildParticipantBreakdown(
     .concat(getEventBreakdowns(state, battlefieldId, participant))
     .concat(getLocationBreakdowns(state, battlefieldId, participant))
     .concat(getExternalSkillBreakdowns(participant))
-    .concat(getTerrainBreakdowns(state, battlefieldId, participant));
+    .concat(getTerrainBreakdowns(state, battlefieldId, participant))
+    .concat(getTotalPowerBreakdowns(state, participant));
   const resolvedModifiers = reverseSituationAndEventIfNeeded(state, battlefieldId, participant, modifiers);
   const totalModifier = resolvedModifiers.reduce((sum, modifier) => sum + modifier.value, 0);
 
@@ -350,6 +444,7 @@ export function deriveBattleParticipantsFromState(
         totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
         attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
           getEffectiveCardAttributes(state, card.instanceId))),
+
         externalSkillEffects,
       };
       return terrainSlotIndex === undefined ? participant : { ...participant, terrainSlotIndex };
@@ -514,29 +609,30 @@ function buildBattleResultFromRanked(
     location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
   const remoteOperationVpAdjustment = winnerPlayerIds
-    .filter((playerId) => hasRemoteOperationBonus(state, playerId, battlefieldId))
+    .filter((playerId) => hasActiveCardDeclaringRule(state, playerId, battlefieldId, "battle.winVpBonus"))
     .map((playerId) => ({
-      playerId, delta: 2, source: "battle_vp" as const, label: "basic.preparation.win_bonus",
-    }));
+        playerId,
+        delta: declaredWinVpBonus(state, playerId, battlefieldId),
+        source: "battle_vp" as const,
+        label: "basic.preparation.win_bonus",
+      }));
+
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
-  const lossEffectSuppressedPlayerIds = ranked
-    .filter((participant) => !winnerPlayerIds.includes(participant.playerId))
-    .filter((participant) => ignoresBattleLossEffects(state, participant.playerId, battlefieldId))
-    .map((participant) => participant.playerId);
+  // A3: immunity to assigned 【败北】 does not suppress ordinary battle-loss facts.
 
   return {
     battlefieldId, winnerPlayerIds, tied,
     ...(excludedPlayerIds.length ? { excludedPlayerIds } : {}),
     ...(presenceConcealmentDefeatedPlayerIds.length ? { presenceConcealmentDefeatedPlayerIds: [...new Set(presenceConcealmentDefeatedPlayerIds)] } : {}),
-    ...(lossEffectSuppressedPlayerIds.length ? { lossEffectSuppressedPlayerIds } : {}),
     winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
     margin, vpReward, baseVpPerWinner, eventVpPool, competitionVpPool,
     ...(vpAdjustments.length ? { vpAdjustments } : {}),
     militaryAdjustments: ranked.map((participant) => {
       const delta = winnerPlayerIds.includes(participant.playerId)
         ? margin
-        : ignoresBattleLossEffects(state, participant.playerId, battlefieldId) ? 0 : -margin;
+        : -margin;
       return { playerId: participant.playerId, delta: Object.is(delta, -0) ? 0 : delta };
+
     }),
     participantBreakdowns: ranked,
   };
@@ -806,22 +902,11 @@ export function resolveBattlefield(
     });
   }
   if (settlementState.abilityRuntime && battleResult) {
-    const winners = battleResult.winnerPlayerIds;
-    const immuneLosers = participants
-      .filter((participant) => !winners.includes(participant.playerId))
-      .filter((participant) => ignoresBattleLossEffects(nextState, participant.playerId, input.battlefieldId))
-      .map((participant) => participant.playerId);
-    for (const playerId of immuneLosers) {
-      nextState.log.push({
-        type: "battle_loss_effect_ignored",
-        message: `player:${playerId}:basic_luck_ignore_loss:${input.battlefieldId}`,
-        payload: { playerId, battlefieldId: input.battlefieldId, sourceCardDefinitionId: "basic.luck" },
-      });
-    }
     const runtime = nextState.abilityRuntime;
     if (runtime && !runtime.processedEvents.includes(abilityEventId)) {
       runtime.processedEvents.push(abilityEventId);
     }
+
   }
   return {
     nextState,
