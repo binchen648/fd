@@ -2,7 +2,8 @@ import { createHash, createHmac } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { loadAuthoringJson } from '../../src/index';
 import { describe, expect, it } from 'vitest';
-import { createMatchSession, restoreMatchSession } from '../../src/match-session';
+import { restoreMatchSession } from '../../src/match-session';
+import { createPostOpeningSession as createMatchSession } from '../acceptance/seven-roster-test-helpers';
 import { resolveStandardRoundEnd } from '../../src/core/elimination-resolver';
 import { applyBattleScoring } from '../../src/core/scoring-resolver';
 
