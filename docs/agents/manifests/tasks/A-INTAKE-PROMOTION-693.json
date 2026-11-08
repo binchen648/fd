@@ -23,7 +23,12 @@
     "packages/rules/src/core/movement.ts",
     "packages/rules/tests/acceptance/event-promotion-boundaries.test.ts",
     "packages/rules/tests/acceptance/seven-roster-combinations.test.ts",
-    "packages/rules/tests/acceptance/seven-roster-full-match.test.ts"
+    "packages/rules/tests/acceptance/seven-roster-full-match.test.ts",
+    "docs/reviews/phase3/A-INTAKE-PROMOTION-693-review.json",
+    "docs/reviews/phase3/A-INTAKE-PROMOTION-693-independent.md",
+    "docs/reviews/phase3/A-INTAKE-PROMOTION-693-independent.json",
+    "docs/reports/2026-11-08-a-tiered-tests-promotion-693.md",
+    "FD-RUNTIME-CONVERGENCE-FINAL-REPORT.md"
   ],
   "ForbiddenFiles": [
     "D:/fd/**",
@@ -41,5 +46,10 @@
     "L3": "One final frozen integrated candidate after L1/L2 and independent review; never per new card or local fix.",
     "authority": "User reaffirmation 2026-11-08",
     "layout": "Move the existing 30s eleven-round test byte-for-byte into seven-roster-full-match.test.ts; preserve all assertions, timeout, and normal test:ci discovery. Previous mixed run 171 PASS / 1 FAIL retained, not a full PASS."
-  }
+  },
+  "frozenCodeCandidate": "4f18ce1d94a36af477b6279b74b1fe3606199e12",
+  "productionWritingFrozen": true,
+  "reservationReleased": false,
+  "independentDecision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "integrationState": "Final L3 passed; final GitHub checks pending. No merge authorization."
 }

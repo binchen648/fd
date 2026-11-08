@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "taskId": "A-INTAKE-PROMOTION-693",
+  "reviewer": "promotion_693_review",
+  "candidateSha": "4f18ce1d94a36af477b6279b74b1fe3606199e12",
+  "baseSha": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "decision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "acceptanceScope": "Complete main-relative implementation candidate (126 paths), using cumulative independent review evidence; not full integration gate, full game, full roster or user merge acceptance.",
+  "reviewedUtc": "2026-11-08T02:01:34.328451+00:00",
+  "worktreeCleanBefore": true,
+  "worktreeCleanAfter": true,
+  "mainRelativePaths": 126,
+  "findings": [],
+  "closedFinding": {
+    "id": "PROMO-D5-LIFECYCLE-01",
+    "mechanism": "movementLocks derives recognized locks from authoritative public event placements, diagnostic cache ignored; Session snapshot shares same reader.",
+    "independentBeforeAfter": "Exact previous lifecycle probe rerun: removed barrier now allows effect entry; production battle reveal now rejects effect entry movement_locked.",
+    "evidence": "promotion-final-4f18ce1d-lifecycle-probe.log"
+  },
+  "independentTests": {
+    "command": "node node_modules/vitest/vitest.mjs run packages/rules/tests/acceptance/event-promotion-boundaries.test.ts packages/rules/tests/acceptance/resistance-promotion.test.ts packages/rules/tests/acceptance/b-field-five-closeout.test.ts packages/rules/tests/core/movement.test.ts packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts --reporter=json --outputFile=D:/fd-validation/b-field-five-closeout-20261107/promotion-final-4f18ce1d-tests.json",
+    "passed": 89,
+    "failed": 0,
+    "skipped": 0,
+    "naturalExitCode": 0,
+    "raw": "promotion-final-4f18ce1d-tests.json",
+    "log": "promotion-final-4f18ce1d-tests.log"
+  },
+  "cumulativeEvidence": [
+    "promotion-scope-review.md/json: source provenance, main-relative 120-path classification, original D5 findings, competing PR690 conflict audit.",
+    "promotion-d5-review.md/json: original six withdrawals verified, remaining D5 issues identified.",
+    "promotion-final-01c18ea0-review.md/json: remaining withdrawals independently reviewed, 85 focused passes, movement-lock lifecycle blocker.",
+    "final-unified-review.md/json: five-field scoped source/evidence binding, historical19 exact failure closure, limited fullCI/L3 receipts on 8b candidate only."
+  ],
+  "reviewNotes": [
+    "All previously identified unaccepted imported D5 event consumers removed; host-adjudicated printed content remains unchanged.",
+    "Retained movement_lock now consistent across ordinary and effect endpoint legality, source mutation and restore; no deployment ban or invented transit restriction.",
+    "Fixed global playtest event definitions are read from generated contentLibrary, same registered data used by MatchSession; no arbitrary cached lock authority.",
+    "Original eleven-round test body byte-identical to 0c, timeout30000 unchanged and root test discovery retains it. Tiered principles persistent in AGENTS/docplan/roadmap.",
+    "No runtime paths introduced by this last delta beyond lock derivation. Old speculative stores no longer consumed by retained combat/power handlers."
+  ],
+  "pendingIntegrationGates": [
+    "Run one complete test:ci on frozen integrated code candidate and confirm natural exit0. Prior mixed run171PASS1FAIL remains failure, no environment conclusion assigned.",
+    "Run required final L3 seven-player HTTP/WebSocket/browser/recovery witnesses once on frozen candidate; do not repeat per new card.",
+    "Publish accurate current report, complete promotion attestation/reference binding and satisfy GitHub Test/Build/Policy.",
+    "User personal merge approval remains required."
+  ],
+  "uncoveredScenarios": [
+    "Host review notices are consumed advisory directives, not complete optional choice/host adjudication settlement UI. Deferred event effects are NOT newly accepted automation.",
+    "Full94 skill acceptance,59 unmapped identity rows and public tunnel validation remain outside scope.",
+    "Shinji master replacement excluded per user.",
+    "Existing cached attribute-forbid lifecycle behavior outside retained movement-lock change has not been promoted as comprehensively verified."
+  ],
+  "fileHashes": {
+    "packages/rules/src/ability/movement-locks.ts": "38e5a1bc0552c93e9bf3b0831031fc46ba5e545f4e211d91602964d3437f530f",
+    "packages/rules/src/match-session.ts": "080c443c41b942a6843aaa7212050e3bf2af47d0b16f98b64e2ed3a97a1e0d13",
+    "packages/rules/tests/acceptance/event-promotion-boundaries.test.ts": "4b4bcad24e7b42e64c6ca1995fa83654a73e2c92d7766026c29fafe10ba0a970",
+    "packages/rules/tests/acceptance/seven-roster-full-match.test.ts": "51c2e29a8ff39a5d75a09e13e67451b97f713378365c8551107111cc9af69013"
+  },
+  "evidenceHashes": {
+    "promotion-final-4f18ce1d-tests.json": "b3a2d131b019071067fd86fe8056d555a07a2a28826afec859227db637b01258",
+    "promotion-final-4f18ce1d-tests.log": "7211cbb90413aa4d8a9a19028544736caa07690aae370267b7393bd197d44dbc",
+    "promotion-final-4f18ce1d-lifecycle-probe.log": "03ed81cd615563a70057956df3745fc43ffb467a0efc1429b1c1eb665f75baf8"
+  },
+  "mergeAllowed": false,
+  "creditGranted": false,
+  "reservationReleased": false
+}
