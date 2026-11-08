@@ -43,7 +43,9 @@
     "docs/reviews/phase3/A-CHALDEAS-DELIVERY-followup.json",
     "docs/reviews/phase3/A-CHALDEAS-DELIVERY-privacy.md",
     "docs/reviews/phase3/A-CHALDEAS-DELIVERY-review.json",
-    "docs/reports/2026-11-08-a-chaldeas-delivery.md"
+    "docs/reports/2026-11-08-a-chaldeas-delivery.md",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-review-fixes-independent.json",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-review-fixes-attestation.json"
   ],
   "testPlan": {
     "L1": "Legal owner window, live source/bottom, no mutation on wrong actor/stale response, exact physical deck swap.",
@@ -56,7 +58,7 @@
     "CI/test weakening",
     "merge or credit"
   ],
-  "frozenCodeCandidate": "edda4992c6f86885a6413ae2695d9e37ea9a444b",
+  "frozenCodeCandidate": "dcbb462ac79d92b684c515415c35a2a700ebbe18",
   "productionWritingFrozen": true,
   "reservationReleased": false,
   "independentDecision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
@@ -68,6 +70,7 @@
     "scope": "Existing reservation limited to MatchSession advisory/preview projection, MatchTable, fixture types and targeted tests.",
     "L1": "Compare actual revealed/bottom rules and prevent end-turn commands during the response. Verify remote viewer privacy.",
     "L2": "Restore legacy event notices, then swap or keep through actual commands with another public event present.",
-    "L3": "No new whole-match run for projection-only changes. Preserve the prior L3 result at its own SHA and rerun mandatory CI."
+    "L3": "No new whole-match run for projection-only changes. Preserve the prior L3 result at its own SHA and rerun mandatory CI.",
+    "independentReport": "docs/reviews/phase3/A-CHALDEAS-DELIVERY-review-fixes-independent.json"
   }
 }
