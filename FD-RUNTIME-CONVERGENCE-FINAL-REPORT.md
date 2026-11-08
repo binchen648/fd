@@ -1,3 +1,7 @@
+# 2026-11-08 A 线三级测试与 PR #693 收口
+
+冻结代码候选 `4f18ce1d94a36af477b6279b74b1fe3606199e12` 已完成175项L1/L2、独立89项及最终浏览器5项和三场七人11回合联机验证；独立结论为 IMPLEMENTATION_ACCEPTED_CANDIDATE。新卡不逐张跑整局的三级测试原则已持久写入 AGENTS.md 与执行规范。最终远端CI/Build/Policy在本记录提交后运行，以[PR #693 Checks](https://github.com/binchen648/fd/pull/693/checks)精确HEAD结果为准；不预写PASS，不自动合并或释放reservation。详见[本轮完整报告](docs/reports/2026-11-08-a-tiered-tests-promotion-693.md)及[独立审查](docs/reviews/phase3/A-INTAKE-PROMOTION-693-independent.md)。以下为原候选的历史证据，不能替代本轮门禁。
+
 # 2026-11-07 五项字段接入修复追加报告
 
 当前代码候选 `8b60e48b35e2df30d17d95b8c4c329c8ae645ac3`：完整CI 1997/0/0自然退出0，独立实际48/0，三场七人11回合及浏览器5/5通过。五项缺陷与相关准入／生命周期修复已具备本轮证据；不授全94技能ACCEPTED，不合并、不释放reservation或计credit。详见 [本轮完整报告](docs/reports/2026-11-07-b-field-five-closeout.md)。以下2026-11-06及更早部分为保留的历史证据，不能代替当前候选结果。
