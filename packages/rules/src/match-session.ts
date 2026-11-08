@@ -83,6 +83,7 @@ interface MatchSituationDefinition {
 interface RuntimeEventCard {
   id: string;
   name: string;
+  printedText?: string;
   printedReward?: number;
   effects?: Array<Record<string, unknown>>;
 }
@@ -157,7 +158,7 @@ export interface MatchZoneProjection {
   count: number;
   status: 'enabled' | 'empty' | 'disabled' | 'host_adjudicated';
   /** Only projected to a player whose current ability can see this deck bottom. */
-  bottomCard?: { id: string; name: string };
+  bottomCard?: { id: string; name: string; rulesText?: string };
 }
 
 export interface MatchClientState {
@@ -171,7 +172,7 @@ export interface MatchClientState {
   interactionWindows: MatchInteractionWindow[];
   directives: MatchDirectiveView[];
   zones: MatchZoneProjection[];
-  pendingReveal?: { kind: 'situation' | 'event'; id: string; name: string; locationId?: LocationId };
+  pendingReveal?: { kind: 'situation' | 'event'; id: string; name: string; rulesText?: string; locationId?: LocationId };
   logs: MatchSessionLogEntry[];
   replay: Array<{ id: string; round: number; phase: PhaseName; revision: number; label: string }>;
   battleBreakdowns: GameState['battleResults'];
@@ -1413,6 +1414,12 @@ const situationById = new Map([...nonClimaxSituations, ...climaxSituations].map(
 
 const eventCards = (contentLibrary as { cards?: RuntimeEventCard[] }).cards ?? [];
 const eventCardById = new Map(eventCards.filter((card) => card.id.startsWith('event.')).map((card) => [card.id, card] as const));
+
+function revealCardDetails(card: MatchSituationDefinition | RuntimeEventCard) {
+  const rulesText = 'desc' in card ? card.desc
+    : [card.printedReward !== undefined ? `战果 ${card.printedReward}。` : '', card.printedText].filter(Boolean).join(' ');
+  return { id: card.id, name: card.name, rulesText };
+}
 const eventDeckTemplate = ((contentLibrary as { eventSets?: Array<{ id: string; cardIds: string[] }> }).eventSets ?? [])
   .find((set) => set.id === 'event-set.waxing_moon_ritual')?.cardIds ?? [];
 
@@ -2183,11 +2190,14 @@ export class MatchSession {
       priorityPlayerId: reveal?.controllerId ?? this.priorityPlayer()?.id ?? this.humanPlayerId,
       view,
       interactionWindows: projectInteractionWindows(this.state, playerId),
-      directives: this.directiveViews().map(directive => ({ ...directive,
-        ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),
-      })),
+      directives: [
+        ...this.directiveViews().map(directive => ({ ...directive,
+          ...(directive.payload ? { payload: this.projectEventPayload(directive.payload, hiddenEventIds) as Record<string, unknown> } : {}),
+        })),
+        ...this.publicEventNotices(),
+      ],
       zones: this.projectZones(playerId),
-      ...(reveal && revealedCard ? { pendingReveal: { kind: reveal.kind, id: revealedCard.id, name: revealedCard.name,
+      ...(reveal && revealedCard ? { pendingReveal: { kind: reveal.kind, ...revealCardDetails(revealedCard),
         ...(reveal.kind === 'event' ? { locationId: reveal.locationId } : {}) } } : {}),
       logs: this.logs.slice(-80).map(entry => this.projectLogEntry(entry, playerId)),
       replay: recentReplay,
@@ -2465,19 +2475,6 @@ export class MatchSession {
     else targetState.eventPlacements[placementIndex] = placement;
     if (placementIndex === undefined) this.record('event_placed', `${locationId}:${eventCardId}`, { placement }, targetState);
     else this.record('event_revealed', 'shinto action start reveal', { locationId, count: 1, placement }, targetState);
-    if (visibility === 'public' && eventHasHostAdjudicatedEffects(eventCardId)) {
-      const modeState = modeStateOf(targetState);
-      const masterDirectives = Array.isArray(modeState.masterDirectives) ? modeState.masterDirectives : [];
-      masterDirectives.push({
-        directive: 'event_effect_host_review',
-        eventCardId,
-        locationId,
-        timing: 'on_event_placed_or_revealed',
-        consumed: true,
-      });
-      modeState.masterDirectives = masterDirectives;
-    }
-
   }
 
   private applySituation(targetState: GameState, resolvedSituation: MatchSituationDefinition): void {
@@ -2991,11 +2988,11 @@ export class MatchSession {
       ...(mayViewOpponentDiscards ? [{ id: 'opponent_discard', label: '对手弃牌', cardIds: opponentDiscardIds, count: opponentDiscardIds.length, status: opponentDiscardIds.length ? 'enabled' as const : 'empty' as const }] : []),
       zone(s, 'removed_from_game', '移除', own('removed_from_game')),
       { id: 'event_deck', label: '事件牌库', cardIds: [], count: eventDeck.length, status: 'enabled',
-        ...(eventBottom ? { bottomCard: { id: eventBottom.id, name: eventBottom.name } } : {}) },
+        ...(eventBottom ? { bottomCard: revealCardDetails(eventBottom) } : {}) },
       { id: 'event_placements', label: '事件放置', cardIds: visibleEventPlacementIds, count: s.eventPlacements.length, status: s.eventPlacements.length ? 'enabled' : 'empty' },
       { id: 'event_discard', label: '事件弃牌', cardIds: (s.eventDiscardPile ?? []).map((event) => event.eventCardId), count: s.eventDiscardPile?.length ?? 0, status: s.eventDiscardPile?.length ? 'enabled' : 'empty' },
       { id: 'situation_deck', label: '局势牌库', cardIds: [], count: situationDeck.length, status: 'enabled',
-        ...(situationBottom ? { bottomCard: { id: situationBottom.id, name: situationBottom.name } } : {}) },
+        ...(situationBottom ? { bottomCard: revealCardDetails(situationBottom) } : {}) },
       { id: 'current_situation', label: '当前局势', cardIds: s.currentSituationCardId ? [s.currentSituationCardId] : [], count: s.currentSituationCardId ? 1 : 0, status: s.currentSituationCardId ? 'enabled' : 'empty' },
       { id: 'situation_discard', label: '局势弃牌/烧毁',
         cardIds: (s.situationDiscardPile ?? []).filter(id => !s.burnedSituationCardIds?.includes(id)),
@@ -3009,7 +3006,10 @@ export class MatchSession {
 
   private directiveViews(): MatchDirectiveView[] {
     const directives = (this.modeState().masterDirectives as Array<Record<string, unknown>> | undefined) ?? [];
-    const applied = directives.map((entry, index) => classifyDirective({ id: `directive:${index + 1}`, ...entry }, true));
+    // Legacy saves stored event notices even for hidden placements. The current
+    // public placements now determine these informational notices.
+    const applied = directives.flatMap((entry, index) => entry.directive === 'event_effect_host_review'
+      ? [] : [classifyDirective({ id: `directive:${index + 1}`, ...entry }, true)]);
     const host = (this.state.abilityRuntime?.hostRequests ?? []).map((entry, index) => ({
       id: `host:${index + 1}`,
       controllerId: entry.controllerId,
@@ -3019,6 +3019,20 @@ export class MatchSession {
       payload: entry as unknown as Record<string, unknown>,
     }));
     return [...applied, ...host].filter((entry) => entry.status === 'pending' || entry.id.startsWith('directive:'));
+  }
+
+  private publicEventNotices(): MatchDirectiveView[] {
+    return this.state.eventPlacements.flatMap((placement, index) =>
+      placement.visibility.scope === 'public' && eventHasHostAdjudicatedEffects(placement.eventCardId)
+        ? [classifyDirective({
+          id: `event-notice:${this.state.round.roundNumber}:${index}`,
+          directive: 'event_effect_host_review',
+          eventCardId: placement.eventCardId,
+          locationId: placement.locationId,
+          timing: 'on_event_placed_or_revealed',
+          consumed: true,
+        }, true)]
+        : []);
   }
 
   private pendingHostDirectives(): MatchDirectiveView[] {

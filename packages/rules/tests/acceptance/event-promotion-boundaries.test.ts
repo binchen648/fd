@@ -84,8 +84,8 @@ describe('L1 unaccepted D5 automation remains on the established host notice pat
     expect(session.state.eventPlacements).toHaveLength(1);
     expect(session.state.eventDeck).toEqual([barrier]);
     expect(session.state.log.some(e => e.type === 'event_place_nested')).toBe(false);
-    const notices = ((session.state as any).modeState.masterDirectives as any[]).filter(e => e.eventCardId === eventId);
-    expect(notices).toEqual([]);
+    const notices = () => session.projectToClientState('p2').directives.filter(entry => entry.label === 'event_effect_host_review');
+    expect(notices()).toEqual([]);
     const otherView = JSON.stringify(session.getPlayerView('p2'));
     expect(otherView).not.toContain(eventId);
     expect(otherView).not.toContain('event_place_nested');
@@ -94,8 +94,7 @@ describe('L1 unaccepted D5 automation remains on the established host notice pat
     const keep = session.getPlayerView(owner).legalActions.find(a => a.type === 'decline_this_window')!;
     expect(keep).toBeDefined();
     expect(session.dispatchPlayerAction(owner, keep).ok).toBe(true);
-    expect(((session.state as any).modeState.masterDirectives as any[]).filter(e => e.eventCardId === eventId))
-      .toEqual([expect.objectContaining({ directive: 'event_effect_host_review' })]);
+    expect(notices()).toEqual([expect.objectContaining({ payload: expect.objectContaining({ eventCardId: eventId }) })]);
   });
 });
 
@@ -108,7 +107,9 @@ describe('L2 deferred event consumers cannot leak into actual settlement', () =>
       session.state.eventDeck = [eventId];
       (session as any).placeEvent(session.state, 'miyama_town', 'public');
       (session as any).refreshEventForbids(session.state);
-      expect(((session.state as any).modeState.masterDirectives as any[])).toContainEqual(expect.objectContaining({ directive: 'event_effect_host_review', eventCardId: eventId }));
+      expect(session.projectToClientState('p2').directives).toContainEqual(expect.objectContaining({
+        label: 'event_effect_host_review', payload: expect.objectContaining({ eventCardId: eventId }),
+      }));
       expect((session.state as any).modeState.eventEntryEffects).toBeUndefined();
       expect((session.state as any).modeState.basePowerOverrides).toBeUndefined();
     },

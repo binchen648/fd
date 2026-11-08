@@ -60,5 +60,14 @@
   "productionWritingFrozen": true,
   "reservationReleased": false,
   "independentDecision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
-  "promotionProtocolTaskId": "P3-A-CHALDEAS-DELIVERY"
+  "promotionProtocolTaskId": "P3-A-CHALDEAS-DELIVERY",
+  "reviewFollowUp": {
+    "base": "e24f032972b37bbbde28b96de2a1939eedaac7ad",
+    "owner": "Root / Product A",
+    "authority": "User approved both PR #694 review fixes on the existing branch. Prior frozen SHA remains intact.",
+    "scope": "Existing reservation limited to MatchSession advisory/preview projection, MatchTable, fixture types and targeted tests.",
+    "L1": "Compare actual revealed/bottom rules and prevent end-turn commands during the response. Verify remote viewer privacy.",
+    "L2": "Restore legacy event notices, then swap or keep through actual commands with another public event present.",
+    "L3": "No new whole-match run for projection-only changes. Preserve the prior L3 result at its own SHA and rerun mandatory CI."
+  }
 }

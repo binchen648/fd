@@ -99,6 +99,9 @@ describe('App room product shell', () => {
     const user = userEvent.setup();
     render(<App />);
     const revealed = screen.getByLabelText('待结算的揭示牌').textContent;
+    expect(screen.getByLabelText('揭示牌规则')).toHaveTextContent(/恢复|魔力|威力/);
+    expect(screen.getByLabelText('可交换堆底牌规则')).toHaveTextContent(/恢复|魔力|威力/);
+    expect(screen.getAllByRole('button', { name: '结束行动' }).every(button => (button as HTMLButtonElement).disabled)).toBe(true);
     await user.click(screen.getByRole('button', { name: '保存' }));
     await user.click(screen.getByRole('button', { name: '恢复' }));
     expect(screen.getByLabelText('待结算的揭示牌')).toHaveTextContent(revealed!);

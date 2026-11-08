@@ -120,6 +120,36 @@ describe('Chaldeas authentic reveal-before-effect windows', () => {
     expect(restored.getPlayerView(other).legalActions.some(action => action.type === 'resolve_response' && action.abilityId === abilityId)).toBe(false);
   });
 
+  it.each(['swap', 'keep'] as const)('restores legacy hidden event notices and only shows current public events after %s', choice => {
+    const { session, owner, other } = begin();
+    while (session.state.round.activePhase === 'round_start') decline(session, owner);
+    const original = 'event.waxing_moon_ritual.keian_ceremony';
+    const replacement = 'event.waxing_moon_ritual.akasaka';
+    // Legacy save shape: notices were stored immediately even for hidden placements.
+    session.state.eventPlacements = [
+      { locationId: 'shinto', eventCardId: original, visibility: { scope: 'public' }, battleModifiers: [] },
+      { locationId: 'shinto', eventCardId: original, visibility: { scope: 'hidden_until_trigger' }, battleModifiers: [] },
+    ];
+    session.state.eventDeck = [replacement];
+    (session.state as Session['state'] & { modeState: Record<string, unknown> }).modeState.masterDirectives = [0, 1].map(() => ({
+      directive: 'event_effect_host_review', eventCardId: original, locationId: 'shinto',
+      timing: 'on_event_placed_or_revealed', consumed: true,
+    }));
+    session.state.round.activePhase = 'advance';
+    session.state.round.prioritySeat = 7;
+    const restored = restoreMatchSession(session.serializeSession());
+    const notices = () => restored.projectToClientState(other).directives
+      .filter(d => d.label === 'event_effect_host_review');
+    expect(notices()).toHaveLength(1);
+    restored.advanceToNextDecision();
+    expect(restored.projectToClientState(other).pendingReveal?.id).toBe(original);
+    if (choice === 'swap') expect(restored.dispatchPlayerAction(owner, accept(restored, owner)).ok).toBe(true);
+    else decline(restored, owner);
+    expect(restored.state.eventPlacements.map(p => p.eventCardId)).toEqual([original, choice === 'swap' ? replacement : original]);
+    expect(notices()).toHaveLength(choice === 'swap' ? 1 : 2);
+    expect(notices().every(notice => notice.payload?.eventCardId === original)).toBe(true);
+  });
+
   it.each(['inactive', 'face-down', 'removed', 'controller-changed'] as const)(
     'revalidates a %s source without spending a use or trapping the decline', boundary => {
       const { session, owner, other } = begin();
