@@ -36,7 +36,14 @@
     "e2e/fd-server-recovery.spec.ts",
     "packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts",
     "packages/rules/tests/regression/round-transition.test.ts",
-    "packages/rules/tests/regression/standard-endgame.test.ts"
+    "packages/rules/tests/regression/standard-endgame.test.ts",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-independent.md",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-independent.json",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-followup.md",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-followup.json",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-privacy.md",
+    "docs/reviews/phase3/A-CHALDEAS-DELIVERY-review.json",
+    "docs/reports/2026-11-08-a-chaldeas-delivery.md"
   ],
   "testPlan": {
     "L1": "Legal owner window, live source/bottom, no mutation on wrong actor/stale response, exact physical deck swap.",
@@ -48,5 +55,10 @@
     "previously frozen commits and review receipts",
     "CI/test weakening",
     "merge or credit"
-  ]
+  ],
+  "frozenCodeCandidate": "edda4992c6f86885a6413ae2695d9e37ea9a444b",
+  "productionWritingFrozen": true,
+  "reservationReleased": false,
+  "independentDecision": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "promotionProtocolTaskId": "P3-A-CHALDEAS-DELIVERY"
 }
