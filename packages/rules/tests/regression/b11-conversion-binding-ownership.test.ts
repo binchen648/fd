@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { compileExecutableCardPack } from '../../src/ability/executable-card-pack';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from '../../src/ability/interpreter';
 import type { RuleNode } from '../../src/ability/types';
-import { createMatchSession } from '../../src/match-session';
+import { createPostOpeningSession as createMatchSession } from '../acceptance/seven-roster-test-helpers';
 
 const sourceId = 'master.irisviel.skill.conversion-magic';
 const abilityId = 'conversion-magic.preparation';

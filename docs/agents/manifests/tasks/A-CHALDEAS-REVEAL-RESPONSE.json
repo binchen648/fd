@@ -26,7 +26,14 @@
     "apps/client/src/App.test.tsx",
     "apps/client/src/state/remote-room-fixture.test.ts",
     "apps/server/src/match-server.test.ts",
-    "apps/server/src/room-store.test.ts"
+    "apps/server/src/room-store.test.ts",
+    "packages/rules/tests/regression/action-turn-delivery.test.ts",
+    "packages/rules/tests/regression/card-action-close.test.ts",
+    "packages/rules/tests/regression/card-action-activate.test.ts",
+    "packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts",
+    "packages/rules/tests/regression/battle-first-loss-delayed-activation-recert.test.ts",
+    "packages/rules/tests/regression/full-seven-player-match.test.ts",
+    "e2e/fd-server-recovery.spec.ts"
   ],
   "testPlan": {
     "L1": "Legal owner window, live source/bottom, no mutation on wrong actor/stale response, exact physical deck swap.",

@@ -16,6 +16,12 @@ export function finishOpening(session: Session) {
   expect(session.state.round.activePhase).not.toBe('round_start');
 }
 
+export function createPostOpeningSession(options?: Parameters<typeof createMatchSession>[0]) {
+  const session = createMatchSession(options);
+  finishOpening(session);
+  return session;
+}
+
 /** Bounded Gate B fixture, NOT a naturally reached seven-player match. Definitions
  * are the unmodified production pack. Only starting phase/resources/zones change. */
 export function fixture(definitionId: string) {
