@@ -81,9 +81,10 @@ describe('ability interaction projection', () => {
 
       if (ability.kind === 'passive') {
         const trigger = String(ability.activation.trigger ?? '');
+        const phase = String(ability.activation.phase ?? '');
         const expected = trigger && trigger !== 'while_active' && trigger !== 'when_play_requirements_checked'
           ? 'response_window'
-          : 'automatic_rule';
+          : phase && !trigger ? 'phase_activation' : 'automatic_rule';
         expect(interaction.kind, `${path} ${cardId} ${ability.id}`).toBe(expected);
       }
 
