@@ -98,44 +98,42 @@ export function resolveExtendedEffect(
   switch (str(effect.type)) {
     case 'opponents_random_discard': {
       const count = Number(effect.count ?? 1);
-      const opponents = state.players.filter(pl =>
-        pl.id !== controllerId &&
-        pl.status === 'active' &&
-        pl.locationId === p.locationId
-      );
+      const eligible = new Set(Array.isArray(context?.discardOpponentIds) ? context.discardOpponentIds : []);
+      const opponents = state.players.filter(player => eligible.has(player.id));
       const discardedIds: string[] = [];
       const affected: string[] = [];
       const byTarget: Array<{ playerId: string; cardIds: string[]; cards: ReturnType<typeof boundCardInfo>[]; flags: Record<string, boolean> }> = [];
       for (const opponent of opponents) {
         const handCards = state.cards.filter(c =>
           c.ownerPlayerId === opponent.id &&
-          c.zone === 'hand' &&
-          c.visibility?.scope === 'owner_only'
+          c.zone === 'hand'
         );
         const discardCount = Math.min(count, handCards.length);
+        const discardedCards = [];
         for (let i = 0; i < discardCount; i++) {
           const randomIndex = seededIndex(state, handCards.length);
           const card = handCards.splice(randomIndex, 1)[0];
           if (card) {
             card.zone = 'discard';
             card.visibility = { scope: 'public' };
+            const runtimeCard = state.abilityRuntime?.cardState[card.instanceId];
+            if (runtimeCard) runtimeCard.faceDown = false;
             discardedIds.push(card.instanceId);
+            discardedCards.push(card);
           }
         }
-        if (discardCount > 0) {
-          affected.push(opponent.id);
-          const cards = discardedIds.slice(-discardCount).map(id => boundCardInfo(state, controllerId, id));
-          const visible = cards.filter(card => !card.redacted);
-          byTarget.push({
-            playerId: opponent.id,
-            cardIds: cards.map(card => card.cardId),
-            cards,
-            flags: {
-              lacks_luck_or_agility: visible.length > 0 && visible.every(card =>
-                !(card.attributes ?? []).some(attribute => attribute === '幸运' || attribute === '敏捷')),
-            },
-          });
-        }
+        if (discardedCards.length > 0) affected.push(opponent.id);
+        const cards = discardedCards.map(card => boundCardInfo(state, controllerId, card.instanceId));
+        byTarget.push({
+          playerId: opponent.id,
+          cardIds: cards.map(card => card.cardId),
+          cards,
+          flags: {
+            lacks_luck_or_agility: discardedCards.every((card, index) =>
+              !['basic.luck', 'card.luck', 'card.cardluck'].includes(card.definitionId) &&
+              !(cards[index]?.attributes ?? []).some(attribute => ['幸运', '敏捷', '迅捷'].includes(attribute))),
+          },
+        });
       }
       const bindings = context?.bindings as Record<string, unknown> | undefined;
       const bindingId = str(effect.bind);

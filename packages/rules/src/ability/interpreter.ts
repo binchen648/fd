@@ -763,9 +763,18 @@ function persistentMovementLockBlocksTarget(s: GameState, ctx: EffectContext, ta
 function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[] {
   if (nodes(target.conditions).some(c => !condition(s, ctx, c))) return [];
   if (target.type === 'choice') {
-    // Return the option IDs as candidates
-    const options = Array.isArray(target.options) ? target.options : [];
-    return options.map((opt: any) => opt.id || '');
+    const openingEffect = ctx.abilityId ? abilityDefinition(s, ctx.sourceCardId, ctx.abilityId).effects[0] : undefined;
+    return nodes(target.options).map(option => str(option.id)).filter(id => {
+      if (openingEffect?.type !== 'branch') return true;
+      const branch = nodes(openingEffect.branches).find(branch => {
+        const gate = node(branch.if);
+        return gate.type === 'choice_is' && gate.choiceId === target.id && gate.value === id;
+      });
+      const payment = nodes(branch?.then)[0];
+      if (payment?.type !== 'pay_mana') return true;
+      const amount = numeric(s, ctx, payment.amount);
+      return Number.isSafeInteger(amount) && amount >= 0 && amount <= player(s, ctx.controllerId).mana;
+    });
   }
   if (target.type === 'event_card') {
     const rawZones = node(target.scope).zones;
@@ -2282,6 +2291,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
       if (effect.face !== 'face_down' && faceUpCardPlayLimitReached(s, p.id)) reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+      recordConsecutivePlay(s, ctx.sourceCardId, effect.face === 'face_down');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
       if (effect.face === 'face_down') source.visibility = { scope: 'owner_only', ownerPlayerId: p.id };
@@ -2485,12 +2495,18 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (effect.type === 'close_source_card' && isCardCloseForbidden(s, ctx.sourceCardId)) {
         reject('resolution_failed', 'Close source card is forbidden by a live rule modifier.');
       }
+      // Final Rules 9.2: declining power comparison does not end engagement.
+      const discardOpponentIds = effect.type === 'opponents_random_discard'
+        ? (selectorPlayerIds(s, ctx, 'opponents_at_same_battlefield') ?? [])
+            .filter(id => !isProtectedFromOpponentEffects(s, id, p.id))
+        : undefined;
       // Try extended effects handler
       try {
         resolveExtendedEffect(s, ctx.controllerId, effect, {
           sourceCardId: ctx.sourceCardId,
           abilityId: ctx.abilityId,
           selections: ctx.selections,
+          ...(discardOpponentIds ? { discardOpponentIds } : {}),
           bindings: (ctx.bindings ??= {}),
           ...(ctx.event ? { event: ctx.event } : {}),
         });
@@ -4490,9 +4506,15 @@ function executeEffects(s: GameState, ctx: EffectContext, effects: RuleNode[]): 
     return;
   }
   if (isBattleLossUnpreventableVpTriggerSemantic(a)) {
-    const beforeEvents = runtime(s).events.length;
+    const r = runtime(s);
+    const round = s.round.roundNumber;
+    const usageKey = `${ctx.sourceCardId}:${a.id}`;
+    if (r.cardState[ctx.sourceCardId]?.playedRound !== round || r.usedAbilities[usageKey] === round) return;
+    const beforeEvents = r.events.length;
     executeResolutionEffects(s, ctx, effects);
-    for (const event of runtime(s).events.slice(beforeEvents)) {
+    const settled = runtime(s);
+    settled.usedAbilities[usageKey] = round;
+    for (const event of settled.events.slice(beforeEvents)) {
       if (event.sourceCardId === ctx.sourceCardId && event.abilityId === ctx.abilityId &&
         (event.type === 'victory_points_adjusted' || event.type === 'effect_resolved')) event.unpreventable = true;
     }
@@ -5522,6 +5544,19 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
   cleanupOngoing(s); checkFormulaTriggers(s);
 }
 /** All eligibility/costs are checked against the pre-payment state; all cards activate before triggers. */
+function recordConsecutivePlay(s: GameState, sourceId: string, faceDown: boolean): void {
+  const r = runtime(s);
+  const previous = r.consecutivePlayRounds[sourceId];
+  if (faceDown) {
+    delete r.consecutivePlayRounds[sourceId];
+    return;
+  }
+  const playedRound = r.cardState[sourceId]?.playedRound;
+  if (previous !== undefined && playedRound === s.round.roundNumber) return;
+  r.consecutivePlayRounds[sourceId] = previous !== undefined && playedRound === s.round.roundNumber - 1
+    ? previous + 1 : 1;
+}
+
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
@@ -5576,6 +5611,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     moveCard(s, c.cardInstanceId, cardPlayClassification(s, c.cardInstanceId).destinationZone);
     const limit = perGamePlayLimit(definition(s, c.cardInstanceId)!);
     if (limit) runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] = (runtime(s).abilityUsage[`play:${c.cardInstanceId}:${limit.key}`] ?? 0) + 1;
+    recordConsecutivePlay(s, c.cardInstanceId, c.faceDown === true);
     runtime(s).cardState[c.cardInstanceId] = { active: !c.faceDown, faceDown: !!c.faceDown, playedRound: s.round.roundNumber, paidManaOnPlay: paidManaByCard.get(c.cardInstanceId)! };
     if (c.faceDown) card(s, c.cardInstanceId).visibility = { scope: 'owner_only', ownerPlayerId: playerId };
     
@@ -5592,14 +5628,6 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
           cardId: c.cardInstanceId,
           cost: cardCost
         });
-      }
-      // Track consecutive play rounds for this card definition
-      const defId = d.id;
-      const prevRound = runtime(s).consecutivePlayRounds[defId];
-      if (prevRound === s.round.roundNumber - 1) {
-        runtime(s).consecutivePlayRounds[defId] = (runtime(s).consecutivePlayRounds[defId] ?? 1) + 1;
-      } else {
-        runtime(s).consecutivePlayRounds[defId] = 1;
       }
     }
   }

@@ -684,6 +684,23 @@ describe('complex servant skill regressions', () => {
     expect(state.cards.find((card) => card.instanceId === curse)!.zone).toBe('attack_area');
   });
 
+  it('tracks Artoria Alter Wind Hammer on the same card over consecutive rounds and resets across a gap', () => {
+    const raw = archive('data/authoring/servants/servant.artoria-alt.json');
+    let state = setup(raw, { servantId: raw.id });
+    const sword = add(state, 'servant.artoria-alt.skill.sc-artoria-alt-1', 'skill');
+    for (const [round, bonus] of [[1, 3], [2, 6], [3, 9], [5, 3]] as const) {
+      rules.advanceAbilityPhase(state, 'action', round);
+      state.round.prioritySeat = state.players[0]!.seat;
+      state.players[0]!.mana = 12;
+      state.cards.find(card => card.instanceId === sword)!.zone = 'skill';
+      expect(play(state, sword).ok).toBe(true);
+      const basePower = rules.calculateCardPower(state, sword).value;
+      expect(activate(state, sword, 'sc-artoria-alt-1.chain-of-wind-king').ok).toBe(true);
+      expect(rules.calculateCardPower(state, sword).value).toBe(basePower + bonus);
+      state = JSON.parse(JSON.stringify(state)) as GameState;
+    }
+  });
+
   it('keeps Artoria Alter situation restriction exception scoped to Excalibur Morgan', () => {
     const raw = archive('data/authoring/servants/servant.artoria-alt.json');
     const state = setup(raw, { servantId: raw.id });

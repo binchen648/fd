@@ -141,14 +141,22 @@
         },
         {
           "id": "sc-achilles-1.gale-advance",
-          "kind": "phase_action",
+          "kind": "passive",
           "printedClause": "疾风驰骋-被动/战斗阶段：若你真名隐藏，令你的所有交战对手随机弃置一张手牌，然后将未弃置牌或弃置的牌不是【幸运】或敏捷牌的对手的合计威力设为0。",
           "activation": {
             "phase": "combat",
-            "opens": "controller_combat_action_window",
-            "requiresSourceState": "active"
+            "opens": "controller_combat_action_window"
           },
+          "limit": { "type": "per_round", "uses": 1, "scope": "this_card" },
           "conditions": [
+            {
+              "type": "or",
+              "conditions": [
+                { "type": "source_card_in_zone", "zone": "skill" },
+                { "type": "source_card_in_zone", "zone": "hand" },
+                { "type": "source_card_in_zone", "zone": "field" }
+              ]
+            },
             {
               "type": "not",
               "condition": {

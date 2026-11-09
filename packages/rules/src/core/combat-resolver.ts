@@ -316,9 +316,12 @@ function reverseSituationAndEventIfNeeded(
 export function getTotalPowerBreakdowns(
   state: GameState,
   participant: CombatParticipantInput,
+  powerBeforeTotalModifiers = participant.totalPower,
 ): BattleModifierBreakdown[] {
   const out: BattleModifierBreakdown[] = [];
+  const settings: Array<{ value: number; sourceId: string; order: number }> = [];
   if (!state.abilityRuntime) return out;
+  const starter = state.round.startingSeat ?? 1;
   for (const ongoing of liveOngoing(state)) {
     for (const modifier of ongoing.ruleModifiers) {
       if (modifier.definition.rule !== "battle.totalPower") continue;
@@ -332,11 +335,18 @@ export function getTotalPowerBreakdowns(
       });
       if (!applicable) continue;
       const raw = Number(modifier.definition.value ?? 0);
-      const value = modifier.definition.operation === "set" ? raw - participant.totalPower : raw;
+      if (modifier.definition.operation === "set") {
+        const seat = state.players.find(player => player.id === modifier.controllerId)?.seat;
+        const order = modifier.controllerId === participant.playerId
+          ? 0
+          : seat === undefined ? Infinity : seat < starter ? seat + state.players.length : seat;
+        settings.push({ value: raw, sourceId: ongoing.sourceCardId, order });
+        continue;
+      }
       out.push({
         source: "skill",
         label: `${ongoing.sourceCardId}.total_power`,
-        value,
+        value: raw,
         payload: {
           kind: "modifier",
           sourceType: "skill",
@@ -345,6 +355,16 @@ export function getTotalPowerBreakdowns(
         },
       });
     }
+  }
+  let currentPower = out.reduce((total, modifier) => total + modifier.value, powerBeforeTotalModifiers);
+  for (const setting of settings.sort((left, right) => left.order - right.order)) {
+    out.push({
+      source: "skill",
+      label: `${setting.sourceId}.total_power`,
+      value: setting.value - currentPower,
+      payload: { kind: "modifier", sourceType: "skill", sourceId: `${setting.sourceId}.total_power`, targetTag: "total_power" },
+    });
+    currentPower = setting.value;
   }
   return out;
 }
@@ -358,9 +378,10 @@ function buildParticipantBreakdown(
     .concat(getEventBreakdowns(state, battlefieldId, participant))
     .concat(getLocationBreakdowns(state, battlefieldId, participant))
     .concat(getExternalSkillBreakdowns(participant))
-    .concat(getTerrainBreakdowns(state, battlefieldId, participant))
-    .concat(getTotalPowerBreakdowns(state, participant));
+    .concat(getTerrainBreakdowns(state, battlefieldId, participant));
   const resolvedModifiers = reverseSituationAndEventIfNeeded(state, battlefieldId, participant, modifiers);
+  const powerBeforeTotalModifiers = resolvedModifiers.reduce((total, modifier) => total + modifier.value, participant.totalPower);
+  resolvedModifiers.push(...getTotalPowerBreakdowns(state, participant, powerBeforeTotalModifiers));
   const totalModifier = resolvedModifiers.reduce((sum, modifier) => sum + modifier.value, 0);
 
   return {
