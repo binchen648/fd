@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "fd-review-to-integration-handoff-v1",
+  "taskId": "B-MAIN-DELIVERY-20261109",
+  "baseSha": "816433dd881ad5852de27cc9ce4ce3e65ca09069",
+  "reviewedCandidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+  "technicalReview": {
+    "reviewer": "Codex Reviewer R / Capability Batch Verifier",
+    "conclusion": "PASS_SCOPED",
+    "path": "INDEPENDENT-REVIEW.json",
+    "sha256": "3c41b5a76c23757bb0aca1580b4d3420750496cedf86295da778a72ce5bdd2b7"
+  },
+  "affectedAbilityIds": [
+    "sc-achilles-1.gale-advance",
+    "sc-achilles-2.blue-sky",
+    "sc-tomoe-1.penalty-on-defeat",
+    "sc-artoria-alt-1.chain-of-wind-king"
+  ],
+  "tests": {
+    "command": "npm run test:ci",
+    "passed": 2057,
+    "skipped": 0,
+    "exitCode": 0,
+    "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda"
+  },
+  "zeroMigrationCredit": true,
+  "migrationCounts": {
+    "mainline": 0,
+    "recovery": 0,
+    "candidate": 0
+  },
+  "reverifyOnUpstreamHeadChange": true,
+  "knownBlockers": [
+    {
+      "id": "PROMOTION-BINDING",
+      "status": "BLOCKED_EVIDENCE",
+      "detail": "Real GitHub reviewer and review URL plus committed attestation, synchronization and integration HEAD required"
+    }
+  ],
+  "missingPromotionBindings": [
+    "review.sha carrying the actual gate attestation",
+    "review.reviewer as real github:<login>",
+    "review.reviewThread as actual PR review/comment URL",
+    "review.evidencePath and evidenceSha256 for gate attestation",
+    "synchronization.sha",
+    "head.ref and head.sha for actual integration HEAD"
+  ],
+  "recommendedPromotionConclusionForIToAssess": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "status": "READY_FOR_ROOT_I_BINDING"
+}
