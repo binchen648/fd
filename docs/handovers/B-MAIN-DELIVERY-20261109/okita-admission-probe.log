@@ -1,0 +1,10 @@
+authoring findings [{"cardId":"servant.okita.skill.sc-okita-1","abilityId":"sc-okita-1.sincerity-flag","path":"interaction.gateway","reason":"Unsupported private optional hand-play interaction semantic shape"},{"cardId":"servant.okita.skill.sc-okita-2","abilityId":"sc-okita-2.create-attacks","path":"effects[0].basePower","reason":"Unmapped mechanic field"},{"cardId":"servant.okita.skill.sc-okita-2","abilityId":"sc-okita-2.create-attacks","path":"effects[0].basic","reason":"Unmapped mechanic field"},{"cardId":"servant.okita.skill.sc-okita-2","abilityId":"sc-okita-2.create-attacks","path":"effects[0].type","reason":"Unmapped type: create_temporary_attack"},{"cardId":"servant.okita.skill.sc-okita-3","abilityId":"sc-okita-3.oath-haori","path":"effects[0].visibility","reason":"Only continuous public discard visibility is supported"},{"cardId":"servant.okita.skill.sc-okita-3","abilityId":"sc-okita-3.oath-haori","path":"effects[2].edge","reason":"Unmapped mechanic field"},{"cardId":"servant.okita.skill.sc-okita-3","abilityId":"sc-okita-3.oath-haori","path":"effects[2].type","reason":"Unmapped type: schedule_at_phase"}]
+production has original Okita false
+candidate compilation rejection Error: Executable compilation rejected unsupported semantics:
+servant.okita.skill.sc-okita-1:sc-okita-1.sincerity-flag:interaction.gateway: Unsupported private optional hand-play interaction semantic shape
+servant.okita.skill.sc-okita-2:sc-okita-2.create-attacks:effects[0].basePower: Unmapped mechanic field
+servant.okita.skill.sc-okita-2:sc-okita-2.create-attacks:effects[0].basic: Unmapped mechanic field
+servant.okita.skill.sc-okita-2:sc-okita-2.create-attacks:effects[0].type: Unmapped type: create_temporary_attack
+servant.okita.skill.sc-okita-3:sc-okita-3.oath-haori:effects[0].visibility: Only continuous public discard visibility is supported
+servant.okita.skill.sc-okita-3:sc-okita-3.oath-haori:effects[2].edge: Unmapped mechanic field
+servant.okita.skill.sc-okita-3:sc-okita-3.oath-haori:effects[2].type: Unmapped type: schedule_at_phase

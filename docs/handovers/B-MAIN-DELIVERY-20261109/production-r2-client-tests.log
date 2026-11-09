@@ -1,0 +1,35 @@
+
+> fd-prototype@0.1.0 test:client
+> npm test --workspace @fd/client -- --run
+
+
+> @fd/client@0.1.0 test
+> vitest --config vitest.config.ts --run
+
+
+ RUN  v3.2.7 D:/fd-validation/b-main-delivery-r2-20261109/apps/client
+
+ ✓ src/state/match-room-client.test.ts (2 tests) 11ms
+ ✓ src/components/ServantDeckSummary.test.tsx (2 tests) 45ms
+ ✓ src/components/CardInspectionOverlay.test.tsx (3 tests) 311ms
+ ✓ src/state/content-library-loader.test.ts (2 tests) 17ms
+ ✓ src/state/engine-bridge.test.ts (5 tests) 15ms
+ ✓ src/state/remote-room-fixture.test.ts (5 tests) 222ms
+ ✓ src/state/fd-asset-registry.test.ts (12 tests) 436ms
+ ✓ src/pages/MatchTable.test.tsx (27 tests) 3773ms
+   ✓ DR-P01 action-turn projection > shows the real local Session public power including zero only after ordinary play completes  380ms
+   ✓ MatchTable > renders payment, target, response, directive, zones, logs, and backend rejection windows  461ms
+   ✓ MatchTable > submits X payment and selected targets through backend commands  388ms
+ ✓ src/App.test.tsx (8 tests) 4112ms
+   ✓ App room product shell > renders the local room, seven seats, and connection controls  967ms
+   ✓ App room product shell > saves, restores, and switches between followed player and spectator projections  915ms
+   ✓ App room product shell > restores an opening response and executes its actual local swap before following preparation  400ms
+   ✓ App room product shell > ends the current local decision and follows the next player client  597ms
+   ✓ App room product shell > creates a remote room from the lobby and persists a launch URL  441ms
+   ✓ App room product shell > joins a remote room from the lobby as a player client  777ms
+
+ Test Files  9 passed (9)
+      Tests  66 passed (66)
+   Start at  10:34:00
+   Duration  10.54s (transform 2.90s, setup 5.93s, collect 11.70s, tests 8.94s, environment 17.59s, prepare 2.34s)
+

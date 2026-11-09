@@ -1,0 +1,13 @@
+
+ RUN  v3.2.7 D:/fd-validation/b-main-delivery-final-20261109
+
+ ✓ packages/rules/tests/regression/tomoe-independent-action-production.test.ts (4 tests) 193ms
+ ✓ packages/rules/tests/regression/achilles-gale-advance.test.ts (4 tests) 155ms
+ ✓ packages/rules/tests/regression/battle-loss-unpreventable-vp-trigger.test.ts (6 tests) 99ms
+ ✓ packages/rules/tests/ability-interaction-projection.test.ts (3 tests) 30ms
+
+ Test Files  4 passed (4)
+      Tests  17 passed (17)
+   Start at  10:38:35
+   Duration  3.37s (transform 757ms, setup 0ms, collect 1.77s, tests 477ms, environment 1ms, prepare 379ms)
+

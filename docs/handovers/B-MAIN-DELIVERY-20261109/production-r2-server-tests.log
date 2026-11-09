@@ -1,0 +1,23 @@
+
+> @fd/server@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/fd-validation/b-main-delivery-r2-20261109/apps/server
+
+ ✓ src/room-store.test.ts (5 tests) 1616ms
+   ✓ durably restores seven real identities and rejects stale/duplicate commands after a new server instance  1481ms
+ ✓ src/match-server.test.ts (19 tests) 3729ms
+   ✓ match websocket server > crosses a seven-human round boundary and rejects stale/duplicate end-turn after reconnect  806ms
+   ✓ match websocket server > preserves DR-P01 authority through raw WS rejection, replay and authenticated durable restore  664ms
+   ✓ match websocket server > rejects empty/default/invalid HTTP room IDs without replacing the running default room  490ms
+   ✓ match websocket server > rejects raw WS missing/invalid/stale revisions for dispatch and end_turn without mutation or accepted broadcasts  512ms
+   ✓ match websocket server > fails closed on historical FB2-49 replay erasure and malformed nested replay snapshots over HTTP  319ms
+ ✓ src/full-seven-player-match.test.ts (1 test) 25146ms
+   ✓ plays an unmodified seven-seat production game over HTTP/WS through save/restore and final outcome  25145ms
+
+ Test Files  3 passed (3)
+      Tests  25 passed (25)
+   Start at  10:33:59
+   Duration  29.33s (transform 1.72s, setup 0ms, collect 6.86s, tests 30.49s, environment 1ms, prepare 654ms)
+

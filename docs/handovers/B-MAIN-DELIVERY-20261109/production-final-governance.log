@@ -1,0 +1,17 @@
+
+> fd-prototype@0.1.0 phase3:ci-gate
+> tsx scripts/phase3-governance.ts --event D:/fd-validation/b-main-delivery-evidence-20261109/production-final-precheck-event.json --verify-git-ancestry
+
+D:\fd-validation\b-main-delivery-final-20261109\scripts\phase3-governance.ts:341
+    throw new Error('Phase 3 PRs must include a phase3-task-manifest fenced JSON block or manifest file.');
+          ^
+
+Error: Phase 3 PRs must include a phase3-task-manifest fenced JSON block or manifest file.
+    at validatePhase3Governance (D:\fd-validation\b-main-delivery-final-20261109\scripts\phase3-governance.ts:341:11)
+    at runPhase3GovernanceCli (D:\fd-validation\b-main-delivery-final-20261109\scripts\phase3-governance.ts:523:18)
+    at <anonymous> (D:\fd-validation\b-main-delivery-final-20261109\scripts\phase3-governance.ts:537:3)
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:661:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.13.1

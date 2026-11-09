@@ -1,0 +1,5 @@
+
+> fd-prototype@0.1.0 phase3:preflight
+> tsx scripts/phase3-preflight.ts --manifest D:/fd-validation/b-main-delivery-evidence-20261109/hand-task-protocol-probe.json --candidate 3f2e213e36defb9e701935754bc0ab328d053e63 --base 816433dd881ad5852de27cc9ce4ce3e65ca09069
+
+{"status":"FAIL","issueCode":"MALFORMED_INPUT","message":"Error: Unsupported task or epoch"}

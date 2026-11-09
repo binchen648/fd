@@ -1,0 +1,535 @@
+
+> fd-prototype@0.1.0 test:ci
+> vitest run --exclude "packages/rules/tests/*-authoring.test.ts" --exclude "packages/rules/tests/five-servants-authoring.test.ts" --exclude "packages/content/src/__tests__/fd-playtest-masters.test.ts" --exclude "packages/content/src/__tests__/fd-playtest-servants.test.ts" --exclude "scripts/tests/compile-playtest-content-pack.test.ts" --exclude "scripts/tests/verify-fd-playtest-v1.test.ts" --maxWorkers=2
+
+
+ RUN  v3.2.7 D:/fd-validation/b-main-delivery-r2-20261109
+
+ ✓ packages/rules/tests/fb2-49-opponent-close-to-one-interaction.test.ts (51 tests) 2140ms
+   ✓ P3-FB2-49 opponent close non-residual cards to one > fails closed at restore without raw exceptions for malformed persisted authority seals  333ms
+ ✓ packages/rules/tests/regression/complex-skills-regression.test.ts (39 tests) 1883ms
+   ✓ complex master and session regressions > keeps event and situation modifier sources in three-round MatchSession battle breakdown logs  1666ms
+ ✓ packages/rules/tests/executable-card-pack.test.ts (98 tests) 2835ms
+ ✓ packages/rules/tests/match-session.test.ts (30 tests) 10806ms
+   ✓ MatchSession semi-auto runtime > runs one semi-auto round through the same dispatch path  593ms
+   ✓ MatchSession semi-auto runtime > authenticates gameplay-affecting MatchSession fields outside GameState  1817ms
+   ✓ MatchSession semi-auto runtime > round-trips the production Artoria Caster looked-card continuation and rejects modified continuation state  519ms
+   ✓ MatchSession semi-auto runtime > restores a replay checkpoint by id  500ms
+   ✓ MatchSession semi-auto runtime > runs a three-round event smoke with revealable battle breakdowns  1411ms
+   ✓ MatchSession semi-auto runtime > runs eleven rounds or pauses with an explicit handled reason  4986ms
+ ✓ packages/rules/tests/regression/action-turn-delivery.test.ts (31 tests) 6195ms
+   ✓ DR-P01 authoritative action turn > restores exactly before move, after move, while staged and after regular play; rejects erased or forged continuation  1054ms
+   ✓ DR-P01 authoritative action turn > finishes all seven action turns before seven battle decisions, and settles only once  492ms
+   ✓ DR-P01 authoritative action turn > resumes a signed post-scoring response after durable restore without reopening any completed battle decision  1787ms
+ ✓ packages/content/src/__tests__/playtest-pack-loader.test.ts (65 tests) 1502ms
+ ✓ packages/pipeline/tests/runners/guardrail-preflight.test.ts (35 tests) 11ms
+ ✓ packages/rules/tests/fb2-47-controller-defeated-vp-reward.test.ts (12 tests) 430ms
+ ✓ packages/rules/tests/fb2-44-face-up-cards-per-round.test.ts (16 tests) 167ms
+ ✓ packages/pipeline/tests/validators/structure-response.test.ts (15 tests) 9ms
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"shared historical objects and transport binding","durationMs":7326}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > candidate -> independent RA -> G -> synchronization -> actual final HEAD closure
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"frozen producer and contract binding","durationMs":2753}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > candidate -> independent RA -> G -> synchronization -> actual final HEAD closure
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"independent exact review fixture","durationMs":849}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > candidate -> independent RA -> G -> synchronization -> actual final HEAD closure
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"three exact governance outputs","durationMs":589}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > candidate -> independent RA -> G -> synchronization -> actual final HEAD closure
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"synchronization and actual final HEAD","durationMs":994}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > candidate -> independent RA -> G -> synchronization -> actual final HEAD closure
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"complete new candidate RA G final proof","durationMs":7274}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > candidate -> independent RA -> G -> synchronization -> actual final HEAD closure
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"complete real rejected historical proof","durationMs":6133}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > explicit immutable real assembly is not a producer fixture
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"explicit historical real assembly checkout","durationMs":17242}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > B11 current transport evidence is distinct from immutable history
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"restore exact transport fixture","durationMs":283}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > integration binds preserved main control without broadening historical acceptance
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"immutable integration contract and checkout","durationMs":825}
+
+stdout | scripts/tests/phase3-e09-b11-final-binding.test.ts > integration binds preserved main control without broadening historical acceptance
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-e09-b11-final-binding.test.ts","name":"complete preserved main and technical preflight","durationMs":3313}
+
+ ✓ scripts/tests/phase3-e09-b11-final-binding.test.ts (55 tests) 101745ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects duplicate-review in the assembled closure  2209ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects forged-pass in the assembled closure  2561ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects bad-review-hash in the assembled closure  2398ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects wrong-candidate in the assembled closure  2378ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects unknown-schema in the assembled closure  1638ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects broad-scope in the assembled closure  1616ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects stale-main in the assembled closure  934ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects wrong-sync in the assembled closure  2875ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects actual final review blob tampering even if the original source hash remains valid  2458ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects committed final runtime changes rather than accepting a reviewed ancestor  915ms
+   ✓ candidate -> independent RA -> G -> synchronization -> actual final HEAD closure > rejects committed final unknown changes rather than accepting a reviewed ancestor  915ms
+   ✓ explicit immutable real assembly is not a producer fixture > rejects mismatched temporal authority-hash inputs  864ms
+   ✓ explicit immutable real assembly is not a producer fixture > rejects mismatched temporal source inputs  841ms
+   ✓ explicit immutable real assembly is not a producer fixture > rejects mismatched temporal paths inputs  851ms
+   ✓ explicit immutable real assembly is not a producer fixture > rejects mismatched temporal review inputs  916ms
+   ✓ B11 current transport evidence is distinct from immutable history > recomputes current coverage separately without rewriting the historical artifact or classifier  2538ms
+   ✓ B11 current transport evidence is distinct from immutable history > binds scoped RB, all raw bytes, current provider and later transport authorization without inheriting CI PASS  1590ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects missing-authorization even if the rest of the record is unchanged  458ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects forged-authorization even if the rest of the record is unchanged  468ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects unknown-schema-key even if the rest of the record is unchanged  480ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects stale-candidate even if the rest of the record is unchanged  447ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects stale-review even if the rest of the record is unchanged  455ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects source-object even if the rest of the record is unchanged  465ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects historical-pass even if the rest of the record is unchanged  461ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects current dirty source while the historical contract remains pinned  963ms
+   ✓ B11 current transport evidence is distinct from immutable history > rejects committed unknown paths without expanding the historical allowlist  1723ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale main binding  912ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale candidate binding  921ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale control-blob binding  904ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale control-hash binding  1060ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale review binding  1351ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale adoption binding  1723ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale scope binding  1569ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale unknown-key binding  1530ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects forged/stale promotion-source binding  459ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects a committed tampered main control blob  1299ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects new control files even under the existing governance directory  1015ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects committed runtime drift rather than treating candidate ancestry as source equivalence  967ms
+   ✓ integration binds preserved main control without broadening historical acceptance > rejects a rewritten accepted Reviewer A artifact instead of inheriting its old PASS  2748ms
+ ✓ packages/rules/tests/authoring-interpreter.test.ts (38 tests) 140ms
+ ✓ scripts/tests/phase3-coverage.test.ts (22 tests) 34ms
+ ✓ packages/rules/tests/core/combat-resolver.test.ts (10 tests) 7ms
+ ✓ packages/rules/tests/regression/fb2-game-start-rule-overrides.test.ts (11 tests) 211ms
+ ✓ packages/rules/tests/regression/resolution-dataflow.test.ts (15 tests) 80ms
+ ✓ packages/rules/tests/regression/fb2-ruler-seal-subsystem.test.ts (13 tests) 156ms
+ ✓ packages/pipeline/tests/runners/export-smoke-scenarios.test.ts (12 tests) 7ms
+ ✓ packages/rules/tests/match-room-hub.test.ts (10 tests) 2278ms
+   ✓ MatchRoomHub local multiplayer transport layer > rejects missing, invalid and stale revisions for both mutation commands without any side effects  437ms
+   ✓ MatchRoomHub local multiplayer transport layer > rejects referentially invalid restored board state without replacing the room  465ms
+ ✓ scripts/tests/phase3-readiness-preflight.test.ts (28 tests) 74095ms
+   ✓ integration preflight does not inherit historical readiness > requires the actual final SHA and rejects unsupported external closure fields  1458ms
+   ✓ integration preflight does not inherit historical readiness > rejects stale CLI identity before evaluation and requires the integration schema  676ms
+   ✓ exact Planner stability authorization continuation > admits the exact authorized parity delta without granting acceptance  4891ms
+   ✓ exact Planner stability authorization continuation > rejects the parity delta when exact continuation authority is absent  2916ms
+   ✓ exact Planner stability authorization continuation > rejects forged or mismatched hash authorization  752ms
+   ✓ exact Planner stability authorization continuation > rejects forged or mismatched commit authorization  763ms
+   ✓ exact Planner stability authorization continuation > rejects forged or mismatched task authorization  765ms
+   ✓ exact Planner stability authorization continuation > rejects forged or mismatched paths authorization  773ms
+   ✓ exact Planner stability authorization continuation > rejects forged or mismatched lineage authorization  766ms
+   ✓ exact Planner stability authorization continuation > rejects an actual extra test file instead of admitting a tests directory  2581ms
+   ✓ readiness preflight, independent from promotion policy > rejects actual committed invalidCommand deltas, not only caller claims  2114ms
+   ✓ readiness preflight, independent from promotion policy > rejects output tampering even after a caller recomputes the receipt hash  1059ms
+   ✓ readiness preflight, independent from promotion policy > verifies exact committed input, role-scoped paths, review and execution binding  2473ms
+   ✓ readiness preflight, independent from promotion policy > rejects stale candidate independently  2469ms
+   ✓ readiness preflight, independent from promotion policy > rejects pending dependency independently  2092ms
+   ✓ readiness preflight, independent from promotion policy > rejects missing dependency evidence independently  2233ms
+   ✓ readiness preflight, independent from promotion policy > rejects unauthorized deleted and renamed paths, not just surviving files  4914ms
+   ✓ readiness preflight, independent from promotion policy > rejects unsupported schemas, arbitrary adapter shapes and role expansion  2981ms
+   ✓ readiness preflight, independent from promotion policy > rejects digest drift and never treats the dirty working tree as the tested commit  4934ms
+ ✓ packages/rules/tests/acceptance/b-field-five-closeout.test.ts (48 tests) 4675ms
+   ✓ Anchored placement actual consumers > placement reverses actual field modifiers through restore and movement, rewards only later deployment, and cleans up  332ms
+ ✓ packages/rules/tests/fb2-45-prebattle-defeat-round-attack-attribute.test.ts (12 tests) 255ms
+ ✓ packages/rules/tests/acceptance/seven-roster-session-effects.test.ts (57 tests) 4242ms
+ ✓ packages/rules/tests/core/effect-resolver.test.ts (7 tests) 5ms
+ ✓ packages/rules/tests/regression/fb2-alter-ego-transform.test.ts (7 tests) 38ms
+ ✓ packages/rules/tests/fb2-34-combat-reward-distribution.test.ts (16 tests) 502ms
+ ✓ packages/rules/tests/regression/fb2-same-battlefield-private-hand-return-interaction.test.ts (11 tests) 109ms
+ ✓ packages/rules/tests/fb2-38-current-round-combat-loss-condition.test.ts (12 tests) 44ms
+ ✓ packages/rules/tests/regression/card-action-add-to-attack.test.ts (11 tests) 263ms
+ ✓ packages/rules/tests/medusa-s2-consumer-migration.test.ts (9 tests) 248ms
+ ✓ packages/rules/tests/regression/setup-create-to-skill-current-lineage.test.ts (27 tests) 609ms
+ ✓ packages/rules/tests/core/game-loop-battle-cleanup.test.ts (10 tests) 9ms
+ ✓ packages/rules/tests/nobunaga-s3-consumer-migration.test.ts (8 tests) 230ms
+HEAD is now at 715f33d base
+Warning: you are leaving 1 commit behind, not connected to
+any of your branches:
+
+  ea9a4a1 review attestation
+
+If you want to keep it by creating a new branch, this may be a good time
+to do so with:
+
+ git branch <new-branch-name> ea9a4a1
+
+HEAD is now at 0d05d3d head
+fatal: path 'docs/reviews/phase3/missing.json' does not exist in 'ea9a4a1323b77b344108049291aaeef4b2417511'
+ ✓ scripts/tests/phase3-preflight.test.ts (22 tests) 2633ms
+ ✓ packages/rules/tests/regression/round-transition.test.ts (16 tests) 1928ms
+   ✓ A-ROUND-02 standard product round transitions > continues a signed durable round-end save from the old product room flow  302ms
+ ✓ packages/rules/tests/regression/fb2-presence-concealment-pre-scoring.test.ts (10 tests) 310ms
+ ✓ packages/rules/tests/core/scoring-resolver.test.ts (6 tests) 5ms
+ ✓ packages/rules/tests/acceptance/chaldeas-reveal-response.test.ts (12 tests) 1024ms
+ ✓ packages/rules/tests/regression/production-resolution-bridge.test.ts (14 tests) 759ms
+warning: in the working copy of 'docs/skill-audit.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/override-dependency.ts', LF will be replaced by CRLF the next time Git touches it
+ ✓ scripts/tests/phase3-full-roster-inventory.test.ts (12 tests) 1096ms
+   ✓ Phase 3 full-roster identity inventory > a checkout that passes FS00 verification is directly consumable by FS01 intake  901ms
+ ✓ packages/rules/tests/fb2-46-battle-loss-vp-winner-reward.test.ts (9 tests) 22ms
+ ✓ packages/rules/tests/regression/standard-endgame.test.ts (21 tests) 1861ms
+   ✓ uses an actual seventh battle pass and authoritative Miyama result to break a final tie  312ms
+ ✓ packages/rules/tests/fb2-48-combat-opponent-power-vp-reward.test.ts (10 tests) 35ms
+ ✓ packages/rules/tests/regression/battle-loss-state-transform.test.ts (9 tests) 73ms
+ ✓ packages/rules/tests/leonidas-s1-consumer-migration.test.ts (8 tests) 68ms
+ ✓ packages/rules/tests/regression/battle-first-loss-delayed-activation-recert.test.ts (3 tests) 474ms
+   ✓ P3-B17 Olga first-loss ACTIVATE TO14 recertification > stages exactly once only after both scoring receipts, keeps full first-loss provenance, and activates only at round_end  349ms
+ ✓ packages/rules/tests/regression/fb2-event-rule-executable-bridge.test.ts (6 tests) 20ms
+ ✓ packages/rules/tests/fb2-36-skill-use-forbid-selectors.test.ts (8 tests) 29ms
+ ✓ packages/rules/tests/regression/fb2-required-additional-play.test.ts (8 tests) 33ms
+ ✓ packages/rules/tests/regression/battle-loss-servant-reveal.test.ts (8 tests) 201ms
+ ✓ scripts/tests/phase3-full-roster-audit.test.ts (7 tests) 13ms
+ ✓ packages/rules/tests/regression/replay.test.ts (14 tests) 13ms
+ ✓ packages/rules/tests/acceptance/event-promotion-boundaries.test.ts (23 tests) 1275ms
+ ✓ scripts/tests/phase3-e06-post-merge-recount.test.ts (3 tests) 9314ms
+   ✓ P3-E06 post-merge setup/create-to-skill recount > binds the immutable observed main, runtime lineage, unchanged accounting, and fresh coverage  708ms
+   ✓ P3-E06 post-merge setup/create-to-skill recount > recalculates coverage and binds current main without rewriting historical failures or credit  4637ms
+   ✓ P3-E06 post-merge setup/create-to-skill recount > requires full-history CI checkout and proves shallow recovery before ancestry checks  1899ms
+ ✓ packages/rules/src/__tests__/match-session-regressions.test.ts (9 tests) 366ms
+{"status":"INPUT_INCOMPLETE","error":"unknown/duplicate/missing CLI argument","automationAvailable":true,"acceptanceGranted":false,"creditDelta":0}
+{"status":"INPUT_INCOMPLETE","error":"unknown/duplicate/missing CLI argument","automationAvailable":true,"acceptanceGranted":false,"creditDelta":0}
+{"status":"INPUT_INCOMPLETE","error":"--task required","automationAvailable":true,"acceptanceGranted":false,"creditDelta":0}
+{"status":"INPUT_INCOMPLETE","error":"unknown/duplicate/missing CLI argument","automationAvailable":true,"acceptanceGranted":false,"creditDelta":0}
+ ✓ scripts/tests/engineering-failure-preflight.test.ts (22 tests) 39210ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > retains overflow and critical visibility while enforcing max five  2009ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > supports exactly five results without hiding two remaining critical matches  2089ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > returns verified extraction but not execution, retaining MISSING and UNKNOWN  2028ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > no-match is UNKNOWN risk, not LOW or proof of absence  1432ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > missing historical source is a controlled error  1267ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects catalog drift and source hash tampering without caching success  1320ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects exact review mismatch  1216ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > reuses the stable cache within a task  2966ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > does not invalidate cache for ordinary report commits  3259ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > invalidates cache for relevant source commits  3267ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > invalidates cache when scope changes  2947ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > invalidates cache for dirty relevant source without pretending the base commit moved  2953ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > fails closed on an audit-bound incorrect source hash  1444ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > fails closed on an audit-bound unavailable source  1360ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects an external review that did not accept the selected case  1315ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects malformed JSON and does not import runtime or execute regression commands  2327ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > records changed case knowledge as invalid instead of returning a cached success  2150ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects malformed or modified cached payloads  2782ms
+   ✓ standalone historical preflight (synthetic integrity fixtures only) > rejects malformed nested task metadata instead of throwing a raw TypeError  1077ms
+stdout | scripts/tests/phase3-contract-parity.test.ts > B11 real API contract parity diagnostics
+FD_EVIDENCE_FIXTURE_TIMING {"file":"phase3-contract-parity.test.ts","name":"exact adapter closure fixture","durationMs":1472}
+
+ ✓ scripts/tests/phase3-contract-parity.test.ts (12 tests) 40693ms
+   ✓ B11 real API contract parity diagnostics > executes candidate APIs in an isolated snapshot with canonical input and fixture hashes  459ms
+   ✓ B11 real API contract parity diagnostics > rejects local drift in scripts/phase3-contract-parity.ts before executing candidate APIs  1141ms
+   ✓ B11 real API contract parity diagnostics > rejects local drift in scripts/phase3-contract-parity-worker.ts before executing candidate APIs  3494ms
+   ✓ B11 real API contract parity diagnostics > rejects local drift in scripts/phase3-tooling-common.ts before executing candidate APIs  1137ms
+   ✓ B11 real API contract parity diagnostics > rejects local drift in scripts/phase3-b11-diagnostic-api.ts before executing candidate APIs  1106ms
+   ✓ B11 real API contract parity diagnostics > detects a real API disagreement rather than equating hand-filled owner values  706ms
+   ✓ B11 real API contract parity diagnostics > rejects unsupported/stale/spoofed inputs and incomplete fixture scope  2177ms
+ ✓ packages/rules/tests/regression/battle-result-optional-vp-trigger.test.ts (6 tests) 69ms
+ ✓ packages/rules/tests/fb2-35-round-active-attack-paid-cost-combat-power.test.ts (8 tests) 28ms
+ ✓ packages/rules/tests/regression/card-action-activate.test.ts (8 tests) 458ms
+ ✓ packages/rules/tests/regression/battle-terminal-gatou-reward.test.ts (8 tests) 71ms
+ ✓ packages/rules/tests/regression/lifecycle-source-active-runtime.test.ts (8 tests) 41ms
+ ✓ packages/rules/tests/acceptance/seven-roster-repair.test.ts (17 tests) 1475ms
+ ✓ packages/rules/tests/fb2-43-event-location-equals-controller.test.ts (10 tests) 16ms
+ ✓ packages/rules/tests/fb2-30-master-skill-definition-return.test.ts (8 tests) 15ms
+ ✓ packages/rules/tests/fb2-42-controlled-card-close-forbid.test.ts (9 tests) 22ms
+ ✓ scripts/tests/phase3-e08-b11-coverage-sync.test.ts (21 tests) 28491ms
+   ✓ B11 exact candidate coverage synchronization > binds the report to exact artifact bytes and regenerates deterministically  7903ms
+   ✓ final source coverage is separate from immutable history > admits only the pinned authorization continuation and exact concurrency delta  1899ms
+   ✓ final source coverage is separate from immutable history > rejects tampered command receipt  329ms
+   ✓ final source coverage is separate from immutable history > rejects replaying a historical packet as a current receipt reference even with its correct hash  446ms
+   ✓ final source coverage is separate from immutable history > binds the full final source, compiler, unchanged counts and exact scan locations  1706ms
+   ✓ final source coverage is separate from immutable history > rejects stale, mixed, tampered bindings and unavailable historical commit objects  951ms
+ ✓ packages/rules/tests/regression/interaction-private-optional-runtime.test.ts (6 tests) 106ms
+ ✓ packages/rules/tests/spartacus-s2-consumer-migration.test.ts (8 tests) 70ms
+ ✓ packages/rules/tests/acceptance/a-intake-closeout.test.ts (11 tests) 1293ms
+   ✓ A intake A3 real Session ordinary loss versus assigned defeat > keeps Luck normal loss, first-loss trigger and restored results exactly once  420ms
+ ✓ packages/rules/tests/regression/battle-terminal-source-card-zone.test.ts (7 tests) 97ms
+ ✓ packages/rules/tests/regression/cb-a0-time-alter-origin-bullet.test.ts (14 tests) 10524ms
+   ✓ Time Alter user-ruling production path > replaces and draws Origin Bullet through real setup before face-down effect play and one draw  941ms
+   ✓ Time Alter user-ruling production path > excludes a fabricated servant_skill hand target from projection and rejects it atomically  792ms
+   ✓ Time Alter user-ruling production path > excludes a fabricated master_skill hand target from projection and rejects it atomically  772ms
+   ✓ Time Alter user-ruling production path > rejects owner target drift without state/event/revision mutation  763ms
+   ✓ Time Alter user-ruling production path > rejects controller target drift without state/event/revision mutation  781ms
+   ✓ Time Alter user-ruling production path > rejects zone target drift without state/event/revision mutation  736ms
+   ✓ Time Alter user-ruling production path > rejects moved target drift without state/event/revision mutation  723ms
+   ✓ Time Alter user-ruling production path > rejects empty target drift without state/event/revision mutation  725ms
+   ✓ Time Alter user-ruling production path > rejects source target drift without state/event/revision mutation  710ms
+   ✓ Time Alter user-ruling production path > rejects stale target drift without state/event/revision mutation  718ms
+   ✓ Time Alter user-ruling production path > does not offer or accept activation outside the action phase  701ms
+   ✓ Time Alter user-ruling production path > hides forbidden targets and revalidates a prohibition added after the offer  717ms
+   ✓ Time Alter user-ruling production path > rejects a corrupt pending target graph with resolution_failed and rolls back play and draw  724ms
+   ✓ Time Alter user-ruling production path > rejects a corrupt pending draw graph with resolution_failed and rolls back play and draw  719ms
+ ✓ packages/rules/tests/regression/card-action-play-source-response.test.ts (6 tests) 163ms
+ ✓ packages/rules/tests/regression/battle-loss-unpreventable-vp-trigger.test.ts (6 tests) 100ms
+ ✓ packages/rules/tests/regression/fb2-deployment-resource-reward.test.ts (7 tests) 24ms
+ ✓ packages/rules/tests/outer-god-life-consumer-migration.test.ts (5 tests) 34ms
+ ✓ packages/rules/tests/regression/battle-loss-resource-trigger.test.ts (8 tests) 313ms
+ ✓ packages/rules/tests/helena-consumer-migration.test.ts (7 tests) 31ms
+ ✓ packages/rules/tests/regression/fb2-outer-god-life-subsystem.test.ts (7 tests) 94ms
+ ✓ packages/rules/tests/regression/fb2-fixed-controller-mana-cost.test.ts (5 tests) 140ms
+ ✓ packages/rules/tests/regression/fb2-source-play-basic-draw-trigger.test.ts (6 tests) 27ms
+ ✓ packages/rules/tests/regression/fb2-any-location-except-workshop-movement.test.ts (7 tests) 20ms
+ ✓ packages/rules/tests/regression/attack-play-classifier-regression.test.ts (11 tests) 43ms
+ ✓ packages/rules/tests/regression/battle-win-unique-create-card-trigger.test.ts (5 tests) 28ms
+ ✓ packages/rules/tests/regression/fb2-ryougi-s3-support-definition.test.ts (6 tests) 22ms
+ ✓ packages/rules/tests/acceptance/seven-roster-deployment.test.ts (28 tests) 3266ms
+ ✓ packages/rules/tests/regression/fb2-saber-magic-resistance.test.ts (5 tests) 18ms
+ ✓ packages/rules/tests/darnic-s1a-consumer-migration.test.ts (8 tests) 74ms
+ ✓ scripts/tests/phase3-decision-packets.test.ts (5 tests) 19ms
+ ✓ packages/rules/tests/fb2-41-current-round-combat-win-condition.test.ts (10 tests) 13ms
+ ✓ packages/rules/tests/regression/fb2-fixed-controller-draw.test.ts (6 tests) 102ms
+ ✓ packages/rules/tests/nero-s1-consumer-migration.test.ts (7 tests) 25ms
+ ✓ packages/rules/tests/regression/trigger-resource-runtime.test.ts (9 tests) 21ms
+ ✓ scripts/tests/phase3-full-roster-semantics.test.ts (6 tests) 44ms
+ ✓ packages/rules/tests/fb2-39-game-start-player-status-assignment.test.ts (8 tests) 18ms
+ ✓ packages/rules/tests/core/game-loop-action-play.test.ts (9 tests) 5ms
+ ✓ packages/rules/tests/nursery-consumer-migration.test.ts (7 tests) 22ms
+ ✓ packages/rules/tests/darius-consumer-migration.test.ts (5 tests) 22ms
+ ✓ packages/rules/tests/regression/battle-shared-victory-vp-trigger.test.ts (4 tests) 88ms
+ ✓ packages/rules/tests/fb2-37-deployment-destinations.test.ts (9 tests) 186ms
+ ✓ packages/rules/tests/siegfried-s2-consumer-migration.test.ts (6 tests) 57ms
+ ✓ packages/rules/tests/ruler-consumer-migration.test.ts (5 tests) 32ms
+ ✓ packages/rules/tests/regression/fb2-terrain-deployment-bonus-metric.test.ts (7 tests) 66ms
+ ✓ packages/rules/tests/regression/card-action-play.test.ts (4 tests) 108ms
+ ✓ packages/rules/tests/darius-s2-consumer-migration.test.ts (5 tests) 18ms
+ ✓ packages/rules/tests/regression/card-zone-core-direct-action.test.ts (4 tests) 96ms
+ ✓ packages/rules/tests/stheno-consumer-migration.test.ts (5 tests) 24ms
+ ✓ packages/rules/tests/regression/fb2-fixed-controller-set-mana.test.ts (6 tests) 7ms
+ ✓ scripts/tests/phase3-full-roster-capabilities.test.ts (8 tests) 84ms
+ ✓ scripts/tests/phase3-efp-k03-evidence-contract.test.ts (13 tests) 18728ms
+   ✓ K03 exact source and scoped RB evidence remain separate from B11 history > binds frozen source/test objects to exact RB while classifying baseline as pre-guard history  2363ms
+   ✓ K03 exact source and scoped RB evidence remain separate from B11 history > verifies frozen K03 independently of a different outer runtime, test and report HEAD  3139ms
+   ✓ K03 exact source and scoped RB evidence remain separate from B11 history > rejects observed current source drift despite valid historical RB  1122ms
+   ✓ K03 exact source and scoped RB evidence remain separate from B11 history > rejects observed current test drift despite valid historical RB  1287ms
+   ✓ K03 exact source and scoped RB evidence remain separate from B11 history > rejects observed current bytes drift despite valid historical RB  1221ms
+   ✓ K03 exact source and scoped RB evidence remain separate from B11 history > rejects actual committed fixture runtime drift despite unchanged accepted RB  1972ms
+ ✓ packages/rules/tests/regression/fb2-ciel-s2-support-definition.test.ts (7 tests) 23ms
+ ✓ packages/rules/tests/fb2-32-source-state-conditions.test.ts (8 tests) 14ms
+ ✓ packages/rules/tests/regression/fb2-fixed-source-removal.test.ts (6 tests) 6ms
+ ✓ packages/rules/tests/regression/battle-result-optional-extra-vp-trigger.test.ts (5 tests) 27ms
+ ✓ packages/rules/tests/regression/card-action-close.test.ts (5 tests) 440ms
+ ✓ packages/rules/tests/regression/fb2-game-start-skill-provisioning.test.ts (7 tests) 18ms
+ ✓ packages/rules/tests/fb2-26-provisioning-consumer-migration.test.ts (5 tests) 178ms
+ ✓ packages/rules/tests/regression/fb2-fixed-controller-resource-component.test.ts (5 tests) 10ms
+ ✓ packages/rules/tests/regression/resource-numeric-core-direct-action.test.ts (4 tests) 108ms
+ ✓ packages/rules/tests/regression/fb2-game-start-fixed-set-mana.test.ts (5 tests) 15ms
+ ✓ packages/rules/tests/regression/golden-card-content-pipeline.test.ts (2 tests) 334ms
+ ✓ packages/rules/tests/kayneth-s3-consumer-migration.test.ts (5 tests) 129ms
+ ✓ packages/rules/tests/regression/achilles-gale-advance.test.ts (4 tests) 160ms
+ ✓ packages/rules/tests/regression/full-seven-player-match.test.ts (5 tests) 31550ms
+   ✓ plays a real seven-human room from round1 through a verified round11 outcome (20260904)  16475ms
+   ✓ plays a real seven-human room from round1 through a verified round11 outcome (20260905)  14901ms
+ ✓ packages/rules/tests/fb2-33-event-combat-outcome.test.ts (7 tests) 12ms
+ ✓ packages/rules/tests/regression/battle-win-unique-luck-trigger.test.ts (5 tests) 25ms
+ ✓ packages/rules/tests/acceptance/seven-roster-combinations.test.ts (9 tests) 1026ms
+ ✓ packages/rules/tests/acceptance/runtime-convergence/seals.test.ts (28 tests) 3960ms
+ ✓ packages/pipeline/tests/run-servant-page.test.ts (3 tests) 50ms
+ ✓ packages/pipeline/tests/servant-main-card.test.ts (7 tests) 3ms
+ ✓ packages/rules/tests/fm05-territory-variant-extension.test.ts (4 tests) 17ms
+ ✓ packages/rules/tests/fb2-25-initial-mana-consumer-migration.test.ts (5 tests) 17ms
+ ✓ packages/rules/tests/acceptance/seven-roster-full-match.test.ts (1 test) 15865ms
+   ✓ A-ACCEPT-06 complete seven-player integration baseline > runs seven human seats with a resource-aware active policy and accepted responses through round eleven  15864ms
+ ✓ packages/rules/tests/regression/fb2-fixed-controller-command-seal-component.test.ts (4 tests) 5ms
+ ✓ packages/rules/tests/regression/golden-flow-2-combat-power-winner-vp.test.ts (1 test) 374ms
+   ✓ Golden Flow 2 combat -> power -> winner -> VP > settles from the real room end-turn path and survives serialize/restore without duplicate scoring  374ms
+ ✓ packages/rules/tests/amakusa-s1-consumer-migration.test.ts (5 tests) 18ms
+ ✓ packages/rules/tests/regression/interaction-room-boundary.test.ts (3 tests) 354ms
+ ❯ packages/rules/tests/ability-interaction-projection.test.ts (3 tests | 1 failed) 35ms
+   × ability interaction projection > classifies every approved seven-pair authoring ability from JSON fields 26ms
+     → data/authoring/servants/servant.achilles.json servant.achilles.skill.sc-achilles-1 sc-achilles-1.gale-advance: expected 'phase_activation' to be 'automatic_rule' // Object.is equality
+   ✓ ability interaction projection > exposes advance phase actions only during the advance phase 4ms
+   ✓ ability interaction projection > offers passive triggered abilities through a declineable response window 4ms
+ ✓ packages/rules/tests/match-room.test.ts (7 tests) 414ms
+ ✓ packages/rules/tests/acceptance/chaldeas-deck-privacy.test.ts (8 tests) 233ms
+ ✓ packages/rules/tests/acceptance/runtime-convergence/terrain.test.ts (17 tests) 2035ms
+   ✓ Current integrated candidate boundary witnesses using actual terrainBid protocol > paid slot and VP remain identical after signed Session restore  302ms
+ ✓ packages/content/src/__tests__/playtest-content-pack.test.ts (11 tests) 4ms
+ ✓ packages/rules/tests/regression/battle-winner-conformance.test.ts (1 test) 20ms
+ ✓ packages/rules/src/__tests__/content-bridge.test.ts (3 tests) 12ms
+ ✓ packages/pipeline/tests/servant-main-card-postprocess.test.ts (3 tests) 21ms
+stdout | packages/rules/src/__tests__/all-card-types.test.ts > all card types in content library > processes all 8 card types end-to-end
+All 8 card types processed successfully!
+Card IDs: [
+  'command-spell-1',
+  'event-1',
+  'master-identity-1',
+  'master-skill-1',
+  'servant-attack-1',
+  'servant-overview-1',
+  'servant-skill-1',
+  'situation-1'
+]
+Zones: [
+  'command_spell',
+  'event_deck',
+  'master',
+  'master_spell',
+  'field',
+  'hand',
+  'hand',
+  'situation_deck'
+]
+
+ ✓ packages/rules/src/__tests__/all-card-types.test.ts (1 test) 11ms
+ ✓ packages/content/src/__tests__/fd-playtest-events.test.ts (5 tests) 6ms
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/override-dependency.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/skill-rule-programs.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/authoring/cards.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/confirmed-skill-overrides.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/generated/legacy-content.json', LF will be replaced by CRLF the next time Git touches it
+ ✓ scripts/tests/phase3-reference-lock.test.ts (8 tests) 6538ms
+   ✓ Phase 3 locked Reference verifier > verifies repository, exact commit, clean checkout, required files, and SHA-256 digests  846ms
+   ✓ Phase 3 locked Reference verifier > rejects the wrong commit  760ms
+   ✓ Phase 3 locked Reference verifier > rejects a dirty checkout  821ms
+   ✓ Phase 3 locked Reference verifier > locks the transitive local TypeScript input closure used by confirmed overrides  1068ms
+   ✓ Phase 3 locked Reference verifier > fails closed before intake when a local confirmed-override dependency is missing  1114ms
+   ✓ Phase 3 locked Reference verifier > rejects missing required Reference inputs  1110ms
+   ✓ Phase 3 locked Reference verifier > returns portable metadata without leaking the local absolute Reference path  763ms
+ ✓ packages/rules/tests/fb2-31-event-player-relation.test.ts (6 tests) 11ms
+ ✓ packages/rules/tests/acceptance/kayneth-readmission.test.ts (7 tests) 598ms
+ ✓ packages/pipeline/tests/validators/vision-response.test.ts (4 tests) 3ms
+ ✓ packages/rules/tests/regression/fb2-round-number-formula.test.ts (5 tests) 10ms
+ ✓ packages/rules/tests/core/game-loop-round-start.test.ts (4 tests) 5ms
+ ✓ packages/rules/tests/seven-servant-decks.test.ts (2 tests) 37ms
+ ✓ packages/rules/tests/regression/fb2-explicit-outside-game-initial-placement.test.ts (9 tests) 243ms
+ ✓ packages/rules/tests/core/map-engine.test.ts (8 tests) 3ms
+ ✓ scripts/tests/phase3-b11-diagnostic-api.test.ts (20 tests) 6ms
+ ✓ packages/rules/tests/regression/b11-conversion-binding-ownership.test.ts (15 tests) 657ms
+ ✓ packages/rules/tests/fb2-40-source-active-round-count.test.ts (5 tests) 13ms
+ ✓ packages/rules/tests/acceptance/seven-roster-aggregate-followup.test.ts (7 tests) 700ms
+ ✓ packages/rules/tests/acceptance/runtime-convergence/square-accel.test.ts (6 tests) 820ms
+ ✓ packages/content/src/__tests__/guardrail-integration.test.ts (5 tests) 4ms
+ ✓ packages/rules/tests/projection/player-match-view.test.ts (3 tests) 4ms
+ ✓ packages/rules/tests/regression/fb2-nonplayable-master-rule-archive.test.ts (2 tests) 95ms
+ ✓ scripts/tests/fd-skill-semantic-axis-inventory.test.ts (14 tests) 6ms
+ ✓ packages/content/src/__tests__/index.test.ts (5 tests) 4ms
+ ✓ packages/rules/tests/core/card-source-state.test.ts (5 tests) 4ms
+ ✓ packages/pipeline/tests/master-main-card-postprocess.test.ts (2 tests) 14ms
+ ✓ scripts/tests/phase3-a111-current-main-execution-matrix.test.ts (5 tests) 870ms
+   ✓ P3-E04-A111 current-main execution matrix > uses only allowed currentMainStatus values and remains stable except for generatedAt  338ms
+ ✓ scripts/tests/phase3-a112-gap-decomposition.test.ts (4 tests) 547ms
+ ✓ packages/rules/tests/regression/scenario-matrix-loader.test.ts (2 tests) 23ms
+ ✓ packages/pipeline/tests/servant-card-layout-agent.test.ts (5 tests) 4ms
+ ✓ packages/pipeline/tests/main-card-locator.test.ts (4 tests) 4ms
+ ✓ scripts/tests/phase3-b11-observation-gaps.test.ts (5 tests) 1982ms
+   ✓ exact-reviewed B11 missing observation decomposition > recomputes 34 field observations without treating them as new card migrations  503ms
+   ✓ exact-reviewed B11 missing observation decomposition > rejects changed reviewer identity, epoch, scope or exact candidate  738ms
+   ✓ exact-reviewed B11 missing observation decomposition > does not manufacture gaps for available API observations  374ms
+ ✓ packages/rules/tests/regression/tomoe-independent-action-production.test.ts (4 tests) 178ms
+ ✓ packages/content/src/__tests__/persistence.test.ts (4 tests) 49ms
+ ✓ packages/rules/tests/portable-sha256.test.ts (10 tests) 139ms
+ ✓ packages/pipeline/tests/servant-main-card-selection.test.ts (3 tests) 4ms
+ ✓ packages/pipeline/tests/request-builders.test.ts (4 tests) 3ms
+ ✓ packages/rules/src/__tests__/real-content-integration.test.ts (1 test) 10ms
+ ✓ scripts/tests/phase3-b11-premise-review-sync.test.ts (14 tests) 6271ms
+   ✓ exact independently reviewed B11 premise binding > binds both immutable review hashes and actual artifact-only direct parents  1088ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered B verdict even with a rehashed artifact  363ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered B candidate even with a rehashed artifact  368ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered B scope even with a rehashed artifact  365ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered B fixture even with a rehashed artifact  361ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered B assessment even with a rehashed artifact  425ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered B promotion even with a rehashed artifact  417ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered A hash  368ms
+   ✓ exact independently reviewed B11 premise binding > rejects tampered A credit  357ms
+   ✓ exact independently reviewed B11 premise binding > regenerates the same accepted input without changing the reviewed premise or old input  1422ms
+ ✓ packages/rules/tests/core/decks.test.ts (3 tests) 2ms
+ ✓ packages/pipeline/tests/servant-folder-materializer.test.ts (1 test) 14ms
+ ✓ packages/content/src/__tests__/chm-card-types.test.ts (4 tests) 2ms
+ ✓ scripts/tests/run-servant-page-workflow.test.ts (1 test) 21ms
+ ✓ packages/rules/tests/regression/resource-numeric-room-boundary.test.ts (1 test) 70ms
+ ✓ packages/rules/tests/core/movement.test.ts (3 tests) 3ms
+ ✓ packages/rules/tests/acceptance/resistance-promotion.test.ts (8 tests) 94ms
+ ✓ packages/rules/tests/acceptance/runtime-convergence/legality.test.ts (6 tests) 612ms
+ ✓ packages/pipeline/tests/servant-page-orchestrator.test.ts (3 tests) 3ms
+ ✓ packages/pipeline/tests/servant-review-routing.test.ts (1 test) 13ms
+ ✓ packages/pipeline/tests/validators/guardrail-response.test.ts (5 tests) 3ms
+ ✓ packages/rules/tests/regression/b11-conversion-classification-api.test.ts (7 tests) 8ms
+ ✓ packages/pipeline/tests/card-extractor-types.test.ts (1 test) 2ms
+ ✓ packages/rules/tests/core/game-loop-action.test.ts (2 tests) 4ms
+ ✓ packages/pipeline/tests/local-easyocr.test.ts (3 tests) 3ms
+ ✓ packages/pipeline/tests/card-draft-writer.test.ts (1 test) 13ms
+ ✓ packages/pipeline/tests/validators/sample-manifest-coverage.test.ts (2 tests) 3ms
+ ✓ packages/rules/tests/regression/scenario-matrix-config.test.ts (1 test) 3ms
+ ✓ packages/rules/tests/core/phase-machine.test.ts (3 tests) 4ms
+ ✓ scripts/tests/phase3-e04-s00-a2-current-candidate-sync.test.ts (3 tests) 4ms
+ ✓ packages/content/tests/review-draft-schema.test.ts (1 test) 10ms
+ ✓ packages/rules/tests/regression/moon-holy-grail-scenario.test.ts (1 test) 4ms
+ ✓ packages/rules/tests/regression/seeded-scenario.test.ts (2 tests) 5ms
+ ✓ packages/rules/tests/regression/shinto-hidden-event-scenario.test.ts (1 test) 5ms
+ ✓ scripts/tests/phase3-e04-s00-a2-reviewer-a-sync-binding.test.ts (1 test) 3ms
+ ✓ packages/pipeline/tests/card-rename-policy.test.ts (5 tests) 2ms
+ ✓ scripts/tests/fd-playtest-v1-docs.test.ts (1 test) 2ms
+ ✓ packages/rules/tests/regression/fd-playtest-v1-7p.test.ts (1 test) 3ms
+ ✓ scripts/tests/project-paths.test.ts (3 tests) 2ms
+ ✓ packages/rules/tests/acceptance/runtime-convergence/seal-contract.test.ts (9 tests) 584ms
+ ✓ packages/providers/tests/config-validator.test.ts (2 tests) 2ms
+ ✓ packages/providers/tests/structure-prompt.test.ts (1 test) 2ms
+ ✓ packages/rules/tests/regression/default-map-without-moon.test.ts (1 test) 3ms
+ ✓ packages/pipeline/tests/servant-workflow-rules.test.ts (1 test) 3ms
+ ✓ packages/rules/tests/schema/game-schema.test.ts (1 test) 2ms
+ ✓ packages/providers/tests/source-ref.test.ts (3 tests) 2ms
+ ✓ packages/providers/tests/vision-prompt.test.ts (1 test) 2ms
+ ✓ packages/rules/tests/regression/room-persistence-serialization.test.ts (1 test) 76ms
+ ✓ packages/rules/tests/core/elimination-resolver.test.ts (1 test) 9ms
+ ✓ packages/rules/tests/regression/package-exports.test.ts (2 tests) 2ms
+ ✓ packages/rules/tests/tools/replay.test.ts (1 test) 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  packages/rules/tests/ability-interaction-projection.test.ts > ability interaction projection > classifies every approved seven-pair authoring ability from JSON fields
+AssertionError: data/authoring/servants/servant.achilles.json servant.achilles.skill.sc-achilles-1 sc-achilles-1.gale-advance: expected 'phase_activation' to be 'automatic_rule' // Object.is equality
+
+Expected: "automatic_rule"
+Received: "phase_activation"
+
+ ❯ packages/rules/tests/ability-interaction-projection.test.ts:87:69
+     85|           ? 'response_window'
+     86|           : 'automatic_rule';
+     87|         expect(interaction.kind, `${path} ${cardId} ${ability.id}`).to…
+       |                                                                     ^
+     88|       }
+     89| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 221 passed (222)
+      Tests  1 failed | 2056 passed (2057)
+   Start at  10:31:58
+   Duration  570.81s (transform 4.67s, setup 0ms, collect 47.91s, tests 463.37s, environment 26ms, prepare 21.41s)
+
