@@ -1,0 +1,65 @@
+{
+  "packet": "8ae925ee835e2fb97cc248456c1ea32f97dea585",
+  "base": "816433dd881ad5852de27cc9ce4ce3e65ca09069",
+  "candidates": {
+    "production": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "hand": "3f2e213e36defb9e701935754bc0ab328d053e63"
+  },
+  "files": 14,
+  "findings": [],
+  "evidence": [
+    {
+      "path": "hand-focused.log",
+      "hash": "e12f8a7525a7f4c6d845ceafaf8a85f5e10ef9bdd732172a8f9faec2d1dfba23",
+      "match": true
+    },
+    {
+      "path": "hand-phase3-preflight.log",
+      "hash": "6d04c88113feaccbd6ec8db945ba569d0b8f5f1910fe911ec5dc116f783fd2d8",
+      "match": true
+    },
+    {
+      "path": "hand-task-protocol-probe.log",
+      "hash": "65334b55b232c053ea6082378a1a6e771f3ff1d3c57f30210db9c02066f352dd",
+      "match": true
+    },
+    {
+      "path": "okita-admission-probe.log",
+      "hash": "1eb2e8eeae08090f071282fa528398d20d062985a79bb71c1bb048cdc9834dfc",
+      "match": true
+    },
+    {
+      "path": "production-final-focused.log",
+      "hash": "62ab49b6a6122937d69f98a19e667a5e0f842a6fd8af34457d0bb69d8ba3b6f9",
+      "match": true
+    },
+    {
+      "path": "production-final-governance.log",
+      "hash": "d068515b0b9cfa596c35554b0fbe977294b14de73ea0fb83fd3d4d96c59231fc",
+      "match": true
+    },
+    {
+      "path": "production-r2-client-tests.log",
+      "hash": "dfc7de1d7414cfd529fd2e7945ac73d4985c17e32b6e36d743ffada3c58de713",
+      "match": true
+    },
+    {
+      "path": "production-r2-server-tests.log",
+      "hash": "723b65eb640468b4fab3bf53f5898ce198698073d319298d4cc97f0f18b44875",
+      "match": true
+    },
+    {
+      "path": "publish-final.log",
+      "missing": true
+    },
+    {
+      "path": "wind-production-probe.log",
+      "hash": "d84bef1f65573d240eebfaf67e6291cfd0263e45224b15458cd9bd8a30f78024",
+      "match": true
+    },
+    {
+      "path": "production-r2-ci.log",
+      "match": true
+    }
+  ]
+}

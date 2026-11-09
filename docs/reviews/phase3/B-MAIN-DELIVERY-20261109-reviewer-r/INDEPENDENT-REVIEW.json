@@ -1,0 +1,227 @@
+{
+  "taskId": "B-MAIN-DELIVERY-20261109",
+  "reviewer": "Codex Reviewer R / Capability Batch Verifier",
+  "baseSha": "816433dd881ad5852de27cc9ce4ce3e65ca09069",
+  "productionCandidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+  "handCandidateSha": "3f2e213e36defb9e701935754bc0ab328d053e63",
+  "evidenceCarrierSha": "8ae925ee835e2fb97cc248456c1ea32f97dea585",
+  "decisions": [
+    {
+      "abilityId": "sc-achilles-1.gale-advance",
+      "cardId": "servant.achilles.skill.sc-achilles-1",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "inactive skill-zone projection",
+        "hidden true name",
+        "battlefield-only unprotected opponents",
+        "public hand discard",
+        "empty hand after terrain and total adjustments",
+        "Luck and Agility exemption; Quick is not exempt",
+        "normal Session serialization and restoration",
+        "repeated activation rejected"
+      ],
+      "limitations": [
+        "Resistance participation command not implemented at this candidate"
+      ]
+    },
+    {
+      "abilityId": "sc-achilles-2.blue-sky",
+      "cardId": "servant.achilles.skill.sc-achilles-2",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "same battlefield discard",
+        "public hand handling",
+        "workshop and protected player exclusion",
+        "2 mana hides fixed 3-mana branch",
+        "pending choice restoration",
+        "duplicate selection rejected without state change"
+      ],
+      "limitations": [
+        "branch filtering covers immediate fixed pay_mana only"
+      ]
+    },
+    {
+      "abilityId": "sc-tomoe-1.penalty-on-defeat",
+      "cardId": "servant.tomoe.skill.sc-tomoe-1",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "eligible ordinary play and +3 action",
+        "latter-half play rejected",
+        "unplayed source no penalty",
+        "played source moved outside attack area still charged once",
+        "5 VP unpreventable penalty and lower bound",
+        "duplicate/cross-round delivery",
+        "restored Session reaches actual phase-wide post-scoring barrier"
+      ],
+      "limitations": [
+        "does not certify unmodified Tomoe timing or payment clauses outside this repair"
+      ]
+    },
+    {
+      "abilityId": "sc-artoria-alt-1.chain-of-wind-king",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "instance-specific consecutive play tracking",
+        "+3 +6 +9 and gap reset to +3",
+        "4 mana paid per activation",
+        "Session restoration between play and activation",
+        "duplicate activation atomic rejection"
+      ],
+      "limitations": [
+        "old saves without usable consecutive history restart tracking"
+      ]
+    },
+    {
+      "abilityId": "zoneMoveReplacement",
+      "cardId": null,
+      "candidateSha": "3f2e213e36defb9e701935754bc0ab328d053e63",
+      "verdict": "PASS_SCOPED",
+      "L1": "PRODUCTION_COMPATIBILITY_PASS",
+      "L2": "BOUNDED_MECHANISM_PASS",
+      "scope": [
+        "21 acceptance tests",
+        "seven-seat production initialization and restoration",
+        "authorized effect movement only",
+        "activation removal cost actually removes source",
+        "selection and payment/zone/protection boundaries"
+      ],
+      "limitations": [
+        "Okita not registered",
+        "card.x-weak gameplay L1/L2 not accepted"
+      ]
+    },
+    {
+      "abilityId": "card.x-weak",
+      "cardId": "card.x-weak",
+      "candidateSha": "3f2e213e36defb9e701935754bc0ab328d053e63",
+      "verdict": "BLOCKED",
+      "L1": "NOT_RUN",
+      "L2": "NOT_RUN",
+      "scope": [],
+      "limitations": [
+        "Okita role and ability dependencies not admitted",
+        "7 loader diagnostics",
+        "unsupported preflight task and epoch"
+      ]
+    }
+  ],
+  "schemaVersion": "fd-capability-batch-independent-review-v1",
+  "date": "2026-11-09",
+  "recordedAtUtc": "2026-11-09T02:57:42.284Z",
+  "productionVerdict": "PASS_SCOPED",
+  "handMechanismVerdict": "PASS_SCOPED",
+  "handRoleVerdict": "BLOCKED",
+  "finalCi": {
+    "command": "npm run test:ci",
+    "passed": 2057,
+    "skipped": 0,
+    "exitCode": 0,
+    "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda"
+  },
+  "freshChecks": {
+    "focused": 17,
+    "client": 66,
+    "server": 25,
+    "handMechanism": 21,
+    "typecheck": "PASS",
+    "generatedContent": "PASS"
+  },
+  "scopeBoundary": "Four listed production repair contracts and authorized hand-removal mechanism only",
+  "governance": {
+    "status": "BLOCKED",
+    "githubReviewer": null,
+    "githubReviewUrl": null,
+    "promotionGranted": false,
+    "migrationCreditDelta": 0,
+    "admissionDelta": 0,
+    "phase3TaskProtocol": "UNRESOLVED"
+  },
+  "evidence": [
+    {
+      "path": "gale-played-source.log",
+      "sha256": "46011e942ff2cec6d711331535215374924b30ca9a914c17dfb3dc681aa137eb"
+    },
+    {
+      "path": "gale-played-source.mjs",
+      "sha256": "3a402b7b10fab472915c5f195875d45b9df273def697fa027e205543a9d092bb"
+    },
+    {
+      "path": "hand-preflight.log",
+      "sha256": "d9ee45434cbd361647f38f05487eccfbb78d753d7fca9673d894d7f936b948a0"
+    },
+    {
+      "path": "hand-validation.log",
+      "sha256": "4d8892b4ce7bc394dba60705ab636e6ce9e3b12d70e08d8613bfc740cfda2010"
+    },
+    {
+      "path": "l2-probes.log",
+      "sha256": "5fba6098107e5924a24180235355b461731f092a7761b4b7b6e117049b1ff3e0"
+    },
+    {
+      "path": "l2-probes.mjs",
+      "sha256": "b61f727b2cd4b296c6f52ad3e3c3427cdd2f4f849385dc432486a6ae99efc588"
+    },
+    {
+      "path": "okita-dependencies.log",
+      "sha256": "7539ec9d5e7ad51d91dee4579b3b302c6e5a00fe4ecc0768e2d583a95596da58"
+    },
+    {
+      "path": "production-ci.log",
+      "sha256": "916d1b5f3c77f84c4019abd908e4ff0b9f071e29b7246fa20177069e112f1e71"
+    },
+    {
+      "path": "production-focused.log",
+      "sha256": "8c41b3fabe2faf34b5722dcb5496dfdc875a36f5d6d5fe721d72edb77df48629"
+    },
+    {
+      "path": "production-validation.log",
+      "sha256": "eb78c158f791ca0205049342910d4e367776b0d77ce761a54697c9e06db4f646"
+    },
+    {
+      "path": "publish-final.log",
+      "sha256": "e1067a58ba74470287ac2869b0607f0d80a6687607072703122540d48c985363"
+    },
+    {
+      "path": "wind-production-source.mjs",
+      "sha256": "04000df54a038ca57831c55a99fc560fb434a25236e21a9e637e8ff3ad163ccf"
+    }
+  ],
+  "packetAudit": {
+    "filesVerified": 14,
+    "filesMatched": true,
+    "committedLogHashesMatched": 10,
+    "packetOmission": "publish-final.log",
+    "publicationLogSupplement": "publish-final.log",
+    "publicationLogHashMatchesReceipt": true
+  },
+  "openItems": [
+    {
+      "id": "HAND-CONTENT",
+      "status": "CONTENT_BLOCKED",
+      "detail": "Okita not in production roster; seven loader diagnostics; card.x-weak actual production L1/L2 not run"
+    },
+    {
+      "id": "HAND-PREFLIGHT",
+      "status": "BLOCKED_PROTOCOL",
+      "detail": "relative manifest absent at hand candidate; original external manifest unknown field owner; task-check-v1 Unsupported task or epoch"
+    },
+    {
+      "id": "PROMOTION-BINDING",
+      "status": "BLOCKED_EVIDENCE",
+      "detail": "Real GitHub reviewer and review URL plus committed attestation, synchronization and integration HEAD required"
+    }
+  ]
+}

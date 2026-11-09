@@ -1,0 +1,113 @@
+[
+  {
+    "abilityId": "sc-achilles-1.gale-advance",
+    "cardId": "servant.achilles.skill.sc-achilles-1",
+    "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "verdict": "PASS_SCOPED",
+    "L1": "PASS",
+    "L2": "PASS",
+    "scope": [
+      "inactive skill-zone projection",
+      "hidden true name",
+      "battlefield-only unprotected opponents",
+      "public hand discard",
+      "empty hand after terrain and total adjustments",
+      "Luck and Agility exemption; Quick is not exempt",
+      "normal Session serialization and restoration",
+      "repeated activation rejected"
+    ],
+    "limitations": [
+      "Resistance participation command not implemented at this candidate"
+    ]
+  },
+  {
+    "abilityId": "sc-achilles-2.blue-sky",
+    "cardId": "servant.achilles.skill.sc-achilles-2",
+    "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "verdict": "PASS_SCOPED",
+    "L1": "PASS",
+    "L2": "PASS",
+    "scope": [
+      "same battlefield discard",
+      "public hand handling",
+      "workshop and protected player exclusion",
+      "2 mana hides fixed 3-mana branch",
+      "pending choice restoration",
+      "duplicate selection rejected without state change"
+    ],
+    "limitations": [
+      "branch filtering covers immediate fixed pay_mana only"
+    ]
+  },
+  {
+    "abilityId": "sc-tomoe-1.penalty-on-defeat",
+    "cardId": "servant.tomoe.skill.sc-tomoe-1",
+    "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "verdict": "PASS_SCOPED",
+    "L1": "PASS",
+    "L2": "PASS",
+    "scope": [
+      "eligible ordinary play and +3 action",
+      "latter-half play rejected",
+      "unplayed source no penalty",
+      "played source moved outside attack area still charged once",
+      "5 VP unpreventable penalty and lower bound",
+      "duplicate/cross-round delivery",
+      "restored Session reaches actual phase-wide post-scoring barrier"
+    ],
+    "limitations": [
+      "does not certify unmodified Tomoe timing or payment clauses outside this repair"
+    ]
+  },
+  {
+    "abilityId": "sc-artoria-alt-1.chain-of-wind-king",
+    "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+    "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "verdict": "PASS_SCOPED",
+    "L1": "PASS",
+    "L2": "PASS",
+    "scope": [
+      "instance-specific consecutive play tracking",
+      "+3 +6 +9 and gap reset to +3",
+      "4 mana paid per activation",
+      "Session restoration between play and activation",
+      "duplicate activation atomic rejection"
+    ],
+    "limitations": [
+      "old saves without usable consecutive history restart tracking"
+    ]
+  },
+  {
+    "abilityId": "zoneMoveReplacement",
+    "cardId": null,
+    "candidateSha": "3f2e213e36defb9e701935754bc0ab328d053e63",
+    "verdict": "PASS_SCOPED",
+    "L1": "PRODUCTION_COMPATIBILITY_PASS",
+    "L2": "BOUNDED_MECHANISM_PASS",
+    "scope": [
+      "21 acceptance tests",
+      "seven-seat production initialization and restoration",
+      "authorized effect movement only",
+      "activation removal cost actually removes source",
+      "selection and payment/zone/protection boundaries"
+    ],
+    "limitations": [
+      "Okita not registered",
+      "card.x-weak gameplay L1/L2 not accepted"
+    ]
+  },
+  {
+    "abilityId": "card.x-weak",
+    "cardId": "card.x-weak",
+    "candidateSha": "3f2e213e36defb9e701935754bc0ab328d053e63",
+    "verdict": "BLOCKED",
+    "L1": "NOT_RUN",
+    "L2": "NOT_RUN",
+    "scope": [],
+    "limitations": [
+      "Okita role and ability dependencies not admitted",
+      "7 loader diagnostics",
+      "unsupported preflight task and epoch"
+    ]
+  }
+]

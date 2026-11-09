@@ -1,0 +1,68 @@
+3f2e213e36defb9e701935754bc0ab328d053e63
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          00B067B4B621D466C857592E761724B766FBB91B48BFF3B281A7A2F1411464CB       D:\fd\data\authoring-candidates\…
+{
+  "source": "D:/fd/data/authoring-candidates/servants/servant.okita.json",
+  "diagnostics": [
+    {
+      "cardId": "servant.okita.skill.sc-okita-1",
+      "abilityId": "sc-okita-1.sincerity-flag",
+      "path": "interaction.gateway",
+      "status": "unsupported",
+      "reason": "Unsupported private optional hand-play interaction semantic shape",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    },
+    {
+      "cardId": "servant.okita.skill.sc-okita-2",
+      "abilityId": "sc-okita-2.create-attacks",
+      "path": "effects[0].basePower",
+      "status": "unsupported",
+      "reason": "Unmapped mechanic field",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    },
+    {
+      "cardId": "servant.okita.skill.sc-okita-2",
+      "abilityId": "sc-okita-2.create-attacks",
+      "path": "effects[0].basic",
+      "status": "unsupported",
+      "reason": "Unmapped mechanic field",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    },
+    {
+      "cardId": "servant.okita.skill.sc-okita-2",
+      "abilityId": "sc-okita-2.create-attacks",
+      "path": "effects[0].type",
+      "status": "unsupported",
+      "reason": "Unmapped type: create_temporary_attack",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    },
+    {
+      "cardId": "servant.okita.skill.sc-okita-3",
+      "abilityId": "sc-okita-3.oath-haori",
+      "path": "effects[0].visibility",
+      "status": "unsupported",
+      "reason": "Only continuous public discard visibility is supported",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    },
+    {
+      "cardId": "servant.okita.skill.sc-okita-3",
+      "abilityId": "sc-okita-3.oath-haori",
+      "path": "effects[2].edge",
+      "status": "unsupported",
+      "reason": "Unmapped mechanic field",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    },
+    {
+      "cardId": "servant.okita.skill.sc-okita-3",
+      "abilityId": "sc-okita-3.oath-haori",
+      "path": "effects[2].type",
+      "status": "unsupported",
+      "reason": "Unmapped type: schedule_at_phase",
+      "suggestedImplementation": "Add a validated handler and behavioral tests for this field before enabling automation."
+    }
+  ]
+}
+PROBE_EXIT=0
+

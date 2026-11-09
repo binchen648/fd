@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-B-MAIN-DELIVERY-20261109",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/697#issuecomment-6731186624",
+  "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "technicalReviewer": "Codex Reviewer R / Capability Batch Verifier",
+  "technicalReviewCarrier": "a1753b1c9f2c6e46620b7bd5fa61b88239d100c9",
+  "technicalReviewPath": "docs/reviews/phase3/B-MAIN-DELIVERY-20261109-reviewer-r/INDEPENDENT-REVIEW.json",
+  "technicalReviewSha256": "3c41b5a76c23757bb0aca1580b4d3420750496cedf86295da778a72ce5bdd2b7",
+  "technicalConclusion": "PASS_SCOPED",
+  "publisherDisclosure": "GitHub account publishes the user-supplied independent Reviewer R result. Implementation and technical review occurred in separate conversations. This is not a new human review by the publisher.",
+  "scope": [
+    {
+      "abilityId": "sc-achilles-1.gale-advance",
+      "cardId": "servant.achilles.skill.sc-achilles-1",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "inactive skill-zone projection",
+        "hidden true name",
+        "battlefield-only unprotected opponents",
+        "public hand discard",
+        "empty hand after terrain and total adjustments",
+        "Luck and Agility exemption; Quick is not exempt",
+        "normal Session serialization and restoration",
+        "repeated activation rejected"
+      ],
+      "limitations": [
+        "Resistance participation command not implemented at this candidate"
+      ]
+    },
+    {
+      "abilityId": "sc-achilles-2.blue-sky",
+      "cardId": "servant.achilles.skill.sc-achilles-2",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "same battlefield discard",
+        "public hand handling",
+        "workshop and protected player exclusion",
+        "2 mana hides fixed 3-mana branch",
+        "pending choice restoration",
+        "duplicate selection rejected without state change"
+      ],
+      "limitations": [
+        "branch filtering covers immediate fixed pay_mana only"
+      ]
+    },
+    {
+      "abilityId": "sc-tomoe-1.penalty-on-defeat",
+      "cardId": "servant.tomoe.skill.sc-tomoe-1",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "eligible ordinary play and +3 action",
+        "latter-half play rejected",
+        "unplayed source no penalty",
+        "played source moved outside attack area still charged once",
+        "5 VP unpreventable penalty and lower bound",
+        "duplicate/cross-round delivery",
+        "restored Session reaches actual phase-wide post-scoring barrier"
+      ],
+      "limitations": [
+        "does not certify unmodified Tomoe timing or payment clauses outside this repair"
+      ]
+    },
+    {
+      "abilityId": "sc-artoria-alt-1.chain-of-wind-king",
+      "cardId": "servant.artoria-alt.skill.sc-artoria-alt-1",
+      "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "verdict": "PASS_SCOPED",
+      "L1": "PASS",
+      "L2": "PASS",
+      "scope": [
+        "instance-specific consecutive play tracking",
+        "+3 +6 +9 and gap reset to +3",
+        "4 mana paid per activation",
+        "Session restoration between play and activation",
+        "duplicate activation atomic rejection"
+      ],
+      "limitations": [
+        "old saves without usable consecutive history restart tracking"
+      ]
+    }
+  ],
+  "excluded": [
+    "hand-removal runtime",
+    "original Okita admission",
+    "card.x-weak role L1/L2"
+  ],
+  "productionAdmissionDelta": 0,
+  "migrationCreditDelta": 0
+}
