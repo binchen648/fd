@@ -78,14 +78,31 @@ const printedMasterSkillOwners: Record<string, keyof typeof fdRealAssetManifest.
   'master.olga-marie.skill.astronomical-science': 'master.olga-marie',
 };
 
+const basicAttackLabels = { strength: '力量', agility: '敏捷', magecraft: '魔术' } as const;
+const legacyBasicAttackFamily = { b: 'strength', q: 'agility', a: 'magecraft' } as const;
+
+export function resolveBasicAttackFace(definitionId: string) {
+  const match = /^(?:basic\.(strength|agility|magecraft)\.|card\.card([bqa]))([1-5])$/i.exec(definitionId);
+  if (!match) return undefined;
+  const family = match[1]
+    ? match[1].toLowerCase() as keyof typeof basicAttackLabels
+    : legacyBasicAttackFamily[match[2]!.toLowerCase() as keyof typeof legacyBasicAttackFamily];
+  const attribute = basicAttackLabels[family];
+  const power = Number(match[3]);
+  return {
+    name: `${attribute}攻击 ${power}`,
+    attribute,
+    power,
+    cost: 0,
+    imageUrl: `/assets/fd/cards/basic-${family}-${power}.svg`,
+  };
+}
+
 const cardArt: Record<string, string> = {
-  'basic.agility.2': '/assets/fd/cards/basic-agility-2.svg',
-  'basic.magecraft.2': '/assets/fd/cards/basic-magecraft-2.svg',
   'basic.preparation': '/assets/fd/real/basic-attacks/basic-preparation.png',
   'basic.surveil': '/assets/fd/real/basic-attacks/basic-surveil.png',
   'basic.luck': '/assets/fd/real/basic-attacks/basic-luck.png',
   'basic.special.2': '/assets/fd/cards/basic-special-2.svg',
-  'basic.strength.2': '/assets/fd/cards/basic-strength-2.svg',
   'event.waxing_moon_ritual.bloody_sunset': '/assets/fd/placeholders/event.svg',
   'event.waxing_moon_ritual.dark_current': '/assets/fd/placeholders/event.svg',
   'event.waxing_moon_ritual.ritual': '/assets/fd/placeholders/event.svg',
@@ -122,6 +139,8 @@ export function resolveEntityImageUrl(kind: EntityKind, id: string): string {
 }
 
 export function resolveCardImageUrl(input: { definitionId: string; cardType?: string }): string {
+  const basic = resolveBasicAttackFace(input.definitionId);
+  if (basic) return basic.imageUrl;
   const realAsset = fdRealAssetManifest.cards[input.definitionId as keyof typeof fdRealAssetManifest.cards];
   if (realAsset) return realAsset;
 

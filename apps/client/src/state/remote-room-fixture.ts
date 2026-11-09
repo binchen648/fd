@@ -1,4 +1,5 @@
 import type { MatchRoomProjection } from '@fd/rules/match-room';
+import { resolveBasicAttackFace } from './fd-asset-registry';
 import type { ClientAvailableAction, InspectableCard, PlaytestClientFixture } from './playtest-fixture-loader';
 
 const locationLabels: Record<string, string> = {
@@ -31,16 +32,19 @@ function cardTypeLabel(zone: string): string {
 }
 
 function inspectableFromProjection(card: NonNullable<MatchRoomProjection['match']>['view']['cards'][number], viewerId?: string): InspectableCard {
-  const visible = card.ownerPlayerId === viewerId || !card.faceDown;
+  const visible = !!card.definitionId && (card.ownerPlayerId === viewerId || !card.faceDown);
+  const basic = visible ? resolveBasicAttackFace(card.definitionId!) : undefined;
   return {
     instanceId: card.instanceId,
-    definitionId: card.definitionId ?? card.instanceId,
-    name: visible ? card.definitionId ?? card.instanceId : '暗置卡',
+    definitionId: visible ? card.definitionId! : card.instanceId,
+    name: visible ? basic?.name ?? card.definitionId! : '暗置卡',
+    ...(basic ? { imageUrl: basic.imageUrl, power: basic.power, cost: basic.cost, keywords: [basic.attribute] } : {}),
     cardType: cardTypeLabel(card.zone),
     cardRole: card.zone === 'hand' || card.zone === 'field' || card.zone === 'attack_area' ? 'combat_card' : 'skill_effect',
     ownerLabel: card.ownerPlayerId === viewerId ? '你' : card.ownerPlayerId,
     visibility: card.ownerPlayerId === viewerId ? '仅本人' : '公开',
-    rulesSummaryZh: visible ? '远程房间 projection 卡牌。完整规则文本由后端合法 action 与结算日志提供。' : '暗置信息，仅后端持有。',
+    rulesSummaryZh: basic ? `基础攻击 · ${basic.attribute} · 基础威力 ${basic.power}`
+      : visible ? '远程房间 projection 卡牌。完整规则文本由后端合法 action 与结算日志提供。' : '暗置信息，仅后端持有。',
     revealPolicy: card.ownerPlayerId === viewerId ? '仅本人可见' : '公开或暗置投影',
   };
 }
