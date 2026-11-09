@@ -108,6 +108,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
       skills: match.view.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && !(card.definitionId ?? '').includes('command-spell')).map((card) => card.instanceId),
       masterSkills: [],
       commandSpells: match.view.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && (card.definitionId ?? '').includes('command-spell')).map((card) => card.instanceId),
+      commandSpellCount: match.view.players.find(player => player.id === viewerId)?.commandSpells ?? 0,
       ascensionSkills: [],
     },
     cards,

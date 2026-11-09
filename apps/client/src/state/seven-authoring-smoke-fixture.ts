@@ -715,6 +715,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       skills: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && rawCards.get(card.definitionId)?.cardType === 'servant_skill').map((card) => card.instanceId),
       masterSkills: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && rawCards.get(card.definitionId)?.cardType === 'master_skill').map((card) => card.instanceId),
       commandSpells: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && rawCards.get(card.definitionId)?.cardType === 'command_spell').map((card) => card.instanceId),
+      commandSpellCount: currentView.players.find(player => player.id === viewerId)?.commandSpells ?? 0,
       ascensionSkills: (selfPairing.master.excludedCards ?? []).map((card) => `public-${viewerId}-${card.id}`),
       masterImageUrl: resolveEntityImageUrl('master', selfPairing.master.id),
       servantImageUrl: resolveEntityImageUrl('servant', selfPairing.servant.id),

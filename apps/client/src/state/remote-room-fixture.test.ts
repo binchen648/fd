@@ -67,6 +67,14 @@ const buildProjection = (participation?: Participation): MatchRoomProjection => 
 const participationActions = (projection: MatchRoomProjection) =>
   (projectRemoteRoomFixture(projection)?.availableActions ?? []).filter((action) => action.actionId.startsWith('declare_battle_participation'));
 
+it('keeps the authoritative remaining seal count for the remote viewer', () => {
+  for (const remaining of [3, 2, 0]) {
+    const projection = buildProjection();
+    projection.match!.view.players[0]!.commandSpells = remaining;
+    expect(projectRemoteRoomFixture(projection)!.self.commandSpellCount).toBe(remaining);
+  }
+});
+
 it('shows the exact VP cost and preserves the server-authorized deployment payment', () => {
   const projection = buildProjection();
   projection.match!.view.legalActions = [{ type: 'deploy_player', locationId: 'miyama_town', terrainBid: 2, maxTerrainBid: 5 }];
