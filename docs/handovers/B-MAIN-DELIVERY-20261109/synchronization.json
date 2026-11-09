@@ -1,0 +1,47 @@
+{
+  "taskId": "P3-B-MAIN-DELIVERY-20261109",
+  "baseSha": "816433dd881ad5852de27cc9ce4ce3e65ca09069",
+  "candidateSha": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+  "reviewCarrier": "a1753b1c9f2c6e46620b7bd5fa61b88239d100c9",
+  "githubAttestationCarrier": "4a76371aecad8ea1e914694053b9299f005503bf",
+  "runtimeEquivalent": true,
+  "files": [
+    {
+      "path": "data/authoring/servants/servant.achilles.json",
+      "blob": "25736cd846f0973cb669e6cc337b335997f203a4"
+    },
+    {
+      "path": "data/generated/fd-playtest-v1.content-library.json",
+      "blob": "9bb54366f14c646a8b7ba8a13c7d63318516467b"
+    },
+    {
+      "path": "packages/rules/src/ability/extended-effects.ts",
+      "blob": "05c42c5a6228909d8da054faf84bc12b8e24b781"
+    },
+    {
+      "path": "packages/rules/src/ability/interpreter.ts",
+      "blob": "0307851d54490a2b49e62d7261bb2a19758456f8"
+    },
+    {
+      "path": "packages/rules/src/core/combat-resolver.ts",
+      "blob": "29b554e173b78f376fa2b10f668f00807f1bd84a"
+    },
+    {
+      "path": "packages/rules/tests/ability-interaction-projection.test.ts",
+      "blob": "1cc825cfeec199336560b2a1103bdb301e6291c5"
+    },
+    {
+      "path": "packages/rules/tests/regression/achilles-gale-advance.test.ts",
+      "blob": "7b50e8d5b3e65eaf655723181c23e0060c534058"
+    },
+    {
+      "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+      "blob": "4962059a61b7e56e177b4d4cfd0203436b94ec74"
+    },
+    {
+      "path": "packages/rules/tests/regression/tomoe-independent-action-production.test.ts",
+      "blob": "41777ddd86d2b8ebcf704a62656e5186ba31205e"
+    }
+  ],
+  "admissionDelta": 0
+}
