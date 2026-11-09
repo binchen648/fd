@@ -131,7 +131,7 @@ export function resolveExtendedEffect(
           flags: {
             lacks_luck_or_agility: discardedCards.every((card, index) =>
               !['basic.luck', 'card.luck', 'card.cardluck'].includes(card.definitionId) &&
-              !(cards[index]?.attributes ?? []).some(attribute => ['幸运', '敏捷', '迅捷'].includes(attribute))),
+              !(cards[index]?.attributes ?? []).some(attribute => attribute === '幸运' || attribute === '敏捷')),
           },
         });
       }

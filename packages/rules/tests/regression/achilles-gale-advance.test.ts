@@ -8,14 +8,14 @@ function setup() {
   const state = session.state;
   const achilles = state.players.find(p => p.servantCardId === 'servant.achilles')!;
   const opponents = state.players.filter(p => p.id !== achilles.id);
-  const [empty, luck, agility, ordinary, declined, protectedOpponent] = opponents;
+  const [empty, luck, agility, ordinary, quick, protectedOpponent] = opponents;
   const resistance = state.eventPlacements.find(event =>
     event.eventCardId === 'event.waxing_moon_ritual.resistance' && event.visibility.scope === 'public')!;
   const battlefieldId = resistance.locationId;
   state.round.activePhase = 'action';
   state.round.prioritySeat = achilles.seat;
   for (const p of state.players) p.locationId = 'shinto';
-  for (const p of [achilles, empty!, luck!, agility!, ordinary!, declined!, protectedOpponent!]) p.locationId = battlefieldId;
+  for (const p of [achilles, empty!, luck!, agility!, ordinary!, quick!, protectedOpponent!]) p.locationId = battlefieldId;
   state.eventPlacements = [resistance];
   state.cards = state.cards.filter(c => c.zone !== 'hand' || c.ownerPlayerId === achilles.id);
   const add = (id: string, playerId: string, definitionId: string) => {
@@ -26,7 +26,7 @@ function setup() {
   add('agility', agility!.id, 'basic.agility.2');
   add('ordinary', ordinary!.id, 'basic.strength.2');
   state.cards.find(card => card.instanceId === 'ordinary')!.visibility = { scope: 'public' };
-  add('declined', declined!.id, 'basic.strength.2');
+  add('quick', quick!.id, 'master.kayneth.deck.volumen-hydrargyrum');
   add('protected-hand', protectedOpponent!.id, 'basic.strength.2');
   state.abilityRuntime!.ongoingEffects.push({
     id: 'meditation', sourceCardId: 'protected-hand', abilityId: 'meditation', controllerId: protectedOpponent!.id,
@@ -38,19 +38,19 @@ function setup() {
 
   const heel = state.cards.find(c => c.ownerPlayerId === achilles.id && c.definitionId === 'servant.achilles.skill.sc-achilles-1')!;
   const command = { type: 'activate_ability', cardInstanceId: heel.instanceId, abilityId } as const;
-  return { session, state, achilles, empty: empty!, luck: luck!, agility: agility!, ordinary: ordinary!, declined: declined!, protectedOpponent: protectedOpponent!, heel, command, battlefieldId };
+  return { session, state, achilles, empty: empty!, luck: luck!, agility: agility!, ordinary: ordinary!, quick: quick!, protectedOpponent: protectedOpponent!, heel, command, battlefieldId };
 }
 
 describe('Achilles Gale Advance', () => {
   it('projects the combat activation from the inactive skill zone and settles each opponent separately', () => {
-    const { session, state, achilles, empty, luck, agility, ordinary, declined, protectedOpponent, heel, command, battlefieldId } = setup();
+    const { session, state, achilles, empty, luck, agility, ordinary, quick, protectedOpponent, heel, command, battlefieldId } = setup();
     state.round.activePhase = 'battle';
     expect(heel.zone).toBe('skill');
     expect(state.abilityRuntime!.cardState[heel.instanceId]?.active).not.toBe(true);
     expect(session.getClientProjection(achilles.id).view.legalActions).toContainEqual(command);
     expect(session.dispatchPlayerCommand(achilles.id, command).ok).toBe(true);
     expect(state.abilityRuntime!.revealedServants).not.toContain(achilles.id);
-    expect(state.cards.find(c => c.instanceId === 'declined')!.zone).toBe('discard');
+    expect(state.cards.find(c => c.instanceId === 'quick')!.zone).toBe('discard');
     expect(state.cards.find(c => c.instanceId === 'protected-hand')!.zone).toBe('hand');
     expect(state.cards.filter(c => ['luck', 'agility', 'ordinary'].includes(c.instanceId)).every(c => c.zone === 'discard')).toBe(true);
     expect(session.getPlayerView(achilles.id).legalActions).not.toContainEqual(command);
@@ -60,10 +60,11 @@ describe('Achilles Gale Advance', () => {
       { playerId: ordinary.id, totalPower: 7 },
       { playerId: luck.id, totalPower: 4 },
       { playerId: agility.id, totalPower: 3 },
+      { playerId: quick.id, totalPower: 6 },
       { playerId: protectedOpponent.id, totalPower: 5 },
     ] });
     const powers = Object.fromEntries(result.nextState.battleResults.at(-1)!.participantBreakdowns!.map(p => [p.playerId, p.effectivePower]));
-    expect(powers).toMatchObject({ [empty.id]: 0, [ordinary.id]: 0, [luck.id]: 4, [agility.id]: 3, [protectedOpponent.id]: 5 });
+    expect(powers).toMatchObject({ [empty.id]: 0, [ordinary.id]: 0, [luck.id]: 4, [agility.id]: 3, [quick.id]: 0, [protectedOpponent.id]: 5 });
   });
 
   it('withholds the action after true-name reveal or when the source is outside its usable zones', () => {

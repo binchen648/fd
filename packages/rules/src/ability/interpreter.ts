@@ -771,8 +771,8 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
         return gate.type === 'choice_is' && gate.choiceId === target.id && gate.value === id;
       });
       const payment = nodes(branch?.then)[0];
-      if (payment?.type !== 'pay_mana') return true;
-      const amount = numeric(s, ctx, payment.amount);
+      if (payment?.type !== 'pay_mana' || typeof payment.amount !== 'number') return true;
+      const amount = payment.amount;
       return Number.isSafeInteger(amount) && amount >= 0 && amount <= player(s, ctx.controllerId).mana;
     });
   }
