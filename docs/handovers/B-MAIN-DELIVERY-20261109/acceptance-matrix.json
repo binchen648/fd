@@ -1,0 +1,62 @@
+[
+  {
+    "ability": "sc-achilles-1.gale-advance",
+    "candidate": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "L1": "PASS_IMPLEMENTER",
+    "L2": "PARTIAL",
+    "evidence": [
+      "production-final-focused.log"
+    ],
+    "remaining": "Independent acceptance; source state and restore combinations to be assessed by Reviewer. Main lacks Resistance declaration consumer."
+  },
+  {
+    "ability": "sc-achilles-2.blue-sky",
+    "candidate": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "L1": "PASS_IMPLEMENTER",
+    "L2": "PARTIAL",
+    "evidence": [
+      "production-final-focused.log"
+    ],
+    "remaining": "Independent acceptance and pending-choice restore review."
+  },
+  {
+    "ability": "sc-tomoe-1.penalty-on-defeat",
+    "candidate": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "L1": "PASS_IMPLEMENTER",
+    "L2": "PASS_IMPLEMENTER",
+    "evidence": [
+      "production-final-focused.log"
+    ],
+    "remaining": "Independent final-SHA acceptance."
+  },
+  {
+    "ability": "sc-artoria-alt-1.chain-of-wind-king",
+    "candidate": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "L1": "PASS_IMPLEMENTER",
+    "L2": "PARTIAL",
+    "evidence": [
+      "wind-production-probe.log"
+    ],
+    "remaining": "Independent acceptance; formal Session save/restore coverage assessment."
+  },
+  {
+    "ability": "zoneMoveReplacement",
+    "candidate": "3f2e213e36defb9e701935754bc0ab328d053e63",
+    "L1": "PRODUCTION_COMPATIBILITY_ONLY",
+    "L2": "BOUNDED_MECHANISM_PASS",
+    "evidence": [
+      "hand-focused.log"
+    ],
+    "remaining": "Original Okita full-role production initialization and semantics NOT_RUN."
+  },
+  {
+    "ability": "card.x-weak",
+    "candidate": "3f2e213e36defb9e701935754bc0ab328d053e63",
+    "L1": "NOT_RUN",
+    "L2": "NOT_RUN",
+    "evidence": [
+      "okita-admission-probe.log"
+    ],
+    "remaining": "Original Okita admission dependencies not supported by current main."
+  }
+]

@@ -1,0 +1,177 @@
+{
+  "base": "816433dd881ad5852de27cc9ce4ce3e65ca09069",
+  "production": {
+    "path": "D:/fd-validation/b-main-delivery-final-20261109",
+    "ref": "codex/b-production-skill-fixes-20261109-r2",
+    "commit": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+    "tree": "6ac1b8a899d925046ad6c8a98d0016d80b53b61d",
+    "files": [
+      {
+        "path": "data/authoring/servants/servant.achilles.json",
+        "blob": "25736cd846f0973cb669e6cc337b335997f203a4",
+        "sha256": "fd8ffa5b6013607a20459b5cdce0097ae1d394bd23475067f3062962c7642894"
+      },
+      {
+        "path": "data/generated/fd-playtest-v1.content-library.json",
+        "blob": "9bb54366f14c646a8b7ba8a13c7d63318516467b",
+        "sha256": "937fd5f716b45988ae1d7bfdb30dfd632f59959c79ff6ef598652890ee77f14d"
+      },
+      {
+        "path": "packages/rules/src/ability/extended-effects.ts",
+        "blob": "05c42c5a6228909d8da054faf84bc12b8e24b781",
+        "sha256": "b7391d9cf124d386d6a758c8885073a3b60f6f30693a335ce36d16b464ff40bd"
+      },
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "blob": "0307851d54490a2b49e62d7261bb2a19758456f8",
+        "sha256": "0b3b31e8287b2c6d452a5aeb41fd993c5ebe9fcccab193a0a99b10656ff359d1"
+      },
+      {
+        "path": "packages/rules/src/core/combat-resolver.ts",
+        "blob": "29b554e173b78f376fa2b10f668f00807f1bd84a",
+        "sha256": "6cb2ca611ff841ee6f2d4f45f79701ab28e83b274a9692cd30f1abcd0e1a1e44"
+      },
+      {
+        "path": "packages/rules/tests/ability-interaction-projection.test.ts",
+        "blob": "1cc825cfeec199336560b2a1103bdb301e6291c5",
+        "sha256": "281d0ee7fc18d9aeebbc46cdade584b62fcfd9e6e62d521c1de880f720348764"
+      },
+      {
+        "path": "packages/rules/tests/regression/achilles-gale-advance.test.ts",
+        "blob": "7b50e8d5b3e65eaf655723181c23e0060c534058",
+        "sha256": "8d3f523e3bb6770596a775d2117b420af17f09636c81986044ae9f2b7f64d1c1"
+      },
+      {
+        "path": "packages/rules/tests/regression/complex-skills-regression.test.ts",
+        "blob": "4962059a61b7e56e177b4d4cfd0203436b94ec74",
+        "sha256": "88d3e8915dd3acd1b7870f75da0a0d5ef23b42e214311e799a89583ed780e8dc"
+      },
+      {
+        "path": "packages/rules/tests/regression/tomoe-independent-action-production.test.ts",
+        "blob": "41777ddd86d2b8ebcf704a62656e5186ba31205e",
+        "sha256": "6351ebeaa51f106e7f55c24c6846b25f157d85b94f46f7fe36864d643b7ca899"
+      }
+    ],
+    "independentTechnicalRuntimeSha": "587f5e40185d09ca201174c4249f658e28167f95",
+    "finalDeltaScope": "tests only"
+  },
+  "hand": {
+    "path": "D:/fd-validation/b-hand-removal-main-delivery-20261109",
+    "ref": "codex/b-hand-removal-main-delivery-20261109",
+    "commit": "3f2e213e36defb9e701935754bc0ab328d053e63",
+    "tree": "4283b1e52393e44da0107e58592ca083f06d00dc",
+    "files": [
+      {
+        "path": "packages/rules/src/ability/executable-card-pack.ts",
+        "blob": "f9d6d1285d367d800d5c1b41e86df4e06d0672b6",
+        "sha256": "ca08f1cb283a9ea578e88b9b3229b110da3e64232ea00e2aa84a13591f780382"
+      },
+      {
+        "path": "packages/rules/src/ability/interpreter.ts",
+        "blob": "c46ec96465c2b21c55afb4cc4738e7b01086987b",
+        "sha256": "7c221c5df66a72ebacf67dd14eabd645c073f2149f5ca0f0463816e2ad21c66a"
+      },
+      {
+        "path": "packages/rules/src/ability/loader.ts",
+        "blob": "1969a927270148529c83aa89ecfd8d5e0933ccb7",
+        "sha256": "7f86ea45bc53d9b52d82c1daec4ec3e8a25af54521d5cb327ca957058f35942c"
+      },
+      {
+        "path": "packages/rules/src/ability/types.ts",
+        "blob": "716d39136ac92da73f5deda7725119927ff5191c",
+        "sha256": "55cb689f984550857cc1f986af66d86e8f8c3406e55015914a27fb0f3ec47163"
+      },
+      {
+        "path": "packages/rules/tests/acceptance/b-hand-removal-01.test.ts",
+        "blob": "c75b0c88c047b94e08e13414bb42b9958588e81f",
+        "sha256": "e8bc5e7bebbcdbfe3b2fba85b6baee4c66a92f8dda5c78bf94c244b946adf33b"
+      }
+    ]
+  },
+  "formalAcceptance": "PENDING_REVIEW",
+  "admissionDelta": 0,
+  "evidenceSha256": {
+    "hand-focused.log": "e12f8a7525a7f4c6d845ceafaf8a85f5e10ef9bdd732172a8f9faec2d1dfba23",
+    "hand-phase3-preflight.log": "6d04c88113feaccbd6ec8db945ba569d0b8f5f1910fe911ec5dc116f783fd2d8",
+    "hand-task-protocol-probe.log": "65334b55b232c053ea6082378a1a6e771f3ff1d3c57f30210db9c02066f352dd",
+    "okita-admission-probe.log": "1eb2e8eeae08090f071282fa528398d20d062985a79bb71c1bb048cdc9834dfc",
+    "production-final-focused.log": "62ab49b6a6122937d69f98a19e667a5e0f842a6fd8af34457d0bb69d8ba3b6f9",
+    "production-final-governance.log": "d068515b0b9cfa596c35554b0fbe977294b14de73ea0fb83fd3d4d96c59231fc",
+    "production-r2-client-tests.log": "dfc7de1d7414cfd529fd2e7945ac73d4985c17e32b6e36d743ffada3c58de713",
+    "production-r2-server-tests.log": "723b65eb640468b4fab3bf53f5898ce198698073d319298d4cc97f0f18b44875",
+    "publish-final.log": "e1067a58ba74470287ac2869b0607f0d80a6687607072703122540d48c985363",
+    "wind-production-probe.log": "d84bef1f65573d240eebfaf67e6291cfd0263e45224b15458cd9bd8a30f78024"
+  },
+  "evidence": [
+    {
+      "file": "production-final-focused.log",
+      "sha256": "62ab49b6a6122937d69f98a19e667a5e0f842a6fd8af34457d0bb69d8ba3b6f9",
+      "testedCandidate": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "status": "PASS",
+      "result": "17/17"
+    },
+    {
+      "file": "wind-production-probe.log",
+      "sha256": "d84bef1f65573d240eebfaf67e6291cfd0263e45224b15458cd9bd8a30f78024",
+      "testedCandidate": "587f5e40185d09ca201174c4249f658e28167f95",
+      "status": "PASS",
+      "result": "formal Session +3/+6/+9, gap +3"
+    },
+    {
+      "file": "production-r2-client-tests.log",
+      "sha256": "dfc7de1d7414cfd529fd2e7945ac73d4985c17e32b6e36d743ffada3c58de713",
+      "testedCandidate": "587f5e40185d09ca201174c4249f658e28167f95",
+      "status": "PASS",
+      "result": "66/66"
+    },
+    {
+      "file": "production-r2-server-tests.log",
+      "sha256": "723b65eb640468b4fab3bf53f5898ce198698073d319298d4cc97f0f18b44875",
+      "testedCandidate": "587f5e40185d09ca201174c4249f658e28167f95",
+      "status": "PASS",
+      "result": "25/25"
+    },
+    {
+      "file": "production-r2-ci.log",
+      "sha256": "eb53f54ec2468ea66a7bedfdeb97b743f456791cc5a674bc4f543336e85e1c52",
+      "testedCandidate": "587f5e40185d09ca201174c4249f658e28167f95",
+      "status": "FAIL",
+      "result": "2056 passed, 1 failed, fixed by test-only final delta"
+    },
+    {
+      "file": "hand-focused.log",
+      "sha256": "e12f8a7525a7f4c6d845ceafaf8a85f5e10ef9bdd732172a8f9faec2d1dfba23",
+      "testedCandidate": "3f2e213e36defb9e701935754bc0ab328d053e63",
+      "status": "PASS",
+      "result": "21/21, bounded mechanism and seven-seat compatibility"
+    },
+    {
+      "file": "okita-admission-probe.log",
+      "sha256": "1eb2e8eeae08090f071282fa528398d20d062985a79bb71c1bb048cdc9834dfc",
+      "testedCandidate": "3f2e213e36defb9e701935754bc0ab328d053e63",
+      "status": "FAIL",
+      "result": "7 diagnostics from existing Okita authoring; role not admitted"
+    },
+    {
+      "file": "hand-phase3-preflight.log",
+      "sha256": "6d04c88113feaccbd6ec8db945ba569d0b8f5f1910fe911ec5dc116f783fd2d8",
+      "testedCandidate": "3f2e213e36defb9e701935754bc0ab328d053e63",
+      "status": "FAIL",
+      "result": "unknown field owner"
+    },
+    {
+      "file": "hand-task-protocol-probe.log",
+      "sha256": "65334b55b232c053ea6082378a1a6e771f3ff1d3c57f30210db9c02066f352dd",
+      "testedCandidate": "3f2e213e36defb9e701935754bc0ab328d053e63",
+      "status": "FAIL",
+      "result": "Unsupported task or epoch"
+    },
+    {
+      "file": "production-final-governance.log",
+      "sha256": "d068515b0b9cfa596c35554b0fbe977294b14de73ea0fb83fd3d4d96c59231fc",
+      "testedCandidate": "f6f8bfc7a5d5ee34985be2885de39008cfccbbda",
+      "status": "FAIL",
+      "result": "formal Promotion manifest absent"
+    }
+  ]
+}
