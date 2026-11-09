@@ -1,0 +1,25 @@
+CWD=D:\fd-validation\b-hand-removal-main-delivery-20261109 UTC=2026-11-09T02:48:56.1358888Z
+3f2e213e36defb9e701935754bc0ab328d053e63
+
+> fd-prototype@0.1.0 typecheck
+> tsc -b
+
+TYPECHECK_EXIT=0
+
+ RUN  v3.2.7 D:/fd-validation/b-hand-removal-main-delivery-20261109
+
+ ✓ packages/rules/tests/acceptance/b-hand-removal-01.test.ts (21 tests) 291ms
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  10:48:57
+   Duration  1.61s (transform 640ms, setup 0ms, collect 979ms, tests 291ms, environment 0ms, prepare 120ms)
+
+TEST_EXIT=0
+
+> fd-prototype@0.1.0 phase3:preflight
+> tsx scripts/phase3-preflight.ts --manifest docs/agents/manifests/tasks/B-HAND-REMOVAL-01.json --candidate 3f2e213e36defb9e701935754bc0ab328d053e63 --base 816433dd881ad5852de27cc9ce4ce3e65ca09069
+
+{"status":"FAIL","issueCode":"TOOL_EXECUTION_FAILED","message":"Error: ENOENT: no such file or directory, open 'D:\\fd-validation\\b-hand-removal-main-delivery-20261109\\docs\\agents\\manifests\\tasks\\B-HAND-REMOVAL-01.json'"}
+PREFLIGHT_EXIT=1
+3f2e213e36defb9e701935754bc0ab328d053e63

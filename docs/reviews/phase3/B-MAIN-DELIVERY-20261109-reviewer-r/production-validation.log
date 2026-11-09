@@ -1,0 +1,96 @@
+CWD=D:\fd-validation\r-b-delivery-f6f8bfc7-20261109 UTC=2026-11-09T02:46:48.5687043Z
+f6f8bfc7a5d5ee34985be2885de39008cfccbbda
+ANCESTOR_EXIT=0
+DIFF_EXIT=0
+
+> fd-prototype@0.1.0 typecheck
+> tsc -b
+
+TYPECHECK_EXIT=0
+
+> fd-prototype@0.1.0 test:ci
+> vitest run --exclude "packages/rules/tests/*-authoring.test.ts" --exclude "packages/rules/tests/five-servants-authoring.test.ts" --exclude "packages/content/src/__tests__/fd-playtest-masters.test.ts" --exclude "packages/content/src/__tests__/fd-playtest-servants.test.ts" --exclude "scripts/tests/compile-playtest-content-pack.test.ts" --exclude "scripts/tests/verify-fd-playtest-v1.test.ts" --maxWorkers=2 --maxWorkers=3
+
+file:///D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/node_modules/vitest/dist/chunks/cac.BfaZ95xE.js:1269
+			throw new Error(`Expected a single value for option "${command}", received [${received}]`);
+			      ^
+
+Error: Expected a single value for option "--maxWorkers <workers>", received [2, 3]
+    at transform (file:///D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/node_modules/vitest/dist/chunks/cac.BfaZ95xE.js:1269:10)
+    at setDotProp (file:///D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/node_modules/vitest/dist/chunks/cac.BfaZ95xE.js:207:22)
+    at CAC.mri (file:///D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/node_modules/vitest/dist/chunks/cac.BfaZ95xE.js:591:9)
+    at CAC.parse (file:///D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/node_modules/vitest/dist/chunks/cac.BfaZ95xE.js:508:27)
+    at file:///D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/node_modules/vitest/dist/cli.js:27:13
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:661:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.13.1
+CI_EXIT=1
+
+> fd-prototype@0.1.0 test:client
+> npm test --workspace @fd/client -- --run
+
+
+> @fd/client@0.1.0 test
+> vitest --config vitest.config.ts --run
+
+
+ RUN  v3.2.7 D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/apps/client
+
+ ✓ src/state/match-room-client.test.ts (2 tests) 6ms
+ ✓ src/components/ServantDeckSummary.test.tsx (2 tests) 31ms
+ ✓ src/components/CardInspectionOverlay.test.tsx (3 tests) 233ms
+ ✓ src/state/content-library-loader.test.ts (2 tests) 11ms
+ ✓ src/state/engine-bridge.test.ts (5 tests) 16ms
+ ✓ src/state/remote-room-fixture.test.ts (5 tests) 197ms
+ ✓ src/state/fd-asset-registry.test.ts (12 tests) 311ms
+ ✓ src/pages/MatchTable.test.tsx (27 tests) 3432ms
+   ✓ MatchTable > renders payment, target, response, directive, zones, logs, and backend rejection windows  466ms
+   ✓ MatchTable > submits X payment and selected targets through backend commands  375ms
+ ✓ src/App.test.tsx (8 tests) 3706ms
+   ✓ App room product shell > renders the local room, seven seats, and connection controls  801ms
+   ✓ App room product shell > saves, restores, and switches between followed player and spectator projections  778ms
+   ✓ App room product shell > restores an opening response and executes its actual local swap before following preparation  365ms
+   ✓ App room product shell > ends the current local decision and follows the next player client  491ms
+   ✓ App room product shell > creates a remote room from the lobby and persists a launch URL  451ms
+   ✓ App room product shell > joins a remote room from the lobby as a player client  809ms
+
+ Test Files  9 passed (9)
+      Tests  66 passed (66)
+   Start at  10:46:56
+   Duration  7.87s (transform 1.80s, setup 3.62s, collect 7.58s, tests 7.94s, environment 12.36s, prepare 1.73s)
+
+CLIENT_EXIT=0
+
+> @fd/server@0.1.0 test
+> vitest run
+
+
+ RUN  v3.2.7 D:/fd-validation/r-b-delivery-f6f8bfc7-20261109/apps/server
+
+ ✓ src/room-store.test.ts (5 tests) 1126ms
+   ✓ durably restores seven real identities and rejects stale/duplicate commands after a new server instance  1041ms
+ ✓ src/match-server.test.ts (19 tests) 2225ms
+   ✓ match websocket server > crosses a seven-human round boundary and rejects stale/duplicate end-turn after reconnect  481ms
+   ✓ match websocket server > preserves DR-P01 authority through raw WS rejection, replay and authenticated durable restore  368ms
+   ✓ match websocket server > rejects raw WS missing/invalid/stale revisions for dispatch and end_turn without mutation or accepted broadcasts  357ms
+ ✓ src/full-seven-player-match.test.ts (1 test) 21881ms
+   ✓ plays an unmodified seven-seat production game over HTTP/WS through save/restore and final outcome  21880ms
+
+ Test Files  3 passed (3)
+      Tests  25 passed (25)
+   Start at  10:47:05
+   Duration  24.25s (transform 959ms, setup 0ms, collect 3.65s, tests 25.23s, environment 0ms, prepare 380ms)
+
+SERVER_EXIT=0
+
+> fd-prototype@0.1.0 verify:generated-content
+> tsx scripts/verify-generated-content-determinism.ts
+
+fd-playtest-v1.content-library.json: 937fd5f716b45988ae1d7bfdb30dfd632f59959c79ff6ef598652890ee77f14d
+fd-playtest-v1.fixture.json: fb69383fd91ab56bc645633eae72df8b8c10131cccd2713fd57afcf950a5f057
+fd-playtest-v1.evidence-report.json: 1b49acefe0fbdffa07a05283590092a995bcc0aef072f6f89a7c2a5f7bf6c6ac
+GENERATED_EXIT=0
+f6f8bfc7a5d5ee34985be2885de39008cfccbbda

@@ -1,0 +1,16 @@
+f6f8bfc7a5d5ee34985be2885de39008cfccbbda
+
+ RUN  v3.2.7 D:/fd-validation/r-b-delivery-f6f8bfc7-20261109
+
+ ✓ packages/rules/tests/regression/battle-loss-unpreventable-vp-trigger.test.ts (6 tests) 101ms
+ ✓ packages/rules/tests/regression/achilles-gale-advance.test.ts (4 tests) 157ms
+ ✓ packages/rules/tests/ability-interaction-projection.test.ts (3 tests) 30ms
+ ✓ packages/rules/tests/regression/tomoe-independent-action-production.test.ts (4 tests) 185ms
+
+ Test Files  4 passed (4)
+      Tests  17 passed (17)
+   Start at  10:52:14
+   Duration  3.38s (transform 728ms, setup 0ms, collect 1.78s, tests 474ms, environment 0ms, prepare 392ms)
+
+FOCUSED_EXIT=0
+f6f8bfc7a5d5ee34985be2885de39008cfccbbda

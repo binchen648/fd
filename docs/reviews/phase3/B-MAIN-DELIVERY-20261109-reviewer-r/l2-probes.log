@@ -1,0 +1,12 @@
+CWD=D:\fd-validation\r-b-delivery-f6f8bfc7-20261109 UTC=2026-11-09T02:53:01.0135615Z
+f6f8bfc7a5d5ee34985be2885de39008cfccbbda
+{"round":1,"before":6,"after":9,"bonus":3,"paid":4}
+{"round":2,"before":6,"after":12,"bonus":6,"paid":4}
+{"round":3,"before":6,"after":15,"bonus":9,"paid":4}
+{"round":5,"before":6,"after":9,"bonus":3,"paid":4}
+{"case":"blue-sky","roundtrip":false,"discarded":true,"duplicateRejected":true}
+{"case":"blue-sky","roundtrip":true,"discarded":true,"duplicateRejected":true}
+{"case":"gale","restored":true,"duplicateRejected":true,"enemyTotal":0}
+{"case":"gale","restored":true,"duplicateRejected":true,"enemyTotal":0}
+{"case":"tomoe","normalPlayAndGain":true,"restored":true,"sourceRemoved":true,"preventEffects":true,"actualBattlePenalty":5,"penalties":1,"productionPhaseBarrier":true}
+L2_EXIT=0
