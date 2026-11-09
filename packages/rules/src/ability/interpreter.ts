@@ -1745,7 +1745,8 @@ function executeEventRuleAbility(s: GameState, sourceId: string, abilityId: stri
 
 function moveCard(s: GameState, id: string, zone: string): number {
   if (!['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game', 'looked_cards'].includes(zone)) reject('unsupported', 'Unmapped destination zone');
-  const c = card(s, id); const moved = c.zone === zone ? 0 : 1; const enteredSkillZone = moved === 1 && zone === 'skill'; c.zone = zone;
+  const c = card(s, id);
+  const moved = c.zone === zone ? 0 : 1; const enteredSkillZone = moved === 1 && zone === 'skill'; c.zone = zone;
   c.visibility = zone === 'field' || zone === 'attack_area' || zone === 'removed_from_game' ? { scope: 'public' } : { scope: 'owner_only', ownerPlayerId: c.ownerPlayerId };
   if (!['field', 'attack_area'].includes(zone)) {
     if (runtime(s).cardState[id]) { runtime(s).cardState[id]!.active = false; delete runtime(s).cardState[id]!.boardLocationId; }
@@ -1755,6 +1756,16 @@ function moveCard(s: GameState, id: string, zone: string): number {
   if (enteredSkillZone) emitSkillZoneEntry(s, id);
 
   return moved;
+}
+function moveCardByEffect(s: GameState, id: string, zone: string): number {
+  if (zone !== 'removed_from_game' || card(s, id).zone !== 'hand') return moveCard(s, id, zone);
+  const replacement = definition(s, id)?.zoneMoveReplacement;
+  if (replacement === undefined) return moveCard(s, id, zone);
+  if (!replacement || replacement.from !== 'hand' || replacement.requestedDestination !== 'removed_from_game' ||
+    replacement.replacementDestination !== 'discard' || Object.keys(replacement).length !== 3) {
+    reject('invalid_card_replacement', 'Unsupported card zone replacement');
+  }
+  return moveCard(s, id, replacement.replacementDestination);
 }
 /** A4 = 进入技能区：技能卡进入技能区是一次可观测的状态迁移（开局已在技能区同样算一次进入）。 */
 export function enterSkillZone(s: GameState, cardInstanceId: string): void {
@@ -2348,7 +2359,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       }
       if (effect.optionalCost) payEffectCost(s, ctx, node(effect.optionalCost), selected.length);
       const movable = selected.filter(id => !isProtectedFromOpponentEffects(s, card(s, id).controllerPlayerId, p.id));
-      const moved = movable.reduce((sum, id) => sum + moveCard(s, id, str(node(effect.to).zone)), 0);
+      const moved = movable.reduce((sum, id) => sum + moveCardByEffect(s, id, str(node(effect.to).zone)), 0);
       if (effect.activate === true || effect.face === 'face_up') {
         selected.forEach(id => { const state = runtime(s).cardState[id]; if (state) { state.active = true; state.faceDown = false; } });
       }
@@ -2362,7 +2373,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'move_all_remaining': {
       const excluded = Array.isArray(effect.excluding) ? effect.excluding.flatMap(x => ctx.selections[str(x)] ?? []) : [];
       const moved = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === effect.from && !excluded.includes(c.instanceId))
-        .reduce((sum, c) => sum + moveCard(s, c.instanceId, str(node(effect.to).zone)), 0);
+        .reduce((sum, c) => sum + moveCardByEffect(s, c.instanceId, str(node(effect.to).zone)), 0);
       if (str(effect.resultVar)) ctx.variables[str(effect.resultVar)] = (ctx.variables[str(effect.resultVar)] ?? 0) + moved;
       break;
     }

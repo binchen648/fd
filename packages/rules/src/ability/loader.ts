@@ -374,6 +374,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       report.push({ cardId, ...(abilityId ? { abilityId } : {}), path, status, reason,
         suggestedImplementation: 'Add a validated handler and behavioral tests for this field before enabling automation.' });
     };
+    if (raw.zoneMoveReplacement !== undefined) {
+      const replacement = node(raw.zoneMoveReplacement);
+      if (replacement.from !== 'hand' || replacement.requestedDestination !== 'removed_from_game' ||
+        replacement.replacementDestination !== 'discard' || Object.keys(replacement).length !== 3) {
+        issue('zoneMoveReplacement', 'Supported replacement redirects hand removal to discard');
+      }
+    }
     // B-EXPRESSION-AST-SPEC: arity / depth / budget validation for every formula node.
     const formulaArity: Record<string, { min: number; max: number }> = {
       const: { min: 0, max: 1 }, var: { min: 0, max: 0 }, add: { min: 1, max: 64 }, multiply: { min: 1, max: 64 },
@@ -797,6 +804,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         ? { initialPlacement: 'outside_game' as const }
         : {}),
       ...(raw.ascensionSkill === true ? { ascensionSkill: true } : {}),
+      ...(raw.zoneMoveReplacement !== undefined ? { zoneMoveReplacement: raw.zoneMoveReplacement as NonNullable<AuthoringCard['zoneMoveReplacement']> } : {}),
 
       mode: report.some(r => r.cardId === cardId && !r.abilityId) ? 'unsupported' : 'automatic' };
   }

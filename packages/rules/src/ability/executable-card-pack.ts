@@ -341,6 +341,9 @@ function validateSemanticSurvival(rawCard: Record<string, unknown>, compiledCard
   if (rawCard.initialPlacement !== undefined) {
     assertSemanticSubset(rawCard.initialPlacement, compiledCard.initialPlacement, `${path}.initialPlacement`);
   }
+  if (rawCard.zoneMoveReplacement !== undefined) {
+    assertSemanticSubset(rawCard.zoneMoveReplacement, compiledCard.zoneMoveReplacement, `${path}.zoneMoveReplacement`);
+  }
   const rawAbilities = nodes(rawCard.abilities);
   if (rawAbilities.length !== compiledCard.abilities.length) throw new Error(`Semantic loss at ${path}.abilities`);
   rawAbilities.forEach((rawAbility, abilityIndex) => {

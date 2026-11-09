@@ -29,6 +29,7 @@ export interface AuthoringAbility {
 export interface AuthoringCard {
   id: string; name: string; cardType: string; cardFace: RuleNode;
   playTiming: RuleNode; playRequirements: RuleNode[]; abilities: AuthoringAbility[];
+  zoneMoveReplacement?: { from: 'hand'; requestedDestination: 'removed_from_game'; replacementDestination: 'discard' };
   initialPlacement?: 'outside_game';
   mode: ExecutionMode;
   /** 升华技：只可能通过外部条件（从者能力等）解锁后加入技能区，开局不在场。 */
