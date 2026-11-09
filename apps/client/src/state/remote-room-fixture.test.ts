@@ -81,3 +81,41 @@ it('does not expose a participation command from an old room projection', () => 
 });
 
 it('preserves authoritative public terrain holes rather than assigning by player order',()=>{const p=buildProjection();p.match!.view.terrainSlots={miyama_town:{bonuses:[3,1],occupants:[null,'p1']}};const f=projectRemoteRoomFixture(p)!;const l=f.locations.find(l=>l.id==='miyama_town')!;expect(l.terrainOccupants).toEqual([null,'p1']);});
+
+it('shows the printed color, power, and art of real seven-seat opening attacks', () => {
+  const room = createMatchRoom({ seed: 20260905, hostClientId: 'seat-1' });
+  for (let seat = 1; seat <= 7; seat++) {
+    const id = `seat-${seat}`;
+    if (seat > 1) room.joinRoom({ clientId: id, displayName: id });
+    room.selectSeat(id, seat);
+  }
+  room.startMatch('seat-1');
+  const session = room.session!;
+  const types = new Set<string>();
+  for (let seat = 1; seat <= 7; seat++) {
+    const fixture = projectRemoteRoomFixture(room.getProjection(`seat-${seat}`))!;
+    for (const card of fixture.cards.filter(card => fixture.self.hand.includes(card.instanceId))) {
+      const parts = /^basic\.(strength|agility|magecraft)\.([1-5])$/.exec(card.definitionId);
+      if (!parts) continue;
+      types.add(parts[1]!);
+      const definition = session.state.abilityRuntime!.pack.cards[card.definitionId]!;
+      expect(card.name).toBe(definition.name);
+      expect(card.power).toBe(definition.cardFace.basePower);
+      expect(card.cost).toBe(definition.cardFace.cost);
+      expect(card.keywords).toEqual(definition.cardFace.attributes);
+      expect(card.imageUrl).toBe(`/assets/fd/cards/basic-${parts[1]}-${parts[2]}.svg`);
+    }
+  }
+  expect([...types].sort()).toEqual(['agility', 'magecraft', 'strength']);
+});
+
+it('does not attach a basic face to a face-down opponent card', () => {
+  const projection = buildProjection();
+  projection.match!.view.cards = [
+    { instanceId: 'hidden', definitionId: 'basic.agility.3', ownerPlayerId: 'p2', zone: 'attack_area', faceDown: true },
+  ];
+  const card = projectRemoteRoomFixture(projection)!.cards[0]!;
+  expect(card.name).toBe('暗置卡');
+  expect(card.power).toBeUndefined();
+  expect(card.imageUrl ?? '').not.toContain('basic-agility-3');
+});

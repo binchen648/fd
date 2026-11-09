@@ -315,3 +315,19 @@ describe('FD asset registry', () => {
     for (const card of fixture.cards) expectAssetExists(card.imageUrl!);
   });
 });
+
+it('resolves all fifteen three-color basic attacks to dedicated, existing faces', () => {
+  const urls = new Set<string>();
+  const families = [['strength', 'B'], ['agility', 'Q'], ['magecraft', 'A']] as const;
+  for (const [family, legacy] of families) {
+    for (let power = 1; power <= 5; power++) {
+      const url = resolveCardImageUrl({ definitionId: `basic.${family}.${power}` });
+      expect(url).toBe(`/assets/fd/cards/basic-${family}-${power}.svg`);
+      expect(resolveCardImageUrl({ definitionId: `card.card${legacy}${power}` })).toBe(url);
+      expectAssetExists(url);
+      expect(readFileSync(publicAssetFile(url), 'utf8')).toMatch(new RegExp(`(?:>| )${power}</text>`));
+      urls.add(url);
+    }
+  }
+  expect(urls.size).toBe(15);
+});

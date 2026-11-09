@@ -1,0 +1,39 @@
+{
+  "taskId": "A-BASIC-CARD-FACES",
+  "owner": "Root / Product A",
+  "status": "GRANTED",
+  "authority": "User reported missing basic attack faces and requested continuation. Root owns this client-only correction.",
+  "ReservedFiles": [
+    "apps/client/src/state/fd-asset-registry.ts",
+    "apps/client/src/state/fd-asset-registry.test.ts",
+    "apps/client/src/state/remote-room-fixture.ts",
+    "apps/client/src/state/remote-room-fixture.test.ts",
+    "apps/client/public/assets/fd/cards/basic-strength-1.svg",
+    "apps/client/public/assets/fd/cards/basic-strength-3.svg",
+    "apps/client/public/assets/fd/cards/basic-strength-4.svg",
+    "apps/client/public/assets/fd/cards/basic-strength-5.svg",
+    "apps/client/public/assets/fd/cards/basic-agility-1.svg",
+    "apps/client/public/assets/fd/cards/basic-agility-3.svg",
+    "apps/client/public/assets/fd/cards/basic-agility-4.svg",
+    "apps/client/public/assets/fd/cards/basic-agility-5.svg",
+    "apps/client/public/assets/fd/cards/basic-magecraft-1.svg",
+    "apps/client/public/assets/fd/cards/basic-magecraft-3.svg",
+    "apps/client/public/assets/fd/cards/basic-magecraft-4.svg",
+    "apps/client/public/assets/fd/cards/basic-magecraft-5.svg",
+    "docs/agents/manifests/tasks/A-BASIC-CARD-FACES.json"
+  ],
+  "ForbiddenFiles": [
+    "Rules, content compiler, Runtime, Interpreter, Loader and MatchSession",
+    "D:/fd original worktree",
+    "CI workflows"
+  ],
+  "testPlan": {
+    "L1": "Fifteen standard IDs and fifteen legacy aliases, exact SVG power text, non-placeholder paths, visible printed stats and hidden-card privacy.",
+    "L2": "Real seven-seat MatchRoom opening hands, seven HTTP/WebSocket browser seats and 16 inspected attacks, server-derived state unchanged.",
+    "L3": "No new full-match run for a card-display-only patch."
+  },
+  "artBasis": "Extend existing power-2 SVG templates to power 1,3,4,5. Historical image indexes are not canonical printed powers.",
+  "BaseCommit": "33e31390704386b3b80f7a39604fd7bc34ee591d",
+  "branch": "codex/a-basic-card-faces",
+  "worktree": "D:/fd-validation/a-basic-card-faces-main"
+}
