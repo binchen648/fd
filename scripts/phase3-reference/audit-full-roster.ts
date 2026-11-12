@@ -14,7 +14,8 @@ const DEFAULT_INVENTORY_PATH = 'data/phase3/full-roster-ability-inventory.json';
 const DEFAULT_CATALOG_PATH = 'data/phase3/full-roster-capability-catalog.json';
 const DEFAULT_DECISIONS_PATH = 'data/phase3/full-roster-rule-decisions.json';
 const DEFAULT_RUNTIME_REQUESTS_PATH = 'data/phase3/full-roster-runtime-capability-requests.json';
-const DEFAULT_REPORT_PATH = 'docs/reports/2026-09-14-phase3-full-roster-automation-audit.md';
+const DEFAULT_REPORT_PATH = 'docs/reports/2026-09-15-phase3-full-roster-automation-audit.md';
+const DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH = 'data/phase3/full-roster-source-evidence-overlays.json';
 
 export interface ReferenceAuditExpectedClause {
   text: string;
@@ -144,7 +145,7 @@ export function recomputeReferenceSnapshot(referenceRoot: string): ReferenceAudi
   if (new Set(staticIds).size !== staticIds.length || new Set(programIds).size !== programIds.length) throw new Error('Raw Reference identity duplication detected.');
   return { repository: verified.repository, commit: verified.commit, staticSkills: staticSkills.sort((a,b) => a.id.localeCompare(b.id)), dynamicSkillIds: sorted(audit.dynamicRuntimeSkills.map(String)), programIds: sorted(programIds), authoringCardIds: sorted(authoring.skillCards.map((card: any) => String(card.id))), authoringAbilityCount, referenceConflicts };
 }
-function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: AutomationAuditGap[]): void {
+function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: AutomationAuditGap[], sourceEvidenceCards: any[] = []): void {
   const staticEntries = Array.isArray(inventory.staticSkills) ? inventory.staticSkills : [];
   const dynamicEntries = Array.isArray(inventory.dynamicSkills) ? inventory.dynamicSkills : [];
   const expectedStaticIds = snapshot.staticSkills.map((skill) => skill.id);
@@ -155,7 +156,65 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
   if (!sameStrings(snapshot.programIds, expectedStaticIds)) pushGap(gaps, 'REFERENCE_PROGRAM_ID_SET_MISMATCH', [...snapshot.programIds, ...expectedStaticIds], 'Raw skill-rule program IDs differ from raw static skill IDs.');
 
   const byId = new Map(staticEntries.map((entry: any) => [String(entry.canonicalAbilityId), entry] as const));
+  const dynamicById = new Map(dynamicEntries.map((entry: any) => [String(entry.canonicalAbilityId), entry] as const));
   const authoringSet = new Set(snapshot.authoringCardIds);
+  const expectedIdentitySet = new Set([...expectedStaticIds, ...snapshot.dynamicSkillIds]);
+  const overlayById = new Map<string, any>();
+  for (const card of sourceEvidenceCards) {
+    const id = String(card?.id ?? '');
+    if (!id || overlayById.has(id)) {
+      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_DUPLICATE', [id || '<missing>'], 'Source-evidence overlay IDs must be unique and non-empty.');
+      continue;
+    }
+    overlayById.set(id, card);
+    if (!expectedIdentitySet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_UNKNOWN_ID', [id], 'Source-evidence overlay does not match a locked Reference canonical identity.');
+    if (authoringSet.has(id)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_SHADOWS_REFERENCE', [id], 'Source-evidence overlay must not override an existing locked Reference authoring card.');
+    const source = card?.source ?? {};
+    if (typeof source.locator !== 'string' || source.locator.length === 0) {
+      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_PROVENANCE_MISMATCH', [id], 'External semantic evidence must carry a stable locator.');
+    }
+    if (source.authority === 'FATE_DOMINATION_WIKI') {
+      let parsedUrl: URL | undefined;
+      try { parsedUrl = new URL(String(source.url ?? '')); }
+      catch { parsedUrl = undefined; }
+      if (
+        source.document !== 'Fate/Domination Wiki' ||
+        parsedUrl?.protocol !== 'https:' ||
+        parsedUrl.hostname !== 'fatedomination.fandom.com' ||
+        !parsedUrl.pathname.startsWith('/wiki/')
+      ) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_AUTHORITY_MISMATCH', [id], 'Wiki evidence must come from the allowlisted Fate/Domination Wiki.');
+      }
+    } else if (source.authority === 'DEVELOPMENT_TEXT') {
+      const allowedDevelopmentDocuments = new Set([
+        'Fate_Domination-开发版/data_masters.js',
+        'Fate_Domination-开发版/data_servants.js',
+        'Fate_Domination-开发版/batch_caster_assassin.js',
+        'Fate_Domination-开发版/batch_berserker_extra.js',
+        'Fate_Domination-开发版/index.html',
+      ]);
+      const sourceText = typeof source.sourceText === 'string' ? source.sourceText : '';
+      const sourceTextHash = sourceText
+        ? createHash('sha256').update(sourceText, 'utf8').digest('hex')
+        : '';
+      if (
+        !allowedDevelopmentDocuments.has(String(source.document ?? '')) ||
+        !/^[a-f0-9]{64}$/.test(String(source.sourceFileSha256 ?? '')) ||
+        sourceText.length === 0 ||
+        !/^[a-f0-9]{64}$/.test(String(source.sourceTextSha256 ?? '')) ||
+        sourceTextHash !== source.sourceTextSha256 ||
+        source.sourceText !== card.printedText ||
+        source.sourceTextSha256 !== card.referencePrintedTextSha256
+      ) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_DEVELOPMENT_SNAPSHOT_MISMATCH', [id], 'Development-text evidence must be an allowlisted, hash-locked source snapshot.');
+      }
+    } else {
+      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_AUTHORITY_MISMATCH', [id], 'External semantic evidence uses an unsupported authority.');
+    }
+    if (!Array.isArray(card?.abilities) || card.abilities.length === 0) {
+      pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_EMPTY', [id], 'External semantic evidence must contain at least one structured ability.');
+    }
+  }
   for (const expected of snapshot.staticSkills) {
     const actual = byId.get(expected.id);
     if (!actual) continue;
@@ -166,14 +225,50 @@ function compareRaw(snapshot: ReferenceAuditSnapshot, inventory: any, gaps: Auto
     const normalizedClauses = (actual.clauses ?? []).map((clause: any) => ({ text: clause.text, derivation: clause.derivation, ...(clause.sourceAbilityId ? { sourceAbilityId: clause.sourceAbilityId } : {}), source: clause.source }));
     if (stable(normalizedClauses) !== stable(expected.expectedClauses)) pushGap(gaps, 'CLAUSE_MISMATCH', [expected.id], 'Generated clause text/provenance differs from independently reconstructed clauses.');
     const semantic = actual.semanticNormalization ?? {};
-    const shouldBeGrounded = authoringSet.has(expected.id);
-    if ((shouldBeGrounded && semantic.status !== 'SOURCE_GROUNDED') || (!shouldBeGrounded && semantic.status !== 'BLOCKED')) pushGap(gaps, 'SEMANTIC_SOURCE_CATEGORY_MISMATCH', [expected.id], 'Generated semantic source category disagrees with raw V2 authoring presence.');
-    if (shouldBeGrounded) {
+    const overlayCard = overlayById.get(expected.id);
+    const shouldBeGrounded = authoringSet.has(expected.id) || Boolean(overlayCard);
+    if ((shouldBeGrounded && semantic.status !== 'SOURCE_GROUNDED') || (!shouldBeGrounded && semantic.status !== 'BLOCKED')) pushGap(gaps, 'SEMANTIC_SOURCE_CATEGORY_MISMATCH', [expected.id], 'Generated semantic source category disagrees with accepted Reference/overlay evidence presence.');
+    if (authoringSet.has(expected.id)) {
       const actualAbilityIds = (semantic.abilities ?? []).map((ability: any) => String(ability.sourceAbilityId));
       if (!sameStrings(expected.authoringAbilityIds, actualAbilityIds)) pushGap(gaps, 'AUTHORING_ABILITY_ID_SET_MISMATCH', [expected.id], 'Normalized subability IDs differ from raw authoring ability IDs.');
+    } else if (overlayCard) {
+      const source = overlayCard.source ?? {};
+      const expectedReferenceHash = createHash('sha256').update(expected.printedText, 'utf8').digest('hex');
+      if (overlayCard.referencePrintedTextSha256 !== expectedReferenceHash) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_REFERENCE_BINDING_MISMATCH', [expected.id], 'Source-evidence overlay is not bound to the exact locked Reference printed text.');
+      }
+      if (semantic.source?.document !== source.document || semantic.source?.locator !== source.locator) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_PROVENANCE_MISMATCH', [expected.id], 'Normalized semantic provenance differs from the accepted source-evidence overlay.');
+      }
+      const expectedAbilityIds = (overlayCard.abilities ?? []).map((ability: any) => String(ability.id));
+      const actualAbilityIds = (semantic.abilities ?? []).map((ability: any) => String(ability.sourceAbilityId));
+      if (!sameStrings(expectedAbilityIds, actualAbilityIds)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_ABILITY_ID_SET_MISMATCH', [expected.id], 'Normalized subability IDs differ from source-evidence overlay ability IDs.');
     }
   }
-  for (const conflict of snapshot.referenceConflicts ?? []) pushGap(gaps, conflict.code, [conflict.id], conflict.detail);
+  for (const id of snapshot.dynamicSkillIds) {
+    const actual = dynamicById.get(id);
+    if (!actual) continue;
+    const semantic = actual.semanticNormalization ?? {};
+    const overlayCard = overlayById.get(id);
+    const shouldBeGrounded = Boolean(overlayCard);
+    if ((shouldBeGrounded && semantic.status !== 'SOURCE_GROUNDED') || (!shouldBeGrounded && semantic.status !== 'BLOCKED')) {
+      pushGap(gaps, 'SEMANTIC_SOURCE_CATEGORY_MISMATCH', [id], 'Generated dynamic semantic source category disagrees with accepted overlay evidence presence.');
+    }
+    if (overlayCard) {
+      const source = overlayCard.source ?? {};
+      const sourceText = typeof source.sourceText === 'string' ? source.sourceText : '';
+      const evidenceHash = sourceText ? createHash('sha256').update(sourceText, 'utf8').digest('hex') : '';
+      if (overlayCard.referencePrintedTextSha256 !== evidenceHash) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_REFERENCE_BINDING_MISMATCH', [id], 'Dynamic source-evidence overlay is not bound to its exact locked source snapshot.');
+      }
+      if (semantic.source?.document !== source.document || semantic.source?.locator !== source.locator) {
+        pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_PROVENANCE_MISMATCH', [id], 'Normalized dynamic semantic provenance differs from the accepted source-evidence overlay.');
+      }
+      const expectedAbilityIds = (overlayCard.abilities ?? []).map((ability: any) => String(ability.id));
+      const actualAbilityIds = (semantic.abilities ?? []).map((ability: any) => String(ability.sourceAbilityId));
+      if (!sameStrings(expectedAbilityIds, actualAbilityIds)) pushGap(gaps, 'SOURCE_EVIDENCE_OVERLAY_ABILITY_ID_SET_MISMATCH', [id], 'Normalized dynamic subability IDs differ from source-evidence overlay ability IDs.');
+    }
+  }  for (const conflict of snapshot.referenceConflicts ?? []) pushGap(gaps, conflict.code, [conflict.id], conflict.detail);
 }
 
 function compareSummaries(inventory: any, catalog: any, gaps: AutomationAuditGap[]) {
@@ -254,11 +349,11 @@ function compareRuntime(catalog: any, runtime: any, gaps: AutomationAuditGap[]):
   if (summary.runtimeRequestCount !== requests.length || summary.genericCapabilityRequestCount !== requests.filter((request: any) => request.requestType === 'GENERIC_CAPABILITY_REQUEST').length || summary.reviewedSpecialRequestCount !== requests.filter((request: any) => request.requestType === 'REVIEWED_SPECIAL_REQUEST').length || summary.affectedIdentityCount !== affected.length) pushGap(gaps, 'RUNTIME_REQUEST_SUMMARY_MISMATCH', [], 'Runtime request summary differs from request records.');
 }
 
-export function auditFullRosterArtifacts(snapshot: ReferenceAuditSnapshot, inventory: any, catalog: any, decisions: any, runtime: any): AutomationAuditResult {
+export function auditFullRosterArtifacts(snapshot: ReferenceAuditSnapshot, inventory: any, catalog: any, decisions: any, runtime: any, sourceEvidenceCards: any[] = []): AutomationAuditResult {
   const gaps: AutomationAuditGap[] = [];
   if (inventory.provenance?.repository !== snapshot.repository || inventory.provenance?.commit !== snapshot.commit) pushGap(gaps, 'INVENTORY_PROVENANCE_MISMATCH', [], 'Inventory provenance differs from independently verified Reference.');
   if (catalog.provenance?.referenceRepository !== snapshot.repository || catalog.provenance?.referenceCommit !== snapshot.commit) pushGap(gaps, 'CATALOG_PROVENANCE_MISMATCH', [], 'Catalog provenance differs from independently verified Reference.');
-  compareRaw(snapshot, inventory, gaps);
+  compareRaw(snapshot, inventory, gaps, sourceEvidenceCards);
   const categoryCounts = compareSummaries(inventory, catalog, gaps);
   compareCatalog(inventory, catalog, gaps);
   const blockedPacketCoverageCount = compareBlockedCoverage(inventory, decisions, gaps);
@@ -272,6 +367,8 @@ export function auditFullRosterArtifacts(snapshot: ReferenceAuditSnapshot, inven
     programCount: snapshot.programIds.length,
     authoringCardCount: snapshot.authoringCardIds.length,
     authoringAbilityCount: snapshot.authoringAbilityCount,
+    sourceEvidenceOverlayCount: sourceEvidenceCards.length,
+    sourceEvidenceOverlayAbilityCount: sourceEvidenceCards.reduce((sum: number, card: any) => sum + (card?.abilities?.length ?? 0), 0),
     clauseCount: (inventory.staticSkills ?? []).reduce((sum: number, entry: any) => sum + (entry.clauses?.length ?? 0), 0),
     sourceRefCount: entries.reduce((sum: number, entry: any) => sum + (entry.sources?.length ?? 0), 0),
     sourceGroundedCount: entries.filter((entry: any) => entry.semanticNormalization?.status === 'SOURCE_GROUNDED').length,
@@ -286,7 +383,7 @@ export function auditFullRosterArtifacts(snapshot: ReferenceAuditSnapshot, inven
 }
 
 export function renderAutomationAuditReport(result: AutomationAuditResult): string {
-  const lines: string[] = ['# Phase 3 Full-Roster Independent Automation Audit', '', '- Role: Codex A', '- Task: P3-FA01', '- Scope: independent recomputation only; no semantic/runtime repair and no Gate promotion.', '- Reference Inputs: raw legacy content, raw V2 authoring cards, raw skill-rule programs, raw dynamic skill audit.', '', `status=${result.status}`, `gapCount=${result.gaps.length}`, `referenceRepository=${result.provenance.referenceRepository}`, `referenceCommit=${result.provenance.referenceCommit}`, '', '## Independently Recomputed Totals', ''];
+  const lines: string[] = ['# Phase 3 Full-Roster Independent Automation Audit', '', '- Role: Codex A', '- Task: P3-FA01', '- Scope: independent recomputation only; no semantic/runtime repair and no Gate promotion.', '- Reference Inputs: raw legacy content, raw V2 authoring cards, raw skill-rule programs, raw dynamic skill audit, plus separately allowlisted source-evidence overlays.', '', `status=${result.status}`, `gapCount=${result.gaps.length}`, `referenceRepository=${result.provenance.referenceRepository}`, `referenceCommit=${result.provenance.referenceCommit}`, '', '## Independently Recomputed Totals', ''];
   for (const [key, value] of Object.entries(result.recomputed)) lines.push(`${key}=${value}`);
   lines.push('', '## Recomputed Categories', '');
   for (const [axis, counts] of Object.entries(result.categoryCounts)) {
@@ -312,7 +409,7 @@ function parseArgument(args: string[], name: string): string | undefined {
 function main(): void {
   const args = process.argv.slice(2);
   const referenceArg = parseArgument(args, '--reference-root');
-  if (!referenceArg) throw new Error('Usage: audit-full-roster --reference-root <clean-reference-checkout> [--output <audit.md>]');
+  if (!referenceArg) throw new Error('Usage: audit-full-roster --reference-root <clean-reference-checkout> [--output <audit.md>] [--source-evidence-overlay <overlay.json>]');
   const referenceRoot = resolve(referenceArg);
   const outputPath = resolve(parseArgument(args, '--output') ?? DEFAULT_REPORT_PATH);
   assertOutputOutsideReference(referenceRoot, outputPath);
@@ -321,7 +418,11 @@ function main(): void {
   const catalog = readJson<any>(resolve(parseArgument(args, '--catalog') ?? DEFAULT_CATALOG_PATH));
   const decisions = readJson<any>(resolve(parseArgument(args, '--decisions') ?? DEFAULT_DECISIONS_PATH));
   const runtime = readJson<any>(resolve(parseArgument(args, '--runtime-requests') ?? DEFAULT_RUNTIME_REQUESTS_PATH));
-  const result = auditFullRosterArtifacts(snapshot, inventory, catalog, decisions, runtime);
+  const overlayFile = readJson<any>(resolve(parseArgument(args, '--source-evidence-overlay') ?? DEFAULT_SOURCE_EVIDENCE_OVERLAY_PATH));
+  if (overlayFile?.schemaVersion !== 1 || overlayFile?.kind !== 'phase3-full-roster-source-evidence-overlays' || !Array.isArray(overlayFile?.cards)) {
+    throw new Error('Unsupported full-roster source-evidence overlay schema.');
+  }
+  const result = auditFullRosterArtifacts(snapshot, inventory, catalog, decisions, runtime, overlayFile.cards);
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, renderAutomationAuditReport(result), 'utf8');
   process.stdout.write(`${JSON.stringify({ status: result.status, gapCount: result.gaps.length, recomputed: result.recomputed }, null, 2)}\n`);
