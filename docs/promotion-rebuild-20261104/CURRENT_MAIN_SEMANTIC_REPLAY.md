@@ -1,0 +1,27 @@
+# Current Main Semantic Replay
+
+Baseline: e63cdeb2a065a9f87c24039d2b08bbe059513fed (origin/main at audit start).
+
+Only two open PRs are based exactly on this baseline: PR #689 and PR #690. Both are real non-empty deltas, but both touch paths reserved by active A-RECOVER-04; therefore neither is replayed into a new branch in this run.
+
+## PR #689 — feat: unify hosted seven-player web entry and safe room invitations
+
+- Original base: e63cdeb2a065a9f87c24039d2b08bbe059513fed
+- Original head: 44726d40033da44bb1dc10147fe5c4fd357ff980
+- Classification: **BLOCKED** (active-reservation:A-RECOVER-04:apps/server/src/index.ts,apps/server/src/match-server.ts)
+- CI observation: PASS; latest review observation: COMMENT_ONLY. These are not acceptance decisions.
+- Modified files (26): apps/client/src/App.test.tsx; apps/client/src/App.tsx; apps/client/src/state/public-playtest.test.ts; apps/client/src/state/public-playtest.ts; apps/client/src/vite-env.d.ts; apps/client/vite.config.ts; apps/server/src/index.ts; apps/server/src/match-server.ts; apps/server/src/static-client.test.ts; apps/server/src/static-client.ts; docs/agents/manifests/releases/A-RECOVER-04-TO-A-CLOUD-05.json; docs/agents/manifests/reservations/A-CLOUD-05.json; docs/agents/manifests/reservations/A-RECOVER-04.json; docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json; docs/agents/manifests/tasks/A-CLOUD-05.json; docs/agents/manifests/tasks/A-RECOVER-04.json; docs/plans/2026-11-01-a-cloud-05.md; docs/product/FD-PUBLIC-PLAYTEST.md; docs/reports/2026-11-01-a-cloud-05-result.md; docs/reports/2026-11-01-a-line-status-and-review.md; docs/reviews/phase3/A-CLOUD-05-review-attestation.json; e2e/fd-public-playtest.spec.ts; package.json; scripts/public-playtest-build.mjs; scripts/start-public-playtest.mjs; scripts/tests/public-playtest-build.test.ts
+
+## PR #690 — fix: repair seven-roster permissions, terrain and command-seal execution
+
+- Original base: e63cdeb2a065a9f87c24039d2b08bbe059513fed
+- Original head: 1fc8c9df352882bf7e2d1faaf1c53f48d0488d01
+- Classification: **BLOCKED** (active-reservation:A-RECOVER-04:packages/rules/src/match-session.ts)
+- CI observation: PASS; latest review observation: COMMENT_ONLY. These are not acceptance decisions.
+- Modified files (48): apps/client/src/pages/MatchTable.test.tsx; apps/client/src/pages/MatchTable.tsx; apps/client/src/state/playtest-fixture-loader.ts; apps/client/src/state/remote-room-fixture.test.ts; apps/client/src/state/remote-room-fixture.ts; apps/client/src/state/seven-authoring-smoke-fixture.ts; data/authoring/masters/master.gatou.json; data/authoring/masters/master.kayneth.json; data/authoring/masters/master.maiya.json; data/authoring/masters/master.olga-marie.json; data/authoring/servants/servant.ereshkigal.json; data/authoring/servants/servant.tomoe.json; data/generated/fd-playtest-v1.content-library.json; docs/agents/manifests/reservations/A-ACCEPT-06-REPAIR.json; docs/agents/manifests/reservations/A-ACCEPT-06.json; docs/agents/manifests/reservations/SHARED-RUNTIME-LANE.json; docs/agents/manifests/tasks/A-ACCEPT-06-REPAIR.json; docs/agents/manifests/tasks/A-ACCEPT-06.json; docs/plans/2026-11-01-a-accept-06-repair.md; docs/plans/2026-11-01-a-accept-06.md; docs/reports/2026-11-01-a-accept-06-effect-matrix.json; docs/reports/2026-11-01-a-accept-06-repair-result.md; docs/reports/2026-11-01-a-accept-06-result.md; docs/reviews/phase3/A-ACCEPT-06-REPAIR-review-attestation.json; docs/reviews/phase3/A-ACCEPT-06-review-attestation.json; e2e/fd-seven-roster-repair.spec.ts; packages/content/src/__tests__/playtest-pack-loader.test.ts; packages/rules/src/__tests__/match-session-regressions.test.ts; packages/rules/src/ability/executable-card-pack.ts; packages/rules/src/ability/extended-effects.ts; packages/rules/src/ability/face-up-cards-per-round.ts; packages/rules/src/ability/interpreter.ts; packages/rules/src/ability/loader.ts; packages/rules/src/ability/types.ts; packages/rules/src/core/combat-resolver.ts; packages/rules/src/core/terrain-advantage.ts; packages/rules/src/match-session.ts; packages/rules/tests/acceptance/seven-roster-combinations.test.ts; packages/rules/tests/acceptance/seven-roster-deployment.test.ts; packages/rules/tests/acceptance/seven-roster-inventory.test.ts; packages/rules/tests/acceptance/seven-roster-repair.test.ts; packages/rules/tests/acceptance/seven-roster-session-effects.test.ts; packages/rules/tests/acceptance/seven-roster-test-helpers.ts; packages/rules/tests/fm01-source-play-basic-draw-authoring.test.ts; packages/rules/tests/kayneth-s3-consumer-migration.test.ts; packages/rules/tests/kintoki-authoring.test.ts; packages/rules/tests/regression/action-turn-delivery.test.ts; packages/rules/tests/regression/complex-skills-regression.test.ts
+
+## Replay decision
+
+No production replay was authorized. PR #689 modifies apps/server/src/index.ts and apps/server/src/match-server.ts, both granted to A-RECOVER-04. PR #690 additionally modifies packages/rules/src/match-session.ts, apps/server/src/index.ts, apps/server/src/match-server.ts, and other runtime files; these overlap the same reservation and include runtime-hotspot edits. Reapplying either now would violate the active writer boundary.
+
+The correct next action is to obtain an explicit reservation release/new grant, then replay each semantic unit from this locked SHA into isolated branches. No old PR is being cherry-picked or merged here.
