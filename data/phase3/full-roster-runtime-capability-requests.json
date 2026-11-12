@@ -9,7 +9,7 @@
     "runtimeRequestCount": 23,
     "genericCapabilityRequestCount": 21,
     "reviewedSpecialRequestCount": 2,
-    "affectedIdentityCount": 72
+    "affectedIdentityCount": 89
   },
   "requests": [
     {
@@ -83,6 +83,7 @@
       "capabilityId": "CARD_ACTION_CLOSE",
       "mechanicFamily": "CARD_ACTION_SEMANTICS",
       "affectedAbilityIds": [
+        "master.chaos.skill.s11",
         "servant.chloe.skill.sc-chloe-1",
         "servant.darius.skill.sc-darius-1",
         "servant.edison.skill.sc-edison-2",
@@ -96,6 +97,33 @@
         "servant.siegfried.skill.sc-siegfried-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Emperor"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s11"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=2",
+          "sha256": "dc4c34046302257617e79c04ac463241e7e5900c9baacdcafbb59970067f9a51"
+        },
         {
           "abilityId": "servant.chloe.skill.sc-chloe-1",
           "document": "FD全卡图鉴V2.0.chm",
@@ -431,9 +459,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 11
+          "shared_handler": 12
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -511,6 +539,7 @@
       "capabilityId": "CARD_ACTION_PLAY",
       "mechanicFamily": "CARD_ACTION_SEMANTICS",
       "affectedAbilityIds": [
+        "master.chaos.skill.s1",
         "master.sion.skill.s13",
         "servant.caligula.skill.sc-caligula-1",
         "servant.chloe.skill.sc-chloe-1",
@@ -520,6 +549,33 @@
         "servant.parvati.skill.sc-parvati-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
         {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
@@ -711,9 +767,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 7
+          "shared_handler": 8
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -728,6 +784,9 @@
       "affectedAbilityIds": [
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.chaos.skill.s2",
+        "master.chaos.skill.s6",
+        "master.chaos.skill.s7",
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
         "master.darnic.skill.s1a",
@@ -814,6 +873,87 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Stalker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s2"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[1].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[1].text#line=2",
+          "sha256": "1b6fe144d216ec2223834a7feca19e242d817a35224415baf0d814aa00a5bcc2"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Colossus"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s6"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=2",
+          "sha256": "cd6be3826b14e2f4f19c31943c4688919d8cbe83d7e7529ad149f5568e5aab27"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Violator"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s7"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=2",
+          "sha256": "1a4afaf0aca3e3e7be7ab3890f6e52a56f24763577595565c7502f71549b3141"
         },
         {
           "abilityId": "master.ciel.skill.s2",
@@ -1630,9 +1770,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 33
+          "shared_handler": 34,
+          "specific_handler": 2
         },
-        "handlerCount": 1,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -1746,6 +1887,12 @@
       "affectedAbilityIds": [
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1",
+        "master.chaos.skill.ascension",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s13",
+        "master.chaos.skill.s3",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s6",
         "master.ciel.skill.s1b",
         "master.twice.skill.s1",
         "servant.albion.skill.sc-albion-1",
@@ -1810,6 +1957,168 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[29].abilities[1].printedClause",
           "sha256": "92a73ecc5f991a33e1004ed6f0ed7c572ad41a1bbcdefa6072a0311046aaff49"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Army of One"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/ascension"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[17].text#line=1",
+          "sha256": "6f7b6b83a08c64ebb3dd88bcae70df47e825e92f44e9dd204f6dcb3e2260a285"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[17].text#line=2",
+          "sha256": "2bf7da156e27428fcc93a6612ef3c7a6fbbe8acdce982d4b95b754c012e72830"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Scourge"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s13"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=1",
+          "sha256": "d46d1bc6ca5a2b4fa142c81873a5b5b01f3d051401dacc0e4d7f5da21deec124"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=2",
+          "sha256": "f8af32bb324aea6a44e78283cac7ebc33f4077201dcfb356189e50b1a928112f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Devourer"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s3"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=2",
+          "sha256": "402bc0136048ee723ec55cd8914c8deb60774c78d71868928f1b750ab43d1d9f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Colossus"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s6"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=2",
+          "sha256": "cd6be3826b14e2f4f19c31943c4688919d8cbe83d7e7529ad149f5568e5aab27"
         },
         {
           "abilityId": "master.ciel.skill.s1b",
@@ -2182,9 +2491,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 17
+          "shared_handler": 23
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -2204,6 +2513,13 @@
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s11",
+        "master.chaos.skill.s16",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s5",
+        "master.chaos.skill.s6",
+        "master.chaos.skill.s7",
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
         "master.ciel.skill.s3",
@@ -2451,6 +2767,195 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[4].abilities[2].printedClause",
           "sha256": "a09444dfc4fed4ad286034f9b8486780a2a61ce6c447d973a022956c05865025"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Emperor"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s11"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=2",
+          "sha256": "dc4c34046302257617e79c04ac463241e7e5900c9baacdcafbb59970067f9a51"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The 999th"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s16"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=2",
+          "sha256": "e5b190f83d34dcc4e017ab84316571ab67a30de74f7b3ebfd8e39ec6d898306a"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Lurker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s5"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=2",
+          "sha256": "7ca799e0e0e90dc9134f8cee19e4a1a885572d8ee23346b6c1d05b4b849cd022"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Colossus"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s6"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=2",
+          "sha256": "cd6be3826b14e2f4f19c31943c4688919d8cbe83d7e7529ad149f5568e5aab27"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Violator"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s7"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=2",
+          "sha256": "1a4afaf0aca3e3e7be7ab3890f6e52a56f24763577595565c7502f71549b3141"
         },
         {
           "abilityId": "master.ciel.skill.s1b",
@@ -4035,9 +4540,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 70
+          "shared_handler": 75,
+          "specific_handler": 2
         },
-        "handlerCount": 1,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4050,11 +4556,67 @@
       "capabilityId": "GENERIC_COST_PAYMENT",
       "mechanicFamily": "COST_PAYMENT",
       "affectedAbilityIds": [
+        "master.chaos.skill.ascension",
+        "master.chaos.skill.s1",
         "master.sion.skill.s13",
         "servant.roberts.skill.sc-roberts-1",
         "servant.roberts.skill.sc-roberts-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Army of One"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/ascension"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[17].text#line=1",
+          "sha256": "6f7b6b83a08c64ebb3dd88bcae70df47e825e92f44e9dd204f6dcb3e2260a285"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[17].text#line=2",
+          "sha256": "2bf7da156e27428fcc93a6612ef3c7a6fbbe8acdce982d4b95b754c012e72830"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
         {
           "abilityId": "master.sion.skill.s13",
           "document": "Fate_Domination-开发版",
@@ -4150,9 +4712,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 3
+          "shared_handler": 5
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -4165,6 +4727,7 @@
       "capabilityId": "GENERIC_EVENT_DECK",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.chaos.skill.s13",
         "master.twice.skill.s1",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.iskandar.skill.sc-iskandar-2",
@@ -4173,6 +4736,33 @@
         "servant.merlin.skill.sc-merlin-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Scourge"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s13"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=1",
+          "sha256": "d46d1bc6ca5a2b4fa142c81873a5b5b01f3d051401dacc0e4d7f5da21deec124"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=2",
+          "sha256": "f8af32bb324aea6a44e78283cac7ebc33f4077201dcfb356189e50b1a928112f"
+        },
         {
           "abilityId": "master.twice.skill.s1",
           "document": "Fate_Domination-开发版",
@@ -4337,7 +4927,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 6
+          "shared_handler": 7
         },
         "handlerCount": 1,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
@@ -4355,6 +4945,10 @@
         "master.akasha.skill.s1",
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s11",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s5",
         "master.ciel.skill.s3",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
@@ -4465,6 +5059,114 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Emperor"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s11"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=2",
+          "sha256": "dc4c34046302257617e79c04ac463241e7e5900c9baacdcafbb59970067f9a51"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Lurker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s5"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=2",
+          "sha256": "7ca799e0e0e90dc9134f8cee19e4a1a885572d8ee23346b6c1d05b4b849cd022"
         },
         {
           "abilityId": "master.ciel.skill.s3",
@@ -5356,9 +6058,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 37
+          "shared_handler": 40,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -5373,6 +6076,16 @@
       "affectedAbilityIds": [
         "master.amakusa.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.chaos.skill.ascension",
+        "master.chaos.skill.s10",
+        "master.chaos.skill.s11",
+        "master.chaos.skill.s12",
+        "master.chaos.skill.s14",
+        "master.chaos.skill.s15",
+        "master.chaos.skill.s16",
+        "master.chaos.skill.s2",
+        "master.chaos.skill.s5",
+        "master.chaos.skill.s9",
         "master.ciel.skill.s3",
         "master.kayneth.skill.s3",
         "master.kuzuki.skill.s2",
@@ -5456,6 +6169,276 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[4].abilities[2].printedClause",
           "sha256": "a09444dfc4fed4ad286034f9b8486780a2a61ce6c447d973a022956c05865025"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Army of One"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/ascension"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[17].text#line=1",
+          "sha256": "6f7b6b83a08c64ebb3dd88bcae70df47e825e92f44e9dd204f6dcb3e2260a285"
+        },
+        {
+          "abilityId": "master.chaos.skill.ascension",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[17].text#line=2",
+          "sha256": "2bf7da156e27428fcc93a6612ef3c7a6fbbe8acdce982d4b95b754c012e72830"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Sentinels"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s10"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[9].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s10",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[9].text#line=2",
+          "sha256": "b88f8685fb6c41585a36040a12a1d822a7e83c5f6e5443a5d29874bf8e32901d"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Emperor"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s11"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=2",
+          "sha256": "dc4c34046302257617e79c04ac463241e7e5900c9baacdcafbb59970067f9a51"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s12"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=1",
+          "sha256": "7a4ffc42db8a2a27fd8fff77c5a4242b00e3ea08d93e6b6d89210144d1dcddff"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=2",
+          "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
+        {
+          "abilityId": "master.chaos.skill.s14",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Phantasm"
+        },
+        {
+          "abilityId": "master.chaos.skill.s14",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s14",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s14"
+        },
+        {
+          "abilityId": "master.chaos.skill.s14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[13].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s14",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[13].text#line=2",
+          "sha256": "ff8ce47a4db196c8f4644ddae34da9e4c8a6c94b9ef6f01c733ac20362027045"
+        },
+        {
+          "abilityId": "master.chaos.skill.s15",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Primordial"
+        },
+        {
+          "abilityId": "master.chaos.skill.s15",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s15",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s15"
+        },
+        {
+          "abilityId": "master.chaos.skill.s15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[14].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s15",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[14].text#line=2",
+          "sha256": "89733559807c260065e1b0a0b836f510c559f909054dc587fac9780cdce50d1a"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The 999th"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s16"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=2",
+          "sha256": "e5b190f83d34dcc4e017ab84316571ab67a30de74f7b3ebfd8e39ec6d898306a"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Stalker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s2"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[1].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[1].text#line=2",
+          "sha256": "1b6fe144d216ec2223834a7feca19e242d817a35224415baf0d814aa00a5bcc2"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Lurker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s5"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=2",
+          "sha256": "7ca799e0e0e90dc9134f8cee19e4a1a885572d8ee23346b6c1d05b4b849cd022"
+        },
+        {
+          "abilityId": "master.chaos.skill.s9",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Horror"
+        },
+        {
+          "abilityId": "master.chaos.skill.s9",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s9",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s9",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[8].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s9",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[8].text#line=2",
+          "sha256": "72d8bb28cd32069786af3ea692f8e7539c8a58bbc0f9866cf4780fdd916c78ff"
         },
         {
           "abilityId": "master.ciel.skill.s3",
@@ -6215,9 +7198,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 30
+          "shared_handler": 36,
+          "specific_handler": 4
         },
-        "handlerCount": 1,
+        "handlerCount": 8,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -6230,9 +7214,37 @@
       "capabilityId": "GENERIC_MOVEMENT",
       "mechanicFamily": "MOVEMENT",
       "affectedAbilityIds": [
+        "master.chaos.skill.s12",
         "servant.drake.skill.sc-drake-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s12"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=1",
+          "sha256": "7a4ffc42db8a2a27fd8fff77c5a4242b00e3ea08d93e6b6d89210144d1dcddff"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=2",
+          "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
         {
           "abilityId": "servant.drake.skill.sc-drake-2",
           "document": "FD全卡图鉴V2.0.chm",
@@ -6280,7 +7292,7 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 1
+          "shared_handler": 2
         },
         "handlerCount": 1,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
@@ -6299,6 +7311,12 @@
         "master.amakusa.skill.s2",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s12",
+        "master.chaos.skill.s13",
+        "master.chaos.skill.s3",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s8",
         "master.darnic.skill.s1a",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -6427,6 +7445,168 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s12"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=1",
+          "sha256": "7a4ffc42db8a2a27fd8fff77c5a4242b00e3ea08d93e6b6d89210144d1dcddff"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=2",
+          "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Scourge"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s13"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=1",
+          "sha256": "d46d1bc6ca5a2b4fa142c81873a5b5b01f3d051401dacc0e4d7f5da21deec124"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=2",
+          "sha256": "f8af32bb324aea6a44e78283cac7ebc33f4077201dcfb356189e50b1a928112f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Devourer"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s3"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=2",
+          "sha256": "402bc0136048ee723ec55cd8914c8deb60774c78d71868928f1b750ab43d1d9f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Hunter"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s8"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=2",
+          "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
           "abilityId": "master.darnic.skill.s1a",
@@ -7027,9 +8207,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 29
+          "shared_handler": 34,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -7042,6 +8223,9 @@
       "capabilityId": "GENERIC_POWER",
       "mechanicFamily": "POWER",
       "affectedAbilityIds": [
+        "master.chaos.skill.s12",
+        "master.chaos.skill.s16",
+        "master.chaos.skill.s2",
         "servant.albion.skill.sc-albion-2",
         "servant.amakusa.skill.sc-amakusa-1",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -7051,6 +8235,87 @@
         "servant.ozymandias.skill.sc-ozymandias-2"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s12"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=1",
+          "sha256": "7a4ffc42db8a2a27fd8fff77c5a4242b00e3ea08d93e6b6d89210144d1dcddff"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=2",
+          "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The 999th"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s16"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=2",
+          "sha256": "e5b190f83d34dcc4e017ab84316571ab67a30de74f7b3ebfd8e39ec6d898306a"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Stalker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s2"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[1].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s2",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[1].text#line=2",
+          "sha256": "1b6fe144d216ec2223834a7feca19e242d817a35224415baf0d814aa00a5bcc2"
+        },
         {
           "abilityId": "servant.albion.skill.sc-albion-2",
           "document": "Fate_Domination-开发版",
@@ -7284,9 +8549,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 7
+          "shared_handler": 9,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -7301,6 +8567,8 @@
       "affectedAbilityIds": [
         "master.araya.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.chaos.skill.s3",
+        "master.chaos.skill.s7",
         "master.ciel.skill.s2",
         "master.darnic.skill.s1a",
         "servant.albion.skill.sc-albion-1",
@@ -7375,6 +8643,60 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[4].abilities[2].printedClause",
           "sha256": "a09444dfc4fed4ad286034f9b8486780a2a61ce6c447d973a022956c05865025"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Devourer"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s3"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=2",
+          "sha256": "402bc0136048ee723ec55cd8914c8deb60774c78d71868928f1b750ab43d1d9f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Violator"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s7"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=2",
+          "sha256": "1a4afaf0aca3e3e7be7ab3890f6e52a56f24763577595565c7502f71549b3141"
         },
         {
           "abilityId": "master.ciel.skill.s2",
@@ -7921,9 +9243,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 21
+          "shared_handler": 22,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -7938,6 +9261,13 @@
       "affectedAbilityIds": [
         "master.amakusa.skill.s1a",
         "master.araya.skill.s1a",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s12",
+        "master.chaos.skill.s13",
+        "master.chaos.skill.s16",
+        "master.chaos.skill.s3",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s8",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
         "servant.astolfo.skill.sc-astolfo-1",
@@ -8000,6 +9330,195 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[19].abilities[0].printedClause",
           "sha256": "5e766d3894dc8f0032c61347446570fd36e55fb24c5d660f4cb1276cd977bd16"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s12"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=1",
+          "sha256": "7a4ffc42db8a2a27fd8fff77c5a4242b00e3ea08d93e6b6d89210144d1dcddff"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=2",
+          "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Scourge"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s13"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=1",
+          "sha256": "d46d1bc6ca5a2b4fa142c81873a5b5b01f3d051401dacc0e4d7f5da21deec124"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=2",
+          "sha256": "f8af32bb324aea6a44e78283cac7ebc33f4077201dcfb356189e50b1a928112f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The 999th"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s16"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=2",
+          "sha256": "e5b190f83d34dcc4e017ab84316571ab67a30de74f7b3ebfd8e39ec6d898306a"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Devourer"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s3"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=2",
+          "sha256": "402bc0136048ee723ec55cd8914c8deb60774c78d71868928f1b750ab43d1d9f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Hunter"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s8"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=2",
+          "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
           "abilityId": "master.sion.skill.s13",
@@ -8450,9 +9969,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 21
+          "shared_handler": 27,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -8469,6 +9989,7 @@
         "master.amakusa.skill.s1a",
         "master.amakusa.skill.s2",
         "master.arcueid.skill.s1a",
+        "master.chaos.skill.s1",
         "master.ciel.skill.s3",
         "servant.albion.skill.sc-albion-2",
         "servant.arjuna.skill.sc-arjuna-1",
@@ -8580,6 +10101,33 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
         },
         {
           "abilityId": "master.ciel.skill.s3",
@@ -8817,9 +10365,9 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 12
+          "shared_handler": 13
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -8836,6 +10384,12 @@
         "master.amakusa.skill.s2",
         "master.araya.skill.s1a",
         "master.arcueid.skill.s1a",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s12",
+        "master.chaos.skill.s13",
+        "master.chaos.skill.s3",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s8",
         "master.darnic.skill.s1a",
         "master.sion.skill.s13",
         "master.twice.skill.s1",
@@ -8964,6 +10518,168 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[40].abilities[2].printedClause",
           "sha256": "e8712a4847cf27c66704c85af0403eaf8673e96f4810769a3feced081b216581"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Breaker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s12"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=1",
+          "sha256": "7a4ffc42db8a2a27fd8fff77c5a4242b00e3ea08d93e6b6d89210144d1dcddff"
+        },
+        {
+          "abilityId": "master.chaos.skill.s12",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[11].text#line=2",
+          "sha256": "b8410f1aad171f9c3a66a3b5cd05a4b968adfb8838081750f9da70c8deb2718b"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Scourge"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s13"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=1",
+          "sha256": "d46d1bc6ca5a2b4fa142c81873a5b5b01f3d051401dacc0e4d7f5da21deec124"
+        },
+        {
+          "abilityId": "master.chaos.skill.s13",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[12].text#line=2",
+          "sha256": "f8af32bb324aea6a44e78283cac7ebc33f4077201dcfb356189e50b1a928112f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Devourer"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s3"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s3",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[2].text#line=2",
+          "sha256": "402bc0136048ee723ec55cd8914c8deb60774c78d71868928f1b750ab43d1d9f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Hunter"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s8"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=2",
+          "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
         },
         {
           "abilityId": "master.darnic.skill.s1a",
@@ -9564,9 +11280,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 29
+          "shared_handler": 34,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 3,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -9586,6 +11303,13 @@
         "master.arcueid.skill.s1",
         "master.arcueid.skill.s1a",
         "master.arcueid.skill.s3",
+        "master.chaos.skill.s1",
+        "master.chaos.skill.s11",
+        "master.chaos.skill.s16",
+        "master.chaos.skill.s4",
+        "master.chaos.skill.s5",
+        "master.chaos.skill.s6",
+        "master.chaos.skill.s7",
         "master.ciel.skill.s1b",
         "master.ciel.skill.s2",
         "master.darnic.skill.s1a",
@@ -9799,6 +11523,195 @@
           "document": "src/content/authoring/cards.json",
           "locator": "skillCards[4].abilities[2].printedClause",
           "sha256": "a09444dfc4fed4ad286034f9b8486780a2a61ce6c447d973a022956c05865025"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s1"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=1",
+          "sha256": "41bdfdcb738e28f8f27e844e5fe9dea0df73142e61b935cdbc96813cd605bafb"
+        },
+        {
+          "abilityId": "master.chaos.skill.s1",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[0].text#line=2",
+          "sha256": "46eaee97dde7fb4ed80123ad78f1fdc889c3974ea425a1fd916d0819ae4b68ab"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Emperor"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s11"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s11",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[10].text#line=2",
+          "sha256": "dc4c34046302257617e79c04ac463241e7e5900c9baacdcafbb59970067f9a51"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The 999th"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s16"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s16",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[15].text#line=2",
+          "sha256": "e5b190f83d34dcc4e017ab84316571ab67a30de74f7b3ebfd8e39ec6d898306a"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Watcher"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s4"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s4",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[3].text#line=2",
+          "sha256": "3b7eefaf5dac64d2ab8dd1da5ac40b4e37f70bce95126140f0fade6f3481284f"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Lurker"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s5"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s5",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[4].text#line=2",
+          "sha256": "7ca799e0e0e90dc9134f8cee19e4a1a885572d8ee23346b6c1d05b4b849cd022"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Colossus"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s6"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s6",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[5].text#line=2",
+          "sha256": "cd6be3826b14e2f4f19c31943c4688919d8cbe83d7e7529ad149f5568e5aab27"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Violator"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s7"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s7",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[6].text#line=2",
+          "sha256": "1a4afaf0aca3e3e7be7ab3890f6e52a56f24763577595565c7502f71549b3141"
         },
         {
           "abilityId": "master.ciel.skill.s1b",
@@ -10615,9 +12528,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 36
+          "shared_handler": 41,
+          "specific_handler": 2
         },
-        "handlerCount": 1,
+        "handlerCount": 4,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",
@@ -11517,6 +13431,7 @@
       "capabilityId": "REVIEWED_SPECIAL_HANDLER",
       "mechanicFamily": "SPECIAL_SUBSYSTEM",
       "affectedAbilityIds": [
+        "master.chaos.skill.s8",
         "servant.diarmuid.skill.sc-diarmuid-1",
         "servant.gorgon.skill.sc-gorgon-3",
         "servant.medusa.skill.sc-medusa-2",
@@ -11524,6 +13439,33 @@
         "servant.valkyrie.skill.sc-valkyrie-3"
       ],
       "sourceReferences": [
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate/Domination Wiki",
+          "locator": "Nrvnqsr Chaos#Cards/The Hunter"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "Fate_Domination-开发版",
+          "locator": "master.chaos/尼禄·卡欧斯"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "legacy-content.json",
+          "locator": "master/master.chaos/s8"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=1",
+          "sha256": "e7369f891df33b5d236f135fa4f50f5dc3ee340fcc9b7538bbf6351ac052f7c9"
+        },
+        {
+          "abilityId": "master.chaos.skill.s8",
+          "document": "src/content/generated/legacy-content.json",
+          "locator": "masters[25].skills[7].text#line=2",
+          "sha256": "f87c1d74ebce52352603c02c4d12104abbf1b58ac61e266620205d31d9fda2bf"
+        },
         {
           "abilityId": "servant.diarmuid.skill.sc-diarmuid-1",
           "document": "FD全卡图鉴V2.0.chm",
@@ -11673,9 +13615,10 @@
       "referenceBehavior": {
         "authority": "NON_AUTHORITATIVE",
         "routeCounts": {
-          "shared_handler": 5
+          "shared_handler": 5,
+          "specific_handler": 1
         },
-        "handlerCount": 1,
+        "handlerCount": 2,
         "note": "Reference execution routes and handlers are observations only; they do not determine canonical rules or Phase 3 capability semantics."
       },
       "runtimeImpact": "This is a technical runtime request only. It is not a user rule question and does not authorize runtime implementation or Gate promotion.",

@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -8,6 +9,7 @@ import type {
   FullRosterStaticSkillEntry,
 } from '../phase3-reference/inventory-schema';
 import {
+  loadSourceEvidenceOverlayCards,
   normalizeFullRosterSemantics,
   normalizeStructuredAbility,
   renderSemanticAxisMatrix,
@@ -205,6 +207,64 @@ describe('Phase 3 full-roster semantic normalization', () => {
     expect(markdown).toContain('unclassifiedCount=0');
   });
 
+  it('accepts only the allowed Fate/Domination Wiki overlay and keeps Chaos Scrambled Seals unresolved', () => {
+    const overlays = loadSourceEvidenceOverlayCards();
+    const ids = overlays.map((card) => card.id);
+    expect(overlays).toHaveLength(17);
+    expect(ids).toContain('master.chaos.skill.s1');
+    expect(ids).toContain('master.chaos.skill.s16');
+    expect(ids).toContain('master.chaos.skill.ascension');
+    expect(ids).not.toContain('master.chaos.skill.s17');
+    expect(
+      overlays.every((card) => card.source?.url.startsWith('https://fatedomination.fandom.com/wiki/')),
+    ).toBe(true);
+
+    const breaker = overlays.find((card) => card.id === 'master.chaos.skill.s12');
+    const chooseX = breaker?.abilities[0].effects?.find(
+      (effect: any) => effect?.type === 'choose_number',
+    ) as any;
+    expect(chooseX).toMatchObject({ min: 1, max: 3, payloadKey: 'x' });
+
+    const the666 = overlays.find((card) => card.id === 'master.chaos.skill.s1');
+    const manaGain = the666?.abilities.find((ability) => ability.id === 'chaos.the-666.mana-gain-draw');
+    expect(manaGain?.conditions).toContainEqual({ type: 'event_type_is', eventType: 'player.mana.changed' });
+    expect(manaGain?.effects).toContainEqual(
+      expect.objectContaining({ type: 'draw_cards', countFormula: 'floor(event.delta / 2)', aggregation: 'per_gain_event' }),
+    );
+  });
+
+  it('fails closed when external evidence no longer binds to the exact locked Reference printed text', () => {
+    const inventory = makeInventory();
+    const entry = inventory.staticSkills[0];
+    const external: StructuredAuthoringCard = {
+      id: entry.canonicalAbilityId,
+      printedText: 'Authoritative English rule text.',
+      referencePrintedTextSha256: createHash('sha256').update(entry.printedText, 'utf8').digest('hex'),
+      source: {
+        authority: 'FATE_DOMINATION_WIKI',
+        document: 'Fate/Domination Wiki',
+        locator: 'Fixture#Cards/Test',
+        url: 'https://fatedomination.fandom.com/wiki/Fixture',
+      },
+      abilities: [{
+        id: 'fixture.external',
+        printedClause: 'Action: Gain 1 mana.',
+        kind: 'phase_action',
+        activation: { phase: 'action' },
+        effects: [{ type: 'gain_mana', amount: 1 }],
+      }],
+    };
+
+    expect(
+      normalizeFullRosterSemantics(inventory, [external]).staticSkills[0].semanticNormalization.status,
+    ).toBe('SOURCE_GROUNDED');
+
+    external.referencePrintedTextSha256 = '0'.repeat(64);
+    const rejected = normalizeFullRosterSemantics(inventory, [external]).staticSkills[0].semanticNormalization;
+    expect(rejected.status).toBe('BLOCKED');
+    expect(rejected.blocks).toContain('SEMANTIC_SOURCE_CONFLICT');
+  });
+
   it('keeps the checked-in full-roster JSON and Markdown matrix count-identical with zero unclassified identities', () => {
     const inventory = JSON.parse(
       readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
@@ -226,10 +286,10 @@ describe('Phase 3 full-roster semantic normalization', () => {
 
     expect(inventory.semanticSummary).toEqual({
       totalIdentityCount: 944,
-      sourceGroundedCount: 72,
-      blockedCount: 872,
+      sourceGroundedCount: 89,
+      blockedCount: 855,
       unclassifiedCount: 0,
-      structuredAbilityCount: 117,
+      structuredAbilityCount: 138,
     });
     expect([...inventory.staticSkills, ...inventory.dynamicSkills]).toHaveLength(944);
     expect(

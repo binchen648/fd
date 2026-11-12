@@ -1,0 +1,703 @@
+{
+  "schemaVersion": 1,
+  "kind": "phase3-full-roster-source-evidence-overlays",
+  "cards": [
+    {
+      "id": "master.chaos.skill.ascension",
+      "printedText": "Source-evidence record for Army of One.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/Army of One",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.army-of-one.outpost-unlimited",
+          "printedClause": "Source-grounded semantic record: chaos.army-of-one.outpost-unlimited.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "skill_use_limit",
+              "operation": "set_unlimited",
+              "skillId": "master.chaos.skill.s1",
+              "phase": "outpost"
+            }
+          ]
+        },
+        {
+          "id": "chaos.army-of-one.draw-beast",
+          "printedClause": "Source-grounded semantic record: chaos.army-of-one.draw-beast.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "pay_mana",
+              "amount": 4
+            },
+            {
+              "type": "draw_cards",
+              "deck": "beast",
+              "count": 1
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7010a28fbc691020a94b56362dda0a894f3f2f307d11e01f965620f30adef0a6"
+    },
+    {
+      "id": "master.chaos.skill.s1",
+      "printedText": "Source-evidence record for Nrvnqsr Chaos.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/Nrvnqsr Chaos",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.the-666.mana-gain-draw",
+          "printedClause": "Source-grounded semantic record: chaos.the-666.mana-gain-draw.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.mana.changed"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "event_number_compare",
+              "field": "delta",
+              "operator": ">",
+              "value": 0
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "deck": "beast",
+              "countFormula": "floor(event.delta / 2)",
+              "aggregation": "per_gain_event"
+            }
+          ]
+        },
+        {
+          "id": "chaos.the-666.scrambled-seals",
+          "printedClause": "Source-grounded semantic record: chaos.the-666.scrambled-seals.",
+          "kind": "passive",
+          "effects": [
+            {
+              "type": "add_status",
+              "statusId": "scrambled_seals"
+            }
+          ],
+          "lifecycle": {
+            "duration": "permanent"
+          }
+        },
+        {
+          "id": "chaos.the-666.outpost-play-beast",
+          "printedClause": "Source-grounded semantic record: chaos.the-666.outpost-play-beast.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "outpost"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "beast_hand",
+              "trait": "Beast",
+              "minCount": 1,
+              "maxCount": 1,
+              "payloadKey": "selectedBeastIds"
+            },
+            {
+              "type": "pay_discard_cards",
+              "zone": "beast_hand",
+              "trait": "Beast",
+              "amountBinding": "selected_card_cost"
+            },
+            {
+              "type": "play_selected_cards",
+              "sourceZone": "beast_hand",
+              "payloadKey": "selectedBeastIds"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "9abbbca5185262507c65d0d8e57a14ba41200f613924535ceaa7c976c06a579a"
+    },
+    {
+      "id": "master.chaos.skill.s2",
+      "printedText": "Source-evidence record for The Stalker.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Stalker",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.stalker.watch-your-back",
+          "printedClause": "Source-grounded semantic record: chaos.stalker.watch-your-back.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "combat_power_bonus",
+              "scope": "source_card",
+              "amountFormula": "opponents_in_fight"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "54f7cc257420e0c264f47fb4f9c3cc7e03271e7c324eb1a5350499e743e4f022"
+    },
+    {
+      "id": "master.chaos.skill.s3",
+      "printedText": "Source-evidence record for The Devourer.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Devourer",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.devourer.offer-your-lives",
+          "printedClause": "Source-grounded semantic record: chaos.devourer.offer-your-lives.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_cards",
+              "zone": "beast_hand",
+              "trait": "Beast",
+              "minCount": 0,
+              "maxCount": 3,
+              "payloadKey": "selectedBeastIds"
+            },
+            {
+              "type": "move_selected_cards",
+              "sourceZone": "beast_hand",
+              "destination": "beast_discard",
+              "payloadKey": "selectedBeastIds",
+              "resultVar": "discardedCount"
+            },
+            {
+              "type": "gain_mana",
+              "amountFormula": "2 * discardedCount",
+              "suppressTrigger": "chaos.the-666.mana-gain-draw"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7a73112d1ed8fae242664fcadc0af5485b9a3918df49e4da21e2ff6dc06d29ae"
+    },
+    {
+      "id": "master.chaos.skill.s4",
+      "printedText": "Source-evidence record for The Watcher.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Watcher",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.watcher.hide-your-fears",
+          "printedClause": "Source-grounded semantic record: chaos.watcher.hide-your-fears.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.played"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "schedule_effect",
+              "timing": "next_round_preparation",
+              "effects": [
+                {
+                  "type": "draw_cards",
+                  "deck": "beast",
+                  "count": 3
+                },
+                {
+                  "type": "choose_cards",
+                  "zone": "beast_hand",
+                  "trait": "Beast",
+                  "minCount": 2,
+                  "maxCount": 2,
+                  "payloadKey": "discardBeastIds"
+                },
+                {
+                  "type": "move_selected_cards",
+                  "sourceZone": "beast_hand",
+                  "destination": "beast_discard",
+                  "payloadKey": "discardBeastIds"
+                }
+              ]
+            }
+          ],
+          "lifecycle": {
+            "duration": "until_next_preparation"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "90f81a4541f3f8ddba1b0198b4de0c30d2e45989e817b392d9297ad1ba0f5697"
+    },
+    {
+      "id": "master.chaos.skill.s5",
+      "printedText": "Source-evidence record for The Lurker.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Lurker",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.lurker.stay-on-the-path",
+          "printedClause": "Source-grounded semantic record: chaos.lurker.stay-on-the-path.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "player.entered-location"
+            },
+            {
+              "type": "event_player_is_opponent"
+            },
+            {
+              "type": "event_location_equals_controller"
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "total_power",
+              "operation": "add",
+              "amount": -5,
+              "subject": "event_player"
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round"
+          }
+        }
+      ],
+      "referencePrintedTextSha256": "af4ce18b2bfa8a1b5439bfef16192c26137536de7dc3f94ade2feb08cb26909a"
+    },
+    {
+      "id": "master.chaos.skill.s6",
+      "printedText": "Source-evidence record for The Colossus.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Colossus",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.colossus.cover-your-ears",
+          "printedClause": "Source-grounded semantic record: chaos.colossus.cover-your-ears.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_lost_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "deck": "beast",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "608d3e19bfcc8455a4ccccec394bd1a575d2ac6fa350fee571edf1b360c20ce8"
+    },
+    {
+      "id": "master.chaos.skill.s7",
+      "printedText": "Source-evidence record for The Violator.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Violator",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.violator.save-your-flesh",
+          "printedClause": "Source-grounded semantic record: chaos.violator.save-your-flesh.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "combat.resolved"
+            },
+            {
+              "type": "event_player_won_combat"
+            }
+          ],
+          "effects": [
+            {
+              "type": "lose_victory_points",
+              "amount": 2,
+              "scope": "opponents_in_same_combat"
+            },
+            {
+              "type": "gain_victory_points",
+              "amount": 2,
+              "scope": "controller"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "16d4f4550e28a124b4a2a8b952829ac40cfd2fedb7df4d1095d04233a7664e8d"
+    },
+    {
+      "id": "master.chaos.skill.s8",
+      "printedText": "Source-evidence record for The Hunter.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Hunter",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.hunter.run-like-hell",
+          "printedClause": "Source-grounded semantic record: chaos.hunter.run-like-hell.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "effects": [
+            {
+              "type": "choose_players",
+              "minCount": 1,
+              "maxCount": 1,
+              "scope": "opponents_in_same_combat_with_active_preparation",
+              "payloadKey": "selectedPlayerIds"
+            },
+            {
+              "type": "defeat_player",
+              "payloadKey": "selectedPlayerIds"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "7f95533b6cb38b2600616261f5f062db8a57acab223f8a942b2fad20229ccd48"
+    },
+    {
+      "id": "master.chaos.skill.s9",
+      "printedText": "Source-evidence record for The Horror.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Horror",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.horror.avert-your-eyes",
+          "printedClause": "Source-grounded semantic record: chaos.horror.avert-your-eyes.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "set",
+              "value": 0,
+              "filter": "luck_attacks_in_same_combat"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "a91ff209fff2a09e56dd39567a3cef5a1069c08dd01c184e5e746be4f1d4df40"
+    },
+    {
+      "id": "master.chaos.skill.s10",
+      "printedText": "Source-evidence record for The Sentinels.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Sentinels",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.sentinels.turn-back",
+          "printedClause": "Source-grounded semantic record: chaos.sentinels.turn-back.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "deployment_advantage",
+              "operation": "multiply",
+              "factor": 2,
+              "subject": "controller"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "331a45ece7d07d84e8032b709393dd4e267b42738818376708b5622971ca7aec"
+    },
+    {
+      "id": "master.chaos.skill.s11",
+      "printedText": "Source-evidence record for The Emperor.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Emperor",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.emperor.bend-the-knee-permanent",
+          "printedClause": "Source-grounded semantic record: chaos.emperor.bend-the-knee-permanent.",
+          "kind": "passive",
+          "ruleModifiers": [
+            {
+              "rule": "scrambled_seal_type",
+              "operation": "replace",
+              "value": "command_seal"
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_active"
+          }
+        },
+        {
+          "id": "chaos.emperor.close-after-seal",
+          "printedClause": "Source-grounded semantic record: chaos.emperor.close-after-seal.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "command-seal.spent"
+            },
+            {
+              "type": "event_player_is_controller"
+            },
+            {
+              "type": "source_active"
+            }
+          ],
+          "effects": [
+            {
+              "type": "close_source_card"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "0f8f3a5db31a1fd1622d66970ef453c639efd9ccb1d36d43d43334bad42c4ff6"
+    },
+    {
+      "id": "master.chaos.skill.s12",
+      "printedText": "Source-evidence record for The Breaker.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Breaker",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.breaker.make-way",
+          "printedClause": "Source-grounded semantic record: chaos.breaker.make-way.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 1,
+              "max": 3,
+              "payloadKey": "x"
+            },
+            {
+              "type": "move_player",
+              "direction": "along_arrows",
+              "maxStepsBinding": "x"
+            },
+            {
+              "type": "source_card_power_bonus",
+              "amountFormula": "1 + x"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "3472d4e85e21f17fd81847f72fe910c4f64fd2f5eb6c8074e729600376a204a4"
+    },
+    {
+      "id": "master.chaos.skill.s13",
+      "printedText": "Source-evidence record for The Scourge.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Scourge",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.scourge.pray-for-mercy",
+          "printedClause": "Source-grounded semantic record: chaos.scourge.pray-for-mercy.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "action"
+          },
+          "effects": [
+            {
+              "type": "choose_number",
+              "min": 0,
+              "payloadKey": "x"
+            },
+            {
+              "type": "choose_events",
+              "minCount": 1,
+              "maxCount": 1,
+              "scope": "controller_battlefield",
+              "victoryPointsFormula": "x + 2",
+              "payloadKey": "selectedEventIds"
+            },
+            {
+              "type": "move_selected_events",
+              "destination": "event_discard",
+              "payloadKey": "selectedEventIds"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "6570b2140b05fbf7e35d707271bde0403d5fd09fed8eaa5e28fa0d33d6bc6fbb"
+    },
+    {
+      "id": "master.chaos.skill.s14",
+      "printedText": "Source-evidence record for The Phantasm.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Phantasm",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.phantasm.become-dust",
+          "printedClause": "Source-grounded semantic record: chaos.phantasm.become-dust.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "card_power",
+              "operation": "add",
+              "amount": 2,
+              "filter": "controller_noble_phantasms"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "5172ddd779b4a26b2abd9256a5c84378f23b73d6ba7e70722c12d1ed83f05100"
+    },
+    {
+      "id": "master.chaos.skill.s15",
+      "printedText": "Source-evidence record for The Primordial.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The Primordial",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.primordial.face-your-maker",
+          "printedClause": "Source-grounded semantic record: chaos.primordial.face-your-maker.",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "total_power",
+              "operation": "add",
+              "amount": -3,
+              "filter": "opponents_in_same_combat_with_zero_command_seals_spent_this_round"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "873b3d0db1e442a0d3004047cf3f00b9a4d2021c13f550ceb2187d3e760e5698"
+    },
+    {
+      "id": "master.chaos.skill.s16",
+      "printedText": "Source-evidence record for The 999th.",
+      "source": {
+        "authority": "FATE_DOMINATION_WIKI",
+        "document": "Fate/Domination Wiki",
+        "locator": "Nrvnqsr Chaos#Cards/The 999th",
+        "url": "https://fatedomination.fandom.com/wiki/Nrvnqsr_Chaos"
+      },
+      "abilities": [
+        {
+          "id": "chaos.999th.despair",
+          "printedClause": "Source-grounded semantic record: chaos.999th.despair.",
+          "kind": "triggered",
+          "conditions": [
+            {
+              "type": "event_type_is",
+              "eventType": "card.played"
+            },
+            {
+              "type": "event_definition_is_self"
+            },
+            {
+              "type": "event_player_is_controller"
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_matching_cards",
+              "sourceZone": "beast_hand",
+              "destination": "beast_discard",
+              "trait": "Beast",
+              "resultVar": "discardedCount"
+            },
+            {
+              "type": "source_card_power_bonus",
+              "amountFormula": "min(10, 2 * discardedCount)",
+              "bindingField": "discardedCount"
+            }
+          ]
+        }
+      ],
+      "referencePrintedTextSha256": "b8f2b35d179bca3156948f2b086f949f4dee29fc20a598ab9ad3784fbc669040"
+    }
+  ]
+}

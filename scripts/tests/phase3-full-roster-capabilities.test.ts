@@ -137,11 +137,11 @@ describe('Phase 3 full-roster capability mapping', () => {
     const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
 
     expect(inventory.capabilitySummary.totalIdentityCount).toBe(944);
-    expect(inventory.capabilitySummary.contractMappedCount).toBe(72);
-    expect(inventory.capabilitySummary.explicitBlockCount).toBe(872);
+    expect(inventory.capabilitySummary.contractMappedCount).toBe(89);
+    expect(inventory.capabilitySummary.explicitBlockCount).toBe(855);
     expect(inventory.capabilitySummary.zeroSilentFallback).toBe(true);
-    expect(catalog.coverage.mappedAbilities).toHaveLength(72);
-    expect(catalog.coverage.blockedAbilities).toHaveLength(872);
+    expect(catalog.coverage.mappedAbilities).toHaveLength(89);
+    expect(catalog.coverage.blockedAbilities).toHaveLength(855);
     expect(catalog.coverage.mappedAbilities.length + catalog.coverage.blockedAbilities.length).toBe(944);
 
     const allowedCurrentRoutes = new Set(['legacy', 'new', 'dual', 'none']);
@@ -153,9 +153,25 @@ describe('Phase 3 full-roster capability mapping', () => {
     }
 
     expect(markdown).toContain('totalIdentityCount=944');
-    expect(markdown).toContain('contractMappedCount=72');
-    expect(markdown).toContain('explicitBlockCount=872');
+    expect(markdown).toContain('contractMappedCount=89');
+    expect(markdown).toContain('explicitBlockCount=855');
     expect(markdown).toContain('zeroSilentFallback=true');
+  });
+
+  it('maps the Chaos evidence slice without fabricating runtime acceptance', () => {
+    const inventory = JSON.parse(
+      readFileSync(resolve('data/phase3/full-roster-ability-inventory.json'), 'utf8'),
+    ) as any;
+    const entries = [...inventory.staticSkills, ...inventory.dynamicSkills];
+    const byId = new Map(entries.map((entry: any) => [entry.canonicalAbilityId, entry]));
+
+    expect(byId.get('master.chaos.skill.s1').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+    expect(byId.get('master.chaos.skill.s11').phase3.requiredCapabilities).toContain('CARD_ACTION_CLOSE');
+    expect(byId.get('master.chaos.skill.s8').phase3.classificationRoute).toBe('SPECIAL_HANDLER_CANDIDATE');
+    expect(byId.get('master.chaos.skill.s8').phase3.blockedBy).toContain('SPECIAL_EFFECT:defeat_player');
+    expect(byId.get('master.chaos.skill.s17').phase3.classificationRoute).toBe('SOURCE_EVIDENCE_REQUIRED');
+    expect(byId.get('master.chaos.skill.ascension').phase3.classificationRoute).toBe('READY_GENERIC_EXTENSION');
+    expect(inventory.capabilitySummary.classificationRouteCounts.READY_EXISTING_CONTRACT).toBe(0);
   });
 
   it('bridges current semantic card IDs to stable canonical IDs only by exact ID or unique owner/name identity', () => {
