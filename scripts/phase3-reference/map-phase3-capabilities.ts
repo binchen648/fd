@@ -1,10 +1,11 @@
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+﻿import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { assertOutputOutsideReference } from './build-full-roster-inventory';
 import { assertFullRosterInventory } from './inventory-schema';
 import {
+  loadSourceEvidenceOverlayCards,
   type SemanticAxes,
   type SemanticNormalizedInventory,
   type StructuredAbility,
@@ -143,10 +144,25 @@ const RESOURCE_EFFECTS = new Set([
   'GAIN_VICTORY_POINTS',
   'LOSE_VICTORY_POINTS',
   'TRANSFER_VICTORY_POINTS',
+  'SWAP_VICTORY_POINTS',
+  'ADJUST_COMMAND_SEALS',
+]);
+
+const DIRECT_RESOURCE_CONTRACT_EFFECTS = new Set([
+  'GAIN_MANA',
+  'LOSE_MANA',
+  'SET_MANA',
+  'TRANSFER_MANA',
+  'GAIN_VICTORY_POINTS',
+  'LOSE_VICTORY_POINTS',
+  'TRANSFER_VICTORY_POINTS',
 ]);
 
 const CARD_ZONE_EFFECTS = new Set([
+  'CHARGE_SELECTED_SKILL_ATTACK',
   'DRAW_CARDS',
+  'MOVE_MATCHING_CARDS',
+  'MOVE_SOURCE_CARD',
   'MOVE_SELECTED_CARDS',
   'MOVE_MATCHING_EVENTS',
   'MOVE_SELECTED_EVENTS',
@@ -171,14 +187,62 @@ const STATUS_EFFECTS = new Set([
 ]);
 
 const SPECIAL_EFFECTS = new Set([
+  'CHARGE_SELECTED_SKILL_ATTACK',
+  'CYCLE_STATE_TRANSITION',
+  'LINKED_PLAYER_BATTLE_REWARD',
+  'LINKED_PLAYER_MANA_CONTRIBUTION',
+  'PREVENT_ELIMINATION',
+  'REPEAT_REPLACEMENT_WINDOW',
+  'SCHEDULE_PHASE_EFFECT',
+  'SHARED_VICTORY_LINK',
+  'SWAP_VICTORY_POINTS',
   'DEFEAT_PLAYER',
+  'EVENT_CARD_RULE',
   'FINISH_GAME',
+  'GRANT_LINKED_ABILITY_TO_ATTRIBUTE_ATTACKS',
+  'SEED_ATTACHED_SUPPLY',
+  'DEMON_GOD_RULE',
+  'DECK_ENTRY_REPLACEMENT',
+  'INDEPENDENT_DECK_RULE',
+  'ITEM_RULE',
+  'LOCATION_TOKEN_RULE',
+  'LOSTBELT_EXPANSION',
+  'NPC_RULE',
+  'SECRET_ROUND_BINDING',
+  'SERVANT_OWNERSHIP_RULE',
+  'ASTRONOMICAL_SPHERE_RULE',
+  'TERRAIN_POSITION_ADJUSTMENT',
   'RETRIGGER_CARD_PLAY_EFFECTS',
   'SEQUESTER_RANDOM_INACTIVE_SERVANT_SKILL',
+  'GRANT_OPPONENT_ACTION_RULE',
+  'WINNER_PREDICTION_RULE',
+  'GRANT_LINKED_ABILITY_TO_DEFINITION',
+  'DEFERRED_DEPLOYMENT_RULE',
+  'GEM_RESOURCE_RULE',
+  'INFINITE_MANA_RULE',
+  'ROSTER_REPLACEMENT_RULE',
+  'NEMESIS_RULE',
+  'COLLAPSE_RANDOM_PLAY_RULE',
+  'ORIGIN_BULLET_RULE',
+  'EVENT_BATTLEFIELD_PENALTY',
+  'REACTIVE_RESOURCE_RULE',
+  'BOUND_OPPONENT_RULE',
+  'ROSTER_SKILL_DRAFT_RULE',
+  'DREAM_SUMMON_RULE',
+  'FOOD_RESOURCE_RULE',
+  'BLOODLUST_RULE',
+  'FUSION_RULE',
+  'CONTROL_RESOURCE_RULE',
+  'GRANT_LINKED_ABILITY_TO_ATTRIBUTE',
+  'DECK_BOTTOM_RULE',
+  'MAP_ADJACENCY_RULE',
+  'INJURY_RULE',
 ]);
 
 const EVENT_DECK_EFFECTS = new Set([
   'ENSURE_EVENT_DECK_COUNT',
+  'EVENT_CARD_RULE',
+  'LOSTBELT_EXPANSION',
   'MOVE_MATCHING_EVENTS',
   'MOVE_SELECTED_EVENTS',
   'REPLACE_SELECTED_EVENT_FROM_DECK',
@@ -421,8 +485,8 @@ export function contractIsEligible(contractId: string, axes: SemanticAxes): bool
   if (!invalidating) return false;
   if (invalidating.some((axis) => axes[axis].length > 0)) return false;
   if (contractId === 'RESOURCE_NUMERIC_CORE_DIRECT_ACTION') {
-    if (axes.effect.length === 0 || !axes.effect.some((effect) => RESOURCE_EFFECTS.has(effect))) return false;
-    if (axes.effect.some((effect) => !RESOURCE_EFFECTS.has(effect))) return false;
+    if (axes.effect.length === 0 || !axes.effect.some((effect) => DIRECT_RESOURCE_CONTRACT_EFFECTS.has(effect))) return false;
+    if (axes.effect.some((effect) => !DIRECT_RESOURCE_CONTRACT_EFFECTS.has(effect))) return false;
   }
   return true;
 }
@@ -441,6 +505,9 @@ export function mapStructuredCapabilityNeeds(
   const effects = effectRecords(ability.effects ?? []);
   const effectTypes = effects.map((effect) => (typeof effect.type === 'string' ? effect.type : '')).filter(Boolean);
   const effectTokens = new Set(axes.effect);
+  const ruleModifiers = Array.isArray(ability.ruleModifiers)
+    ? ability.ruleModifiers.filter(isRecord)
+    : [];
 
   if (axes.cost.length > 0) addCapability(result, 'GENERIC_COST_PAYMENT', 'COST_PAYMENT');
   if (axes.target.length > 0) addCapability(result, 'GENERIC_TARGET_SELECTION', 'TARGET_SELECTION');
@@ -452,6 +519,14 @@ export function mapStructuredCapabilityNeeds(
   if (axes.visibility.length > 0) addCapability(result, 'GENERIC_VISIBILITY', 'HIDDEN_INFORMATION');
   if (axes.battle.length > 0) addCapability(result, 'GENERIC_BATTLE_INTEGRATION', 'BATTLE_RESULT');
   if (axes.condition.length > 0) addCapability(result, 'GENERIC_CONDITION_EVALUATION', 'CONDITION');
+
+  if (
+    effects.some(
+      (effect) => typeof effect.suppressTrigger === 'string' && effect.suppressTrigger.length > 0,
+    )
+  ) {
+    addCapability(result, 'GENERIC_TRIGGER_GATEWAY', 'TRIGGER');
+  }
 
   if ([...effectTokens].some((effect) => RESOURCE_EFFECTS.has(effect))) {
     addCapability(result, 'GENERIC_RESOURCE_NUMERIC', 'RESOURCE_NUMERIC');
@@ -466,12 +541,36 @@ export function mapStructuredCapabilityNeeds(
     addCapability(result, 'GENERIC_POWER', 'POWER');
   }
   if (effectTokens.has('MOVE_PLAYER')) addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
+  if (
+    ruleModifiers.some((modifier) =>
+      typeof modifier.rule === 'string' && /movement|deployment/i.test(modifier.rule)
+    )
+  ) {
+    addCapability(result, 'GENERIC_MOVEMENT', 'MOVEMENT');
+  }
+  if (
+    ruleModifiers.some((modifier) =>
+      typeof modifier.rule === 'string' && /mana_gain/i.test(modifier.rule)
+    )
+  ) {
+    addCapability(result, 'GENERIC_RESOURCE_NUMERIC', 'RESOURCE_NUMERIC');
+  }
+  if (
+    ruleModifiers.some((modifier) =>
+      typeof modifier.rule === 'string' && /power/i.test(modifier.rule)
+    )
+  ) {
+    addCapability(result, 'GENERIC_POWER', 'POWER');
+  }
   if (effectTypes.some((type) => EVENT_DECK_EFFECTS.has(type.toUpperCase()))) {
     addCapability(result, 'GENERIC_EVENT_DECK', 'SPECIAL_SUBSYSTEM');
   }
 
   const hasPlay = effectTypes.includes('play_selected_cards') || effectTypes.includes('play_source_card');
-  if (hasPlay) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
+  const modifiesPlaySemantics = ruleModifiers.some(
+    (modifier) => modifier.rule === 'card_play_mode' || modifier.rule === 'card_play_permission',
+  );
+  if (hasPlay || modifiesPlaySemantics) addCapability(result, 'CARD_ACTION_PLAY', 'CARD_ACTION_SEMANTICS');
 
   const addsToAttack = effects.some((effect) => {
     const type = typeof effect.type === 'string' ? effect.type : '';
@@ -491,6 +590,14 @@ export function mapStructuredCapabilityNeeds(
   }
 
   if (Array.isArray(ability.transforms) && ability.transforms.length > 0) {
+    addCapability(result, 'GENERIC_CARD_ZONE', 'CARD_ZONE');
+    if (ability.transforms.some((transform) => {
+      if (!isRecord(transform) || !isRecord(transform.selection)) return false;
+      const orderBy = typeof transform.selection.orderBy === 'string' ? transform.selection.orderBy : '';
+      return /power/i.test(orderBy);
+    })) {
+      addCapability(result, 'GENERIC_POWER', 'POWER');
+    }
     addCapability(result, 'REVIEWED_SPECIAL_TRANSFORM', 'SPECIAL_SUBSYSTEM');
     result.specialReasons.push('STRUCTURED_TRANSFORM_REQUIRES_REVIEW');
   }
@@ -945,8 +1052,9 @@ async function main(): Promise<void> {
   }
 
   const referenceCards = loadReferenceAuthoringCards(referenceRoot);
+  const overlayCards = loadSourceEvidenceOverlayCards(projectRoot);
   const currentCards = loadCurrentAuthoringCards(projectRoot);
-  const result = mapFullRosterCapabilities(inventory, referenceCards, currentCards);
+  const result = mapFullRosterCapabilities(inventory, [...referenceCards, ...overlayCards], currentCards);
 
   mkdirSync(dirname(outputPath), { recursive: true });
   mkdirSync(dirname(catalogPath), { recursive: true });
