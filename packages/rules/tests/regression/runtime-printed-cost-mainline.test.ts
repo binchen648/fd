@@ -59,3 +59,14 @@ it('compiles unchanged Construction and Cannon together with the actual Kinggil 
   expect(compiled.cards[constructionId]?.cardFace.cost).toMatchObject({formula: {op: 'add'}});
   expect(compiled.cards['servant.kinggil.skill.sc-kinggil-3']?.abilities).toHaveLength(2);
 });
+
+it.each([
+  {op: 'const'},
+  {op: 'count_cards', zone: 'hand'},
+  {op: 'add', var: 'round.number', args: [2, 3]},
+])('rejects unsupported or malformed printed cost expressions: %j', formula => {
+  const input = structuredClone(archive);
+  input.cards = input.cards.filter((card: {id: string}) => card.id === constructionId);
+  input.cards[0].cardFace.cost.formula = formula;
+  expect(loadAuthoringJson(input).report.some(issue => issue.path.startsWith('cardFace.cost'))).toBe(true);
+});

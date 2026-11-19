@@ -57,6 +57,18 @@ export function node(value: unknown): RuleNode {
 }
 export function nodes(value: unknown): RuleNode[] { return Array.isArray(value) ? value.map(node) : []; }
 export function str(value: unknown): string { return typeof value === 'string' ? value : ''; }
+
+/** Only the signed printed turn-cost arithmetic is admitted at this boundary. */
+function validPrintedRoundCost(expression: unknown, depth = 0): boolean {
+  if (depth > 16) return false;
+  if (typeof expression === 'number') return Number.isSafeInteger(expression) && Math.abs(expression) <= 1_000_000;
+  const term = node(expression);
+  if (Object.keys(term).length === 1) return term.var === 'round.number' || term.var === 'game.round_number';
+  return Object.keys(term).length === 2 && (term.op === 'add' || term.op === 'multiply') &&
+    Array.isArray(term.args) && term.args.length >= 2 && term.args.length <= 16 &&
+    term.args.every(argument => validPrintedRoundCost(argument, depth + 1));
+}
+
 function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleNode, modifier: RuleNode): boolean {
   if (str(rawAbility.kind) !== 'phase_action') return false;
   const activation = node(rawAbility.activation);
@@ -551,8 +563,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (cost.formula === undefined || Object.keys(cost).some(key => key !== 'formula' && key !== 'printedExpression') ||
           (cost.printedExpression !== undefined && typeof cost.printedExpression !== 'string')) {
         issue('cardFace.cost', 'Expected a nonnegative printed mana cost or a formula object');
-      } else {
-        validateFormulaNode(node(cost.formula), 'cardFace.cost.formula');
+      } else if (!validPrintedRoundCost(cost.formula)) {
+        issue('cardFace.cost.formula', 'Unsupported printed round-cost formula');
       }
     }
     const timing = node(raw.playTiming);
