@@ -648,8 +648,11 @@ function numeric(s: GameState, ctx: EffectContext, input: unknown): number {
   return evaluateFormula(input, s, ctx.controllerId, ctx.sourceCardId, ctx.variables, ctx.bindings).value;
 }
 const manaCostEvaluationStack = new WeakMap<GameState, Set<string>>();
-function continuousManaCostAddition(s: GameState, targetId: string): number {
-  const target = card(s, targetId), payerId = target.controllerPlayerId;
+function continuousManaCostAddition(s: GameState, target: CardInstance): number {
+  if (target.zone !== 'hand' && target.zone !== 'skill') return 0;
+  const targetId = target.instanceId;
+  const payerId = target.controllerPlayerId;
+  const r = runtime(s);
   const applies = (sourceId: string, controllerId: string, abilityId: string, modifier: RuleNode): number => {
     if (modifier.rule !== 'card.manaCost') return 0;
     if (!validManaCostAuraModifier(modifier)) reject('invalid_cost', 'Invalid mana-cost aura');
@@ -681,15 +684,21 @@ function continuousManaCostAddition(s: GameState, targetId: string): number {
   };
   let total = 0;
   for (const source of s.cards) {
-    if (!active(s, source.instanceId) || player(s, source.controllerPlayerId).status !== 'active') continue;
-    for (const ability of definition(s, source.instanceId)?.abilities ?? []) {
+    if (source.zone !== 'field' && source.zone !== 'attack_area') continue;
+    // Replacement overlays only add phase actions. A live passive is read from the
+    // physical card's definition, avoiding a card-instance search for every quote.
+    for (const ability of r.pack.cards[source.definitionId]?.abilities ?? []) {
       if (ability.execution.mode !== 'automatic' || ability.kind !== 'passive' || ability.activation.trigger !== 'while_active' ||
           !ability.ruleModifiers.some(modifier => modifier.rule === 'card.manaCost') ||
+          !active(s, source.instanceId) || player(s, source.controllerPlayerId).status !== 'active' ||
           !ability.conditions.every(filter => condition(s, context(s, source.instanceId, ability.id), filter))) continue;
       for (const modifier of ability.ruleModifiers) total += applies(source.instanceId, source.controllerPlayerId, ability.id, modifier as unknown as RuleNode);
     }
   }
-  for (const ongoing of liveOngoing(s)) {
+  for (const ongoing of r.ongoingEffects) {
+    if (!ongoing.ruleModifiers.some(modifier => modifier.definition.rule === 'card.manaCost') ||
+        (ongoing.expiresAtRound !== undefined && s.round.roundNumber >= ongoing.expiresAtRound) ||
+        !sourceBoundOngoingIsLive(s, ongoing)) continue;
     const ability = definition(s, ongoing.sourceCardId)?.abilities.find(candidate => candidate.id === ongoing.abilityId);
     if (ability?.kind === 'passive' && ability.activation.trigger === 'while_active') continue;
     for (const modifier of ongoing.ruleModifiers) total += applies(ongoing.sourceCardId, modifier.controllerId, ongoing.abilityId, modifier.definition);
@@ -703,8 +712,9 @@ export function cardManaCost(s: GameState, instanceId: string): number {
   manaCostEvaluationStack.set(s, stack); stack.add(instanceId);
   try {
     const source = card(s, instanceId);
-    const base = evaluateFormula(definition(s, instanceId)?.cardFace.cost ?? 0, s, source.controllerPlayerId, instanceId).value;
-    const aura = continuousManaCostAddition(s, instanceId), total = base + aura;
+    const printed = runtime(s).pack.cards[source.definitionId]?.cardFace.cost ?? 0;
+    const base = typeof printed === 'number' ? printed : evaluateFormula(printed, s, source.controllerPlayerId, instanceId).value;
+    const aura = continuousManaCostAddition(s, source), total = base + aura;
     if (!Number.isSafeInteger(base) || base < 0 || !Number.isSafeInteger(aura) || !Number.isSafeInteger(total)) {
       reject('invalid_cost', 'Card mana cost must be a safe nonnegative integer');
     }

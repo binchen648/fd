@@ -52,7 +52,9 @@ export function replacementAbility(s:GameState,r:PhaseAbilityReplacement):Author
 /** Definitions stay immutable; only this instance reads an active template overlay. */
 export function withPhaseReplacement(s:GameState,id:string,base:AuthoringCard|undefined):AuthoringCard|undefined{
  if(!base)return base;
- const r=[...(s.abilityRuntime?.phaseAbilityReplacements??[])].reverse().find(r=>r.targetCardId===id&&replacementLive(s,r));
+ const replacements=s.abilityRuntime?.phaseAbilityReplacements;
+ if(!replacements?.length)return base;
+ const r=[...replacements].reverse().find(r=>r.targetCardId===id&&replacementLive(s,r));
  const generated=r&&replacementAbility(s,r);if(!generated)return base;
  return {...base,abilities:[...base.abilities.filter(a=>a.kind!=='phase_action'||a.activation.phase!==generated.activation.phase),generated]};
 }
