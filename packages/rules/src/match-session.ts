@@ -2933,6 +2933,7 @@ export class MatchSession {
       const runtime = this.state.abilityRuntime!;
       if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
       const event = structuredClone(runtime.pendingPostBattleEvents![0]!);
+      if (event.locationId === undefined && event.battlefieldId !== undefined) event.locationId = event.battlefieldId;
       processAbilityEvent(this.state, event);
       this.state.abilityRuntime!.pendingPostBattleEvents!.shift();
       this.record(

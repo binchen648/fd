@@ -344,6 +344,7 @@ function flushPostScoringBattleResultEvents(state: GameState): GameState {
   while ((state.abilityRuntime.pendingPostBattleEvents?.length ?? 0) > 0) {
     if (hasPendingAbilityResolution(state)) break;
     const event = structuredClone(state.abilityRuntime.pendingPostBattleEvents![0]!);
+    if (event.locationId === undefined && event.battlefieldId !== undefined) event.locationId = event.battlefieldId;
     processAbilityEvent(state, event);
     state.abilityRuntime!.pendingPostBattleEvents!.shift();
     state.log.push({
