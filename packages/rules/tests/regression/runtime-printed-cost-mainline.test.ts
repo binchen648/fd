@@ -70,3 +70,31 @@ it.each([
   input.cards[0].cardFace.cost.formula = formula;
   expect(loadAuthoringJson(input).report.some(issue => issue.path.startsWith('cardFace.cost'))).toBe(true);
 });
+
+it('keeps cancellation available when a staged additional card loses its valid quote', () => {
+  const session = createMatchSession({seed: 20260907});
+  const state = session.state;
+  const canonical = state.abilityRuntime!.pack;
+  const supportId = 'master.maiya.deck.support-shot';
+  const maiya = JSON.parse(readFileSync('data/authoring/masters/master.maiya.json', 'utf8'));
+  const support = maiya.cards.find((card: {id: string}) => card.id === supportId);
+  support.cardFace.cost = {formula: {op:'multiply', args:[1_000_000,1_000_000,1_000_000,{op:'add',args:[-1,{var:'round.number'}]}]}};
+  const loaded = loadAuthoringJson(maiya);
+  expect(loaded.report).toEqual([]);
+  delete state.abilityRuntime;
+  initializeAbilityRuntime(state, {...canonical, cards:{...canonical.cards, ...loaded.cards}});
+  state.cards.push({instanceId:'stale-support', definitionId:supportId, ownerPlayerId:'p1',controllerPlayerId:'p1',
+    zone:'hand',visibility:{scope:'owner_only',ownerPlayerId:'p1'}});
+  state.round.activePhase = 'action';
+  state.round.prioritySeat = 1;
+  const mode = (state as unknown as {modeState: Record<string, unknown>}).modeState;
+  mode.stagedAttacks = {p1:[{type:'play_card',cardInstanceId:'stale-support'}]};
+  expect(cardManaCost(state, 'stale-support')).toBe(0);
+  state.round.roundNumber = 2;
+  const actionTurns = mode.actionTurns as {round: number; byPlayer: Record<string, unknown>} | undefined;
+  mode.actionTurns = {version: 1, ...actionTurns, round: 2, byPlayer:{p1:{movement:'skipped',regularPlay:'pending'}}};
+  const actions = session.getPlayerView('p1').legalActions;
+  expect(actions.some(action => action.type === 'confirm_staged_attack')).toBe(false);
+  expect(actions.some(action => action.type === 'cancel_staged_attack')).toBe(true);
+  expect(session.dispatchPlayerAction('p1',{type:'cancel_staged_attack'}).ok).toBe(true);
+});

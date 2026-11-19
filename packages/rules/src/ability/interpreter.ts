@@ -1692,7 +1692,13 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
   if (ordinaryRequired.some(choice => !groups.some(group => group.some(option =>
     option.cardInstanceId === choice.cardInstanceId && !!option.faceDown === !!choice.faceDown)))) return undefined;
   const costOf = (choice: PlayCardAction) => choice.faceDown ? 0 : cardManaCost(s, choice.cardInstanceId);
-  const extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).reduce((sum, choice) => sum + costOf(choice), 0);
+  let extraCost: number;
+  try {
+    extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId))
+      .reduce((sum, choice) => sum + costOf(choice), 0);
+  } catch {
+    return undefined;
+  }
   const find = (target: number, fixed: PlayCardAction[], additionalCost = 0, budget = mana): PlayCardAction[] | undefined => {
     const fixedIds = new Set(fixed.map(choice => choice.cardInstanceId));
     const remaining = groups.filter(group => !fixedIds.has(group[0]!.cardInstanceId));
