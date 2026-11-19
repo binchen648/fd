@@ -1645,8 +1645,7 @@ function projectInteractionWindows(state: GameState, viewerId: string): MatchInt
   }
   const fixedPaymentAction = view.legalActions.find((action) => action.type === 'play_card' && !action.faceDown);
   if (fixedPaymentAction?.type === 'play_card') {
-    const card = state.cards.find((candidate) => candidate.instanceId === fixedPaymentAction.cardInstanceId);
-    const cost = card ? Number(state.abilityRuntime?.pack.cards[card.definitionId]?.cardFace.cost ?? 0) : 0;
+    const cost = view.cards.find(card => card.instanceId === fixedPaymentAction.cardInstanceId)?.currentManaCost ?? 0;
     if (cost > 0) {
       windows.push({
         id: `fixed-payment:${fixedPaymentAction.cardInstanceId}`,

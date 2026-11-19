@@ -714,9 +714,10 @@ export function cardManaCost(s: GameState, instanceId: string): number {
   try {
     const source = card(s, instanceId);
     const printed = runtime(s).pack.cards[source.definitionId]?.cardFace.cost ?? 0;
-    const base = typeof printed === 'number' ? printed : evaluateFormula(printed, s, source.controllerPlayerId, instanceId).value;
+    const rawCost = typeof printed === 'number' ? printed : evaluateFormula(printed, s, source.controllerPlayerId, instanceId).value;
+    const base = typeof printed === 'number' ? rawCost : Math.max(0, rawCost);
     const aura = continuousManaCostAddition(s, source), total = base + aura;
-    if (!Number.isSafeInteger(base) || base < 0 || !Number.isSafeInteger(aura) || !Number.isSafeInteger(total)) {
+    if (!Number.isSafeInteger(rawCost) || base < 0 || !Number.isSafeInteger(aura) || !Number.isSafeInteger(total)) {
       reject('invalid_cost', 'Card mana cost must be a safe nonnegative integer');
     }
     return Math.max(0, total);
@@ -1603,7 +1604,11 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r => str(r.type));
   if (!requirements.every(r => advanceGroupException && r.type === 'controller_seat_in_first_half' || condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  if (!ignoreManaCost && !faceDown && player(s, p).mana < cardManaCost(s, sourceId)) return 'insufficient_mana';
+  if (!faceDown && (!ignoreManaCost || typeof d.cardFace.cost === 'object')) {
+    let cost: number;
+    try { cost = cardManaCost(s, sourceId); } catch { return 'invalid_cost'; }
+    if (!ignoreManaCost && player(s, p).mana < cost) return 'insufficient_mana';
+  }
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -4499,9 +4504,10 @@ function hasAvailableManaForFixedCosts(s: GameState, ctx: EffectContext, a: Auth
     .filter((cost) => str(cost.type) === 'pay_mana')
     .reduce((sum, cost) => sum + Number(cost.amount ?? 0), 0);
   const sourcePlay = a.effects.find((effect) => str(effect.type) === 'play_source_card');
-  const printedPlayCost = sourcePlay && str(sourcePlay.face) !== 'face_down'
-    ? Number(definition(s, ctx.sourceCardId)?.cardFace.cost ?? 0)
-    : 0;
+  let printedPlayCost = 0;
+  if (sourcePlay && str(sourcePlay.face) !== 'face_down') {
+    try { printedPlayCost = cardManaCost(s, ctx.sourceCardId); } catch { return false; }
+  }
   const total = abilityCost + printedPlayCost;
   return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana >= total;
 }

@@ -546,7 +546,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     if (face.semanticCategory !== undefined && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) issue('cardFace.semanticCategory', 'Unsupported semantic card category');
     if (typeof face.basePower === 'string') issue('cardFace.basePower', 'String expressions are forbidden; provide a formula AST');
     scan(raw.playRequirements, 'playRequirements');
-    if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
+    if (face.cost !== undefined && !(typeof face.cost === 'number' && Number.isFinite(face.cost) && face.cost >= 0)) {
+      const cost = node(face.cost);
+      if (cost.formula === undefined || Object.keys(cost).some(key => key !== 'formula' && key !== 'printedExpression') ||
+          (cost.printedExpression !== undefined && typeof cost.printedExpression !== 'string')) {
+        issue('cardFace.cost', 'Expected a nonnegative printed mana cost or a formula object');
+      } else {
+        validateFormulaNode(node(cost.formula), 'cardFace.cost.formula');
+      }
+    }
     const timing = node(raw.playTiming);
     const initialPlacement = raw.initialPlacement;
     if (initialPlacement !== undefined) {
