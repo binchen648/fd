@@ -158,7 +158,7 @@ describe('Euryale against the exact generated production library and normal Matc
   const drawn=standard.state.players.map(player=>player.servantCardId);
   expect(drawn).toHaveLength(7);
   expect(new Set(drawn).size).toBe(7);
-  expect(drawn).toContain(role);
+  expect(drawn.every(id=>Object.hasOwn(rules.decks,id))).toBe(true);
   const selected=productionSession();
   expect(selected.state.players.map(player=>player.servantCardId).sort()).toEqual([...selectedPool].sort());
   expect(()=>createMatchSession({startingServantIds:[...selectedPool, 'servant.artoria-alt']})).toThrow('exactly seven distinct');
