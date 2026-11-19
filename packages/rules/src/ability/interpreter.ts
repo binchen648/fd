@@ -26,7 +26,7 @@ import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, validManaCostAuraModifier } from './loader';
+import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, isAcceptedSourceCardModifier, validManaCostAuraModifier } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -787,7 +787,7 @@ function modifierControllerApplies(s: GameState, modifierControllerId: string, s
   }
   return false;
 }
-export function calculateCardPower(s: GameState, sourceId: string): { value: number; lines: CalculationLine[] } {
+export function calculateCardPower(s: GameState, sourceId: string, environmentalPower = 0): { value: number; lines: CalculationLine[] } {
   if (runtime(s).cardState[sourceId]?.faceDown) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
   const source = card(s, sourceId); const d = definition(s, sourceId);
   const persistentLock = s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
@@ -804,8 +804,18 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     else reject('unsupported', `Unsupported card power modifier: ${str(modifier.kind)}`);
     result.lines.push({ label: str(modifier.sourceId) || str(modifier.id) || 'card_power_modifier', value: result.value });
   }
+  if (!Number.isFinite(environmentalPower)) reject('invalid_modifier', 'Environmental power must be finite');
+  result.value += environmentalPower;
+  const startingSeat = s.round.startingSeat ?? 1;
+  const playerOrder = (controllerId: string): number => {
+    if (controllerId === source.controllerPlayerId) return 0;
+    const seat = s.players.find(candidate => candidate.id === controllerId)?.seat ?? startingSeat;
+    return (seat - startingSeat + s.players.length) % s.players.length + 1;
+  };
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
-    Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
+    Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception') ||
+    playerOrder(a.controllerId) - playerOrder(b.controllerId) ||
+    Number(a.definition.operation === 'multiply') - Number(b.definition.operation === 'multiply'));
   for (const modifier of modifiers) {
     const m = modifier.definition; const scope = node(m.scope);
     // Only card-scoped power rules feed per-card power; battle.totalPower is read by the resolver.
@@ -819,6 +829,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     const amount = numeric(s, ctx, m.value);
     if (m.operation === 'set') result.value = amount;
     else if (m.operation === 'add') result.value += amount;
+    else if (m.operation === 'multiply' && m.rule === 'attack.currentPower' && scope.object === 'source_card' && amount === 2) result.value *= amount;
     else reject('unsupported', 'Unsupported power operation');
     result.lines.push({ label: str(m.printedClause) || str(m.id), value: result.value });
   }
@@ -1946,8 +1957,9 @@ function implicitCardTargets(s: GameState, ctx: EffectContext, target: unknown):
 }
 function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const modifier = node(effect.modifier);
+  if (modifier.type === 'power_bonus' && modifier.operation === 'multiply' && !isAcceptedSourceCardModifier(modifier)) reject('unsupported', 'Unsupported source card multiplier');
   if (modifier.layer !== undefined && !isAcceptedTerrainLayer(modifier)) reject('unsupported', 'Unsupported terrain layer shape');
-  if (modifier.sourceMustRemainActive !== undefined && (!isAcceptedSourceBoundAggregate(modifier) || abilityDefinition(s,ctx.sourceCardId,ctx.abilityId).activation.requiresSourceState !== 'active' || !active(s,ctx.sourceCardId))) reject('unsupported','Unsupported source-bound aggregate shape');
+  if (modifier.sourceMustRemainActive !== undefined && (!isAcceptedSourceBoundAggregate(modifier) && !isAcceptedSourceCardModifier(modifier) || abilityDefinition(s,ctx.sourceCardId,ctx.abilityId).activation.requiresSourceState !== 'active' || !active(s,ctx.sourceCardId))) reject('unsupported','Unsupported source-bound aggregate shape');
   let scope = node(modifier.scope);
   const legacyTarget = str(modifier.target ?? effect.target);
   const bindingScope = node(scope.targetsFromBinding);
@@ -2006,6 +2018,17 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     }
     return;
   }
+  if (modifier.type === 'attribute_bonus') {
+    if (!isAcceptedSourceCardModifier(modifier)) reject('unsupported', 'Unsupported source attribute modifier');
+    const binding = ctx.bindings?.[str(modifier.attributesFromBinding)];
+    if (!binding || binding.effectType !== 'move_all_remaining' || !Array.isArray(binding.affectedCards) ||
+        binding.affectedCards.some(c => c.redacted || !Array.isArray(c.attributes))) reject('invalid_binding', 'Actual visible discard binding is required');
+    const attributes = [...new Set(binding.affectedCards!.flatMap(c => c.attributes!))];
+    runtime(s).ongoingEffects.push({id:nextId(s,'created-attributes'),sourceCardId:ctx.sourceCardId,abilityId:ctx.abilityId,controllerId:ctx.controllerId,
+      starts:'immediate',duration:'this_round',startRound:s.round.roundNumber,expiresAtRound:s.round.roundNumber+1,cleanup:'expire_after_duration',sourceMustRemainActive:true,publicZones:[],
+      ruleModifiers:[{sourceCardId:ctx.sourceCardId,controllerId:ctx.controllerId,definition:{rule:'card.attributes',operation:'add',scope:{object:'source_card'},attributes}}]});
+    return;
+  }
   if (modifier.type !== 'power_bonus') reject('unsupported', 'Unsupported created modifier');
   const amount = numeric(s, ctx, modifier.amount ?? modifier.value ?? 0);
   if (aggregate === 'total') {
@@ -2044,7 +2067,7 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     ruleModifiers: [{
       sourceCardId: ctx.sourceCardId,
       controllerId: ctx.controllerId,
-      definition: { id: str(modifier.id) || 'created_card_power', operation, rule: 'card.currentPower', scope: cardScope, value: amount },
+      definition: { id: str(modifier.id) || 'created_card_power', operation, rule: isAcceptedSourceCardModifier(modifier) ? str(modifier.rule) : 'card.currentPower', scope: cardScope, value: amount },
     }],
     publicZones: [],
   });
@@ -2619,8 +2642,22 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'move_all_remaining': {
       const excluded = Array.isArray(effect.excluding) ? effect.excluding.flatMap(x => ctx.selections[str(x)] ?? []) : [];
-      const moved = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === effect.from && !excluded.includes(c.instanceId))
-        .reduce((sum, c) => sum + moveCard(s, c.instanceId, str(node(effect.to).zone)), 0);
+      const selected = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === effect.from && !excluded.includes(c.instanceId));
+      const binding = str(effect.bind);
+      const affectedCards: ReturnType<typeof boundCardInfo>[] = [];
+      let moved = 0;
+      for (const candidate of selected) {
+        const info = binding ? boundCardInfo(s, ctx.controllerId, candidate.instanceId) : undefined;
+        const snapshot = info && !info.redacted
+          ? {...info, attributes: getEffectiveCardAttributes(s, candidate.instanceId)} : info;
+        if (moveCard(s, candidate.instanceId, str(node(effect.to).zone)) !== 1) continue;
+        moved++;
+        if (snapshot) affectedCards.push(snapshot);
+      }
+      if (binding) {
+        recordBinding(ctx, effect, moved, [p.id]);
+        ctx.bindings![binding]!.affectedCards = affectedCards;
+      }
       if (str(effect.resultVar)) ctx.variables[str(effect.resultVar)] = (ctx.variables[str(effect.resultVar)] ?? 0) + moved;
       break;
     }
@@ -5507,7 +5544,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
       ...(!hidden && ['field','attack_area'].includes(c.zone) && physicalState?.boardLocationId ? {boardLocationId:physicalState.boardLocationId} : {}),
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
-      ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });
+      ...(!hidden && (physicalState?.attributeOverrides !== undefined || ongoing.some(o => o.sourceCardId === c.instanceId && o.ruleModifiers.some(m => m.definition.rule === 'card.attributes'))) ? { attributeOverrides: getEffectiveCardAttributes(s,c.instanceId) } : {}) });
   }
   if (d) {
     if (d.controllerId === viewerId) {

@@ -46,16 +46,14 @@ it.each([[1, 14], [6, 4], [8, 0], [10, 0]])('quotes, projects and pays the froze
   expect(state.abilityRuntime!.cardState.construction!.paidManaOnPlay).toBe(expected);
 });
 
-it('compiles unchanged Construction and Cannon together with the actual Kinggil deck', () => {
+it('compiles all three unchanged Kinggil skills and the actual deck', () => {
   const input = compileLoadedPlaytestPack(loadPlaytestContentPack('data/packs/fd-playtest-v1/pack.json', {
     workspaceRoot: process.cwd(),
   })).library;
-  const kinggil = structuredClone(archive);
-  // Treasury's separate candidate supplies its own reviewed consumer; this fixture verifies Construction and Cannon.
-  kinggil.cards.find((card: {id: string}) => card.id.endsWith('sc-kinggil-2')).abilities = [];
-  input.rules.archives.push(kinggil);
+  input.rules.archives.push(structuredClone(archive));
   const compiled = compileExecutableCardPack(input);
   expect(compiled.decks['servant.kinggil']).toHaveLength(12);
+  expect(compiled.cards['servant.kinggil.skill.sc-kinggil-2']?.abilities.some(ability => ability.id.endsWith('double-current-power'))).toBe(true);
   expect(compiled.cards[constructionId]?.cardFace.cost).toMatchObject({formula: {op: 'add'}});
   expect(compiled.cards['servant.kinggil.skill.sc-kinggil-3']?.abilities).toHaveLength(2);
 });
