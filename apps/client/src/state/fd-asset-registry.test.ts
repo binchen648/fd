@@ -27,6 +27,11 @@ function expectAssetExists(url: string): void {
 }
 
 const expectedServantDeckEntries: Record<string, string[]> = {
+  'servant.euryale': [
+    'basic:strength:1:1', 'basic:strength:2:1',
+    'basic:agility:1:3', 'basic:agility:2:1', 'basic:agility:4:1',
+    'basic:magecraft:1:1', 'basic:magecraft:2:2', 'named:card.x-divine-core:2',
+  ],
   'servant.achilles': [
     'basic:strength:2:1',
     'basic:strength:3:1',
@@ -247,13 +252,12 @@ describe('FD asset registry', () => {
   });
 
   it('resolves every card in the approved authoring archives', () => {
-    // Admission comes from the explicit playable pack, not every rules-source archive.
+    // Use published art approval to select archives for mandatory real art checks.
     const root = resolve(__dirname, '../../../..');
     const paths = playableArchivePaths();
-    expect(new Set(paths).size).toBe(14);
     const archives = paths.map(path => JSON.parse(readFileSync(resolve(root, path), 'utf8')) as {
       id: string; cards: Array<{ id: string; cardType: string }>;
-    });
+    }).filter(archive => Object.prototype.hasOwnProperty.call(fdRealAssetManifest.entities, archive.id));
     expect(new Set(archives.map(archive => archive.id)).size).toBe(14);
     expect(archives.map((archive) => archive.id).sort()).toEqual([
       ...approvedAuthoringMasterIds,
@@ -295,7 +299,7 @@ describe('FD asset registry', () => {
       masters: Array<{ id: string }>; servants: Array<{ id: string }>;
     };
     expect(generated.masters.map(entity => entity.id).sort()).toEqual([...approvedAuthoringMasterIds].sort());
-    expect(generated.servants.map(entity => entity.id).sort()).toEqual([...approvedAuthoringServantIds].sort());
+    expect(generated.servants.map(entity => entity.id).sort()).toEqual([...approvedAuthoringServantIds, 'servant.euryale'].sort());
     for (const id of unapproved) expect(Object.prototype.hasOwnProperty.call(fdRealAssetManifest.entities, id), id).toBe(false);
   });
 

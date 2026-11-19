@@ -6,6 +6,28 @@ import MatchTable from './MatchTable';
 import type { PlaytestClientFixture } from '../state/playtest-fixture-loader';
 import { createSevenAuthoringMatchSession, projectSevenAuthoringSessionFixture } from '../state/seven-authoring-smoke-fixture';
 
+it('shows public hand-reveal history without granting a fresh play action', () => {
+  const projected = structuredClone(fixture);
+  projected.lastHandReveal = { round: 4, controllerId: 'player-1', cards: [{ cardId: 'old-revealed', definitionId: 'basic.luck', ownerPlayerId: 'player-2', controllerPlayerId: 'player-2', name: '幸运' }] };
+  projected.availableActions = [];
+  render(<MatchTable fixture={projected} />);
+  expect(screen.getByLabelText('最近手牌展示')).toHaveTextContent('幸运');
+  expect(screen.getByLabelText('最近手牌展示')).toHaveTextContent('player-2');
+  expect(projected.availableActions).toEqual([]);
+});
+
+it('projects a controlled attack in the local adapter while retaining its owner label', () => {
+  const session = createSevenAuthoringMatchSession();
+  const borrowed = session.state.cards.find(c => c.ownerPlayerId === 'p2' && c.zone === 'hand')!;
+  borrowed.controllerPlayerId = 'p1'; borrowed.zone = 'attack_area'; borrowed.visibility = { scope: 'public' };
+  const controller = projectSevenAuthoringSessionFixture(session, 'p1');
+  const owner = projectSevenAuthoringSessionFixture(session, 'p2');
+  expect(controller.self.attackArea).toContain(borrowed.instanceId);
+  expect(owner.self.attackArea).not.toContain(borrowed.instanceId);
+  expect(controller.players.find(p => p.id === 'p1')!.publicRevealedCardIds).toContain(borrowed.instanceId);
+  expect(borrowed.ownerPlayerId).toBe('p2');
+});
+
 const fixture: PlaytestClientFixture = {
   match: { round: 4, phase: '行动阶段', priorityPlayerId: 'player-1' },
   phaseTrack: [

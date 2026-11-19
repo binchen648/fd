@@ -88,7 +88,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         publicMasterCardId: undefined,
         publicMasterSkillIds: [],
         publicAscensionSkillIds: [],
-        publicRevealedCardIds: match.view.cards.filter((card) => card.ownerPlayerId === player.id && (card.zone === 'field' || card.zone === 'attack_area')).map((card) => card.instanceId),
+        publicRevealedCardIds: match.view.cards.filter((card) => (card.controllerPlayerId ?? card.ownerPlayerId) === player.id && (card.zone === 'field' || card.zone === 'attack_area')).map((card) => card.instanceId),
       };
     }),
     locations: [
@@ -103,7 +103,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
       deck: { size: 0, attributeCounts: { strength: 0, agility: 0, magecraft: 0, special: 0 }, entries: [] },
       hand: match.view.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'hand').map((card) => card.instanceId),
       stagedAttackArea: match.view.stagedAttacks?.find((entry) => entry.playerId === viewerId)?.cards.map((card) => card.cardInstanceId) ?? [],
-      attackArea: match.view.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'attack_area').map((card) => card.instanceId),
+      attackArea: match.view.cards.filter((card) => (card.controllerPlayerId ?? card.ownerPlayerId) === viewerId && card.zone === 'attack_area').map((card) => card.instanceId),
       discard: match.view.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'discard').map((card) => card.instanceId),
       skills: match.view.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && !(card.definitionId ?? '').includes('command-spell')).map((card) => card.instanceId),
       masterSkills: [],
@@ -146,6 +146,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
       min: window.min,
       max: window.max,
       currentMana: window.currentMana,
+      playBudget: match.view.pendingDecision?.id === window.id ? match.view.pendingDecision.playBudget : undefined,
       variableCosts: window.variableCosts,
       candidates: window.candidates,
       actions: window.legalActions.map((action, index) => ({
@@ -172,6 +173,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
     directives: match.directives,
     zones: match.zones,
     ...(match.pendingReveal ? { pendingReveal: match.pendingReveal } : {}),
+    ...(match.view.lastHandReveal ? { lastHandReveal: match.view.lastHandReveal } : {}),
     logs: match.logs.map((entry) => ({ id: entry.id, type: entry.type, message: entry.message })),
     replay: match.replay.map((entry) => ({
       id: entry.id,

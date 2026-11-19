@@ -151,10 +151,15 @@ export interface BoundTargetResult {
   /** Derived predicates per target, e.g. lacks_luck_or_agility. */
   flags: Record<string, boolean>;
 }
+export interface RevealedHandCard {
+  cardId: string; definitionId: string; ownerPlayerId: PlayerId; controllerPlayerId: PlayerId; name: string;
+}
 export interface EffectResultBinding {
   effectType: string; affectedCount: number; affectedPlayerIds: PlayerId[];
   affectedCardIds?: string[];
   affectedCards?: BoundCardInfo[];
+  /** Exact public snapshot; continuing play authority is limited to its matching pending resolution. */
+  revealedCards?: RevealedHandCard[];
   /** Per-target breakdown so a branch can never mix different targets' results. */
   byTarget?: BoundTargetResult[];
 }
@@ -168,6 +173,13 @@ export interface EffectContext {
   event?: AbilityEvent;
   /** Present only when sourceCardId is a server-owned EventPlacement ruleInstanceId. */
   eventSource?: { ruleInstanceId: string; definitionId: string; locationId: string };
+}
+export interface PhaseAbilityReplacement {
+  id: string; sourceCardId: string; sourceAbilityId: string; templateId: string;
+  targetCardId: string; controllerId: PlayerId; round: number;
+}
+export interface PendingPlayerActionEnd {
+  id: string; controllerId: PlayerId; round: number; context: EffectContext;
 }
 export interface PrivateOptionalHandPlayInteractionMetadata {
   kind: 'private_optional_hand_play_v1'; template: 'target'; visibility: 'owner_only'; cancelPolicy: 'forbidden';
@@ -323,6 +335,9 @@ export interface TrustedBattleResultSnapshot {
 }
 
 export interface AbilityRuntime {
+  phaseAbilityReplacements?: PhaseAbilityReplacement[];
+  pendingPlayerActionEnds?: PendingPlayerActionEnd[];
+  playerActionEnds?: Record<PlayerId, number>;
   pack: AbilityDefinitionPack; revision: number; sequence: number; randomState: number;
   cardState: Record<string, CardRuntimeState>;
   /** Server-owned opaque player-status keys. This is distinct from PlayerState active/eliminated status. */
@@ -415,14 +430,16 @@ export type AbilityCommand = PlayCardAction | (ActivateAbilityAction & { variabl
   NormalMoveAction | SkipNormalMoveAction | CompleteEmptyRegularPlayAction;
 
 export interface AbilityPlayerView {
+  lastHandReveal?: { round: number; controllerId: PlayerId; cards: RevealedHandCard[] };
   terrainSlots?: Record<string,{bonuses:number[];occupants:Array<string|null>}>;
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   actionTurn?: ActionTurnProgress;
   players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
-  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; zone: string; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; boardLocationId?: string }[];
+  cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; controllerPlayerId?: PlayerId; zone: string; publiclyVisible?: boolean; currentManaCost?: number | null; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; boardLocationId?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {
     id: string; candidates: string[]; min: number; max: number;
+    playBudget?: { mana: number; costs: Record<string, number> };
     template?: 'target'; sourceCardInstanceId?: string; abilityId?: string; createdRevision?: number;
     visibility?: 'owner_only'; cancelPolicy?: 'forbidden';
   };

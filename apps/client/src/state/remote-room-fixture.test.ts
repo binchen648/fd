@@ -2,6 +2,19 @@ import {expect,it}from'vitest';
 import {createMatchRoom}from'@fd/rules/match-room';
 import {projectRemoteRoomFixture}from'./remote-room-fixture';
 
+it('projects revealed hand history and controlled attacks without changing ownership', () => {
+  const projection = buildProjection();
+  projection.match!.view.players.push({ ...projection.match!.view.players[0]!, id: 'p2', seat: 2 });
+  projection.match!.view.cards = [{ instanceId: 'borrowed', definitionId: 'basic.luck', ownerPlayerId: 'p2', controllerPlayerId: 'p1', zone: 'attack_area', publiclyVisible: true }];
+  projection.match!.view.lastHandReveal = { round: 1, controllerId: 'p1', cards: [{ cardId: 'borrowed', definitionId: 'basic.luck', ownerPlayerId: 'p2', controllerPlayerId: 'p2', name: '幸运' }] };
+  const fixture = projectRemoteRoomFixture(projection)!;
+  expect(fixture.self.attackArea).toContain('borrowed');
+  expect(fixture.players.find(p => p.id === 'p1')!.publicRevealedCardIds).toContain('borrowed');
+  expect(fixture.players.find(p => p.id === 'p2')!.publicRevealedCardIds).not.toContain('borrowed');
+  expect(fixture.lastHandReveal).toEqual(projection.match!.view.lastHandReveal);
+  expect(fixture.cards.find(c => c.instanceId === 'borrowed')!.ownerLabel).toBe('p2');
+});
+
 it('projects the actual reveal rules to all viewers and the bottom rules only to Olga', () => {
   const room = createMatchRoom({ seed: 20260907, hostClientId: 'seat-1' });
   for (let seat = 1; seat <= 7; seat++) {

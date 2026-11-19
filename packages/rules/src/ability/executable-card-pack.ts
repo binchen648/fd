@@ -437,12 +437,16 @@ function defaultCommandSpellCard(masterId: string): AuthoringCard {
   };
 }
 
-function mapDeckEntry(cardId: string): string {
+function mapDeckEntry(cardId: string, archive: RuleArchive): string {
   const lower = cardId.toLowerCase();
   const named = namedLegacyDeckIds[lower];
   if (named) return named;
   const match = /^card\.card([abq])([1-5])$/.exec(lower);
-  if (!match) throw new Error(`Unknown deck entry: ${cardId}`);
+  if (!match) {
+    const definitions = archive.cards.filter(card => card.id === cardId);
+    if (definitions.length === 1 && definitions[0]?.cardType === 'servant_deck_card') return definitions[0].id;
+    throw new Error(`Unknown deck entry: ${cardId}`);
+  }
   const attribute = basicAttributes[match[1] as keyof typeof basicAttributes];
   return `basic.${attribute.id}.${match[2]}`;
 }
@@ -868,7 +872,7 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     if (skillCount !== 3) throw new Error(`${archive.id} must define exactly 3 servant skill cards; found ${skillCount}`);
     const deck = (archive.deck ?? []).flatMap((entry) => {
       if (!Number.isSafeInteger(entry.count ?? 1) || (entry.count ?? 1) < 1) throw new Error(`Invalid deck count for ${archive.id}:${entry.cardId}`);
-      return Array.from({ length: entry.count ?? 1 }, () => mapDeckEntry(entry.cardId));
+      return Array.from({ length: entry.count ?? 1 }, () => mapDeckEntry(entry.cardId, archive));
     });
     if (deck.length !== 12) throw new Error(`${archive.id} deck must contain exactly 12 cards; found ${deck.length}`);
     for (const cardId of deck) if (!cards[cardId]) throw new Error(`${archive.id} references missing card ${cardId}`);

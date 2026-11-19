@@ -4,19 +4,60 @@
   "id": "servant.euryale",
   "name": "尤瑞艾莉",
   "class": "Archer",
-  "sourcePolicy": {
-    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
-    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from accepted F1 evidence/contracts; locked Reference is used only for static card metadata."
-  },
+  "deck": [
+    {
+      "cardId": "card.cardb1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.cardb2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.cardq1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.cardq1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.cardq1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.cardq2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.cardq4",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.carda1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.carda2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.carda2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.x-divine-core",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    },
+    {
+      "cardId": "card.x-divine-core",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.deck"
+    }
+  ],
   "cards": [
     {
       "id": "servant.euryale.skill.sc-euryale-1",
-      "aliases": [
-        "sc_euryale_1"
-      ],
-      "legacyId": "sc_euryale_1",
-      "name": "单独行动（Archer Class）",
+      "name": "单独行动",
       "cardType": "servant_skill",
       "owner": {
         "type": "servant",
@@ -39,121 +80,766 @@
         {
           "type": "skill_zone_mana_at_least",
           "value": 8
+        },
+        {
+          "type": "controller_seat_in_first_half"
         }
       ],
       "abilities": [
         {
-          "id": "sc-euryale-1.independent-action",
-          "kind": "phase_action",
-          "printedClause": "当你的行动顺位为当前回合前半数时（向下取整），你才能使用此牌。\n行动阶段：你获得3点战果。",
-          "activation": {
-            "phase": "action",
-            "opens": "controller_action_window",
-            "requiresSourceState": "active"
-          },
           "conditions": [
             {
               "type": "controller_seat_in_first_half"
             }
           ],
+          "targets": [],
+          "cost": [],
           "effects": [
             {
               "type": "adjust_victory_points",
-              "player": "controller",
               "amount": 3
             }
           ],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
           "execution": {
-            "mode": "automatic"
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.euryale.skill.sc-euryale-1.gain-vp",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：你获得3点战果。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
           }
         },
         {
-          "id": "sc-euryale-1.penalty-on-defeat",
-          "kind": "forced_trigger",
-          "printedClause": "如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
-          "activation": {
-            "trigger": "after_controller_loses_battle"
-          },
+          "conditions": [
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "exists_target",
+                  "targetRef": "source_in_skill"
+                },
+                {
+                  "type": "exists_target",
+                  "targetRef": "source_in_attack_area"
+                },
+                {
+                  "type": "exists_target",
+                  "targetRef": "source_in_hand"
+                },
+                {
+                  "type": "exists_target",
+                  "targetRef": "source_in_discard"
+                },
+                {
+                  "type": "exists_target",
+                  "targetRef": "source_in_deck"
+                },
+                {
+                  "type": "exists_target",
+                  "targetRef": "source_in_removed_from_game"
+                }
+              ]
+            }
+          ],
+          "targets": [
+            {
+              "id": "source_in_skill",
+              "type": "card_instance",
+              "scope": {
+                "zone": "skill",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "not_source_card"
+                  }
+                },
+                {
+                  "type": "played_this_round"
+                }
+              ]
+            },
+            {
+              "id": "source_in_attack_area",
+              "type": "card_instance",
+              "scope": {
+                "zone": "attack_area",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "not_source_card"
+                  }
+                },
+                {
+                  "type": "played_this_round"
+                }
+              ]
+            },
+            {
+              "id": "source_in_hand",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "not_source_card"
+                  }
+                },
+                {
+                  "type": "played_this_round"
+                }
+              ]
+            },
+            {
+              "id": "source_in_discard",
+              "type": "card_instance",
+              "scope": {
+                "zone": "discard",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "not_source_card"
+                  }
+                },
+                {
+                  "type": "played_this_round"
+                }
+              ]
+            },
+            {
+              "id": "source_in_deck",
+              "type": "card_instance",
+              "scope": {
+                "zone": "deck",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "not_source_card"
+                  }
+                },
+                {
+                  "type": "played_this_round"
+                }
+              ]
+            },
+            {
+              "id": "source_in_removed_from_game",
+              "type": "card_instance",
+              "scope": {
+                "zone": "removed_from_game",
+                "owner": "any",
+                "controller": "any"
+              },
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "not",
+                  "condition": {
+                    "type": "not_source_card"
+                  }
+                },
+                {
+                  "type": "played_this_round"
+                }
+              ]
+            }
+          ],
+          "cost": [],
           "effects": [
             {
               "type": "adjust_victory_points",
-              "player": "controller",
               "amount": -5
             }
           ],
+          "creates": [],
           "ruleModifiers": [
             {
-              "id": "unpreventable_vp_loss",
-              "printedClause": "此效果不能被任何方法阻止。",
+              "id": "unpreventable-loss",
               "operation": "ignore",
               "rule": "effect_prevention",
-              "scope": {
-                "object": "this_effect"
-              },
               "priority": {
                 "tier": "explicit_exception"
               }
             }
           ],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
           "execution": {
-            "mode": "automatic"
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.euryale.skill.sc-euryale-1.loss-penalty",
+          "kind": "forced_trigger",
+          "printedClause": "如果你本回合战斗失败，失去5点战果，此效果不能被任何方法阻止。",
+          "activation": {
+            "trigger": "after_controller_loses_battle"
           }
         }
       ],
-      "phase3Evidence": {
-        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
-        "f1SourceReferences": [
-          {
-            "kind": "chm",
-            "document": "FD全卡图鉴V2.0.chm",
-            "category": "servant/english",
-            "page": "尤瑞艾莉.htm",
-            "locator": "从者/弓兵/英文版/尤瑞艾莉.htm"
-          },
-          {
-            "kind": "development-image",
-            "document": "Fate_Domination-开发版",
-            "category": "servant",
-            "page": "images/servants/尤瑞艾莉.png",
-            "locator": "servant.euryale/尤瑞艾莉"
-          }
+      "source": {
+        "htmPath": "chm-extract/尤瑞艾莉.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-10-30_192733_130.png",
+        "imageIndex": 4,
+        "reviewedAgainstImage": true,
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.skill.sc-euryale-1",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5",
+        "imageSha256": "ed44780ea7dd9ed5d4d6738a848992fa31f09e16d49deb686c17740562a0e934"
+      }
+    },
+    {
+      "id": "servant.euryale.skill.sc-euryale-3",
+      "name": "女神的视线",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.euryale"
+      },
+      "printedText": "【真名解放】\n行动阶段：展示所有与你位于同一地点的玩家的手牌，你可以打出一张因此效果展示的【幸运】（被打出的【幸运】进入原拥有者的弃牌堆）。",
+      "cardFace": {
+        "typeLabel": "敏捷/宝具",
+        "attributes": [
+          "迅捷",
+          "宝具"
         ],
-        "f1ClauseSources": [
-          {
-            "document": "src/content/generated/legacy-content.json",
-            "locator": "servants[56].skills[0].text#line=1",
-            "sha256": "7c6de07a6a417f713775f4b60e841702f277911a2cf4be6c44eb3a94daf890eb"
-          },
-          {
-            "document": "src/content/generated/legacy-content.json",
-            "locator": "servants[56].skills[0].text#line=2",
-            "sha256": "776f615275054afec79151bd37488df2ec5bbc5cc74adc3a48e5355ed8456a14"
-          },
-          {
-            "document": "src/content/generated/legacy-content.json",
-            "locator": "servants[56].skills[0].text#line=3",
-            "sha256": "f3d42c4920cb6e66da0ad331c8cd2e994d01969a299881245db781a2fc24d4b5"
-          }
-        ],
-        "sourceTextSha256": "792fe5ed9a320b58e58103d05aaf9ae27755c5940c159bf47733f04d36da7bc5",
-        "referenceStaticMetadata": {
-          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-          "legacySkillId": "sc_euryale_1",
-          "cost": 0,
-          "basePower": 6,
-          "legacyRequirement": 0,
-          "typeLabel": "特殊"
-        },
-        "canonicalSkillZoneManaRequirement": {
-          "value": 8,
-          "authority": "final_rules_9.4",
-          "note": "Legacy requirement is retained as metadata only and does not override the final-rule skill-zone threshold."
-        },
-        "acceptedContracts": {
-          "independentAction": "P3-R31/TO08",
-          "penaltyOnDefeat": "P3-R31/B21/R15"
+        "cost": 3,
+        "basePower": 5
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
         }
+      ],
+      "abilities": [
+        {
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "scope": "servant_package",
+              "subject": "controller.servant"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "sc-euryale-3.release",
+          "kind": "declaration_reveal",
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "printedClause": "【真名解放】"
+        },
+        {
+          "conditions": [],
+          "targets": [
+            {
+              "id": "players",
+              "type": "player",
+              "selector": "players_at_same_location",
+              "selection": "all",
+              "count": {
+                "min": 0,
+                "max": 9007199254740991
+              }
+            },
+            {
+              "id": "lucky",
+              "type": "card_instance",
+              "scope": {
+                "zone": "hand",
+                "owner": "any",
+                "controller": "any"
+              },
+              "targetsFromBinding": "shown",
+              "count": {
+                "min": 0,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "or",
+                  "conditions": [
+                    {
+                      "type": "has_card_id",
+                      "cardId": "basic.luck"
+                    },
+                    {
+                      "type": "has_card_id",
+                      "cardId": "card.luck"
+                    },
+                    {
+                      "type": "has_card_id",
+                      "cardId": "card.x-divine-core"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "reveal_hands",
+              "targetRef": "players",
+              "bind": "shown"
+            },
+            {
+              "type": "play_revealed_card",
+              "target": "lucky",
+              "binding": "shown"
+            }
+          ],
+          "cost": [],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "sc-euryale-3.gaze",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：展示所有与你位于同一地点的玩家的手牌，你可以打出一张因此效果展示的【幸运】（被打出的【幸运】进入原拥有者的弃牌堆）。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          }
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/尤瑞艾莉.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160404_490.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true,
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.skill.sc-euryale-3",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "0a8597ba8408cc06462fe3c5d6ee9edd917cb2c997b4d4ca166e8528ef5c8f12"
+      }
+    },
+    {
+      "id": "servant.euryale.skill.sc-euryale-2",
+      "name": "塞壬之歌",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.euryale"
+      },
+      "printedText": "魅惑的美声－与你位于同一地点的玩家手牌和技能区的攻击，魔力消耗−1。\n被动/前哨阶段：无视回合顺位限制打出此牌与【单独行动】，并将其激活能力更改为：“行动阶段：你的行动阶段结束时，你获得7点战果，将此牌移除游戏。”",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 4,
+        "basePower": 0
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "effects": [],
+          "creates": [],
+          "ruleModifiers": [
+            {
+              "rule": "card.manaCost",
+              "operation": "add",
+              "value": -1,
+              "scope": {
+                "subject": "all_players",
+                "location": "source_location",
+                "zone": [
+                  "hand",
+                  "skill"
+                ],
+                "constraints": [
+                  {
+                    "type": "is_attack"
+                  }
+                ]
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "while_card_active",
+            "cleanup": "when_card_leaves_active_area"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "sc-euryale-2.cost-aura",
+          "kind": "passive",
+          "printedClause": "魅惑的美声－与你位于同一地点的玩家手牌和技能区的攻击，魔力消耗−1。",
+          "activation": {
+            "trigger": "while_active",
+            "requiresSourceState": "active"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "source_card_in_zone",
+                  "zone": "skill"
+                },
+                {
+                  "type": "source_card_in_zone",
+                  "zone": "hand"
+                }
+              ]
+            },
+            {
+              "type": "exists_target",
+              "targetRef": "companion"
+            }
+          ],
+          "targets": [
+            {
+              "id": "companion",
+              "type": "card_instance",
+              "scope": {
+                "zone": [
+                  "hand",
+                  "skill"
+                ],
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "has_card_id",
+                  "cardId": "servant.euryale.skill.sc-euryale-1"
+                }
+              ]
+            }
+          ],
+          "cost": [],
+          "effects": [
+            {
+              "type": "play_card_group",
+              "target": "companion",
+              "includeSource": true,
+              "phase": "advance",
+              "ignorePriority": true,
+              "ignoreRequirements": [
+                "controller_seat_in_first_half"
+              ]
+            },
+            {
+              "type": "replace_phase_abilities",
+              "id": "conversion",
+              "target": "companion",
+              "phase": "action",
+              "duration": "this_round",
+              "then": [
+                {
+                  "type": "schedule_at_player_action_end",
+                  "then": [
+                    {
+                      "type": "adjust_victory_points",
+                      "amount": 7
+                    },
+                    {
+                      "type": "move_card",
+                      "target": "this_card",
+                      "to": {
+                        "zone": "removed_from_game"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "creates": [],
+          "ruleModifiers": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_round",
+            "scope": "this_card",
+            "uses": 1
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "sc-euryale-2.prelude",
+          "kind": "passive",
+          "printedClause": "被动/前哨阶段：无视回合顺位限制打出此牌与【单独行动】，并将其激活能力更改为：“行动阶段：你的行动阶段结束时，你获得7点战果，将此牌移除游戏。”",
+          "activation": {
+            "phase": "advance",
+            "opens": "controller_action_window",
+            "ignorePriority": true
+          }
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/尤瑞艾莉.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160409_161.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true,
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.euryale.skill.sc-euryale-2",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "1863607f298606b1fd8922276db3dba4fc61b6688b4d7e57bafd809be8bd52f4"
+      }
+    },
+    {
+      "id": "card.x-divine-core",
+      "name": "女神的神核（Divine Core）",
+      "cardType": "servant_deck_card",
+      "owner": {
+        "type": "servant",
+        "id": "servant.euryale"
+      },
+      "printedText": "被动：此牌的牌名同时视为【幸运】。\n疾行-行动阶段：沿箭头移动一步。\n远隔操作-行动阶段：翻倍你的地利。\n战斗阶段：若你获胜，获得2点战果。\n幸运-战斗阶段：你无视【败北】效果。",
+      "cardFace": {
+        "typeLabel": "特殊",
+        "cost": 3,
+        "basePower": 4,
+        "attributes": [
+          "特殊"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [],
+      "abilities": [
+        {
+          "id": "divine-core.dash",
+          "kind": "phase_action",
+          "printedClause": "疾行-行动阶段：沿箭头移动一步。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          },
+          "effects": [
+            {
+              "type": "move_player",
+              "to": "destination"
+            }
+          ],
+          "targets": [
+            {
+              "id": "destination",
+              "type": "location",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "constraints": [
+                {
+                  "type": "reachable_along_arrows",
+                  "maxSteps": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "divine-core.remote",
+          "kind": "phase_action",
+          "printedClause": "远隔操作-行动阶段：翻倍你的地利。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          },
+          "effects": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "terrain_multiplier",
+                "amount": 2,
+                "duration": "this_round",
+                "scope": {
+                  "subject": "controller"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "divine-core.victory",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：若你获胜，获得2点战果。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "battle.winVpBonus",
+              "operation": "add",
+              "value": 2,
+              "scope": {
+                "subject": "controller"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round",
+            "cleanup": "expire_after_duration"
+          }
+        },
+        {
+          "id": "divine-core.luck",
+          "kind": "phase_action",
+          "printedClause": "幸运-战斗阶段：你无视【败北】效果。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "execution": {
+            "mode": "automatic"
+          },
+          "ruleModifiers": [
+            {
+              "rule": "immune_to_defeat",
+              "operation": "add",
+              "scope": {
+                "subject": "controller"
+              }
+            }
+          ],
+          "lifecycle": {
+            "duration": "this_round",
+            "cleanup": "expire_after_duration"
+          }
+        }
+      ],
+      "source": {
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#card.x-divine-core",
+        "printedTextSha256": "7974b4f0664941a96520ad41d6343ed536fab7c097dd9f1b7e56a2f4d264a8da",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "reviewedAgainstImage": true,
+        "nameAlias": "幸运",
+        "htmPath": "chm-extract/尤瑞艾莉.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160414_386.png",
+        "imageIndex": 5,
+        "imageSha256": "47cdd729f14d044ff0c27349f5f3ff1634144ee110c3e47ddd766a75da5ed51c"
       }
     }
+  ],
+  "openQuestions": [],
+  "resolvedQuestions": [
+    "单独行动复用现有目标not_source_card取反与played_this_round，逐实例识别已实际打出的来源，不借用控制者共享标记；源牌关闭后仍执行当回合失败惩罚。",
+    "用户批准指定手牌实例集合展示与代打，保留原持有人。幸运按既有basic.luck/card.luck牌ID识别，不误当成幸运属性或任意特殊牌。",
+    "用户裁决：仅替换单独行动的主动能力；免除其前半顺位条件，也允许越顺位发动。仅主动替换保留原战败−5强制文字；不默认免除正常费用或技能区8魔力门槛。"
+  ],
+  "adapterNotes": [
+    "三张印刷技能均有候选规则编码，不代表生产准入或正式L1/L2接受。"
   ]
 }

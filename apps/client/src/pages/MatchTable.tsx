@@ -386,6 +386,12 @@ export default function MatchTable({
         <aside className='decision-panel'>
           <span className='decision-panel__eyebrow'>CURRENT DECISION</span>
           <h2>{pendingReveal ? '处理揭示牌' : decisionTitle}</h2>
+          {fixture.lastHandReveal && <section aria-label='最近手牌展示'>
+            <h3>最近手牌展示 · 回合 {fixture.lastHandReveal.round}</h3>
+            {fixture.lastHandReveal.cards.length
+              ? <ul>{fixture.lastHandReveal.cards.map(card => <li key={card.cardId}>{card.ownerPlayerId}：{card.name}</li>)}</ul>
+              : <p>没有展示的手牌。</p>}
+          </section>}
           {pendingReveal && <div aria-label='换牌比较'>
             <p aria-label='待结算的揭示牌'>{pendingReveal.kind === 'situation' ? '局势' : '事件'}：{pendingReveal.name}</p>
             {pendingReveal.rulesText && <p aria-label='揭示牌规则'>{pendingReveal.rulesText}</p>}
@@ -547,14 +553,18 @@ export default function MatchTable({
                   ) : null}
                   <div className='interaction-window__actions'>
                     {window.actions.map((action) => {
-                      const selectedCount = selectedTargetsByWindow[window.id]?.length ?? 0;
+                      const selectedIds = selectedTargetsByWindow[window.id] ?? [];
+                      const selectedCount = selectedIds.length;
+                      const budget = window.playBudget;
+                      const exceedsBudget = budget && selectedIds.reduce((total, id) =>
+                        total + (budget.costs[id] ?? Number.POSITIVE_INFINITY), 0) > budget.mana;
                       const targetTooSmall = window.kind === 'target' && selectedCount < (window.min ?? 0);
                       const targetTooLarge = window.kind === 'target' && selectedCount > (window.max ?? Number.POSITIVE_INFINITY);
                       return (
                         <button
                           type='button'
                           key={action.actionId}
-                          disabled={targetTooSmall || targetTooLarge}
+                          disabled={targetTooSmall || targetTooLarge || exceedsBudget}
                           onClick={() => {
                             if (window.kind === 'target') dispatchTargetChoice(action, window);
                             else if (window.kind === 'payment') dispatchPayment(action, window);

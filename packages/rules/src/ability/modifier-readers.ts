@@ -11,6 +11,7 @@ export interface RuleReaderRef {
 export const ruleReaders: Record<string, RuleReaderRef[]> = {
   'attack.currentPower': [{ file: 'ability/interpreter.ts', symbol: 'calculateCardPower' }],
   'card.currentPower': [{ file: 'ability/interpreter.ts', symbol: 'calculateCardPower' }],
+  'card.manaCost': [{ file: 'ability/interpreter.ts', symbol: 'continuousManaCostAddition' }],
   'battle.totalPower': [{ file: 'core/combat-resolver.ts', symbol: 'getTotalPowerBreakdowns' }],
   'effect_prevention': [{ file: 'ability/interpreter.ts', symbol: 'resolveEffect' }],
   'use_skill_card': [{ file: 'ability/interpreter.ts', symbol: 'ongoingCardPlayForbidRules' }],

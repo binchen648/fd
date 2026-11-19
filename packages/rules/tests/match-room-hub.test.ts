@@ -1,3 +1,4 @@
+import { referenceSevenServants } from './acceptance/seven-roster-test-helpers';
 import { describe, expect, it, vi } from 'vitest';
 import * as persistenceAuthority from '../src/ability/opponent-close-to-one-authority';
 
@@ -124,13 +125,13 @@ describe('MatchRoomHub local multiplayer transport layer', () => {
     const hub = createMatchRoomHub();
     const persistenceSecret = 'fb2-49-persistence-secret:shared-room-scope-regression';
     const roomA = hub.createRoom({
-      roomId: 'deferred-scope-room-a',
+      startingServantIds: referenceSevenServants, roomId: 'deferred-scope-room-a',
       seed: 20260904,
       hostClientId: 'host-a',
       persistenceSecret,
     }).roomId;
     const roomB = hub.createRoom({
-      roomId: 'deferred-scope-room-b',
+      startingServantIds: referenceSevenServants, roomId: 'deferred-scope-room-b',
       seed: 20260904,
       hostClientId: 'host-b',
       persistenceSecret,

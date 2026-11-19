@@ -488,7 +488,7 @@ function toNamedCard(
   };
 }
 
-function mapDeckCard(cardId: string, copies: number): ServantDefinition['startingDeck']['entries'][number] {
+function mapDeckCard(cardId: string, copies: number, archive: AuthoringArchive): ServantDefinition['startingDeck']['entries'][number] {
   const lower = cardId.toLowerCase();
   if (lower === 'card.x-pilgrimcall') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-4', copies };
   if (lower === 'card.x-pilgrimrespite') return { entryType: 'named', attribute: 'special', cardId: 'servant.artoriac.skill.sc-artoriac-5', copies };
@@ -497,14 +497,21 @@ function mapDeckCard(cardId: string, copies: number): ServantDefinition['startin
   if (lower === 'card.cardsurveil') return { entryType: 'named', attribute: 'special', cardId: 'basic.surveil', copies };
   if (lower === 'card.cardpreparation') return { entryType: 'named', attribute: 'special', cardId: 'basic.preparation', copies };
   const match = /^card\.card([abq])([1-5])$/.exec(lower);
-  if (!match) throw new Error(`Unknown deck entry: ${cardId}`);
+  if (!match) {
+    // Named deck cards use their exact definition from this archive, never a name/foreign-card guess.
+    const definitions = archive.cards.filter((card) => card.id === cardId);
+    const definition = definitions.length === 1 ? definitions[0] : undefined;
+    const attribute = definition?.cardFace?.attributes?.map(toAttribute).find((value) => value !== undefined);
+    if (definition?.cardType !== 'servant_deck_card' || !attribute) throw new Error(`Unknown deck entry: ${cardId}`);
+    return { entryType: 'named', attribute, cardId: definition.id, copies };
+  }
   const printedValue = Number(match[2]);
   const attribute = match[1] === 'q' ? 'agility' : match[1] === 'a' ? 'magecraft' : 'strength';
   return { entryType: 'basic', attribute, printedValue, copies };
 }
 
 function startingDeckFromAuthoring(archive: AuthoringArchive): ServantDefinition['startingDeck'] {
-  const entries = (archive.deck ?? []).map((entry) => mapDeckCard(entry.cardId, entry.count ?? 1));
+  const entries = (archive.deck ?? []).map((entry) => mapDeckCard(entry.cardId, entry.count ?? 1, archive));
   const total = entries.reduce((sum, entry) => sum + entry.copies, 0);
   if (total !== 12) throw new Error(`${archive.id} deck must contain exactly 12 cards; found ${total}`);
 

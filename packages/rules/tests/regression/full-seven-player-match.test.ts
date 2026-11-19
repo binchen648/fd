@@ -1,19 +1,19 @@
 import {describe,expect,it}from'vitest';
 import {createMatchSession}from'../../src/match-session';
-import {finishOpening}from'../acceptance/seven-roster-test-helpers';
+import {finishOpening, referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import {createMatchRoomHub}from'../../src/match-room-hub';
 import {chooseFullMatchDecision}from'../../../../e2e/support/full-seven-player-driver';
 
 describe('A-MATCH-03 preparation supplies',()=>{
  it('draws hand supply before situation mana and event placement',()=>{
-  const session=createMatchSession({seed:20260904});
+  const session=createMatchSession({startingServantIds: referenceSevenServants, seed:20260904});
   const firstDraw=session.logs.findIndex(l=>l.type==='cards_drawn');
   const situation=session.logs.findIndex(l=>l.type==='situation_applied');
   const event=session.logs.findIndex(l=>l.type==='event_drawn');
   expect(firstDraw).toBeGreaterThanOrEqual(0);expect(firstDraw).toBeLessThan(situation);expect(situation).toBeLessThan(event);
  });
  it('increments the authoritative revision after workshop deployment',()=>{
-  const hub=createMatchRoomHub(),roomId='deployment-revision';hub.createRoom({roomId,seed:20260904,hostClientId:'seat-1'});
+  const hub=createMatchRoomHub(),roomId='deployment-revision';hub.createRoom({startingServantIds: referenceSevenServants, roomId,seed:20260904,hostClientId:'seat-1'});
   for(let seat=1;seat<=7;seat++){const id=`seat-${seat}`;if(seat>1)hub.joinRoom(roomId,{clientId:id,displayName:id,role:'player'});hub.selectSeat(roomId,id,seat);}
   hub.startMatch(roomId,'seat-1');
   finishOpening(hub.getRoom(roomId).session!);
@@ -24,7 +24,7 @@ describe('A-MATCH-03 preparation supplies',()=>{
   expect(()=>hub.endTurn(roomId,'seat-2',before)).toThrow(/Stale/);
  });
  it('uses remaining deck cards then recycles only its own discard and fills the rest',()=>{
-  const session=createMatchSession({seed:20260904});
+  const session=createMatchSession({startingServantIds: referenceSevenServants, seed:20260904});
   const state=session.state,own=state.cards.filter(c=>c.ownerPlayerId==='p1'&&['hand','deck'].includes(c.zone));
   // Isolated depletion boundary fixture, not evidence of a full game played.
   own.forEach(c=>c.zone='discard');own[0]!.zone='deck';
@@ -43,7 +43,7 @@ describe('A-MATCH-03 preparation supplies',()=>{
 
 for(const seed of [20260904,20260905])it(`plays a real seven-human room from round1 through a verified round11 outcome (${seed})`,()=>{
  const hub=createMatchRoomHub();const roomId=`full-match-${seed}`;
- hub.createRoom({roomId,seed,hostClientId:'seat-1'});
+ hub.createRoom({startingServantIds: referenceSevenServants, roomId,seed,hostClientId:'seat-1'});
  for(let seat=1;seat<=7;seat++){const id=`seat-${seat}`;if(seat>1)hub.joinRoom(roomId,{clientId:id,displayName:id,role:'player'});hub.selectSeat(roomId,id,seat);}
  hub.startMatch(roomId,'seat-1');let room=hub.getRoom(roomId);let restored=false,checkedStale=false,moves=0,commands=0;const checkedRounds=new Set<number>();
  expect(room.seats.every(s=>s.controller==='human')).toBe(true);

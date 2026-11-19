@@ -1,6 +1,9 @@
 import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import { isAcceptedBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
+import { handRevealContractIssue } from './revealed-hand-play';
+import { advanceGroupContractIssue, approvedAdvanceGroup } from './advance-group-play';
+import { phaseTemplateIssue } from './phase-replacement';
 import type { AuthoringAbility, AuthoringCard, AuthoringPack, ExecutionMode, RuleNode, AdapterReportEntry } from './types';
 import { hostOperations } from './types';
 import { ACTIVE_CARD_SOURCE_VALIDITY_POLICY_ID } from '../core/card-source-state';
@@ -179,6 +182,9 @@ export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
 }
 
 const supportedTypes = new Set([
+  'replace_phase_abilities', 'schedule_at_player_action_end',
+  'play_card_group',
+  'reveal_hands', 'play_revealed_card',
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining',
@@ -244,7 +250,7 @@ const formulaOps = new Set(['const', 'var', 'add', 'multiply', 'min', 'ceil', 'f
 /** FD-CANONICAL-EFFECT-IR: every rule modifier must name a rule that has a real reader. */
 export const ruleModifierOperations = ['add', 'set', 'ignore', 'lock', 'exclude', 'forbid', 'negate', 'require'] as const;
 export const ruleModifierRules = [
-  'attack.currentPower', 'card.currentPower', 'battle.totalPower',
+  'attack.currentPower', 'card.currentPower', 'card.manaCost', 'battle.totalPower',
   'effect_prevention', 'use_skill_card', 'play_card_attribute',
   'enter_or_leave_current_battlefield', 'terrain_and_external_servant_or_npc_effects', 'movement.reverse_arrows',
   'situation_restrictions', 'situation_play_forbid',
@@ -253,7 +259,29 @@ export const ruleModifierRules = [
   // 远隔操作（basic.preparation）：卡面声明，结算侧读规则名
   'terrain.multiplier', 'battle.winVpBonus',
 ] as const;
+/** Narrow accepted contract for live card-cost auras; malformed filters must not broaden into unfiltered discounts. */
+export function validManaCostAuraModifier(modifier: RuleNode): boolean {
+  const scope = node(modifier.scope);
+  const validFilter = (value: unknown, depth = 0): boolean => {
+    if (!value || typeof value !== 'object' || Array.isArray(value) || depth > 32) return false;
+    const filter = value as RuleNode;
+    if (typeof filter.type !== 'string' || !filter.type) return false;
+    if (['and', 'or'].includes(filter.type) && (!Array.isArray(filter.conditions) || !filter.conditions.length)) return false;
+    if (filter.type === 'not' && !validFilter(filter.condition, depth + 1)) return false;
+    if (filter.conditions !== undefined && (!Array.isArray(filter.conditions) || !filter.conditions.every(child => validFilter(child, depth + 1)))) return false;
+    return filter.condition === undefined || validFilter(filter.condition, depth + 1);
+  };
+  const validFilterList = (value: unknown) => value === undefined || Array.isArray(value) && value.every(entry => validFilter(entry));
+  return modifier.operation === 'add' && Number.isSafeInteger(modifier.value) && modifier.constraints === undefined &&
+    validFilterList(modifier.conditions) && validFilterList(scope.constraints) &&
+    scope.location === 'source_location' && Array.isArray(scope.zone) && scope.zone.length > 0 &&
+    scope.zone.every(zone => ['hand', 'skill'].includes(str(zone))) &&
+    Object.keys(scope).every(key => ['subject', 'location', 'zone', 'constraints'].includes(key)) &&
+    ['all_players', 'controller', 'self', 'players_at_same_location', 'opponents_at_same_location',
+      'players_at_same_battlefield', 'opponents_at_same_battlefield'].includes(str(scope.subject));
+}
 const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_action_window', 'controller_combat_action_window',
+  'after_controller_action_turn_ended',
   'after_battle_result_determined', 'after_controller_wins_battle', 'after_controller_gains_victory', 'when_formula_condition_met',
   // New triggers for 5 servants
   'after_controller_loses_battle', CONTROLLER_DEFEATED_TRIGGER, 'while_active', 'when_power_calculation_applied',
@@ -271,7 +299,8 @@ const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject',
   'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
-  'targetRef', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
+  'targetRef', 'targetsFromBinding', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
+  'includeSource', 'ignorePriority', 'ignoreRequirements',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
   // New mechanic keys for 5 servants
@@ -640,7 +669,12 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
             issue('targets.constraints', 'Any-location selection cannot silently ignore additional constraints', id);
           }
           const scope = node(target.scope);
-          if (target.type === 'card_instance' && !['battle_area', 'attack_area', 'looked_cards', 'hand', 'deck', 'removed_from_game', 'discard', 'skill'].includes(str(scope.zone))) issue('targets.scope.zone', 'Unmapped target zone', id);
+          if (target.type === 'card_instance') {
+            const validZones = ['battle_area', 'attack_area', 'looked_cards', 'hand', 'deck', 'removed_from_game', 'discard', 'skill'];
+            const union = Array.isArray(scope.zone) && scope.zone.length === 2 && scope.zone.includes('hand') && scope.zone.includes('skill') &&
+              scope.zone.every((zone) => validZones.includes(str(zone)));
+            if (!union && !validZones.includes(str(scope.zone))) issue('targets.scope.zone', 'Unmapped target zone', id);
+          }
           if (target.type === 'event_card') {
             const rawZones = scope.zones;
             const zones = Array.isArray(rawZones) ? rawZones.map((zone) => str(zone)) : [];
@@ -674,6 +708,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const operationSupported = (ruleModifierOperations as readonly string[]).includes(str(m.operation)) ||
           (acceptedRewardModifier && m.operation === 'replace') ||
           (acceptedDeploymentModifier && m.operation === 'replace');
+        if (m.rule === 'card.manaCost' && !validManaCostAuraModifier(m)) {
+          issue('ruleModifiers', 'Unsupported mana-cost aura scope, filter or numeric addition', id);
+        }
         const ruleSupported = (ruleModifierRules as readonly string[]).includes(str(m.rule)) || ['attack.currentPower', 'card.currentPower', 'effect_prevention', 'battlefield', 'terrain_and_external_effects', 'use_skill_card', 'play_card_attribute', 'enter_or_leave_current_battlefield', 'terrain_and_external_effects_for_controller_and_opponents', 'terrain_and_external_servant_or_npc_effects', 'situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least', 'netherworld_protection'].includes(str(m.rule)) ||
           (acceptedRewardModifier && m.rule === 'combat_reward_distribution') ||
           (acceptedPaidCostModifier && m.rule === 'combat_power') ||
@@ -690,7 +727,8 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         if (m.rule === 'effect_prevention' && (m.operation !== 'ignore' || node(m.priority).tier !== 'explicit_exception')) issue('ruleModifiers.priority', 'Prevention exception requires explicit_exception', id);
         const ruleIsPlayException = m.operation === 'ignore' && ['situation_restrictions', 'situation_play_forbid', 'skill_zone_mana_requirement', 'skill_zone_mana_at_least'].includes(str(m.rule));
         const ruleIsStaticException = m.operation === 'ignore' && ['netherworld_protection', 'opponent_ability_effects'].includes(str(m.rule));
-        const ruleIsLifecycleFree = ['command_spell_phase', 'movement.reverse_arrows', 'deployment.requirement'].includes(str(m.rule)) && ['require', 'add'].includes(str(m.operation));
+        const ruleIsLifecycleFree = (['command_spell_phase', 'movement.reverse_arrows', 'deployment.requirement'].includes(str(m.rule)) && ['require', 'add'].includes(str(m.operation))) ||
+          (m.rule === 'card.manaCost' && m.operation === 'add' && node(a.activation).trigger === 'while_active' && ['passive', 'residual'].includes(str(a.kind)));
         if (m.rule !== 'effect_prevention' && !ruleIsPlayException && !ruleIsStaticException && !ruleIsLifecycleFree && !acceptedRewardModifier && !lifecycle.duration && !node(m.lifecycle).duration) issue('ruleModifiers.lifecycle', 'Modifier requires lifecycle', id);
         if (!acceptedPaidCostModifier) scan(m.value, 'ruleModifiers.value', id);
         scan(node(m.scope).constraints, 'ruleModifiers.scope.constraints', id);
@@ -745,6 +783,17 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         ruleModifiers: nodes(a.ruleModifiers), creates: nodes(a.creates), lifecycle,
         responseWindow: { ...response, order: 'turn_order', passBehavior: 'decline_this_window' },
         limit, visibility: node(a.visibility), execution: { mode: mode as ExecutionMode, allowedOperations: allowed } };
+      const revealIssue = handRevealContractIssue(candidateAbility);
+      if (revealIssue) issue('effects', revealIssue, id);
+      const groupIssue = advanceGroupContractIssue(candidateAbility);
+      if (groupIssue) issue('effects', groupIssue, id);
+      const phaseIssue = phaseTemplateIssue(candidateAbility);
+      if (phaseIssue) issue('effects', phaseIssue, id);
+      const approvedGroup = approvedAdvanceGroup(candidateAbility);
+      if (candidateAbility.targets.some(target => Array.isArray(node(target.scope).zone) &&
+          (!approvedGroup || target.id !== approvedGroup.target))) {
+        issue('targets.scope.zone', 'Union target zones are only supported by the exact approved advance-group contract', id);
+      }
       if (isControllerSkillManaExceptionCandidate(candidateAbility) && !isAcceptedControllerSkillManaException(candidateAbility)) issue('ruleModifiers', 'Unsupported controller skill mana exception shape', id);
       if (isActualLossPowerCandidate(candidateAbility) && !lowerActualLossPower(candidateAbility)) issue('effects', 'Unsupported actual-loss power sequence', id);
       if (isPrivateOptionalHandPlayInteractionCandidate(candidateAbility) && !isPrivateOptionalHandPlayInteractionSemantic(candidateAbility)) {

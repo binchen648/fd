@@ -14,9 +14,9 @@ describe('P3-E04-A112 accepted 111 gap decomposition', () => {
     expect(decomposition.remainingIdentityCount).toBe(833);
     expect(decomposition.accounting.creditChange).toBe('NONE');
     expect(decomposition.accounting.mainCoverageCreditDelta).toBe(0);
-    expect(decomposition.gapCounts.GENERATED_REGISTRY_MISSING).toBe(87);
+    expect(decomposition.gapCounts.GENERATED_REGISTRY_MISSING).toBe(86);
     expect(decomposition.registryDiagnosisCounts.AUTHORING_SOURCE_NOT_FOUND).toBe(0);
-    expect(decomposition.registryDiagnosisCounts.AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK).toBe(87);
+    expect(decomposition.registryDiagnosisCounts.AUTHORING_PRESENT_BUT_NOT_REGISTERED_IN_ACTIVE_PLAYTEST_PACK).toBe(86);
     expect(decomposition.registryDiagnosisCounts.PACK_SOURCE_LISTED_BUT_NOT_EMITTED).toBe(0);
     expect(decomposition.registryDiagnosisCounts.RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK).toBeUndefined();
     expect(decomposition.registryDiagnosisNotEvaluated).toContain('RULES_ONLY_MASTER_RULE_ARCHIVE_NOT_REGISTERED_IN_PLAYTEST_PACK');

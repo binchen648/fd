@@ -1,4 +1,7 @@
 import { CHALDEAS_SWAP, maySwapMatchReveal } from './chaldeas-reveal';
+import { handRevealContractIssue, isRevealedHandCard, matchesRevealedHandInstance, pendingRevealedHands, validHandRevealBindings, lastHandReveal } from './revealed-hand-play';
+import { approvedAdvanceGroup, isApprovedAdvanceGroupEffect } from './advance-group-play';
+import { withPhaseReplacement, replacementId, replacementLive, replacementWasUsed, actionEndTemplate, validPhaseTemplateState, phaseSourceActive } from './phase-replacement';
 import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import { isAcceptedBattlefieldPlacement, supportsBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
@@ -22,7 +25,7 @@ import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate } from './loader';
+import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, validManaCostAuraModifier } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -101,6 +104,7 @@ import type {
 
   AbilityInteractionClassification,
   PlayCardAction,
+  RevealedHandCard,
   ActionTurnState, ActionTurnProgress,
 } from './types';
 
@@ -166,7 +170,7 @@ function card(s: GameState, id: string): CardInstance {
 }
 function definition(s: GameState, id: string): AuthoringCard | undefined {
   const physical = s.cards.find((candidate) => candidate.instanceId === id);
-  if (physical) return runtime(s).pack.cards[physical.definitionId];
+  if (physical) return withPhaseReplacement(s, id, runtime(s).pack.cards[physical.definitionId]);
   const eventPlacement = eventRulePlacementByInstance(s, id);
   return eventPlacement ? runtime(s).pack.eventRules?.[eventPlacement.eventCardId] : undefined;
 }
@@ -428,7 +432,8 @@ function hasTerrainAt(s: GameState, playerId: string, locationId: string | undef
  * Generic reader for "does this player carry an active rule modifier X:Y?".
  * Used by rule consumers that live outside the interpreter (combat resolver, exemption checks).
  */
-export function hasActiveRuleModifier(s: GameState, playerId: string, rule: string, operation: string): boolean {
+export function* matchingActiveRuleModifiers(s: GameState, playerId: string, rule: string, operation: string,
+  options: { requireActivation?: boolean; sourceIds?: ReadonlySet<string> } = {}): Generator<RuleNode> {
   const applies = (controllerId: string, sourceCardId: string, abilityId: string, definition: RuleNode): boolean => {
     if (str(definition.rule) !== rule || str(definition.operation) !== operation) return false;
     const scope = node(definition.scope);
@@ -438,21 +443,30 @@ export function hasActiveRuleModifier(s: GameState, playerId: string, rule: stri
     return nodes(definition.conditions).every(c => condition(s, ctx, c));
   };
   for (const ongoing of liveOngoing(s)) {
+    if (options.sourceIds && !options.sourceIds.has(ongoing.sourceCardId)) continue;
     for (const modifier of ongoing.ruleModifiers) {
-      if (applies(modifier.controllerId, ongoing.sourceCardId, ongoing.abilityId, modifier.definition)) return true;
+      if (applies(modifier.controllerId, ongoing.sourceCardId, ongoing.abilityId, modifier.definition)) yield modifier.definition;
     }
   }
   for (const card of s.cards) {
+    if (options.sourceIds && !options.sourceIds.has(card.instanceId)) continue;
     if (!['skill', 'field', 'attack_area'].includes(card.zone)) continue;
     if (runtime(s).cardState[card.instanceId]?.faceDown === true) continue;
     const cardDefinition = runtime(s).pack.cards[card.definitionId];
     for (const ability of cardDefinition?.abilities ?? []) {
+      if (options.requireActivation && (!['passive', 'residual'].includes(ability.kind) || ability.activation.trigger !== 'while_active' ||
+        ability.execution.mode !== 'automatic' || !active(s, card.instanceId) ||
+        !ability.conditions.every(entry => condition(s, { controllerId: card.controllerPlayerId, sourceCardId: card.instanceId, abilityId: ability.id, selections: {}, variables: {} }, entry)))) continue;
       for (const modifier of ability.ruleModifiers) {
-        if (applies(card.controllerPlayerId, card.instanceId, ability.id, modifier as unknown as RuleNode)) return true;
+        if (applies(card.controllerPlayerId, card.instanceId, ability.id, modifier as unknown as RuleNode)) yield modifier as unknown as RuleNode;
       }
     }
   }
-  return false;
+}
+
+export function hasActiveRuleModifier(s: GameState, playerId: string, rule: string, operation: string,
+  options: { requireActivation?: boolean } = {}): boolean {
+  return matchingActiveRuleModifiers(s, playerId, rule, operation, options).next().done === false;
 }
 
 /**
@@ -632,6 +646,83 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
 }
 function numeric(s: GameState, ctx: EffectContext, input: unknown): number {
   return evaluateFormula(input, s, ctx.controllerId, ctx.sourceCardId, ctx.variables, ctx.bindings).value;
+}
+const manaCostEvaluationStack = new WeakMap<GameState, Set<string>>();
+function continuousManaCostAddition(s: GameState, target: CardInstance): number {
+  if (target.zone !== 'hand' && target.zone !== 'skill') return 0;
+  const targetId = target.instanceId;
+  const payerId = target.controllerPlayerId;
+  const r = runtime(s);
+  const applies = (sourceId: string, controllerId: string, abilityId: string, modifier: RuleNode): number => {
+    if (modifier.rule !== 'card.manaCost') return 0;
+    if (!validManaCostAuraModifier(modifier)) reject('invalid_cost', 'Invalid mana-cost aura');
+    if (!active(s, sourceId) || player(s, controllerId).status !== 'active' || player(s, payerId).status !== 'active') return 0;
+    const scope = node(modifier.scope), sourceLocation = player(s, controllerId).locationId;
+    if (!sourceLocation || player(s, payerId).locationId !== sourceLocation || !Array.isArray(scope.zone) || !scope.zone.includes(target.zone) ||
+        isProtectedFromOpponentEffects(s, payerId, controllerId)) return 0;
+    const subject = str(scope.subject);
+    const allowedPlayers = subject === 'all_players' ? s.players.filter(candidate => candidate.status === 'active').map(candidate => candidate.id)
+      : ['controller', 'self'].includes(subject) ? [controllerId]
+      : subject === 'players_at_same_location' ? s.players.filter(candidate => candidate.status === 'active' && candidate.locationId === sourceLocation).map(candidate => candidate.id)
+      : subject === 'opponents_at_same_location' ? s.players.filter(candidate => candidate.status === 'active' && candidate.id !== controllerId && candidate.locationId === sourceLocation).map(candidate => candidate.id)
+      : subject === 'players_at_same_battlefield' ? s.players.filter(candidate => candidate.status === 'active' && sameBattlefield(s, candidate.locationId, sourceLocation)).map(candidate => candidate.id)
+      : subject === 'opponents_at_same_battlefield' ? s.players.filter(candidate => candidate.status === 'active' && candidate.id !== controllerId && sameBattlefield(s, candidate.locationId, sourceLocation)).map(candidate => candidate.id)
+      : [];
+    if (!allowedPlayers.includes(payerId)) return 0;
+    const ctx: EffectContext = { controllerId, sourceCardId: sourceId, abilityId, variables: {}, selections: {} };
+    const matches = (filter: RuleNode): boolean => {
+      if (filter.type === 'is_attack') return entersAttackArea(s, targetId) &&
+        (filter.face !== 'face_down' || runtime(s).cardState[targetId]?.faceDown === true);
+      if (filter.type === 'and') return nodes(filter.conditions).every(matches);
+      if (filter.type === 'or') return nodes(filter.conditions).some(matches);
+      if (filter.type === 'not') return !matches(node(filter.condition));
+      return constraint(s, ctx, target, filter);
+    };
+    if (!nodes(scope.constraints).every(matches) ||
+        !nodes(modifier.conditions).every(filter => condition(s, ctx, filter))) return 0;
+    return Number(modifier.value);
+  };
+  let total = 0;
+  for (const source of s.cards) {
+    if (source.zone !== 'field' && source.zone !== 'attack_area') continue;
+    // Replacement overlays only add phase actions. A live passive is read from the
+    // physical card's definition, avoiding a card-instance search for every quote.
+    for (const ability of r.pack.cards[source.definitionId]?.abilities ?? []) {
+      if (ability.execution.mode !== 'automatic' || ability.kind !== 'passive' || ability.activation.trigger !== 'while_active' ||
+          !ability.ruleModifiers.some(modifier => modifier.rule === 'card.manaCost') ||
+          !active(s, source.instanceId) || player(s, source.controllerPlayerId).status !== 'active' ||
+          !ability.conditions.every(filter => condition(s, context(s, source.instanceId, ability.id), filter))) continue;
+      for (const modifier of ability.ruleModifiers) total += applies(source.instanceId, source.controllerPlayerId, ability.id, modifier as unknown as RuleNode);
+    }
+  }
+  for (const ongoing of r.ongoingEffects) {
+    if (!ongoing.ruleModifiers.some(modifier => modifier.definition.rule === 'card.manaCost') ||
+        (ongoing.expiresAtRound !== undefined && s.round.roundNumber >= ongoing.expiresAtRound) ||
+        !sourceBoundOngoingIsLive(s, ongoing)) continue;
+    const ability = definition(s, ongoing.sourceCardId)?.abilities.find(candidate => candidate.id === ongoing.abilityId);
+    if (ability?.kind === 'passive' && ability.activation.trigger === 'while_active') continue;
+    for (const modifier of ongoing.ruleModifiers) total += applies(ongoing.sourceCardId, modifier.controllerId, ongoing.abilityId, modifier.definition);
+  }
+  return total;
+}
+/** Shared quote used by preview and the transactional native play batch. */
+export function cardManaCost(s: GameState, instanceId: string): number {
+  const stack = manaCostEvaluationStack.get(s) ?? new Set<string>();
+  if (stack.has(instanceId)) reject('invalid_formula', 'Recursive card mana-cost reference');
+  manaCostEvaluationStack.set(s, stack); stack.add(instanceId);
+  try {
+    const source = card(s, instanceId);
+    const printed = runtime(s).pack.cards[source.definitionId]?.cardFace.cost ?? 0;
+    const base = typeof printed === 'number' ? printed : evaluateFormula(printed, s, source.controllerPlayerId, instanceId).value;
+    const aura = continuousManaCostAddition(s, source), total = base + aura;
+    if (!Number.isSafeInteger(base) || base < 0 || !Number.isSafeInteger(aura) || !Number.isSafeInteger(total)) {
+      reject('invalid_cost', 'Card mana cost must be a safe nonnegative integer');
+    }
+    return Math.max(0, total);
+  } finally {
+    stack.delete(instanceId);
+    if (!stack.size) manaCostEvaluationStack.delete(s);
+  }
 }
 function sourceBoundOngoingIsLive(s: GameState, ongoing: OngoingEffect): boolean {
   if (!ongoing.sourceValidityPolicyId) return ongoing.sourceMustRemainActive === false || active(s, ongoing.sourceCardId);
@@ -858,15 +949,21 @@ function candidates(s: GameState, ctx: EffectContext, target: RuleNode): string[
         return !l.occupancyLimit || s.players.filter(p => p.status === 'active' && p.id !== ctx.controllerId && p.locationId === id).length < l.occupancyLimit;
       });
   }
-  const scope = node(target.scope); const zone = scope.zone === 'battle_area' ? 'attack_area' : scope.zone;
+  const scope = node(target.scope);
+  const zones = (Array.isArray(scope.zone) ? scope.zone : [scope.zone]).map((entry) => str(entry) === 'battle_area' ? 'attack_area' : str(entry));
   const alreadySelected = new Set(Object.values(ctx.selections).flat());
   const ability = definition(s, ctx.sourceCardId)?.abilities.find((entry) => entry.id === ctx.abilityId);
   const faceDownEffectTarget = !!ability && isPlayActionRouteCandidate(ability) && str(ability.effects[0]?.target) === str(target.id);
+  const revealBinding = typeof target.targetsFromBinding === 'string' ? ctx.bindings?.[target.targetsFromBinding] : undefined;
+  const group = ability && approvedAdvanceGroup(ability);
   return s.cards.filter(c =>
+    (!group || group.target !== target.id || canPlayAdvanceGroup(s, ctx, c.instanceId, group)) &&
+    (typeof target.targetsFromBinding !== 'string' || revealBinding?.effectType === 'reveal_hands' &&
+      (revealBinding.revealedCards ?? []).some(entry => entry.cardId === c.instanceId && canPlayRevealedHandCard(s, ctx, entry))) &&
     !alreadySelected.has(c.instanceId) &&
     (scope.controller === 'any' || c.controllerPlayerId === ctx.controllerId) &&
     (scope.owner === 'any' || c.ownerPlayerId === ctx.controllerId || !scope.owner) &&
-    c.zone === zone &&
+    zones.includes(c.zone) &&
     nodes(target.constraints).every(x => constraint(s, ctx, c, x)) &&
     (!faceDownEffectTarget || faceDownEffectPlayFailure(s, ctx.controllerId, c.instanceId) === undefined)).map(c => c.instanceId);
 }
@@ -1331,6 +1428,9 @@ function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbilit
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
+  if (a.kind === 'phase_action' && replacementWasUsed(s, sourceId, a.activation.phase)) return false;
+  if (a.effects.some(effect => effect.type === 'schedule_at_player_action_end') &&
+      runtime(s).playerActionEnds?.[card(s, sourceId).controllerPlayerId] === s.round.roundNumber) return false;
   if (a.id === CHALDEAS_SWAP && !maySwapMatchReveal(s, sourceId, event)) return false;
   if (!convergenceSourceAvailable(s,sourceId,a)) return false;
   if (activationContractFailure(s,sourceId,a,event)) return false;
@@ -1477,7 +1577,7 @@ function allHandFaceUpForbiddenByEffect(s: GameState, playerId: string): boolean
       ['situation_restrictions', 'situation_play_forbid', 'play_card_attribute'].includes(rule) && !hasPlayRuleException(d, rule)));
   });
 }
-function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false): string | undefined {
+function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, advanceGroupException = false): string | undefined {
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
@@ -1498,9 +1598,9 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   // The condition reader applies the controller exception once, only below
   // the threshold; previewing ordinary affordable skills needs no roster scan.
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r => str(r.type));
-  if (!requirements.every(r => condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
+  if (!requirements.every(r => advanceGroupException && r.type === 'controller_seat_in_first_half' || condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  if (!ignoreManaCost && !faceDown && player(s, p).mana < Number(d.cardFace.cost ?? 0)) return 'insufficient_mana';
+  if (!ignoreManaCost && !faceDown && player(s, p).mana < cardManaCost(s, sourceId)) return 'insufficient_mana';
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -1510,6 +1610,28 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
 }
 function faceDownEffectPlayFailure(s: GameState, playerId: string, cardId: string): string | undefined {
   return playFailure(s, playerId, cardId, true, true, true, true);
+}
+/** Recheck the revealed physical instance and every ordinary play restriction using native play rules. */
+function canPlayRevealedHandCard(s: GameState, ctx: EffectContext, entry: RevealedHandCard): boolean {
+  if (!isRevealedHandCard(entry) || !matchesRevealedHandInstance(s, entry) ||
+      isProtectedFromOpponentEffects(s, entry.ownerPlayerId, ctx.controllerId)) return false;
+  const ability = definition(s, ctx.sourceCardId)?.abilities.find(candidate => candidate.id === ctx.abilityId);
+  if (!ability || card(s, ctx.sourceCardId).controllerPlayerId !== ctx.controllerId ||
+      (ability.activation.requiresSourceState === 'active' && !active(s, ctx.sourceCardId)) || !convergenceSourceAvailable(s, ctx.sourceCardId, ability)) return false;
+  const preview = structuredClone(s);
+  card(preview, entry.cardId).controllerPlayerId = ctx.controllerId;
+  return playFailure(preview, ctx.controllerId, entry.cardId, false, true, true) === undefined;
+}
+function canPlayAdvanceGroup(s: GameState, ctx: EffectContext, companionId: string, effect: RuleNode): boolean {
+  if (!isApprovedAdvanceGroupEffect(effect) || phase(s) !== 'advance' || companionId === ctx.sourceCardId) return false;
+  const source = s.cards.find(candidate => candidate.instanceId === ctx.sourceCardId);
+  const companion = s.cards.find(candidate => candidate.instanceId === companionId);
+  if (!source || !companion || [source, companion].some(candidate => candidate.ownerPlayerId !== ctx.controllerId ||
+      candidate.controllerPlayerId !== ctx.controllerId || !['hand', 'skill'].includes(candidate.zone))) return false;
+  if (faceUpCardPlayLimitReached(s, ctx.controllerId, 2)) return false;
+  if ([source, companion].some(candidate => playFailure(s, ctx.controllerId, candidate.instanceId, false, true, true, true, false, false, true))) return false;
+  try { return cardManaCost(s, source.instanceId) + cardManaCost(s, companion.instanceId) <= player(s, ctx.controllerId).mana; }
+  catch { return false; }
 }
 function regularAttackOptions(s: GameState, playerId: string): PlayCardAction[][] {
   return s.cards.filter(c => c.controllerPlayerId === playerId && ['hand', 'skill'].includes(c.zone) &&
@@ -1539,7 +1661,7 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
   if (new Set(required.map(choice => choice.cardInstanceId)).size !== required.length) return undefined;
   if (ordinaryRequired.some(choice => !groups.some(group => group.some(option =>
     option.cardInstanceId === choice.cardInstanceId && !!option.faceDown === !!choice.faceDown)))) return undefined;
-  const costOf = (choice: PlayCardAction) => choice.faceDown ? 0 : Number(definition(s, choice.cardInstanceId)?.cardFace.cost ?? 0);
+  const costOf = (choice: PlayCardAction) => choice.faceDown ? 0 : cardManaCost(s, choice.cardInstanceId);
   const extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).reduce((sum, choice) => sum + costOf(choice), 0);
   const find = (target: number, fixed: PlayCardAction[], additionalCost = 0, budget = mana): PlayCardAction[] | undefined => {
     const fixedIds = new Set(fixed.map(choice => choice.cardInstanceId));
@@ -1652,7 +1774,8 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     }
     for (const a of definition(s, c.instanceId)?.abilities ?? []) {
       const interaction = classifyAbilityInteraction(a);
-      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) || s.round.prioritySeat !== p.seat || !canActivate(s, c.instanceId, a)) continue;
+      if (interaction.kind !== 'phase_activation' || effectiveActivationPhase(s, c.instanceId, a) !== phase(s) ||
+          (s.round.prioritySeat !== p.seat && !approvedAdvanceGroup(a)) || !canActivate(s, c.instanceId, a)) continue;
       const costs = a.cost.filter(x => x.type === 'pay_mana' && node(x.amount).var).map(x => ({ name: str(node(x.amount).var), min: 0, max: p.mana }));
       result.push({ type: 'activate_ability', cardInstanceId: c.instanceId, abilityId: a.id, ...(costs.length ? { variableCosts: costs } : {}) });
     }
@@ -2286,6 +2409,77 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'play_selected_cards': playBatch(s, p.id, (ctx.selections[str(effect.target)] ?? []).map(cardInstanceId =>
       ({ type: 'play_card', cardInstanceId, ...(effect.face === 'face_down' ? { faceDown: true } : {}) })), 'effect'); break;
+    case 'play_card_group': {
+      const selected = ctx.selections[str(effect.target)] ?? [];
+      if (!approvedAdvanceGroup(a) || selected.length !== 1 || !canPlayAdvanceGroup(s, ctx, selected[0]!, effect)) {
+        reject('illegal_target', 'Advance group cannot be legally paid and played');
+      }
+      playBatch(s, p.id, [
+        { type: 'play_card', cardInstanceId: ctx.sourceCardId },
+        { type: 'play_card', cardInstanceId: selected[0]! },
+      ], 'effect', false, true);
+      break;
+    }
+    case 'replace_phase_abilities': {
+      const selected = ctx.selections[str(effect.target)] ?? [];
+      if (selected.length !== 1 || selected[0] === ctx.sourceCardId || !phaseSourceActive(s, ctx.sourceCardId, p.id) ||
+          !phaseSourceActive(s, selected[0]!, p.id)) reject('illegal_target', 'Replacement requires a distinct active controlled target');
+      const targetDefinition = definition(s, selected[0]!);
+      if (!targetDefinition?.abilities.some(candidate => candidate.kind === 'phase_action' && candidate.activation.phase === effect.phase)) {
+        reject('illegal_target', 'Target has no replaceable phase action');
+      }
+      const entry = { sourceCardId: ctx.sourceCardId, sourceAbilityId: ctx.abilityId, templateId: str(effect.id),
+        targetCardId: selected[0]!, controllerId: p.id, round: s.round.roundNumber };
+      const id = replacementId(entry), entries = r.phaseAbilityReplacements ??= [];
+      if (!entries.some(candidate => candidate.id === id)) entries.push({ id, ...entry });
+      if (!validPhaseTemplateState(s)) reject('unsupported', 'Invalid canonical replacement template');
+      break;
+    }
+    case 'schedule_at_player_action_end': {
+      if (phase(s) !== 'action' || s.round.prioritySeat !== p.seat || r.playerActionEnds?.[p.id] === s.round.roundNumber ||
+          !phaseSourceActive(s, ctx.sourceCardId, p.id) || !actionEndTemplate(s, ctx)) {
+        reject('illegal_action', 'Action-end promise is not declarable now');
+      }
+      const id = `action-end:${s.round.roundNumber}:${p.id}:${ctx.sourceCardId}:${ctx.abilityId}`;
+      const entries = r.pendingPlayerActionEnds ??= [];
+      if (entries.some(candidate => candidate.id === id)) reject('ability_limit_reached', 'Action-end promise is already armed');
+      entries.push({ id, controllerId: p.id, round: s.round.roundNumber,
+        context: { controllerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, selections: {}, variables: {} } });
+      break;
+    }
+    case 'reveal_hands': {
+      const issue = handRevealContractIssue(a);
+      if (issue) reject('unsupported', issue);
+      const subjects = referencedPlayerIds(s, ctx, effect).filter(id => player(s, id).status === 'active' && !isProtectedFromOpponentEffects(s, id, p.id));
+      const revealed = s.cards.filter(c => c.zone === 'hand' && subjects.includes(c.ownerPlayerId)).map(c => ({
+        cardId: c.instanceId, definitionId: c.definitionId, ownerPlayerId: c.ownerPlayerId, controllerPlayerId: c.controllerPlayerId,
+        name: r.pack.cards[c.definitionId]?.name ?? c.definitionId,
+      }));
+      (ctx.bindings ??= {})[str(effect.bind)] = {
+        effectType: 'reveal_hands', affectedCount: revealed.length, affectedPlayerIds: subjects,
+        affectedCardIds: revealed.map(c => c.cardId), revealedCards: revealed,
+        affectedCards: revealed.map(c => boundCardInfo(s, c.ownerPlayerId, c.cardId)),
+      };
+      r.events.push({ type: 'hands_revealed', playerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId,
+        details: { cards: JSON.stringify(revealed), round: String(s.round.roundNumber) } });
+      break;
+    }
+    case 'play_revealed_card': {
+      const issue = handRevealContractIssue(a);
+      if (issue || !validHandRevealBindings(s, ctx, a)) reject('unsupported', issue ?? 'Invalid hand-reveal binding');
+      const selected = ctx.selections[str(effect.target)] ?? [];
+      if (!selected.length) break;
+      const binding = ctx.bindings?.[str(effect.binding)];
+      const entry = binding?.effectType === 'reveal_hands' ? binding.revealedCards?.find(candidate => candidate.cardId === selected[0]) : undefined;
+      if (selected.length !== 1 || !entry || !canPlayRevealedHandCard(s, ctx, entry)) {
+        reject('illegal_target', 'Selected hand card is no longer legally playable from this reveal');
+      }
+      card(s, entry.cardId).controllerPlayerId = p.id;
+      playBatch(s, p.id, [{ type: 'play_card', cardInstanceId: entry.cardId }], 'effect');
+      runtime(s).events.push({ type: 'revealed_card_played', playerId: p.id, sourceCardId: ctx.sourceCardId,
+        abilityId: ctx.abilityId, cardInstanceId: entry.cardId, details: { round: String(s.round.roundNumber) } });
+      break;
+    }
     case 'play_source_card': {
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
@@ -2554,6 +2748,17 @@ function findPendingTargetRestoreSpec(
       const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
       return branch ? findPendingTargetRestoreSpec(s, ctx, a, nodes(branch.then ?? branch.else)) : undefined;
     }
+    if (effect.type === 'reveal_hands' && ctx.bindings?.[str(effect.bind)]?.effectType !== 'reveal_hands') {
+      const revealTarget = a.targets.find(target => target.id === effect.targetRef);
+      const revealRef = str(effect.targetRef);
+      if (revealTarget?.selection === 'all' && !Object.prototype.hasOwnProperty.call(ctx.selections, revealRef)) {
+        const choices = candidates(s, ctx, revealTarget);
+        const count = node(revealTarget.count);
+        if (choices.length < Number(count.min ?? 1) || choices.length > Number(count.max ?? 1)) reject('invalid_count', 'All-player reveal exceeds its declared target count');
+        ctx.selections[revealRef] = choices;
+      }
+      if (Object.prototype.hasOwnProperty.call(ctx.selections, revealRef)) return undefined;
+    }
     if (effect.type === 'move_player') {
       // move_player names its mover through targetRef and its destination either through a location
       // target named by `to` or through a fixed map location id; resolve every declared target in order.
@@ -2580,6 +2785,25 @@ function findPendingTargetRestoreSpec(
     return { target, candidates: choices, min, max, remainingEffects: effects };
   }
   return undefined;
+}
+
+function pendingPlayBudget(s: GameState, pending: PendingDecision, choices: string[]): { mana: number; costs: Record<string, number> } | undefined {
+  if (pending.interaction || !Array.isArray(pending.remainingEffects)) return undefined;
+  const first = pending.remainingEffects[0];
+  if (pending.target.type !== 'card_instance' || !['play_selected_cards', 'play_revealed_card', 'play_card_group'].includes(str(first?.type)) ||
+      str(first?.target) !== str(pending.target.id)) return undefined;
+  const costs: Record<string, number> = {};
+  for (const id of choices) {
+    try {
+      if (first!.type === 'play_card_group') costs[id] = cardManaCost(s, pending.context.sourceCardId) + cardManaCost(s, id);
+      else if (first!.type === 'play_revealed_card') {
+        const preview = structuredClone(s);
+        card(preview, id).controllerPlayerId = pending.controllerId;
+        costs[id] = cardManaCost(preview, id);
+      } else costs[id] = first!.face === 'face_down' ? 0 : cardManaCost(s, id);
+    } catch { /* Missing quotes remain absent so clients cannot confirm them. */ }
+  }
+  return { mana: player(s, pending.controllerId).mana, costs };
 }
 
 function findPendingTarget(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): PendingDecision | undefined {
@@ -2836,6 +3060,7 @@ export function isCanonicalGenericPendingDecisionForRestore(s: GameState, decisi
           eventSource.definitionId !== placement.eventCardId || eventSource.locationId !== placement.locationId) return false;
     }
     const ability = restoredAbility(s, decision.context.sourceCardId, decision.context.abilityId);
+    if (ability && !validHandRevealBindings(s, decision.context, ability, true)) return false;
     if (!ability || !convergenceSourceAvailable(s, decision.context.sourceCardId, ability) || !contextVariablesBelongToAbility(ability, decision.context) ||
         !inputVariableCalculationsMatch(s, ability, decision.context)) return false;
     const targetIds = new Set(ability.targets.map((target) => str(target.id)).filter(Boolean));
@@ -3503,6 +3728,23 @@ function isBattleLossUnpreventableVpTriggerCandidate(a: AuthoringAbility): boole
 export function isBattleLossUnpreventableVpTriggerSemantic(a: AuthoringAbility): boolean {
   if (!isBattleLossUnpreventableVpTriggerCandidate(a)) return false;
   if (str(a.activation.phase) || str(a.activation.opens) || str(a.activation.requiresSourceState)) return false;
+  // The explicit six-zone variant encodes the same played-source guard as the native reader below.
+  if(a.conditions.length===1&&a.targets.length===6&&!a.cost.length&&!a.creates.length&&!Object.keys(a.lifecycle).length&&
+    !str(a.responseWindow.opens)&&a.limit.type==='per_round'&&a.limit.uses===1&&a.limit.scope==='this_card'&&Object.keys(a.limit).length===3){
+    const zones=['skill','attack_area','hand','discard','deck','removed_from_game'];
+    const predicates=nodes(a.conditions[0]!.conditions),refs=new Set(predicates.map(c=>str(c.targetRef)));
+    const effect=a.effects[0]!,modifier=a.ruleModifiers[0];
+    const guarded=a.conditions[0]!.type==='or'&&predicates.length===6&&predicates.every(c=>c.type==='exists_target'&&Object.keys(c).length===2)&&refs.size===6&&
+      a.targets.every(t=>refs.has(str(t.id))&&t.type==='card_instance'&&node(t.count).min===0&&node(t.count).max===1&&
+        node(t.scope).owner==='any'&&node(t.scope).controller==='any'&&zones.includes(str(node(t.scope).zone))&&
+        nodes(t.constraints).length===2&&nodes(t.constraints).some(c=>c.type==='played_this_round'&&Object.keys(c).length===1)&&
+        nodes(t.constraints).some(c=>c.type==='not'&&node(c.condition).type==='not_source_card'&&Object.keys(c).length===2&&Object.keys(node(c.condition)).length===1))&&
+      new Set(a.targets.map(t=>str(node(t.scope).zone))).size===6;
+    if(guarded&&effect.amount===-5&&(effect.player===undefined||effect.player==='controller')&&Object.keys(effect).every(k=>['type','amount','player'].includes(k))&&
+      a.ruleModifiers.length===1&&modifier?.operation==='ignore'&&modifier.rule==='effect_prevention'&&modifier.scope===undefined&&
+      node(modifier.priority).tier==='explicit_exception'&&Object.keys(node(modifier.priority)).length===1&&
+      Object.keys(modifier).every(k=>['id','operation','rule','priority'].includes(k)))return true;
+  }
   if (a.conditions.length !== 0 || a.targets.length !== 0 || a.cost.length !== 0 || a.creates.length !== 0) return false;
   if (Object.keys(a.lifecycle).length !== 0 || str(a.responseWindow.opens) || Object.keys(a.limit).length !== 0) return false;
 
@@ -4682,6 +4924,10 @@ function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: Au
       additionalFaceUpCards += 1;
       continue;
     }
+    if (effect.type === 'play_card_group' && isApprovedAdvanceGroupEffect(effect)) {
+      additionalFaceUpCards += 2;
+      continue;
+    }
     if (effect.type === 'play_selected_cards' && effect.face !== 'face_down') {
       additionalFaceUpCards += preflightFaceUpSelectedCount(a, ctx, str(effect.target));
       continue;
@@ -4727,7 +4973,7 @@ function preflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: Authori
 
 function hasPotentialFaceUpEffectPlay(effects: RuleNode[]): boolean {
   for (const effect of effects) {
-    if ((effect.type === 'play_source_card' || effect.type === 'play_selected_cards') && effect.face !== 'face_down') return true;
+    if ((['play_source_card', 'play_selected_cards', 'play_card_group', 'play_revealed_card'].includes(str(effect.type))) && effect.face !== 'face_down') return true;
     if (effect.type !== 'branch') continue;
     for (const branch of nodes(effect.branches)) {
       if (hasPotentialFaceUpEffectPlay([...nodes(branch.then), ...nodes(branch.else)])) return true;
@@ -5073,6 +5319,34 @@ export function processAbilitySystemEvent(s: GameState, label: string, event: Om
   runtime(copy).revision++;
   Object.assign(s, copy);
 }
+/** Session hook: settle each controller's action-end promises before priority advances. */
+export function completePlayerActionTurn(s: GameState, playerId: string): { ok: boolean; message?: string } {
+  if (phase(s) !== 'action' || s.round.prioritySeat !== player(s, playerId).seat) return { ok: false, message: 'Not the current action turn' };
+  if (runtime(s).playerActionEnds?.[playerId] === s.round.roundNumber) return { ok: true };
+  const copy = structuredClone(s), r = runtime(copy);
+  try {
+    if (!validPhaseTemplateState(copy)) reject('invalid_state', 'Invalid action-end authority');
+    const due = (r.pendingPlayerActionEnds ?? []).filter(entry => entry.controllerId === playerId && entry.round === copy.round.roundNumber);
+    r.pendingPlayerActionEnds = (r.pendingPlayerActionEnds ?? []).filter(entry => !due.includes(entry));
+    (r.playerActionEnds ??= {})[playerId] = copy.round.roundNumber;
+    for (const entry of due) {
+      const ctx = entry.context;
+      const replacement = r.phaseAbilityReplacements?.find(candidate => candidate.id === ctx.abilityId && candidate.targetCardId === ctx.sourceCardId);
+      if (!phaseSourceActive(copy, ctx.sourceCardId, playerId) || (replacement && !replacementLive(copy, replacement))) continue;
+      const template = actionEndTemplate(copy, ctx);
+      if (!template) reject('invalid_state', 'Action-end template is missing');
+      executeEffects(copy, structuredClone(ctx), nodes(template.then));
+      if (r.pendingDecision || r.hostRequests.length) reject('unsupported', 'Action-end templates cannot open target windows');
+    }
+    processEvent(copy, { id: `action-end:${copy.round.roundNumber}:${playerId}`, type: 'after_controller_action_turn_ended', playerId });
+    r.revision++;
+    Object.assign(s, copy);
+    return { ok: true };
+  } catch (error) {
+    if (error instanceof RuleRejection) return { ok: false, message: error.message };
+    throw error;
+  }
+}
 export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.round.roundNumber): void {
   const r = runtime(s);
   if (r.pendingDecision || r.responseWindows.length || r.hostRequests.length) reject('pending_resolution', 'Resolve the current decision before advancing');
@@ -5086,6 +5360,8 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).roundTotalPowerAdjustments = { round, byPlayer: {} };
     runtime(copy).pendingSourceCardReturns = runtime(copy).pendingSourceCardReturns.filter((entry) => entry.round >= round);
     runtime(copy).pendingPreBattleDefeats = [];
+    runtime(copy).phaseAbilityReplacements = (runtime(copy).phaseAbilityReplacements ?? []).filter(entry => entry.round >= round);
+    runtime(copy).pendingPlayerActionEnds = (runtime(copy).pendingPlayerActionEnds ?? []).filter(entry => entry.round >= round);
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
@@ -5143,21 +5419,36 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
         return { cardInstanceId: c.instanceId, faceDown, ...classification, ...(reasonCode ? { reasonCode } : {}) };
       })) } : {}) };
   const d = r.pendingDecision;
+  const revealContext = d && !d.interaction ? d.context : undefined;
+  const revealAbility = revealContext && definition(s, revealContext.sourceCardId)?.abilities.find(ability => ability.id === revealContext.abilityId);
+  const revealSource = revealContext && s.cards.find(candidate => candidate.instanceId === revealContext.sourceCardId);
+  const currentRevealIds = new Set(d && revealAbility && revealSource?.controllerPlayerId === d.controllerId &&
+    (revealAbility.activation.requiresSourceState !== 'active' || active(s, revealSource.instanceId)) &&
+    validHandRevealBindings(s, d.context, revealAbility, true)
+    ? pendingRevealedHands(s, d).filter(entry => !isProtectedFromOpponentEffects(s, entry.ownerPlayerId, d.controllerId))
+      .map(entry => entry.cardId) : []);
+  const recentHandReveal = lastHandReveal(s);
+  if (recentHandReveal) view.lastHandReveal = recentHandReveal;
   const privatelyInspectedCardIds = new Set(
     d?.interaction?.kind === 'same_battlefield_private_hand_return_v1' && d.controllerId === viewerId ? d.candidates : [],
   );
   for (const c of s.cards) {
     if (c.zone === 'deck') continue;
     const privateZone = ['hand', 'skill', 'looked_cards'].includes(c.zone);
-    const isPublic = !privateZone && (c.visibility.scope === 'public' || ongoing.some(o => o.controllerId === c.ownerPlayerId && o.publicZones.includes(c.zone)));
+    const isPublic = currentRevealIds.has(c.instanceId) || !privateZone &&
+      (c.visibility.scope === 'public' || ongoing.some(o => o.controllerId === c.ownerPlayerId && o.publicZones.includes(c.zone)));
     const own = c.ownerPlayerId === viewerId;
     const privatelyInspected = privatelyInspectedCardIds.has(c.instanceId) && c.zone === 'hand';
     if (!own && !privatelyInspected && !isPublic && !['field', 'attack_area'].includes(c.zone)) continue;
     const hidden = !own && !privatelyInspected && (!isPublic || runtime(s).cardState[c.instanceId]?.faceDown);
     // Opaque battlefield slot ids do not reveal definition ids embedded in legacy instance ids.
     const physicalState = runtime(s).cardState[c.instanceId];
+    let currentManaCost: number | null = null;
+    if (!hidden) { try { currentManaCost = cardManaCost(s, c.instanceId); } catch { /* Unavailable cost is explicit, never free. */ } }
     view.cards.push({ instanceId: hidden ? `hidden-field-${s.cards.indexOf(c)}` : c.instanceId,
-      ...(!hidden && (own || privatelyInspected || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId, zone: c.zone,
+      ...(!hidden && (own || privatelyInspected || isPublic) ? { definitionId: c.definitionId } : {}), ownerPlayerId: c.ownerPlayerId,
+      controllerPlayerId: c.controllerPlayerId, zone: c.zone,
+      ...(!hidden ? { currentManaCost, publiclyVisible: isPublic } : {}),
       ...(!hidden && ['field','attack_area'].includes(c.zone) && physicalState?.boardLocationId ? {boardLocationId:physicalState.boardLocationId} : {}),
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
@@ -5166,7 +5457,9 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
   if (d) {
     if (d.controllerId === viewerId) {
       const projectedCandidates = d.interaction ? d.candidates : candidates(s, d.context, d.target);
+      const playBudget = pendingPlayBudget(s, d, projectedCandidates);
       view.pendingDecision = { id: d.id, candidates: [...projectedCandidates], min: d.min, max: d.max,
+        ...(playBudget ? { playBudget } : {}),
         ...(d.interaction ? {
           template: d.interaction.template, sourceCardInstanceId: d.interaction.sourceCardInstanceId, abilityId: d.interaction.abilityId,
           createdRevision: d.interaction.createdRevision, visibility: d.interaction.visibility, cancelPolicy: d.interaction.cancelPolicy,
@@ -5557,7 +5850,8 @@ function recordConsecutivePlay(s: GameState, sourceId: string, faceDown: boolean
     ? previous + 1 : 1;
 }
 
-function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false): void {
+function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false,
+  advanceGroupException = false): void {
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
   if (faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {
@@ -5582,13 +5876,16 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
   }
   let cost = 0;
   const paidManaByCard = new Map<string, number>();
+  const quotedManaByCard = new Map<string, number>();
   for (const c of choices) {
     const allowRequiredAdditional = quota === 'regular' && requiredAdditionalIds.has(c.cardInstanceId) && regularAttackChoices > 0;
     const failure = quota === 'effect' && c.faceDown === true
       ? faceDownEffectPlayFailure(s, playerId, c.cardInstanceId)
-      : playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost);
+      : playFailure(s, playerId, c.cardInstanceId, c.faceDown === true, true, quota === 'effect', quota === 'effect', allowRequiredAdditional, waiveManaCost, advanceGroupException);
     if (failure) reject(failure, 'Card cannot be played in this batch');
-    const paidMana = !waiveManaCost && !c.faceDown ? Number(definition(s, c.cardInstanceId)!.cardFace.cost ?? 0) : 0;
+    const quotedMana = c.faceDown ? 0 : cardManaCost(s, c.cardInstanceId);
+    quotedManaByCard.set(c.cardInstanceId, quotedMana);
+    const paidMana = waiveManaCost ? 0 : quotedMana;
     if (!Number.isSafeInteger(paidMana) || paidMana < 0) reject('invalid_cost', 'Card paid mana provenance must be a nonnegative safe integer');
     paidManaByCard.set(c.cardInstanceId, paidMana);
     cost += paidMana;
@@ -5620,7 +5917,7 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     if (d && !c.faceDown) {
       const attributes = Array.isArray(d.cardFace.attributes) ? d.cardFace.attributes : [];
       if (attributes.includes('宝具')) {
-        const cardCost = Number(d.cardFace.cost ?? 0);
+        const cardCost = quotedManaByCard.get(c.cardInstanceId)!;
         if (!runtime(s).noblePhantasmCostsThisRound[playerId]) {
           runtime(s).noblePhantasmCostsThisRound[playerId] = [];
         }
