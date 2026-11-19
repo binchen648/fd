@@ -207,7 +207,7 @@ const supportedTypes = new Set([
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
   'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
-  'create_modifier', 'not_location_kind', 'power_bonus', 'terrain_bonus', 'card_not_on_board', 'card_on_controller_battlefield', 'not_card_id',
+  'create_modifier', 'attribute_bonus', 'not_location_kind', 'power_bonus', 'terrain_bonus', 'card_not_on_board', 'card_on_controller_battlefield', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
@@ -295,7 +295,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   // 部署到任意地点（含非战场，如魔术工房）
   'after_player_deployed_to_location',
 ]);
-const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
+const mechanicKeys = new Set(['attributesFromBinding', 'type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
@@ -348,6 +348,15 @@ export function isAcceptedControllerSkillManaException(a: AuthoringAbility | Rul
     node(m.scope).subject === 'controller' && Object.keys(node(m.scope)).length === 1 &&
     Object.keys(m).every(k=>['id','printedClause','operation','rule','scope'].includes(k));
 }
+/** Exact dual-signed source-instance Treasury shapes; not a general multiplier ABI. */
+export function isAcceptedSourceCardModifier(n: RuleNode): boolean {
+  if (n.duration !== 'this_round' || n.sourceMustRemainActive !== true ||
+      Object.keys(node(n.scope)).length !== 1 || node(n.scope).subject !== 'source_card') return false;
+  if (n.type === 'power_bonus') return n.operation === 'multiply' && n.rule === 'attack.currentPower' && n.amount === 2 &&
+    Object.keys(n).every(k => ['type','operation','rule','amount','scope','duration','sourceMustRemainActive'].includes(k));
+  return n.type === 'attribute_bonus' && n.attributesFromBinding === 'treasury_discarded' &&
+    Object.keys(n).every(k => ['type','attributesFromBinding','scope','duration','sourceMustRemainActive'].includes(k));
+}
 export function isAcceptedSourceBoundAggregate(n: RuleNode): boolean {
   return n.type === 'power_bonus' && n.operation === 'add' && n.aggregate === 'total' && n.duration === 'this_round' &&
     n.sourceMustRemainActive === true && Number.isSafeInteger(n.amount) && Number(n.amount) >= 0 &&
@@ -358,7 +367,7 @@ function invalidSourceBoundAggregate(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(invalidSourceBoundAggregate);
   if (!value || typeof value !== 'object') return false;
   const n=node(value);
-  return (n.sourceMustRemainActive !== undefined && !isAcceptedSourceBoundAggregate(n)) || Object.values(n).some(invalidSourceBoundAggregate);
+  return (n.sourceMustRemainActive !== undefined && !isAcceptedSourceBoundAggregate(n) && !isAcceptedSourceCardModifier(n)) || Object.values(n).some(invalidSourceBoundAggregate);
 }
 function containsSourceBoundAggregate(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(containsSourceBoundAggregate);
@@ -520,6 +529,19 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       }
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);
+      if (n.type === 'create_modifier' && node(n.modifier).type === 'power_bonus' &&
+          node(n.modifier).operation === 'multiply' && !isAcceptedSourceCardModifier(node(n.modifier))) {
+        issue(path, 'Unsupported source card multiplier', abilityId);
+      }
+      if (n.type === 'create_modifier' && node(n.modifier).type === 'attribute_bonus') {
+        const a = nodes(raw.abilities).find(a => str(a.id) === abilityId);
+        const effects = nodes(a?.effects), index = effects.indexOf(n);
+        const producer = effects.slice(0,index).find(e => e.type === 'move_all_remaining' && e.bind === node(n.modifier).attributesFromBinding);
+        if (!isAcceptedSourceCardModifier(node(n.modifier)) || !producer || producer.from !== 'hand' ||
+            node(producer.to).zone !== 'discard' || node(producer.to).owner !== 'controller' || producer.excluding !== undefined) {
+          issue(path, 'Source attributes require same-ability actual own-hand discard binding', abilityId);
+        }
+      }
       if (n.type === 'set_zone_visibility' && (n.visibility !== 'public' || n.zone !== 'discard')) issue(`${path}.visibility`, 'Only continuous public discard visibility is supported', abilityId);
       if (n.type === 'shuffle_zone_into_deck' && (node(n.from).zone !== 'discard' || node(n.to).zone !== 'deck')) issue(`${path}.from`, 'Only discard-to-deck shuffle is supported', abilityId);
       for (const [key, child] of Object.entries(n)) scan(child, `${path}.${key}`, abilityId);

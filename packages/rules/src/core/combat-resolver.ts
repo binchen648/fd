@@ -25,6 +25,8 @@ export interface CombatParticipantInput {
   playerId: string;
   totalPower: number;
   attackTags?: string[];
+  /** Physical grouping for per-attack event and situation modifiers. */
+  attackCards?: Array<{ instanceId: string; tags: string[] }>;
   externalSkillEffects?: ExternalSkillEffect[];
   terrainSlotIndex?: number;
 }
@@ -89,20 +91,25 @@ function getRuleBreakdowns(
   rules: CombatModifierRule[] | undefined,
   participant: CombatParticipantInput,
 ): BattleModifierBreakdown[] {
-  if (!rules?.length || !participant.attackTags?.length) {
-    return [];
-  }
-
-  return rules
-    .filter((rule) => {
-      const attackTags = participant.attackTags ?? [];
-      if (rule.condition === "lacks_attribute") return !attackTags.includes(rule.targetTag);
-      if (rule.condition === "has_repeated_attribute") {
-        return attackTags.some((tag, index) => attackTags.indexOf(tag) !== index);
-      }
-      return attackTags.includes(rule.targetTag);
-    })
-    .map((rule) => createModifierBreakdown(source, rule));
+  if (!rules?.length) return [];
+  const physicalCards = participant.attackCards;
+  const attackTags = physicalCards
+    ? physicalCards.flatMap(card => [...new Set(card.tags)])
+    : (participant.attackTags ?? []);
+  const matches = (tags: string[], rule: CombatModifierRule): boolean => {
+    const hasAttribute = tags.some(tag => tag === rule.targetTag);
+    return rule.condition === 'lacks_attribute' ? !hasAttribute : hasAttribute;
+  };
+  return rules.flatMap(rule => {
+    if (rule.condition === 'has_repeated_attribute') {
+      return attackTags.some((tag, index) => attackTags.indexOf(tag) !== index)
+        ? [createModifierBreakdown(source, rule)] : [];
+    }
+    if (physicalCards && (source === 'event' || source === 'situation')) {
+      return physicalCards.filter(card => matches(card.tags, rule)).map(() => createModifierBreakdown(source, rule));
+    }
+    return attackTags.length && matches(attackTags, rule) ? [createModifierBreakdown(source, rule)] : [];
+  });
 }
 
 function getSituationBreakdowns(
@@ -414,7 +421,17 @@ export function deriveBattleParticipantsFromState(
         card.controllerPlayerId === player.id && isCombatCardZone(state, card) &&
         state.abilityRuntime!.cardState[card.instanceId]?.active &&
         state.abilityRuntime!.pack.cards[card.definitionId]) : [];
-      const authoredPower = authoredAttacks.reduce((sum, card) => sum + calculateCardPower(state, card.instanceId).value, 0);
+      const authoredPower = authoredAttacks.reduce((sum, card) => {
+        if (state.abilityRuntime!.cardState[card.instanceId]?.faceDown || classifyCardPlay(state.abilityRuntime!.pack.cards[card.definitionId]).playKind !== 'attack') return sum + calculateCardPower(state,card.instanceId).value;
+        const tags = getEffectiveCardAttributes(state,card.instanceId);
+        const physical = {playerId:player.id,totalPower:0,attackCards:[{instanceId:card.instanceId,tags}]};
+        // These per-card environmental terms are also itemized by the aggregate breakdown.
+        // Subtract their plain value here so it is counted once, after sharing the card layer.
+        const environment = reverseSituationAndEventIfNeeded(state,battlefieldId,physical,
+          getSituationBreakdowns(state,physical).concat(getEventBreakdowns(state,battlefieldId,physical)))
+          .reduce((total,m) => total+m.value,0);
+        return sum + calculateCardPower(state,card.instanceId,environment).value - environment;
+      }, 0);
 
       const terrainSlotIndex = assignedTerrainSlotIndex(state, battlefieldId, player.id);
       let persistentPowerAdjustment = roundTotalPowerAdjustment(state, player.id);
@@ -427,11 +444,20 @@ export function deriveBattleParticipantsFromState(
         other.id !== player.id && other.status === 'active' && other.locationId === battlefieldId && other.vp < player.vp)) {
         persistentPowerAdjustment += lowerVpAdjustment;
       }
+      // Only uncompiled legacy attacks use starter-pack tags; authored instances use
+      // their effective physical face.
+      const attackCards = publicAttackCards
+        .filter(card => !state.abilityRuntime?.pack.cards[card.definitionId])
+        .map(card => ({ instanceId: card.instanceId, tags: starterPack.servants.find(entry => entry.id === card.definitionId)!.tags }))
+        .concat(authoredAttacks
+          .filter(card => !state.abilityRuntime!.cardState[card.instanceId]?.faceDown &&
+            classifyCardPlay(state.abilityRuntime!.pack.cards[card.definitionId]).playKind === 'attack')
+          .map(card => ({ instanceId: card.instanceId, tags: getEffectiveCardAttributes(state, card.instanceId) })));
       const participant = {
         playerId: player.id,
         totalPower: definitions.filter(entry => !state.abilityRuntime?.pack.cards[entry.id]).reduce((sum, entry) => sum + (entry.basePower ?? 0), 0) + authoredPower + persistentPowerAdjustment,
-        attackTags: definitions.flatMap((entry) => entry.tags).concat(authoredAttacks.flatMap(card =>
-          getEffectiveCardAttributes(state, card.instanceId))),
+        attackTags: attackCards.flatMap(card => card.tags),
+        ...(state.abilityRuntime ? { attackCards } : {}),
 
         externalSkillEffects,
       };
