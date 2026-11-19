@@ -1,27 +1,44 @@
 {
   "taskId": "P3-EURYALE-AB-MAIN-20261119",
   "baseSha": "2fdfaee533c9ff67763e14ea7480373cf48cdde3",
-  "reviewedCandidateSha": "d21c430d898cf4083d5e63b07c744dbdcbe0bab6",
-  "reviewSha": "454c0d6b96becef6984adf51c35b7ec10d7dd636",
-  "synchronizationSha": "d86a68d9f68a6f72c75064d82f9a9a93a93c6ef0",
+  "reviewedCandidateSha": "6c9d326a1360ae553568fb6bd01f842717baf715",
+  "reviewSha": "f0693f396c10c3cd9a6e48998132e666b42f412c",
+  "synchronizationSha": "e2bfd779cb5ad2e9d40aed1b68136e03c0c01258",
   "logSha256": {
+    "client-assets-final.log": "6cfe1587bbfc3c85ec3deab97f9505e62b8e12be41750fc47ad41b81126a2473",
+    "client-final.log": "dfa67b9b44667d7e5a8beefc1e15bb3fdf8153828cf2ad4ca4a4ea56f1faa4a3",
     "client.log": "6e495ceb3ca1276a04f3667fbbff89ab46fe05be952c38d6bd1d7ae5b3bed134",
     "compile.log": "79b5e483fcb11765da79551df41122f3fbe1fb4a9f8d3abc96894013f7c3778f",
+    "final-production.log": "e095812abf5092fdefc81861af49c57ee9be8d627775e1aac37b2351140b5832",
+    "final-roster.log": "2fb6d6e4a9e29305a5b2eb59dbe5e62a165b6776b1de8b611e91a0bc56dd2b45",
+    "final-session.log": "80ddf5d337ff4caf259ff12c5868d55a8ff64d4a52f562e3b1d109989a94fea2",
+    "github-test-fail.log": "89ce8c16ab6a6963696a9408b876d1179269836a7cfe076c34ef081776addf3b",
     "production.log": "ec30b7476f71551abcddbc646bc7dd66c2ee323b5b6d355f8e26591cb99b4c84",
+    "registry-dto.log": "6df80e018aba7b86bbca0a045e0609bba55124ccecb79ce5af068f2a095fec68",
+    "roster-compatibility.log": "c90e30db705edf2cfaac4f429ff06f76a94ea214f0df26c314cbb3b651a02de3",
     "rules.log": "99669dfe23b16f3256b408505be14b2f04b2ed8b80bde7852ddbb012b4509d43",
+    "seed-consumers-before-roster.log": "ec6f6a3c94f88745fe9c1d0c29e0a4420445c537729bb654f363c26827d3de8d",
+    "seed-consumers-repair.log": "17e4648442f93e1aa6df2e3e4aac4bc7d83cf54ba3a1961e4ffecefd2ffb5244",
+    "seed-consumers.log": "d4809494bef9f684b9f280dc56a99af9be266e0a1c396611322fbbc86743360b",
+    "server-final.log": "39aab10688bd3559e3c2a940c04dc107d30230ea9621d02879ba75da55bc9a0a",
+    "typecheck-final.log": "407ee18a4c13fa9aa7cf99a6fdb024396e6eb10d16a37d3bd67636b8566e063a",
     "typecheck.log": "20b3ccb456235240f24197faef2fad63fb19562934f659030820e2650a177dd7",
+    "validate-final.log": "3d198f56961d0bf52bb09f78f4865e0df3b11299218ec6726a27033adee3584f",
     "validate.log": "3d198f56961d0bf52bb09f78f4865e0df3b11299218ec6726a27033adee3584f"
   },
   "tests": {
-    "production": 7,
-    "runtime": 125,
-    "client": 37
+    "productionEuryale": 8,
+    "directRosterSuitesIncludingProduction": 192,
+    "matchSessionRosterCases": 3,
+    "registryAndDto": 166,
+    "client": 72,
+    "server": 25
   },
   "review": "PASS_SCOPED",
   "scope": "Gate B, frozen Euryale only",
   "knownLimits": [
-    "Production fixture seat and hand assumptions corrected; rerun 7/7.",
-    "Duplicate archive fixture corrected; rerun 5/5.",
-    "Source asset verification and full MCS not established."
+    "Previous required CI rejected the expanded pool on legacy seed assumptions, count assertions and malformed pending DTO handling. Fixed fixtures and consumers passed direct reruns.",
+    "Explicit pool overrides are used by fixtures. The normal draw uses all complete registered servants; a durable lobby selection flow and per-master eligibility are separate.",
+    "No art approval, source asset verification or global coverage credit is claimed."
   ]
 }
