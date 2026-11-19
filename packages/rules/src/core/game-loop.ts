@@ -1,3 +1,4 @@
+import { preEntryEngagedPlayerIds } from '../ability/event-location-equals-controller';
 import starterPack from "../data/cards/starter-pack.json";
 import type { BattleDeclarationState, GameState, PhaseName } from "../schema/game";
 import { createRoundStartEventPlacements, type RoundStartEventDraw } from "./event-engine";
@@ -474,6 +475,8 @@ export function stepGameLoop(
   }
 
   if (state.round.activePhase === "action" && input?.action?.type === "move") {
+    const movingPlayerId = input.action.playerId;
+    const preEntry = preEntryEngagedPlayerIds(state, state.players.find(player => player.id === movingPlayerId)?.locationId, input.action.to);
     const movement = movePlayer(state, {
       playerId: input.action.playerId,
       to: input.action.to,
@@ -485,6 +488,7 @@ export function stepGameLoop(
         type: 'after_controller_enters_location',
         playerId: input.action.playerId,
         locationId: input.action.to,
+        preEntryEngagedPlayerIds: preEntry,
       });
     }
     nextState = {

@@ -1,8 +1,23 @@
 import type { GameState } from '../schema/game';
 import type { AbilityEvent, PlayerId, RuleNode } from './types';
+import { getLocationById } from '../core/map-engine';
 
 const CONDITION_TYPE = 'event_location_equals_controller';
 const MOVEMENT_EVENT_TYPE = 'after_controller_enters_location';
+
+/** Snapshot combat facts, deliberately independent of permission to move while engaged. */
+export function preEntryEngagedPlayerIds(state: GameState, from: string | undefined, to: string): PlayerId[] {
+  if (from === to) return [];
+  return state.players.filter(player => player.status === 'active' && player.locationId &&
+    getLocationById(state.map, state.locationConfig, player.locationId)?.tags.includes('battlefield') &&
+    (state.ruleOverrides?.engagedPlayerIds?.includes(player.id) || state.players.some(other =>
+      other.id !== player.id && other.status === 'active' && other.locationId === player.locationId)))
+    .map(player => player.id);
+}
+
+export function isAcceptedPreEntryEngagementCondition(condition: RuleNode): boolean {
+  return condition.type === 'event_controller_was_engaged_before_entry' && Object.keys(condition).length === 1;
+}
 
 /**
  * FB2-43 accepts only the frozen type-only event-location relation shape.

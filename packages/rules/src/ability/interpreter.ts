@@ -44,7 +44,7 @@ import { classifyAcceptedSkillUseForbidModifier, definitionHasStructuralTrueName
 import { isCardCloseForbidden } from './card-close-forbid';
 import { faceUpCardPlayLimitReached, recordCompletedFaceUpCardPlay } from './face-up-cards-per-round';
 import { currentRoundCombatLossAbsent, isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
-import { eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { preEntryEngagedPlayerIds, isAcceptedPreEntryEngagementCondition, eventLocationEqualsController, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate, preBattleDefeatAttribute } from './pre-battle-defeat';
 import {
   battleLossVpWinnerRewardAmounts,
@@ -1138,6 +1138,16 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
     case 'source_owned': return sourceStateCondition(s, ctx, c);
     case 'event_player_won_combat':
     case 'event_player_lost_combat': return eventCombatOutcomeCondition(s, ctx, c);
+    case 'event_controller_was_engaged_before_entry': {
+      if (!isAcceptedPreEntryEngagementCondition(c)) reject('unsupported', 'Unsupported pre-entry engagement condition');
+      if (ctx.event?.type !== 'after_controller_enters_location') return false;
+      const ids = ctx.event.preEntryEngagedPlayerIds;
+      if (!Array.isArray(ids) || new Set(ids).size !== ids.length || ids.some(id =>
+          typeof id !== 'string' || !s.players.some(player => player.id === id))) {
+        return reject('invalid_event', 'Pre-entry engagement requires a trusted movement snapshot');
+      }
+      return ids.includes(ctx.controllerId);
+    }
     case 'event_location_equals_controller': {
       if (!isAcceptedEventLocationEqualsControllerCondition(c)) {
         return reject('unsupported', 'Unsupported event-location relation condition shape');
@@ -2737,9 +2747,10 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         if (movementLockAt(s, destination, mover.id).blocksEntry || movementLockAt(s, from, mover.id).blocksExit) {
           reject('movement_locked', 'An event forbids movement into or out of this location');
         }
+        const preEntry = preEntryEngagedPlayerIds(s, from, destination);
         mover.locationId = destination as LocationId;
         recordMovementForAbilityRuntime(s, mover.id, from, destination);
-        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: mover.id, locationId: destination });
+        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId: mover.id, locationId: destination, preEntryEngagedPlayerIds: preEntry });
 
       }
       recordBinding(ctx, effect, destination && movers.length ? movers.length : 0, movers.map(mover => mover.id));
@@ -4659,10 +4670,11 @@ function executeResolutionEffects(s: GameState, ctx: EffectContext, effects: Rul
           const movingPlayer = player(state, playerId);
           const fromLocationId = movingPlayer.locationId;
           if (!fromLocationId || fromLocationId === toLocationId) reject('resolution_failed', 'Movement requires a different current location.');
+          const preEntry = preEntryEngagedPlayerIds(state, fromLocationId, toLocationId);
           movingPlayer.locationId = toLocationId as LocationId;
           recordMovementForAbilityRuntime(state, playerId, fromLocationId, toLocationId);
           const enterEventId = nextId(state, 'enter-location');
-          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId });
+          processEvent(state, { id: enterEventId, type: 'after_controller_enters_location', playerId, locationId: toLocationId, preEntryEngagedPlayerIds: preEntry });
           return { fromLocationId, toLocationId, movedCount: 1, emittedEventIds: [enterEventId] };
         },
         playSelectedCards: ({ state, playerId, cardInstanceIds, faceDown }) => {
@@ -5581,10 +5593,11 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
         const moved = normalMovementResult(s, playerId, command.locationId);
         if (!moved?.moved) reject('illegal_movement', 'The movement destination is not legal');
         const from = player(s, playerId).locationId;
+        const preEntry = preEntryEngagedPlayerIds(s, from, command.locationId);
         Object.assign(s, moved.nextState);
         writeActionTurn(s, playerId, { ...turn, movement: 'moved' });
         recordMovementForAbilityRuntime(s, playerId, from, command.locationId, true);
-        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId, locationId: command.locationId });
+        processEvent(s, { id: nextId(s, 'enter-location'), type: 'after_controller_enters_location', playerId, locationId: command.locationId, preEntryEngagedPlayerIds: preEntry });
       } else if (command.type === 'skip_normal_move') {
         writeActionTurn(s, playerId, { ...turn, movement: 'skipped' });
       } else {
@@ -5798,8 +5811,9 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
           const occupyingPlayerIds = s.players.filter((candidate) => candidate.id !== meta.boundPlayerId && candidate.status === 'active' && candidate.locationId === to).map((candidate) => candidate.id);
           if (!canOccupyLocation({ map: s.map, config: s.locationConfig, locationId: to, movingPlayerId: meta.boundPlayerId, occupyingPlayerIds,
             ...(s.ruleOverrides ? { ruleOverrides: s.ruleOverrides } : {}) })) reject('illegal_target', 'Ruler seal movement destination is not occupiable');
+          const preEntry = preEntryEngagedPlayerIds(s, from, to);
           delete r.pendingDecision; targetPlayer.locationId = to; recordMovementForAbilityRuntime(s, meta.boundPlayerId, from, to);
-          processEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to });
+          processEvent(s, { id: nextId(s, 'ruler-seal-enter-location'), type: 'after_controller_enters_location', playerId: meta.boundPlayerId, locationId: to, preEntryEngagedPlayerIds: preEntry });
           break;
         }
         if (meta.kind === 'ruler_seal_free_play_v1') {

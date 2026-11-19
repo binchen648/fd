@@ -118,6 +118,8 @@ export interface AbilityEvent {
   revealedKind?: 'situation' | 'event';
   revealedId?: string;
   locationId?: string;
+  /** Server-owned engagement snapshot before a successful move; absent on historical events. */
+  preEntryEngagedPlayerIds?: PlayerId[];
 }
 export interface TriggeredAbility { cardInstanceId: string; abilityId: string; controllerId: PlayerId }
 export interface UniqueTriggerGroup { groupId: string; policy: 'only_one_effect_may_activate_per_window' }

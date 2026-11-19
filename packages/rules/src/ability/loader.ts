@@ -22,7 +22,7 @@ import { isAcceptedStaticFaceUpCardsPerRoundAbility } from './face-up-cards-per-
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './deployment-destinations';
 import { isAcceptedCurrentRoundCombatLossAbsenceCondition } from './current-round-combat-loss-condition';
 import { isAcceptedCurrentRoundCombatWinAbsenceCondition } from './current-round-combat-win-condition';
-import { isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
+import { isAcceptedPreEntryEngagementCondition, isAcceptedEventLocationEqualsControllerCondition } from './event-location-equals-controller';
 import { isAcceptedPreBattleDefeatAbility, isPreBattleDefeatCandidate } from './pre-battle-defeat';
 import {
   BATTLE_LOSS_VP_WINNER_REWARD_EFFECT,
@@ -249,7 +249,7 @@ const supportedTypes = new Set([
   // FB2-33 event combat outcome conditions
   'event_player_won_combat', 'event_player_lost_combat',
   // FB2-43 exact movement-event location relation condition
-  'event_location_equals_controller',
+  'event_location_equals_controller', 'event_controller_was_engaged_before_entry',
   // FB2-45 exact action-phase pre-battle defeat selector/effect tokens; gated by whole-ability classifier below.
   'defeat_player', 'no_attack_played_this_round_with_attribute',
   // FB2-46 exact battle-loss VP -> same-result winners transaction; gated by whole-ability classifier below.
@@ -529,6 +529,13 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['event_player_won_combat', 'event_player_lost_combat'].includes(str(n.type))) {
         if (!path.startsWith('conditions')) issue(path, 'Event combat outcome condition is supported only under ability conditions', abilityId);
         if (!Object.keys(n).every((key) => key === 'type')) issue(path, 'Event combat outcome condition must contain only type', abilityId);
+      }
+      if (str(n.type) === 'event_controller_was_engaged_before_entry') {
+        const ability = nodes(raw.abilities).find(a => str(a.id) === abilityId);
+        if (!path.startsWith('conditions') || !isAcceptedPreEntryEngagementCondition(n) ||
+            node(ability?.activation).trigger !== 'after_controller_enters_location') {
+          issue(path, 'Pre-entry engagement requires an exact type-only movement condition', abilityId);
+        }
       }
       if (str(n.type) === 'event_location_equals_controller') {
         if (!path.startsWith('conditions')) issue(path, 'Event-location relation condition is supported only under ability conditions', abilityId);

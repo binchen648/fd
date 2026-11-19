@@ -443,6 +443,8 @@ function isRestoreAbilityEvent(value: unknown): boolean {
   for (const key of ['battleIds', 'resultIds', 'scoringReceiptIds', 'battleParticipantIds'] as const) {
     if (value[key] !== undefined && !isRestoreStringArray(value[key])) return false;
   }
+  if (value.preEntryEngagedPlayerIds !== undefined && (value.type !== 'after_controller_enters_location' ||
+      !isRestoreStringArray(value.preEntryEngagedPlayerIds) || new Set(value.preEntryEngagedPlayerIds).size !== value.preEntryEngagedPlayerIds.length)) return false;
   if (value.battleParticipantPowers !== undefined && !isRestoreFiniteNumberMap(value.battleParticipantPowers)) return false;
   if (value.battleResult !== undefined) {
     if (!isRestoreRecord(value.battleResult) || !isRestoreStringArray(value.battleResult.winners) || !isRestoreStringArray(value.battleResult.loserIds)) return false;
@@ -936,6 +938,7 @@ function isRestoreAbilityEventReferences(
   if (event.battlefieldId !== undefined && !locationIds.has(event.battlefieldId as string)) return false;
   if (event.locationId !== undefined && !locationIds.has(event.locationId as string)) return false;
   if (event.battleParticipantIds !== undefined && !restoreIdsBelongTo(event.battleParticipantIds, playerIds)) return false;
+  if (event.preEntryEngagedPlayerIds !== undefined && !restoreIdsBelongTo(event.preEntryEngagedPlayerIds, playerIds)) return false;
   if (event.battleParticipantPowers !== undefined && (!isRestoreFiniteNumberMap(event.battleParticipantPowers) ||
       !restoreRecordKeysBelongTo(event.battleParticipantPowers, playerIds))) return false;
   if (Array.isArray(event.battleOutcomes) && !event.battleOutcomes.every((outcome) =>
