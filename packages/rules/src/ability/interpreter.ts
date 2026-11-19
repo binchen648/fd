@@ -1873,6 +1873,7 @@ export function collectTriggeredAbilities(s: GameState, event: AbilityEvent): Tr
         Array.isArray(event.battleParticipantIds) && !event.battleParticipantIds.includes(c.controllerPlayerId)) continue;
       if (event.type === 'after_player_deployed_to_battlefield' && isDeploymentResourceRewardCandidate(a) &&
         event.playerId !== c.controllerPlayerId) continue;
+      if (event.type === 'after_player_deployed_to_location' && event.playerId !== c.controllerPlayerId) continue;
       if (event.type === 'after_controller_loses_battle' && isBattleLossStateTransformCandidate(a) &&
         !battleLossStateTransformTriggerEligible(s, c.instanceId)) continue;
       if (event.type === 'on_card_played' && isSourcePlayBasicAttackDrawTriggerCandidate(a) &&

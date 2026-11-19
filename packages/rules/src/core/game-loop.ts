@@ -306,6 +306,7 @@ function queuePostScoringBattleResultEvents(
         battleParticipantIds: participants,
         battleParticipantPowers: Object.fromEntries(result.participantBreakdowns.map((participant) => [participant.playerId, participant.effectivePower])),
         battlefieldId: result.battlefieldId,
+        locationId: result.battlefieldId,
         battleResult: { winners: [...result.winnerPlayerIds], loserIds },
       });
     }
