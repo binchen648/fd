@@ -1,3 +1,4 @@
+import { referenceSevenServants } from './acceptance/seven-roster-test-helpers';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
@@ -145,7 +146,7 @@ describe('seven servant overview deck projections', () => {
   });
 
   it('instantiates every servant starting deck into the match session without legacy fallback drift', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260904, humanPlayerId: 'p1' });
     for (const pairing of session.pairings) {
       const expected = expectedDecks[pairing.servant.id];
       expect(expected, pairing.servant.id).toBeTruthy();

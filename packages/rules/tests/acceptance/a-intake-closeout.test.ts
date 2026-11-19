@@ -1,3 +1,4 @@
+import { referenceSevenServants } from './seven-roster-test-helpers';
 import { processAbilityEvent } from '../../src/ability/interpreter';
 import { readFileSync } from 'node:fs';
 import { createMatchSession } from '../../src/match-session';
@@ -70,7 +71,7 @@ describe('Current seven-roster registration audit (not execution credit)', () =>
     const identities = archives.flatMap(a => a.cards.flatMap((c: any) => c.abilities.map((ability: any) => `${a.id}/${c.id}/${ability.id}`)));
     expect(identities).toHaveLength(94);
     expect(new Set(identities).size).toBe(94);
-    const runtime = createMatchSession({ seed: 20260907 }).state.abilityRuntime!;
+    const runtime = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260907 }).state.abilityRuntime!;
     for (const a of archives) for (const c of a.cards) for (const ability of c.abilities) {
       expect(runtime.pack.cards[c.id]?.abilities.some(b => b.id === ability.id), `${c.id}/${ability.id}`).toBe(true);
     }

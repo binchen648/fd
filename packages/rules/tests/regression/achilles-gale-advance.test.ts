@@ -1,10 +1,11 @@
+import { referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import { describe, expect, it } from 'vitest';
 import { createMatchSession } from '../../src/match-session';
 import { resolveBattlefield } from '../../src/core/combat-resolver';
 
 const abilityId = 'sc-achilles-1.gale-advance';
 function setup() {
-  const session = createMatchSession({ seed: 394 });
+  const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 394 });
   const state = session.state;
   const achilles = state.players.find(p => p.servantCardId === 'servant.achilles')!;
   const opponents = state.players.filter(p => p.id !== achilles.id);

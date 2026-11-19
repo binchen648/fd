@@ -1,3 +1,4 @@
+import { referenceSevenServants } from './acceptance/seven-roster-test-helpers';
 import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
@@ -510,7 +511,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('adds same-attribute situation power in battle breakdowns', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260904, humanPlayerId: 'p1' });
     const controller = session as unknown as { startRound: (round: number) => void };
     session.state.situationDeck = ['situation.longing_for_future'];
     controller.startRound(1);
@@ -534,7 +535,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('round-trips the production Artoria Caster looked-card continuation and rejects modified continuation state', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
     advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
     session.state.round.prioritySeat = 5;
     session.state.players.find((player) => player.id === 'p5')!.mana = 12;
@@ -584,7 +585,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('authenticates the resolved prefix behind the production Artoria Caster recon continuation', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
+    const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260904, humanPlayerId: 'p5', humanPlayerIds: ['p5'] });
     advanceAbilityPhase(session.state, 'action', session.state.round.roundNumber);
     session.state.round.prioritySeat = 5;
     const player = session.state.players.find((candidate) => candidate.id === 'p5')!;
@@ -649,7 +650,7 @@ describe('MatchSession semi-auto runtime', () => {
   });
 
   it('runs eleven rounds or pauses with an explicit handled reason', () => {
-    const session = createMatchSession({ seed: 20260904, humanPlayerId: 'p1' });
+    const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260904, humanPlayerId: 'p1' });
     const reason = session.runFullMatch({ maxRounds: 11 });
     const projected = session.projectToClientState('p1');
 

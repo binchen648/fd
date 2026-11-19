@@ -94,6 +94,7 @@ export class MatchRoom {
   clients: RoomClient[];
   seats: RoomSeat[];
   session: MatchSession | undefined;
+  private readonly startingServantIds: readonly string[] | undefined;
   private readonly persistenceSecret: string;
   private readonly persistenceScope: string;
   private readonly restorePackKind: NonNullable<MatchSessionConfig['restorePackKind']>;
@@ -102,6 +103,7 @@ export class MatchRoom {
   constructor(config: MatchRoomConfig = {}) {
     this.roomId = resolveMatchRoomId(config);
     this.seed = config.seed ?? 20260904;
+    this.startingServantIds = config.startingServantIds?.slice();
     this.hostClientId = config.hostClientId ?? 'host';
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? rotateOpponentCloseToOnePersistenceScope(this.roomId);
@@ -207,6 +209,7 @@ export class MatchRoom {
     const primaryHuman = humanPlayerIds[0] ?? 'p1';
     this.session = createMatchSession({
       seed: this.seed,
+      ...(this.startingServantIds ? { startingServantIds: this.startingServantIds } : {}),
       humanPlayerId: primaryHuman,
       humanPlayerIds: humanPlayerIds.length ? humanPlayerIds : [primaryHuman],
       persistenceSecret: this.persistenceSecret,

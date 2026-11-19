@@ -1,3 +1,4 @@
+import { referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import { describe, expect, it } from 'vitest';
 import { dispatchAbilityCommand, getLegalActions, processAbilityEvent } from '../../src/ability/interpreter';
 import { createMatchSession } from '../../src/match-session';
@@ -5,7 +6,7 @@ import { createMatchSession } from '../../src/match-session';
 const cardId = 'servant.tomoe.skill.sc-tomoe-1';
 
 function setup(seed: number) {
-  const { state } = createMatchSession({ seed });
+  const { state } = createMatchSession({ startingServantIds: referenceSevenServants, seed });
   const player = state.players.find(player => player.servantCardId === 'servant.tomoe')!;
   const source = state.cards.find(card => card.definitionId === cardId && card.controllerPlayerId === player.id)!;
   const opponent = state.players.find(candidate => candidate.id !== player.id)!;

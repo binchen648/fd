@@ -1,3 +1,4 @@
+import { referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import {describe,expect,it} from 'vitest';
 import contentLibrary from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import {advanceAbilityPhase,initializeActionTurns} from '../../src/ability/interpreter';
@@ -9,7 +10,7 @@ const skill1='servant.euryale.skill.sc-euryale-1';
 const skill2='servant.euryale.skill.sc-euryale-2';
 const skill3='servant.euryale.skill.sc-euryale-3';
 const core='card.x-divine-core';
-const selectedPool=['servant.artoriac','servant.drake','servant.achilles','servant.ereshkigal','servant.tomoe','servant.kintoki',role];
+const selectedPool=referenceSevenServants.map(id=>id==='servant.artoria-alt'?role:id);
 
 function productionSession(seed=20260904):MatchSession {
  const session=createMatchSession({seed,startingServantIds:selectedPool,humanPlayerIds:Array.from({length:7},(_,i)=>`p${i+1}`)});
@@ -152,11 +153,12 @@ function resolveBattleAndDeclineResponses(session:MatchSession){
 }
 
 describe('Euryale against the exact generated production library and normal MatchSession constructor',()=>{
- it('keeps the default roster at seven and permits a seven-seat pool to include Euryale',()=>{
+ it('draws seven unique servants from the production pool and permits a fixed Euryale lineup',()=>{
   const standard=createMatchSession({seed:20260904});
-  expect(standard.state.players.map(player=>player.servantCardId)).toEqual([
-   'servant.tomoe','servant.drake','servant.achilles','servant.ereshkigal','servant.artoriac','servant.kintoki','servant.artoria-alt',
-  ]);
+  const drawn=standard.state.players.map(player=>player.servantCardId);
+  expect(drawn).toHaveLength(7);
+  expect(new Set(drawn).size).toBe(7);
+  expect(drawn).toContain(role);
   const selected=productionSession();
   expect(selected.state.players.map(player=>player.servantCardId).sort()).toEqual([...selectedPool].sort());
   expect(()=>createMatchSession({startingServantIds:[...selectedPool, 'servant.artoria-alt']})).toThrow('exactly seven distinct');

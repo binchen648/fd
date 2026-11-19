@@ -1,3 +1,4 @@
+import { referenceSevenServants } from './seven-roster-test-helpers';
 import { describe, expect, it } from 'vitest';
 import { createMatchRoomHub } from '../../src/match-room-hub';
 import { chooseFullMatchDecision } from '../../../../e2e/support/full-seven-player-driver';
@@ -10,7 +11,7 @@ describe('A-ACCEPT-06 complete seven-player integration baseline', () => {
   it('runs seven human seats with a resource-aware active policy and accepted responses through round eleven', () => {
     const hub = createMatchRoomHub();
     const roomId = 'a-accept-06-active-policy';
-    hub.createRoom({ roomId, seed: 20260907, hostClientId: 'seat-1' });
+    hub.createRoom({ startingServantIds: referenceSevenServants, roomId, seed: 20260907, hostClientId: 'seat-1' });
     for (let seat = 1; seat <= 7; seat++) {
       const id = `seat-${seat}`;
       if (seat > 1) hub.joinRoom(roomId, { clientId: id, displayName: id, role: 'player' });

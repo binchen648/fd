@@ -1,3 +1,4 @@
+import { referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
@@ -16,7 +17,7 @@ const goldenCardIds = [
 type GoldenCardId = typeof goldenCardIds[number];
 
 function prepareGoldenCard(cardId: GoldenCardId, mana: number) {
-  const session = createMatchSession({ seed: 20260907, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
+  const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260907, humanPlayerIds: ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] });
   const card = session.state.cards.find((candidate) => candidate.definitionId === cardId)!;
   const player = session.state.players.find((candidate) => candidate.id === card.controllerPlayerId)!;
   const runtime = session.state.abilityRuntime!;
@@ -49,7 +50,7 @@ describe('Phase 2 golden-card compiled-content pipeline', () => {
       { workspaceRoot: resolve('.') },
     )).library;
     const freshlyCompiled = compileExecutableCardPack(sourceLibrary);
-    const session = createMatchSession({ seed: 20260907 });
+    const session = createMatchSession({ startingServantIds: referenceSevenServants, seed: 20260907 });
     const compiled = contentLibrary.rules;
 
     expect(compiled.schemaVersion).toBe('fd-executable-card-pack-v1');
