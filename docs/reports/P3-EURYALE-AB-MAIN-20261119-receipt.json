@@ -1,0 +1,27 @@
+{
+  "taskId": "P3-EURYALE-AB-MAIN-20261119",
+  "baseSha": "2fdfaee533c9ff67763e14ea7480373cf48cdde3",
+  "reviewedCandidateSha": "d21c430d898cf4083d5e63b07c744dbdcbe0bab6",
+  "reviewSha": "454c0d6b96becef6984adf51c35b7ec10d7dd636",
+  "synchronizationSha": "d86a68d9f68a6f72c75064d82f9a9a93a93c6ef0",
+  "logSha256": {
+    "client.log": "6e495ceb3ca1276a04f3667fbbff89ab46fe05be952c38d6bd1d7ae5b3bed134",
+    "compile.log": "79b5e483fcb11765da79551df41122f3fbe1fb4a9f8d3abc96894013f7c3778f",
+    "production.log": "ec30b7476f71551abcddbc646bc7dd66c2ee323b5b6d355f8e26591cb99b4c84",
+    "rules.log": "99669dfe23b16f3256b408505be14b2f04b2ed8b80bde7852ddbb012b4509d43",
+    "typecheck.log": "20b3ccb456235240f24197faef2fad63fb19562934f659030820e2650a177dd7",
+    "validate.log": "3d198f56961d0bf52bb09f78f4865e0df3b11299218ec6726a27033adee3584f"
+  },
+  "tests": {
+    "production": 7,
+    "runtime": 125,
+    "client": 37
+  },
+  "review": "PASS_SCOPED",
+  "scope": "Gate B, frozen Euryale only",
+  "knownLimits": [
+    "Production fixture seat and hand assumptions corrected; rerun 7/7.",
+    "Duplicate archive fixture corrected; rerun 5/5.",
+    "Source asset verification and full MCS not established."
+  ]
+}
