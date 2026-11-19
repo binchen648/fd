@@ -2,8 +2,9 @@
   "schemaVersion": "fd-phase3-review-attestation-v1",
   "taskId": "P3-EURYALE-AB-MAIN-20261119",
   "reviewer": "github:binchen648",
-  "reviewThread": "https://github.com/binchen648/fd/pull/699#issuecomment-7005742195",
-  "candidateSha": "d21c430d898cf4083d5e63b07c744dbdcbe0bab6",
+  "reviewThread": "https://github.com/binchen648/fd/pull/699#issuecomment-7006228738",
+  "candidateSha": "6c9d326a1360ae553568fb6bd01f842717baf715",
   "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
-  "technicalReviewer": "Codex /root/runtime_safety_review"
+  "technicalReviewer": "Codex /root/runtime_power_review",
+  "priorReviewCandidate": "d21c430d898cf4083d5e63b07c744dbdcbe0bab6"
 }
