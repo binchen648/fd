@@ -93,6 +93,8 @@ export type MatchSessionRestorePackKind = 'production_executable' | 'trusted_aut
 
 export interface MatchSessionConfig {
   seed?: number;
+  /** Server-selected pool of exactly seven playable servant IDs. Defaults to the standard roster. */
+  startingServantIds?: readonly string[];
   humanPlayerId?: string;
   humanPlayerIds?: string[];
   maxActionsPerPlayer?: number;
@@ -1392,7 +1394,23 @@ function hasCoherentReplayRestoreEnvelope(
   return true;
 }
 const masterCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'master');
-const servantCharacters = Object.values(runtimeContent.rules.characters).filter((character) => character.kind === 'servant');
+const defaultStartingServantIds = [
+  'servant.artoriac', 'servant.drake', 'servant.achilles', 'servant.artoria-alt',
+  'servant.ereshkigal', 'servant.tomoe', 'servant.kintoki',
+] as const;
+
+function startingServants(ids: readonly string[]): ExecutableCharacterDefinition[] {
+  if (ids.length !== 7 || new Set(ids).size !== ids.length) {
+    throw new Error('Starting servant pool must contain exactly seven distinct servants');
+  }
+  return ids.map(id => {
+    const character = runtimeContent.rules.characters[id];
+    if (!character || character.kind !== 'servant' || runtimeContent.rules.decks[id]?.length !== 12) {
+      throw new Error('Starting servant pool contains an unavailable servant: ' + id);
+    }
+    return character;
+  });
+}
 
 const attributeTags = {
   strength: '力量',
@@ -1712,7 +1730,7 @@ export class MatchSession {
     this.persistenceSecret = config.persistenceSecret ?? resolveOpponentCloseToOnePersistenceSecret();
     this.persistenceScope = config.persistenceScope ?? createOpponentCloseToOnePersistenceScope();
     this.restorePackKind = config.restorePackKind ?? 'production_executable';
-    const built = this.buildInitialState();
+    const built = this.buildInitialState(config.startingServantIds ?? defaultStartingServantIds);
     this.state = built.state;
     this.pairings = built.pairings;
     this.rawCards = built.rawCards;
@@ -2377,9 +2395,9 @@ export class MatchSession {
     return true;
   }
 
-  private buildInitialState(): { state: GameState; pairings: MatchSession['pairings']; rawCards: MatchSession['rawCards'] } {
+  private buildInitialState(startingServantIds: readonly string[]): { state: GameState; pairings: MatchSession['pairings']; rawCards: MatchSession['rawCards'] } {
     const masters = shuffle(masterCharacters, this.seed);
-    const servants = shuffle(servantCharacters, this.seed ^ 0x9e3779b9);
+    const servants = shuffle(startingServants(startingServantIds), this.seed ^ 0x9e3779b9);
     const pairings = masters.map((master, index) => ({ playerId: `p${index + 1}`, seat: index + 1, master, servant: servants[index]! }));
     const pack = runtimeContent.rules;
     const rawCards = new Map<string, RuntimeRawCard>(Object.values(pack.cards).map((card) => [card.id, card] as const));

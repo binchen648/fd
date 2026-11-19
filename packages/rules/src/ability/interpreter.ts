@@ -5409,8 +5409,9 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
         return { cardInstanceId: c.instanceId, faceDown, ...classification, ...(reasonCode ? { reasonCode } : {}) };
       })) } : {}) };
   const d = r.pendingDecision;
-  const revealAbility = d && definition(s, d.context.sourceCardId)?.abilities.find(ability => ability.id === d.context.abilityId);
-  const revealSource = d && s.cards.find(candidate => candidate.instanceId === d.context.sourceCardId);
+  const revealContext = d && !d.interaction ? d.context : undefined;
+  const revealAbility = revealContext && definition(s, revealContext.sourceCardId)?.abilities.find(ability => ability.id === revealContext.abilityId);
+  const revealSource = revealContext && s.cards.find(candidate => candidate.instanceId === revealContext.sourceCardId);
   const currentRevealIds = new Set(d && revealAbility && revealSource?.controllerPlayerId === d.controllerId &&
     (revealAbility.activation.requiresSourceState !== 'active' || active(s, revealSource.instanceId)) &&
     validHandRevealBindings(s, d.context, revealAbility, true)

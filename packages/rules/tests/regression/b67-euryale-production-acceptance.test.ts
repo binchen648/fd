@@ -9,9 +9,10 @@ const skill1='servant.euryale.skill.sc-euryale-1';
 const skill2='servant.euryale.skill.sc-euryale-2';
 const skill3='servant.euryale.skill.sc-euryale-3';
 const core='card.x-divine-core';
+const selectedPool=['servant.artoriac','servant.drake','servant.achilles','servant.ereshkigal','servant.tomoe','servant.kintoki',role];
 
 function productionSession(seed=20260904):MatchSession {
- const session=createMatchSession({seed,humanPlayerIds:Array.from({length:7},(_,i)=>`p${i+1}`)});
+ const session=createMatchSession({seed,startingServantIds:selectedPool,humanPlayerIds:Array.from({length:7},(_,i)=>`p${i+1}`)});
  for(let i=0;i<20;i++){
   const window=session.state.abilityRuntime!.responseWindows[0];
   if(!window)break;
@@ -151,6 +152,18 @@ function resolveBattleAndDeclineResponses(session:MatchSession){
 }
 
 describe('Euryale against the exact generated production library and normal MatchSession constructor',()=>{
+ it('keeps the default roster at seven and permits a seven-seat pool to include Euryale',()=>{
+  const standard=createMatchSession({seed:20260904});
+  expect(standard.state.players.map(player=>player.servantCardId)).toEqual([
+   'servant.tomoe','servant.drake','servant.achilles','servant.ereshkigal','servant.artoriac','servant.kintoki','servant.artoria-alt',
+  ]);
+  const selected=productionSession();
+  expect(selected.state.players.map(player=>player.servantCardId).sort()).toEqual([...selectedPool].sort());
+  expect(()=>createMatchSession({startingServantIds:[...selectedPool, 'servant.artoria-alt']})).toThrow('exactly seven distinct');
+  expect(()=>createMatchSession({startingServantIds:[...selectedPool.slice(0,6),selectedPool[0]!]})).toThrow('exactly seven distinct');
+  expect(()=>createMatchSession({startingServantIds:[...selectedPool.slice(0,6),'servant.unavailable']})).toThrow('unavailable servant');
+ });
+
  it('initializes the complete role, all three skills, two Divine Cores and its twelve-card deck',()=>{
   const session=productionSession();
   const euryale=player(session,role);
