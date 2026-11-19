@@ -45,6 +45,15 @@ describe("King's Cannon signed Runtime contract", () => {
     expect(loaded.report).toEqual([]);
     expect(loaded.cards[cannonId]!.abilities).toHaveLength(2);
   });
+  it('rejects a close prerequisite nested in a read-only condition', () => {
+    const input = structuredClone(cannonArchive);
+    const card = input.cards[0];
+    const closeRequirement = card.playRequirements[1];
+    card.playRequirements.push({type: 'not', condition: closeRequirement});
+    const report = loadAuthoringJson(input).report;
+    expect(report).toContainEqual(expect.objectContaining({reason: 'Invalid active-card close play requirement'}));
+  });
+
   it('passes the real compiler for the unchanged Cannon skill', () => {
     const input = compileLoadedPlaytestPack(loadPlaytestContentPack('data/packs/fd-playtest-v1/pack.json', {
       workspaceRoot: process.cwd(),
@@ -52,12 +61,14 @@ describe("King's Cannon signed Runtime contract", () => {
     const exactSkill = cannonArchive.cards[0];
     // Both companion definitions are fixture-only; the Cannon skill itself is unchanged.
     const companions = [1, 2].map(index => ({
-      ...exactSkill, id: `servant.kinggil.fixture-companion-${index}`,
+      ...exactSkill, id: index === 1 ? constructionId : `servant.kinggil.fixture-companion-${index}`,
       name: `Fixture companion ${index}`, playRequirements: [], abilities: [],
     }));
     input.rules.archives.push({...cannonArchive, cards: [exactSkill, ...companions]});
     const compiled = compileExecutableCardPack(input);
     expect(compiled.cards[cannonId]!.abilities).toHaveLength(2);
+    companions[0]!.id = 'servant.kinggil.fixture-missing-construction';
+    expect(() => compileExecutableCardPack(input)).toThrow(constructionId);
   });
 
   it('pays and closes a controlled active prerequisite, including a borrowed one', () => {

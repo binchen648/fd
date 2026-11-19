@@ -520,7 +520,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         issue(`${path}.to.zone`, 'Unsupported or missing event destination zone', abilityId);
       }
       if (n.type === 'close_active_controlled_card' &&
-          (!path.startsWith('playRequirements[') || !isCloseActiveControlledCardRequirement(n))) {
+          (!/^playRequirements\[\d+\]$/.test(path) || !isCloseActiveControlledCardRequirement(n))) {
         issue(path, 'Invalid active-card close play requirement', abilityId);
       }
       if (n.type === 'schedule_round_bonus') {
