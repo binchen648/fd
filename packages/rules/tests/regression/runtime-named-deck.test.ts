@@ -13,6 +13,7 @@ function compile(archive = structuredClone(frozen)) {
   const pack = loadPlaytestContentPack(resolve('data/packs/fd-playtest-v1/pack.json'), { workspaceRoot: resolve('.') });
   const { library } = compileLoadedPlaytestPack(pack);
   // Exercise the A compiler's archive input. Production manifest loading is owned by B.
+  library.rules.archives = library.rules.archives.filter(existing => existing.id !== archive.id);
   library.rules.archives.push(archive);
   return compileExecutableCardPack(library);
 }
@@ -34,6 +35,6 @@ describe('same-archive named deck identity in the executable compiler', () => {
     }
     if (variant === 'wrong-type') card.cardType = 'event';
     if (variant === 'ambiguous') archive.cards.push(structuredClone(card));
-    expect(() => compile(archive)).toThrow();
+    expect(() => compile(archive)).toThrow(variant === 'ambiguous' ? /duplicate card definition/i : variant === 'wrong-type' ? /Event rule-shaped archive/ : /Unknown deck entry/);
   });
 });
