@@ -649,6 +649,13 @@ function numeric(s: GameState, ctx: EffectContext, input: unknown): number {
   return evaluateFormula(input, s, ctx.controllerId, ctx.sourceCardId, ctx.variables, ctx.bindings).value;
 }
 const manaCostEvaluationStack = new WeakMap<GameState, Set<string>>();
+
+function readsStaticManaCostAura(ability: AuthoringAbility): boolean {
+  return ability.activation.trigger === 'while_active' &&
+    (ability.kind === 'passive' || (ability.kind === 'residual' &&
+      ability.lifecycle.duration === 'while_card_active' && ability.lifecycle.sourceValidity === undefined));
+}
+
 function continuousManaCostAddition(s: GameState, target: CardInstance): number {
   if (target.zone !== 'hand' && target.zone !== 'skill') return 0;
   const targetId = target.instanceId;
@@ -686,10 +693,10 @@ function continuousManaCostAddition(s: GameState, target: CardInstance): number 
   let total = 0;
   for (const source of s.cards) {
     if (source.zone !== 'field' && source.zone !== 'attack_area') continue;
-    // Replacement overlays only add phase actions. A live passive is read from the
-    // physical card's definition, avoiding a card-instance search for every quote.
+    // Replacement overlays add phase actions only. Static auras follow the
+    // physical card's active state, even when no ongoing record was installed.
     for (const ability of r.pack.cards[source.definitionId]?.abilities ?? []) {
-      if (ability.execution.mode !== 'automatic' || ability.kind !== 'passive' || ability.activation.trigger !== 'while_active' ||
+      if (ability.execution.mode !== 'automatic' || !readsStaticManaCostAura(ability) ||
           !ability.ruleModifiers.some(modifier => modifier.rule === 'card.manaCost') ||
           !active(s, source.instanceId) || player(s, source.controllerPlayerId).status !== 'active' ||
           !ability.conditions.every(filter => condition(s, context(s, source.instanceId, ability.id), filter))) continue;
@@ -701,7 +708,7 @@ function continuousManaCostAddition(s: GameState, target: CardInstance): number 
         (ongoing.expiresAtRound !== undefined && s.round.roundNumber >= ongoing.expiresAtRound) ||
         !sourceBoundOngoingIsLive(s, ongoing)) continue;
     const ability = definition(s, ongoing.sourceCardId)?.abilities.find(candidate => candidate.id === ongoing.abilityId);
-    if (ability?.kind === 'passive' && ability.activation.trigger === 'while_active') continue;
+    if (ability && readsStaticManaCostAura(ability)) continue;
     for (const modifier of ongoing.ruleModifiers) total += applies(ongoing.sourceCardId, modifier.controllerId, ongoing.abilityId, modifier.definition);
   }
   return total;
