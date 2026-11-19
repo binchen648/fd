@@ -1,3 +1,4 @@
+import { isCloseActiveControlledCardRequirement, isRoundPlayBonusEffect, optionalRoundPlays } from './round-play-bonus';
 import { CHALDEAS_SWAP, maySwapMatchReveal } from './chaldeas-reveal';
 import { handRevealContractIssue, isRevealedHandCard, matchesRevealedHandInstance, pendingRevealedHands, validHandRevealBindings, lastHandReveal } from './revealed-hand-play';
 import { approvedAdvanceGroup, isApprovedAdvanceGroupEffect } from './advance-group-play';
@@ -243,7 +244,7 @@ function extraAttackPlayAllowance(s: GameState, playerId: string): number {
 }
 function attackPlayAllowance(s: GameState, playerId: string): number {
   const normalAttackCount = runtime(s).playRulesVersion === 'legacy-v0' ? 1 : 2;
-  return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId);
+  return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId) + optionalRoundPlays(s, playerId);
 }
 function attackPlayLimitReached(s: GameState, playerId: string, sourceId: string, ignoreStaged = false): boolean {
   if (!entersAttackArea(s, sourceId) || isRequiredAdditionalPlayCard(s, sourceId)) return false;
@@ -1055,6 +1056,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
   const p = player(s, ctx.controllerId);
   switch (c.type) {
+    case 'close_active_controlled_card':
+      return isCloseActiveControlledCardRequirement(c) && !!activeClosePrerequisite(s, ctx.controllerId, c);
     case 'skill_zone_mana_at_least': {
       if (card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value)) return true;
       const cardDef = definition(s, ctx.sourceCardId);
@@ -1643,6 +1646,28 @@ function regularAttackOptions(s: GameState, playerId: string): PlayCardAction[][
     return options.length ? [options] : [];
   });
 }
+function activeClosePrerequisite(s: GameState, playerId: string, requirement: RuleNode, reserved = new Set<string>()): string | undefined {
+  return s.cards.find(candidate => candidate.controllerPlayerId === playerId && candidate.definitionId === requirement.cardId &&
+    !reserved.has(candidate.instanceId) && active(s, candidate.instanceId) &&
+    (candidate.zone === 'attack_area' || candidate.zone === 'field') &&
+    !isCardCloseForbidden(s, candidate.instanceId))?.instanceId;
+}
+
+function requiredPlayClosures(s: GameState, playerId: string, choices: readonly PlayCardAction[]): string[] | undefined {
+  const reserved = new Set(choices.map(choice => choice.cardInstanceId));
+  const closures: string[] = [];
+  for (const choice of choices) {
+    const requirements = definition(s, choice.cardInstanceId)?.playRequirements ?? [];
+    for (const requirement of requirements.filter(isCloseActiveControlledCardRequirement)) {
+      const instanceId = activeClosePrerequisite(s, playerId, requirement, reserved);
+      if (!instanceId) return undefined;
+      reserved.add(instanceId);
+      closures.push(instanceId);
+    }
+  }
+  return closures;
+}
+
 /** Find a complete legal simultaneous batch without executing triggers or paying any costs. */
 function regularAttackPlanContext(s: GameState, playerId: string) {
   const groups = regularAttackOptions(s, playerId);
@@ -1652,11 +1677,11 @@ function regularAttackPlanContext(s: GameState, playerId: string) {
   const battlefield = isBattlefield(s, player(s, playerId).locationId);
   const requireFaceUp = battlefield && !allHandFaceUpForbiddenByEffect(s, playerId);
   const allowance = Math.max(0, attackPlayAllowance(s, playerId) - attacksDeclaredThisRound(s, playerId));
-  return { groups, mandatory, mana, requireFaceUp, allowance };
+  return { groups, mandatory, mana, requireFaceUp, allowance, optional: optionalRoundPlays(s, playerId) };
 }
 function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAction[] = [], exact = false,
   planContext = regularAttackPlanContext(s, playerId)): PlayCardAction[] | undefined {
-  const { groups, mandatory, mana, requireFaceUp, allowance } = planContext;
+  const { groups, mandatory, mana, requireFaceUp, allowance, optional } = planContext;
   const ordinaryRequired = required.filter(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId));
   if (new Set(required.map(choice => choice.cardInstanceId)).size !== required.length) return undefined;
   if (ordinaryRequired.some(choice => !groups.some(group => group.some(option =>
@@ -1672,7 +1697,7 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
         if (mandatory.some(id => !picked.some(choice => choice.cardInstanceId === id))) return undefined;
         const faceUpCount = picked.filter(choice => !choice.faceDown).length + required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId) && !choice.faceDown).length;
         if (requireFaceUp && picked.length > 0 && !faceUpCount || faceUpCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpCount)) return undefined;
-        return picked;
+        return requiredPlayClosures(s, playerId, picked) ? picked : undefined;
       }
       const group = remaining[index];
       if (!group) return undefined;
@@ -1684,11 +1709,13 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
     };
     return visit(0, fixed, fixed.reduce((sum, choice) => sum + costOf(choice), additionalCost));
   };
-  for (let target = Math.min(allowance, groups.length); target >= 0; target--) {
-    // The number due is determined from the pre-batch state, never from a selected underfilled batch.
+  const baselineAllowance = Math.max(0, allowance - optional);
+  for (let target = Math.min(baselineAllowance, groups.length); target >= 0; target--) {
+    // Determine the required batch without the optional cards, then allow explicitly selected extras.
     if (!find(target, [])) continue;
-    if (exact && ordinaryRequired.length !== target) return undefined;
-    const found = find(target, ordinaryRequired, extraCost);
+    const selectedCount = ordinaryRequired.length;
+    if (selectedCount > target + optional || (exact && selectedCount < target)) return undefined;
+    const found = find(Math.max(target, selectedCount), ordinaryRequired, extraCost);
     if (found && required.every(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId) ||
       !playFailure(s, playerId, choice.cardInstanceId, !!choice.faceDown, true, true, false, found.length > 0))) return found;
     return undefined;
@@ -2447,6 +2474,19 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         context: { controllerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, selections: {}, variables: {} } });
       break;
     }
+    case 'schedule_round_bonus': {
+      const event = ctx.event;
+      if (!isRoundPlayBonusEffect(effect) || event?.type !== 'on_card_played' ||
+          event.playerId !== p.id || event.sourceCardId !== ctx.sourceCardId ||
+          !event.playedCards?.some(entry => entry.instanceId === ctx.sourceCardId && !entry.faceDown)) {
+        reject('invalid_event', 'Round bonus requires a successful face-up play');
+      }
+      const bonuses = r.roundPlayBonuses ??= [];
+      if (!bonuses.some(entry => entry.playEventId === event.id)) {
+        bonuses.push({beneficiaryId: p.id, dueRound: s.round.roundNumber + 1, playEventId: event.id, drawn: false});
+      }
+      break;
+    }
     case 'reveal_hands': {
       const issue = handRevealContractIssue(a);
       if (issue) reject('unsupported', issue);
@@ -2485,6 +2525,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
       if (effect.face !== 'face_down' && faceUpCardPlayLimitReached(s, p.id)) reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+      const closures = requiredPlayClosures(s, p.id, [{type: 'play_card', cardInstanceId: ctx.sourceCardId}]);
+      if (!closures) reject('play_requirement', 'Required active controlled card is unavailable');
+      for (const instanceId of closures) closeOwnAttack(s, p.id, instanceId);
       recordConsecutivePlay(s, ctx.sourceCardId, effect.face === 'face_down');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
@@ -3449,7 +3492,7 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
 /** Canonical self-close consumer: an owner's required close is not opponent prevention. */
 function closeOwnAttack(s: GameState, controllerId:string, instanceId:string):void {
  const target=card(s,instanceId),d=definition(s,instanceId),r=runtime(s),state=r.cardState[instanceId];
- if(target.controllerPlayerId!==controllerId||target.zone!=='attack_area'||!d||!state?.active||state.faceDown)reject('illegal_target','Required own attack is no longer active');
+ if(target.controllerPlayerId!==controllerId||!['attack_area','field'].includes(target.zone)||!d||!state?.active||state.faceDown)reject('illegal_target','Required own attack is no longer active');
  state.active=false;clearTransientCardTransformState(s,instanceId);
  const limiter=perGamePlayLimit(d);
  if(isResidualAttackCardDefinition(d)&&limiter&&(r.abilityUsage[`play:${instanceId}:${limiter.key}`]??0)>=limiter.uses){target.zone='removed_from_game';target.visibility={scope:'public'};state.faceDown=false;}
@@ -5891,6 +5934,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     cost += paidMana;
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
+  const closures = requiredPlayClosures(s, playerId, choices);
+  if (!closures) reject('play_requirement', 'Required active controlled card is unavailable');
+  for (const instanceId of closures) closeOwnAttack(s, playerId, instanceId);
   if (turn && quota === 'regular' && regularAttackChoices > 0) {
     const hand = s.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand');
     if (allHandFaceUpForbiddenByEffect(s, playerId)) {

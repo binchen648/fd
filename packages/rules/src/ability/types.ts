@@ -335,6 +335,7 @@ export interface TrustedBattleResultSnapshot {
 }
 
 export interface AbilityRuntime {
+  roundPlayBonuses?: import('./round-play-bonus').RoundPlayBonus[];
   phaseAbilityReplacements?: PhaseAbilityReplacement[];
   pendingPlayerActionEnds?: PendingPlayerActionEnd[];
   playerActionEnds?: Record<PlayerId, number>;

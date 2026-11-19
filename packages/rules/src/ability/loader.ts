@@ -48,6 +48,7 @@ import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
+import { isCloseActiveControlledCardRequirement, isRoundPlayBonusEffect } from './round-play-bonus';
 import { locationIds } from '../schema/location';
 
 
@@ -184,7 +185,7 @@ export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
 const supportedTypes = new Set([
   'replace_phase_abilities', 'schedule_at_player_action_end',
   'play_card_group',
-  'reveal_hands', 'play_revealed_card',
+  'reveal_hands', 'play_revealed_card', 'close_active_controlled_card', 'schedule_round_bonus',
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining',
@@ -295,7 +296,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   // 部署到任意地点（含非战场，如魔术工房）
   'after_player_deployed_to_location',
 ]);
-const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
+const mechanicKeys = new Set(['roundOffset', 'after', 'drawCards', 'extraNormalPlays', 'type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
@@ -517,6 +518,19 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         !['hand', 'deck', 'discard', 'field', 'skill', 'attack_area', 'removed_from_game'].includes(str(node(n.to).zone))) issue(`${path}.to.zone`, 'Unsupported or missing destination zone', abilityId);
       if (['move_source_event', 'move_event_card'].includes(str(n.type)) && !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(str(node(n.to).zone))) {
         issue(`${path}.to.zone`, 'Unsupported or missing event destination zone', abilityId);
+      }
+      if (n.type === 'close_active_controlled_card' &&
+          (!path.startsWith('playRequirements[') || !isCloseActiveControlledCardRequirement(n))) {
+        issue(path, 'Invalid active-card close play requirement', abilityId);
+      }
+      if (n.type === 'schedule_round_bonus') {
+        const source = nodes(raw.abilities).find(ability => ability.id === abilityId);
+        const activation = node(source?.activation);
+        if (!isRoundPlayBonusEffect(n) || !nodes(source?.effects).includes(n) || source?.kind !== 'forced_trigger' ||
+            activation.trigger !== 'on_card_played' || activation.requiresSourceState !== 'active' ||
+            nodes(raw.playRequirements).filter(isCloseActiveControlledCardRequirement).length !== 1) {
+          issue(path, 'Round bonus requires an active on-play source and an exact close prerequisite', abilityId);
+        }
       }
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);
