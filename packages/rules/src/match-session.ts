@@ -8,6 +8,7 @@ import {
   initializeAbilityRuntime,
   initializeActionTurns,
   actionTurnProgress,
+  completePlayerActionTurn,
   getLegalActions,
   isCanonicalGenericPendingDecisionForRestore,
   isDeferredAbilityRuntimeProvenanceValidForRestore,
@@ -599,6 +600,10 @@ function isRestorePendingInteraction(value: unknown): boolean {
 function isRestoreEffectContext(value: unknown): boolean {
   if (!isRestoreRecord(value) || typeof value.controllerId !== 'string' || typeof value.sourceCardId !== 'string' ||
       typeof value.abilityId !== 'string' || !isRestoreFiniteNumberMap(value.variables) || !isRestoreStringArrayMap(value.selections)) return false;
+  if (value.bindings !== undefined && (!isRestoreRecord(value.bindings) || !Object.values(value.bindings).every(binding =>
+    isRestoreRecord(binding) && (binding.revealedCards === undefined || binding.effectType === 'reveal_hands' &&
+      Array.isArray(binding.revealedCards) && binding.revealedCards.every(entry => isRestoreRecord(entry) &&
+        ['cardId', 'definitionId', 'ownerPlayerId', 'controllerPlayerId', 'name'].every(key => typeof entry[key] === 'string')))))) return false;
   if (value.event !== undefined && !isRestoreAbilityEvent(value.event)) return false;
   return value.eventSource === undefined || (isRestoreRecord(value.eventSource) && typeof value.eventSource.ruleInstanceId === 'string' &&
     typeof value.eventSource.definitionId === 'string' && typeof value.eventSource.locationId === 'string');
@@ -713,6 +718,13 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
       !isRestoreRoundPlayCounters(value.playCounters)) return false;
 
   if (value.playerStatusKeysByPlayer !== undefined && !isRestoreStringArrayMap(value.playerStatusKeysByPlayer)) return false;
+  if (value.phaseAbilityReplacements !== undefined && (!Array.isArray(value.phaseAbilityReplacements) || !value.phaseAbilityReplacements.every(entry =>
+    isRestoreRecord(entry) && typeof entry.id === 'string' && typeof entry.sourceCardId === 'string' && typeof entry.sourceAbilityId === 'string' &&
+    typeof entry.templateId === 'string' && typeof entry.targetCardId === 'string' && typeof entry.controllerId === 'string' && isRestoreSafeInteger(entry.round)))) return false;
+  if (value.pendingPlayerActionEnds !== undefined && (!Array.isArray(value.pendingPlayerActionEnds) || !value.pendingPlayerActionEnds.every(entry =>
+    isRestoreRecord(entry) && typeof entry.id === 'string' && typeof entry.controllerId === 'string' && isRestoreSafeInteger(entry.round) &&
+    isRestoreEffectContext(entry.context)))) return false;
+  if (value.playerActionEnds !== undefined && !isRestoreNonNegativeIntegerMap(value.playerActionEnds)) return false;
   if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
   if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
   if (value.pendingDelayedActivations !== undefined && (!Array.isArray(value.pendingDelayedActivations) || !value.pendingDelayedActivations.every(isRestorePendingDelayedActivation))) return false;
@@ -1972,6 +1984,10 @@ export class MatchSession {
     if (turn && (turn.movement === 'pending' || turn.regularPlay !== 'complete')) {
       return rejection('incomplete_action_turn', 'Complete movement or skip, then the regular attack batch before ending this action turn');
     }
+    if (this.state.round.activePhase === 'action') {
+      const completed = completePlayerActionTurn(this.state, playerId);
+      if (!completed.ok) return rejection('action_end_failed', completed.message ?? 'Cannot settle action end');
+    }
     this.rejection = undefined;
     this.state.abilityRuntime!.revision++;
     this.record('player_passed', `${playerId}:ended decision`);
@@ -2136,6 +2152,13 @@ export class MatchSession {
   advanceToNextDecision(): void {
     if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length || this.pendingHostDirectives().length) return;
     if (this.battleSettlementInProgress()) { this.resolveBattlePhase(); return; }
+    if (this.state.round.activePhase === 'action') {
+      const priority = this.priorityPlayer();
+      const turn = priority && actionTurnProgress(this.state, priority.id);
+      if (turn && (turn.movement === 'pending' || turn.regularPlay !== 'complete')) return;
+      if (priority && !completePlayerActionTurn(this.state, priority.id).ok) return;
+      if (this.state.abilityRuntime?.pendingDecision || this.state.abilityRuntime?.responseWindows.length) return;
+    }
     if (interactivePhases.includes(this.state.round.activePhase)) {
       if (this.advanceToNextActiveSeat()) return;
       if (this.state.round.activePhase === 'preparation') {
@@ -2981,9 +3004,9 @@ export class MatchSession {
       zone(s, 'servant_skill', '从者技能区', (card) => own('skill')(card) && this.rawCards.get(card.definitionId)?.cardType === 'servant_skill'),
       zone(s, 'command_spell', '令咒区', (card) => own('skill')(card) && this.rawCards.get(card.definitionId)?.cardType === 'command_spell'),
       { id: 'ascension_skill', label: '升华技', cardIds: ascensionCardIds, count: ascensionCardIds.length, status: ascensionCardIds.length ? 'host_adjudicated' : 'empty' },
-      zone(s, 'field', '场上', own('field')),
-      zone(s, 'attack_area', '攻击区', (card) => own('attack_area')(card) || (card.ownerPlayerId === playerId && card.zone === 'attack_area')),
-      zone(s, 'battlefield', '战斗参与区', (card) => ['field', 'attack_area'].includes(card.zone) && card.ownerPlayerId === playerId && ['miyama_town', 'shinto'].includes(s.players.find((player) => player.id === card.controllerPlayerId)?.locationId ?? '')),
+      zone(s, 'field', '场上', (card) => card.controllerPlayerId === playerId && card.zone === 'field'),
+      zone(s, 'attack_area', '攻击区', (card) => card.controllerPlayerId === playerId && card.zone === 'attack_area'),
+      zone(s, 'battlefield', '战斗参与区', (card) => ['field', 'attack_area'].includes(card.zone) && card.controllerPlayerId === playerId && ['miyama_town', 'shinto'].includes(s.players.find((player) => player.id === card.controllerPlayerId)?.locationId ?? '')),
       zone(s, 'discard', '弃牌', own('discard')),
       ...(mayViewOpponentDiscards ? [{ id: 'opponent_discard', label: '对手弃牌', cardIds: opponentDiscardIds, count: opponentDiscardIds.length, status: opponentDiscardIds.length ? 'enabled' as const : 'empty' as const }] : []),
       zone(s, 'removed_from_game', '移除', own('removed_from_game')),

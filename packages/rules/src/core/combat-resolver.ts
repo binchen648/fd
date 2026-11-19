@@ -12,7 +12,7 @@ import type { LocationDefinition } from "../schema/location";
 import type { VisibilityState } from "../schema/visibility";
 import type { ResolverResult } from "./resolver-contracts";
 import { getLocationById } from "./map-engine";
-import { calculateCardPower, classifyCardPlay, liveOngoing, subjectPlayerIds, hasActiveRuleModifier, processAbilityEvent } from '../ability/interpreter';
+import { calculateCardPower, classifyCardPlay, liveOngoing, subjectPlayerIds, hasActiveRuleModifier, matchingActiveRuleModifiers, processAbilityEvent } from '../ability/interpreter';
 import { isAcceptedRoundActiveAttackPaidCostCombatPowerAbility, isAcceptedStaticCombatRewardDistributionAbility } from '../ability/loader';
 import { roundTotalPowerAdjustment } from '../ability/outer-god-life';
 import { clearTransientCardTransformState, getEffectiveCardAttributes } from '../ability/card-instance-state';
@@ -188,40 +188,14 @@ function cannotWinBattleThisRound(state: GameState, playerId: string): boolean {
  * 此读点只保护被赋予的败北事实（战前/气息遮断等），不改变正常输赢和军绩。
  */
 function ignoresBattleLossEffects(state: GameState, playerId: string, battlefieldId: CombatResolutionInput["battlefieldId"]): boolean {
-  const runtime = state.abilityRuntime;
-  if (!runtime || !state.players.some((player) => player.id === playerId && player.locationId === battlefieldId)) return false;
-  return state.cards.some((source) => source.controllerPlayerId === playerId &&
-    ['skill', 'field', 'attack_area'].includes(source.zone) &&
-    runtime.cardState[source.instanceId]?.faceDown !== true && runtime.cardState[source.instanceId]?.active !== false &&
-    runtime.pack.cards[source.definitionId]?.abilities.some((ability) =>
-      ability.ruleModifiers.some((modifier) => modifier.rule === 'immune_to_defeat' && modifier.operation === 'add')));
+  return !!state.abilityRuntime && state.players.some(player => player.id === playerId && player.locationId === battlefieldId) &&
+    hasActiveRuleModifier(state, playerId, 'immune_to_defeat', 'add', { requireActivation: true });
 }
 
 /**
  * 远隔操作（`basic.preparation`）：不再按卡 id 判定，改为"该玩家在此战场有一张**激活的**、
  * 且声明了指定规则名的卡"。卡面通过 `ruleModifiers` 声明，resolver 只认规则名。
  */
-function declaresRule(state: GameState, definitionId: string, rule: string): boolean {
-  const definition = state.abilityRuntime?.pack.cards[definitionId];
-  return (definition?.abilities ?? []).some((ability) =>
-    ability.ruleModifiers.some((modifier) => String((modifier as { rule?: unknown }).rule ?? '') === rule));
-}
-
-function hasActiveCardDeclaringRule(
-  state: GameState,
-  playerId: string,
-  battlefieldId: CombatResolutionInput["battlefieldId"],
-  rule: string,
-): boolean {
-  return state.cards.some((card) =>
-    card.controllerPlayerId === playerId &&
-    card.zone === "attack_area" &&
-    state.players.some((player) => player.id === playerId && player.locationId === battlefieldId) &&
-    state.abilityRuntime?.cardState[card.instanceId]?.active === true &&
-    state.abilityRuntime?.cardState[card.instanceId]?.faceDown !== true &&
-    declaresRule(state, card.definitionId, rule));
-}
-
 function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; playerId: string }> {
   const runtime = state.abilityRuntime;
   if (!runtime) return [];
@@ -239,23 +213,16 @@ function returnSilenceSources(state: GameState): Array<{ sourceCardId: string; p
 function declaredWinVpBonus(
   state: GameState,
   playerId: string,
-  _battlefieldId: CombatResolutionInput["battlefieldId"],
-): number {
-  const card = state.cards.find((candidate) =>
-    candidate.controllerPlayerId === playerId &&
-    candidate.zone === "attack_area" &&
-    state.abilityRuntime?.cardState[candidate.instanceId]?.active === true &&
-    declaresRule(state, candidate.definitionId, "battle.winVpBonus"));
-  const definition = card ? state.abilityRuntime?.pack.cards[card.definitionId] : undefined;
-  for (const ability of definition?.abilities ?? []) {
-    for (const modifier of ability.ruleModifiers) {
-      const entry = modifier as { rule?: unknown; value?: unknown };
-      if (String(entry.rule ?? '') !== "battle.winVpBonus") continue;
-      const value = Number(entry.value ?? 2);
-      return Number.isFinite(value) ? value : 2;
-    }
+  battlefieldId: CombatResolutionInput["battlefieldId"],
+): number | undefined {
+  const runtime = state.abilityRuntime;
+  if (!runtime || !state.players.some(player => player.id === playerId && player.locationId === battlefieldId)) return;
+  const sourceIds = new Set(state.cards.filter(card => card.controllerPlayerId === playerId && card.zone === 'attack_area' &&
+    runtime.cardState[card.instanceId]?.active === true && !runtime.cardState[card.instanceId]?.faceDown).map(card => card.instanceId));
+  for (const modifier of matchingActiveRuleModifiers(state, playerId, 'battle.winVpBonus', 'add', { requireActivation: true, sourceIds })) {
+    const value = Number(modifier.value ?? 2);
+    return Number.isFinite(value) ? value : 2;
   }
-  return 2;
 }
 
 function isLegacyCombatCard(state: GameState, card: GameState["cards"][number]): boolean {
@@ -629,14 +596,10 @@ function buildBattleResultFromRanked(
   const defaultVpAdjustments = buildDefaultVpAdjustments(
     location, battlefieldId, winnerPlayerIds, competitionVpPerWinner, locationVpPerWinner,
   );
-  const remoteOperationVpAdjustment = winnerPlayerIds
-    .filter((playerId) => hasActiveCardDeclaringRule(state, playerId, battlefieldId, "battle.winVpBonus"))
-    .map((playerId) => ({
-        playerId,
-        delta: declaredWinVpBonus(state, playerId, battlefieldId),
-        source: "battle_vp" as const,
-        label: "basic.preparation.win_bonus",
-      }));
+  const remoteOperationVpAdjustment = winnerPlayerIds.flatMap(playerId => {
+    const delta = declaredWinVpBonus(state, playerId, battlefieldId);
+    return delta === undefined ? [] : [{ playerId, delta, source: "battle_vp" as const, label: "basic.preparation.win_bonus" }];
+  });
 
   const vpAdjustments = [...(defaultVpAdjustments ?? []), ...remoteOperationVpAdjustment];
   // A3: immunity to assigned 【败北】 does not suppress ordinary battle-loss facts.

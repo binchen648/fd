@@ -567,7 +567,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
     const publicAscensionSkillIds = (pairing.master.excludedCards ?? [])
       .map((card) => `public-${player.id}-${card.id}`);
     const publicRevealedCardIds = state.cards
-      .filter((card) => card.ownerPlayerId === player.id && card.visibility.scope === 'public')
+      .filter((card) => (['field', 'attack_area'].includes(card.zone) ? card.controllerPlayerId : card.ownerPlayerId) === player.id && card.visibility.scope === 'public')
       .map((card) => card.instanceId);
     return {
       id: player.id,
@@ -710,7 +710,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       deck: selfDeckView,
       hand: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'hand').map((card) => card.instanceId),
       stagedAttackArea: projected.view.stagedAttacks?.find((entry) => entry.playerId === viewerId)?.cards.map((card) => card.cardInstanceId) ?? [],
-      attackArea: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'attack_area').map((card) => card.instanceId),
+      attackArea: state.cards.filter((card) => card.controllerPlayerId === viewerId && card.zone === 'attack_area').map((card) => card.instanceId),
       discard: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'discard').map((card) => card.instanceId),
       skills: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && rawCards.get(card.definitionId)?.cardType === 'servant_skill').map((card) => card.instanceId),
       masterSkills: state.cards.filter((card) => card.ownerPlayerId === viewerId && card.zone === 'skill' && rawCards.get(card.definitionId)?.cardType === 'master_skill').map((card) => card.instanceId),
@@ -744,6 +744,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       min: window.min,
       max: window.max,
       currentMana: window.currentMana,
+      playBudget: currentView.pendingDecision?.id === window.id ? currentView.pendingDecision.playBudget : undefined,
       variableCosts: window.variableCosts,
       candidates: window.candidates,
       actions: window.legalActions.map((action, index) => mapLegalAction(action, index, window.controllerId, rawCards, state)),
@@ -757,6 +758,7 @@ export function projectSevenAuthoringSessionFixture(session: MatchSession, viewe
       payload: directive.payload,
     })),
     ...(projected.pendingReveal ? { pendingReveal: projected.pendingReveal } : {}),
+    ...(currentView.lastHandReveal ? { lastHandReveal: currentView.lastHandReveal } : {}),
     zones: projected.zones.map((zone) => ({
       id: zone.id,
       label: zone.label,

@@ -78,6 +78,7 @@ export interface ClientInteractionWindow {
   min?: number;
   max?: number;
   currentMana?: number;
+  playBudget?: NonNullable<MatchClientState['view']['pendingDecision']>['playBudget'];
   variableCosts?: Array<{ name: string; min: number; max: number }>;
   candidates?: Array<{ id: string; label: string; kind: 'card' | 'player' | 'location' | 'option'; zone?: string }>;
   actions: ClientAvailableAction[];
@@ -192,6 +193,7 @@ export interface PlaytestClientFixture {
   directives?: ClientDirectiveView[];
   zones?: ClientZoneGroup[];
   pendingReveal?: MatchClientState['pendingReveal'];
+  lastHandReveal?: MatchClientState['view']['lastHandReveal'];
   logs?: Array<{ id: string; type: string; message: string }>;
   replay?: ClientReplayCheckpoint[];
   outcome?: StandardMatchOutcome;
