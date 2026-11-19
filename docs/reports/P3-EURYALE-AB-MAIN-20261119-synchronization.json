@@ -1,8 +1,8 @@
 {
   "taskId": "P3-EURYALE-AB-MAIN-20261119",
   "baseSha": "2fdfaee533c9ff67763e14ea7480373cf48cdde3",
-  "reviewedCandidateSha": "6c9d326a1360ae553568fb6bd01f842717baf715",
-  "reviewSha": "f0693f396c10c3cd9a6e48998132e666b42f412c",
+  "reviewedCandidateSha": "9933b7546ed789260a5f09f728539675ebd5c40d",
+  "reviewSha": "252a856566e2996e16f39150e23a673b4d17da54",
   "productionDelta": [
     "apps/client/src/pages/MatchTable.test.tsx",
     "apps/client/src/pages/MatchTable.tsx",
