@@ -75,7 +75,9 @@ it('uses authoritative post-scoring battlefield location and validates signed qu
   expect(restored.state.abilityRuntime!.pendingPostBattleEvents).toEqual(queued);
   const historical = restoreTrustedAuthoringFixtureSession(session.serializeSession());
   for(const event of historical.state.abilityRuntime!.pendingPostBattleEvents!) delete event.locationId;
-  expect(() => restoreTrustedAuthoringFixtureSession(historical.serializeSession())).not.toThrow();
+  const oldRestored = restoreTrustedAuthoringFixtureSession(historical.serializeSession());
+  (oldRestored as unknown as typeof bridge).flushPostScoringBattleEvents();
+  expect(oldRestored.state.players[0]!.mana).toBe(manaBefore+1);
   const corrupted = restoreTrustedAuthoringFixtureSession(session.serializeSession());
   corrupted.state.abilityRuntime!.pendingPostBattleEvents![0]!.locationId='miyama_town';
   expect(() => restoreTrustedAuthoringFixtureSession(corrupted.serializeSession())).toThrow();
