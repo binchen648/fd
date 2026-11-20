@@ -1,3 +1,4 @@
+import { isStoredCardValueId } from './card-instance-state';
 import { isActualLossPowerCandidate, lowerActualLossPower } from './actual-loss-power';
 import { isAcceptedBattlefieldPlacement } from './battlefield-placement';
 import { isExactVpTransferCost } from './exact-vp-transfer';
@@ -194,8 +195,72 @@ export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
   return true;
 }
 
+type UsageRole = 'formula' | 'costAmount' | 'optionalCost' | 'condition' | 'cost' | 'costConstraint' | 'effect' | 'createdModifier' | 'branch' | 'dead';
+const numericAmountEffects = ['increase_this_card_mana_cost', 'adjust_mana', 'adjust_command_seals', 'pay_mana', 'adjust_victory_points'];
+const numericCountEffects = ['draw_cards', 'look_at_deck_top', 'create_card'];
+function usageChildRole(role: UsageRole, key: string, n: RuleNode): UsageRole {
+  switch (role) {
+    case 'formula': {
+      // Mirror evaluateFormula's traversal AND its precedence: the `formula` unwrap (:564) and
+      // op 'const' (:615) return early, and an args array (:621) shadows left/right.
+      if (n.formula !== undefined) return key === 'formula' ? 'formula' : 'dead';
+      const op = str(n.op);
+      if (!op || op === 'var' || op === 'count_cards' || n.var !== undefined || str(n.formulaRef)) return 'dead';
+      if (op === 'const') return key === 'value' ? 'formula' : 'dead';
+      if (Array.isArray(n.args)) return key === 'args' ? 'formula' : 'dead';
+      return key === 'left' || key === 'right' ? 'formula' : 'dead';
+    }
+    // interpreter.ts:4973 is the only reader of `.constraints` on a formula node;
+    // payEffectCost (:1948-1956) reads an optional cost amount but never its constraints.
+    case 'costAmount': return key === 'constraints' ? 'costConstraint' : usageChildRole('formula', key, n);
+    case 'optionalCost': return key === 'amount' && str(n.type) === 'pay_mana' ? 'formula' : 'dead';
+    case 'cost': return key === 'amount' && str(n.type) === 'pay_mana' ? 'costAmount' : 'dead';
+    case 'costConstraint': return str(n.type) === 'lte' && (key === 'left' || key === 'right') ? 'formula' : 'dead';
+    case 'condition': {
+      const type = str(n.type);
+      if (type === 'gt' || type === 'lte') return key === 'left' || key === 'right' ? 'formula' : 'dead';
+      if (type === 'not') return key === 'condition' ? 'condition' : 'dead';
+      if (type === 'and' || type === 'or') return key === 'conditions' ? 'condition' : 'dead';
+      return 'dead';
+    }
+    case 'branch': return key === 'if' ? 'condition' : key === 'then' || key === 'else' ? 'effect' : 'dead';
+    case 'createdModifier':
+      if (str(n.type) !== 'power_bonus') return 'dead';
+      if (key === 'amount') return 'formula';
+      return key === 'value' && (n.amount === undefined || n.amount === null) ? 'formula' : 'dead';
+    case 'effect': {
+      const type = str(n.type);
+      if (key === 'amount') return numericAmountEffects.includes(type) ? 'formula' : 'dead';
+      if (key === 'value' && type === 'store_card_value') return 'formula';
+      if (key === 'count') return numericCountEffects.includes(type) || (type === 'move_card' && str(n.random)) ? 'formula' : 'dead';
+      if (key === 'optionalCost') return 'optionalCost';
+      if (key === 'modifier') return 'createdModifier';
+      if (key === 'branches') return 'branch';
+      return key === 'then' && ['create_card', 'increase_this_card_mana_cost'].includes(type) ? 'effect' : 'dead';
+    }
+    default: return 'dead';
+  }
+}
+
+/** Collect only declarations in effect positions actually traversed by the native executor. */
+export function declaredStoredCardValueIds(card: RuleNode): Set<string> {
+  const ids = new Set<string>();
+  const visit = (input: unknown, role: UsageRole): void => {
+    if (Array.isArray(input)) { for (const value of input) visit(value, role); return; }
+    if (!input || typeof input !== 'object') return;
+    const n = input as RuleNode;
+    if (role === 'effect' && n.type === 'store_card_value' && isStoredCardValueId(n.id)) ids.add(n.id);
+    for (const [key, value] of Object.entries(n)) {
+      const child = usageChildRole(role, key, n);
+      if (child !== 'dead') visit(value, child);
+    }
+  };
+  for (const ability of nodes(card.abilities)) { visit(ability.effects, 'effect'); visit(ability.creates, 'effect'); }
+  return ids;
+}
+
 const supportedTypes = new Set([
-  'apply_defeat_status',
+  'apply_defeat_status', 'store_card_value',
   'replace_phase_abilities', 'schedule_at_player_action_end',
   'play_card_group',
   'reveal_hands', 'play_revealed_card', 'close_active_controlled_card', 'schedule_round_bonus',
@@ -432,6 +497,24 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       min: { min: 1, max: 64 }, ceil: { min: 1, max: 1 }, floor: { min: 1, max: 1 }, divide: { min: 2, max: 2 },
       count_cards: { min: 0, max: 0 }, gt: { min: 1, max: 2 }, lte: { min: 1, max: 2 },
     };
+    const storedIds = declaredStoredCardValueIds(raw);
+    const validateStoredNodes = (value: unknown, path: string, role: UsageRole, abilityId?: string): void => {
+      if (Array.isArray(value)) { value.forEach((item, index) => validateStoredNodes(item, `${path}[${index}]`, role, abilityId)); return; }
+      if (!value || typeof value !== 'object') return;
+      const entry = node(value);
+      if (entry.formulaRef === 'card.storedValue' &&
+          (role !== 'formula' && role !== 'costAmount' || !isStoredCardValueId(entry.id) || !storedIds.has(entry.id) ||
+           Object.keys(entry).some(key => key !== 'formulaRef' && key !== 'id'))) {
+        issue(path, 'Stored values require a consumed field and a declared same-card safe ID', abilityId);
+      }
+      if (entry.type === 'store_card_value') {
+        if (role !== 'effect' || !isStoredCardValueId(entry.id) || Object.keys(entry).some(key => !['type', 'id', 'value'].includes(key))) {
+          issue(path, 'Stored writes require an effect position and safe ID', abilityId);
+        }
+        validateFormulaNode(entry.value as RuleNode, `${path}.value`, abilityId);
+      }
+      for (const [key, child] of Object.entries(entry)) validateStoredNodes(child, `${path}.${key}`, usageChildRole(role, key, entry), abilityId);
+    };
     const validateFormulaNode = (root: RuleNode, path: string, abilityId?: string): void => {
       let budget = 64;
       const visit = (value: unknown, depth: number, nodePath: string): void => {
@@ -445,7 +528,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const current = value as RuleNode;
         const op = str(current.op);
         if (!op) {
-          if (!str(current.var)) issue(nodePath, 'Formula node requires op or var', abilityId);
+          if (!str(current.var) && !['cardFace.basePower', 'card.storedValue'].includes(str(current.formulaRef))) issue(nodePath, 'Formula node requires op or var', abilityId);
           return;
         }
         const arity = formulaArity[op];
@@ -497,7 +580,7 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         !(abilityId && boundVariables.get(abilityId)?.includes(str(n.var ?? n.name)))) {
         issue(`${path}.var`, `Unbound server metric or variable: ${str(n.var ?? n.name)}`, abilityId);
       }
-      if (n.formulaRef && n.formulaRef !== 'cardFace.basePower') issue(`${path}.formulaRef`, 'Unmapped formula reference', abilityId);
+      if (n.formulaRef && n.formulaRef !== 'cardFace.basePower' && n.formulaRef !== 'card.storedValue') issue(`${path}.formulaRef`, 'Unmapped formula reference', abilityId);
       if (n.owner && n.owner !== 'controller') issue(`${path}.owner`, 'Only controller ownership is supported', abilityId);
       if (n.player && n.player !== 'controller') issue(`${path}.player`, 'Only controller resource/movement effects are supported', abilityId);
       if (n.type === 'reveal_information') {
@@ -585,6 +668,9 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     if (face.semanticCategory !== undefined && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) issue('cardFace.semanticCategory', 'Unsupported semantic card category');
     if (typeof face.basePower === 'string') issue('cardFace.basePower', 'String expressions are forbidden; provide a formula AST');
     scan(raw.playRequirements, 'playRequirements');
+    validateStoredNodes(raw.playRequirements, 'playRequirements', 'dead');
+    validateStoredNodes(node(raw.cardFace).cost, 'cardFace.cost', 'dead');
+    validateStoredNodes(node(raw.cardFace).basePower, 'cardFace.basePower', 'formula');
     if (face.cost !== undefined && !(typeof face.cost === 'number' && Number.isFinite(face.cost) && face.cost >= 0)) {
       const cost = node(face.cost);
       if (cost.formula === undefined || Object.keys(cost).some(key => key !== 'formula' && key !== 'printedExpression') ||
@@ -684,6 +770,11 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
       if (invalidTerrainLayer(a)) issue('effects', 'Unsupported terrain layer shape', id);
       if (invalidSourceBoundAggregate(a) || (containsSourceBoundAggregate(a) && node(a.activation).requiresSourceState !== 'active')) issue('effects','Unsupported source-bound aggregate shape',id);
+      validateStoredNodes(a.effects, 'effects', 'effect', id);
+      validateStoredNodes(a.creates, 'creates', 'effect', id);
+      validateStoredNodes(a.conditions, 'conditions', 'condition', id);
+      validateStoredNodes(a.cost, 'cost', 'cost', id);
+      for (const field of ['targets', 'ruleModifiers', 'lifecycle', 'activation']) validateStoredNodes(a[field], field, 'dead', id);
       const validatePlayerEffectTargets = (v: unknown): void => {
         if (Array.isArray(v)) { v.forEach(validatePlayerEffectTargets); return; }
         if (!v || typeof v !== 'object') return;

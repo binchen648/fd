@@ -25,6 +25,13 @@ export function clearTransientCardTransformState(state: GameState, cardInstanceI
   if (!cardState) return;
   delete cardState.reversed;
   delete cardState.attributeOverrides;
+  delete cardState.values;
   if (state.abilityRuntime) state.abilityRuntime.ongoingEffects = state.abilityRuntime.ongoingEffects.filter(o =>
     o.sourceCardId !== cardInstanceId || !o.ruleModifiers.some(m => m.definition.rule === 'card.attributes' || m.definition.rule === 'attack.currentPower' && m.definition.operation === 'multiply'));
+}
+
+/** IDs are source-local data keys, never prototype/object traversal instructions. */
+export function isStoredCardValueId(value: unknown): value is string {
+  return typeof value === 'string' && /^[A-Za-z_][A-Za-z0-9_.-]{0,127}$/.test(value) &&
+    !['__proto__', 'constructor', 'prototype'].includes(value);
 }
