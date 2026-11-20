@@ -209,7 +209,394 @@
           "value": 8
         }
       ],
-      "abilities": [],
+      "abilities": [
+        {
+          "id": "sc-medea-1.reveal",
+          "kind": "declaration_reveal",
+          "activation": {
+            "trigger": "on_use_declared",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-medea-1.init",
+          "kind": "forced_trigger",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "conditions": [],
+          "targets": [],
+          "effects": [
+            {
+              "type": "store_card_value",
+              "id": "medea-battle",
+              "value": 0
+            },
+            {
+              "type": "store_card_value",
+              "id": "medea-round",
+              "value": 0
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-medea-1.declare",
+          "kind": "phase_action",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "conditions": [
+            {
+              "type": "controller_at_battlefield"
+            }
+          ],
+          "targets": [],
+          "effects": [
+            {
+              "type": "store_card_value",
+              "id": "medea-round",
+              "value": {
+                "var": "round.number"
+              }
+            },
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "controller_at_location_kind",
+                    "locationKind": "miyama_town"
+                  },
+                  "then": [
+                    {
+                      "type": "store_card_value",
+                      "id": "medea-battle",
+                      "value": 1
+                    }
+                  ]
+                },
+                {
+                  "if": {
+                    "type": "controller_at_location_kind",
+                    "locationKind": "shinto"
+                  },
+                  "then": [
+                    {
+                      "type": "store_card_value",
+                      "id": "medea-battle",
+                      "value": 2
+                    }
+                  ]
+                },
+                {
+                  "if": {
+                    "type": "controller_at_location_kind",
+                    "locationKind": "moon_holy_grail"
+                  },
+                  "then": [
+                    {
+                      "type": "store_card_value",
+                      "id": "medea-battle",
+                      "value": 3
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-medea-1.recover-1",
+          "kind": "forced_trigger",
+          "activation": {
+            "trigger": "after_controller_loses_battle",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "conditions": [
+            {
+              "type": "event_location_is",
+              "locationId": "miyama_town"
+            },
+            {
+              "type": "lte",
+              "left": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-battle"
+              },
+              "right": 1
+            },
+            {
+              "type": "lte",
+              "left": 1,
+              "right": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-battle"
+              }
+            },
+            {
+              "type": "lte",
+              "left": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-round"
+              },
+              "right": {
+                "var": "round.number"
+              }
+            },
+            {
+              "type": "lte",
+              "left": {
+                "var": "round.number"
+              },
+              "right": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-round"
+              }
+            },
+            {
+              "type": "exists_target",
+              "targetRef": "removed_np"
+            }
+          ],
+          "targets": [
+            {
+              "id": "removed_np",
+              "type": "card_instance",
+              "scope": {
+                "zone": "removed_from_game",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "private_to_controller",
+              "constraints": [
+                {
+                  "type": "has_card_id",
+                  "cardId": "servant.medea.skill.sc-medea-np"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "target": "removed_np",
+              "to": {
+                "zone": "skill"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-medea-1.recover-2",
+          "kind": "forced_trigger",
+          "activation": {
+            "trigger": "after_controller_loses_battle",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "conditions": [
+            {
+              "type": "event_location_is",
+              "locationId": "shinto"
+            },
+            {
+              "type": "lte",
+              "left": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-battle"
+              },
+              "right": 2
+            },
+            {
+              "type": "lte",
+              "left": 2,
+              "right": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-battle"
+              }
+            },
+            {
+              "type": "lte",
+              "left": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-round"
+              },
+              "right": {
+                "var": "round.number"
+              }
+            },
+            {
+              "type": "lte",
+              "left": {
+                "var": "round.number"
+              },
+              "right": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-round"
+              }
+            },
+            {
+              "type": "exists_target",
+              "targetRef": "removed_np"
+            }
+          ],
+          "targets": [
+            {
+              "id": "removed_np",
+              "type": "card_instance",
+              "scope": {
+                "zone": "removed_from_game",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "private_to_controller",
+              "constraints": [
+                {
+                  "type": "has_card_id",
+                  "cardId": "servant.medea.skill.sc-medea-np"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "target": "removed_np",
+              "to": {
+                "zone": "skill"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-medea-1.recover-3",
+          "kind": "forced_trigger",
+          "activation": {
+            "trigger": "after_controller_loses_battle",
+            "requiresSourceState": "active"
+          },
+          "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+          "conditions": [
+            {
+              "type": "event_location_is",
+              "locationId": "moon_holy_grail"
+            },
+            {
+              "type": "lte",
+              "left": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-battle"
+              },
+              "right": 3
+            },
+            {
+              "type": "lte",
+              "left": 3,
+              "right": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-battle"
+              }
+            },
+            {
+              "type": "lte",
+              "left": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-round"
+              },
+              "right": {
+                "var": "round.number"
+              }
+            },
+            {
+              "type": "lte",
+              "left": {
+                "var": "round.number"
+              },
+              "right": {
+                "formulaRef": "card.storedValue",
+                "id": "medea-round"
+              }
+            },
+            {
+              "type": "exists_target",
+              "targetRef": "removed_np"
+            }
+          ],
+          "targets": [
+            {
+              "id": "removed_np",
+              "type": "card_instance",
+              "scope": {
+                "zone": "removed_from_game",
+                "owner": "controller",
+                "controller": "self"
+              },
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "visibility": "private_to_controller",
+              "constraints": [
+                {
+                  "type": "has_card_id",
+                  "cardId": "servant.medea.skill.sc-medea-np"
+                }
+              ]
+            }
+          ],
+          "effects": [
+            {
+              "type": "move_card",
+              "target": "removed_np",
+              "to": {
+                "zone": "skill"
+              }
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
       "evidence": [
         {
           "kind": "chm",

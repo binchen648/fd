@@ -38,7 +38,8 @@ import {
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
-import { clearTransientCardTransformState } from './ability/card-instance-state';
+import { declaredStoredCardValueIds } from './ability/loader';
+import { clearTransientCardTransformState, isStoredCardValueId } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
@@ -619,6 +620,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
+    (value.values === undefined || isRestoreFiniteNumberMap(value.values) && Object.keys(value.values).every(isStoredCardValueId)) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides));
 }
@@ -959,6 +961,14 @@ function isRestoreAbilityRuntimeReferences(
   pack: Record<string, unknown>,
   eventPlacements: Array<Record<string, unknown>>,
 ): boolean {
+  for (const [instanceId, rawState] of Object.entries(value.cardState as Record<string, Record<string, unknown>>)) {
+    if (rawState.values === undefined) continue;
+    const source = cardsByInstance.get(instanceId);
+    const definition = source && (pack.cards as Record<string, Record<string, unknown>>)[source.definitionId as string];
+    if (!source || !definition || rawState.active !== true || rawState.faceDown === true || !['field','attack_area'].includes(source.zone as string)) return false;
+    const declarations = declaredStoredCardValueIds(definition);
+    if (!Object.keys(rawState.values as object).every(id => declarations.has(id))) return false;
+  }
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound',

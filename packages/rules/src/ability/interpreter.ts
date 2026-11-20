@@ -21,13 +21,13 @@ import {
   isSameBattlefieldPrivateHandReturnInteractionCandidate, isSameBattlefieldPrivateHandReturnInteractionSemantic,
 } from './interaction-gateway';
 import { checkExtendedCondition, resolveExtendedEffect } from './extended-effects';
-import { clearTransientCardTransformState, getEffectiveCardAttributes } from './card-instance-state';
+import { clearTransientCardTransformState, getEffectiveCardAttributes, isStoredCardValueId } from './card-instance-state';
 import { commandSpellPhaseOverride, grantMana, ignoresSituationPlayForbid, installGameStartRuleOverride, installRulerSealMovementLock, isExactGameStartRuleOverrideEffect, movementLockedByPersistentRule, persistentExtraAttackAllowance, rulerSealMovementLocked, situationForbidsAttribute } from '../core/rule-overrides';
 import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, isAcceptedSourceCardModifier, validManaCostAuraModifier } from './loader';
+import { declaredStoredCardValueIds, node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, isAcceptedSourceCardModifier, validManaCostAuraModifier } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -574,6 +574,16 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
     if (!value || typeof value !== 'object' || Array.isArray(value)) reject('unsupported', 'Formula must be a controlled AST');
     const n = node(value);
     if (n.formula !== undefined) return visit(n.formula);
+    if (n.formulaRef === 'card.storedValue') {
+      const source = card(s, sourceCardId), physical = runtime(s).cardState[sourceCardId];
+      const declaration = definition(s, sourceCardId);
+      if (!isStoredCardValueId(n.id) || !declaration || !declaredStoredCardValueIds(declaration as unknown as RuleNode).has(n.id) ||
+        !['field','attack_area'].includes(source.zone) || physical?.active !== true || physical.faceDown === true ||
+        !physical.values || !Object.prototype.hasOwnProperty.call(physical.values, n.id) || !Number.isFinite(physical.values[n.id])) {
+        reject('uninitialized_card_value', 'Stored card value is unavailable for this activation');
+      }
+      return physical.values[n.id]!;
+    }
     if (n.formulaRef === 'cardFace.basePower') return visit(definition(s, sourceCardId)?.cardFace.basePower ?? 0);
     if (n.var !== undefined || n.op === 'var') {
       const name = str(n.var ?? n.name);
@@ -1460,6 +1470,10 @@ function activationContractFailure(s:GameState,sourceId:string,a:AuthoringAbilit
  return undefined;
 }
 function canActivate(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
+  try { return canActivateWithAvailableValues(s, sourceId, a, event); }
+  catch (error) { if (error instanceof RuleRejection && error.code === 'uninitialized_card_value') return false; throw error; }
+}
+function canActivateWithAvailableValues(s: GameState, sourceId: string, a: AuthoringAbility, event?: AbilityEvent): boolean {
   if (a.execution.mode !== 'automatic') return false;
   if (a.kind === 'phase_action' && replacementWasUsed(s, sourceId, a.activation.phase)) return false;
   if (a.effects.some(effect => effect.type === 'schedule_at_player_action_end') &&
@@ -2677,7 +2691,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         selected.forEach(id => { const state = runtime(s).cardState[id]; if (state) { state.active = true; state.faceDown = false; } });
       }
       if (effect.deactivate === true || effect.face === 'face_down') {
-        selected.forEach(id => { const state = runtime(s).cardState[id]; if (state) { state.active = false; state.faceDown = true; } });
+        selected.forEach(id => { const state = runtime(s).cardState[id]; if (state) { state.active = false; state.faceDown = true; delete state.values; } });
       }
       if (str(effect.resultVar)) ctx.variables[str(effect.resultVar)] = (ctx.variables[str(effect.resultVar)] ?? 0) + moved;
       recordBinding(ctx, effect, moved, selected, s, selected);
@@ -2798,6 +2812,17 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === node(effect.from).zone).forEach(c => moveCard(s, c.instanceId, 'deck'));
       shuffle(s, p.id); break;
     case 'shuffle_deck': shuffle(s, p.id); break;
+    case 'store_card_value': {
+      const source = card(s, ctx.sourceCardId), physical = r.cardState[ctx.sourceCardId];
+      if (!isStoredCardValueId(effect.id) || !declaredStoredCardValueIds(definition(s, ctx.sourceCardId) as unknown as RuleNode).has(effect.id) ||
+        !['field','attack_area'].includes(source.zone) || physical?.active !== true || physical.faceDown === true) {
+        reject('invalid_card_value', 'Stored card value requires a declared active physical source');
+      }
+      const value = numeric(s, ctx, effect.value);
+      if (!Number.isFinite(value)) reject('invalid_card_value', 'Stored card values must be finite');
+      (physical.values ??= Object.create(null))[effect.id] = value;
+      break;
+    }
     case 'create_card': {
       // count 默认 1；允许多张（"将 2 张游戏外的起源弹加入手牌"）。
       const copies = Math.max(1, Math.trunc(numeric(s, ctx, effect.count ?? 1)));

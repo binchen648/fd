@@ -53,3 +53,54 @@ describe('Actual A native Rule Breaker typed ledger from isolated B Rule Breaker
  it('refuses a now-distant target without touching real pending/ledger/resources',()=>{const {session,actor,target,decisionId}=ready();session.state.players.find(p=>p.id===target)!.locationId='miyama_town';const before=session.getState();expect(session.dispatchPlayerAction(actor,{type:'choose_target',decisionId,selectedIds:[target]}).ok).toBe(false);expect(session.getState()).toEqual(before);});
  it('refuses staging the skill below its eight-mana threshold before payment/source changes',()=>{const {session,actor,id}=fixture();session.state.players.find(p=>p.id===actor)!.mana=7;expect(session.dispatchPlayerAction(actor,{type:'skip_normal_move'}).ok).toBe(true);const before=session.getState();expect(session.dispatchPlayerAction(actor,{type:'stage_attack_card',cardInstanceId:id,faceDown:false}).ok).toBe(false);expect(session.getState()).toEqual(before);});
 });
+
+describe('Medea stored battle declaration and recovery', () => {
+ for (const declare of [false, true]) {
+  it(`handles actual battle loss with declaration=${declare} after restore`, () => {
+   const { session, actor, target, id } = fixture();
+   const state = session.state;
+   const recoverySource = state.cards.find(card =>
+    card.ownerPlayerId === actor && card.definitionId === 'servant.medea.skill.sc-medea-1')!;
+   const companion = state.cards.find(card => card.zone === 'hand' && card.ownerPlayerId === actor &&
+    rules.cards[card.definitionId]?.cardFace.cost === 0)!;
+   state.cards.find(card => card.instanceId === id)!.zone = 'removed_from_game';
+   expect(session.dispatchPlayerAction(actor, { type: 'skip_normal_move' }).ok).toBe(true);
+   for (const cardInstanceId of [recoverySource.instanceId, companion.instanceId]) {
+    const outcome = session.dispatchPlayerAction(actor, { type: 'stage_attack_card', cardInstanceId, faceDown: false });
+    expect(outcome.ok, JSON.stringify(outcome.rejection)).toBe(true);
+   }
+   const play = session.dispatchPlayerAction(actor, { type: 'confirm_staged_attack' });
+   expect(play.ok, JSON.stringify(play.rejection)).toBe(true);
+   expect(session.state.abilityRuntime!.cardState[recoverySource.instanceId]?.values).toEqual({ 'medea-battle': 0, 'medea-round': 0 });
+   const opponentCard = session.state.cards.find(card => card.ownerPlayerId === target && card.zone === 'hand')!;
+   opponentCard.zone = 'attack_area';
+   opponentCard.visibility = { scope: 'public' };
+   session.state.abilityRuntime!.cardState[opponentCard.instanceId] = { active: true, faceDown: false, playedRound: 3 };
+   const packedOpponent = rules.cards[opponentCard.definitionId]!;
+   expect(packedOpponent).toBeDefined();
+   Object.assign(opponentCard, { powerModifiers: [{ kind: 'add', value: 40 }] });
+   advanceAbilityPhase(session.state, 'battle');
+   session.state.round.prioritySeat = session.state.players.find(player => player.id === actor)!.seat;
+   if (declare) {
+    const result = session.dispatchPlayerAction(actor, { type: 'activate_ability',
+     cardInstanceId: recoverySource.instanceId, abilityId: 'sc-medea-1.declare' });
+    expect(result.ok, JSON.stringify(result.rejection)).toBe(true);
+    expect(session.state.abilityRuntime!.cardState[recoverySource.instanceId]?.values).toEqual({ 'medea-battle': 2, 'medea-round': 3 });
+   }
+   const restored = restore(JSON.parse(JSON.stringify(session.serializeSession())));
+   for (let i = 0; i < 16 && !restored.battleHistory.length; i++) {
+    const result = restored.passPriority(restored.getClientProjection().priorityPlayerId);
+    expect(result.ok, JSON.stringify(result.rejection)).toBe(true);
+   }
+   expect(restored.battleHistory.find(battle => battle.battlefieldId === 'shinto')?.winnerPlayerIds).toEqual([target]);
+   const pending = restored.state.abilityRuntime!.pendingDecision;
+   if (declare) {
+    expect(pending?.candidates).toContain(id);
+    expect(restored.dispatchPlayerAction(actor, { type: 'choose_target', decisionId: pending!.id, selectedIds: [id] }).ok).toBe(true);
+   } else {
+    expect(pending).toBeUndefined();
+   }
+   expect(restored.state.cards.find(card => card.instanceId === id)?.zone).toBe(declare ? 'skill' : 'removed_from_game');
+  });
+ }
+});
