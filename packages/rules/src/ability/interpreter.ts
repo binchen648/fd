@@ -1,5 +1,5 @@
 import { isCloseActiveControlledCardRequirement, isRoundPlayBonusEffect, optionalRoundPlays } from './round-play-bonus';
-import { effectDefeatedPlayerIds, immuneToEffectDefeat } from './effect-defeat';
+import { hasEffectDefeat, immuneToEffectDefeat } from './effect-defeat';
 import { CHALDEAS_SWAP, maySwapMatchReveal } from './chaldeas-reveal';
 import { handRevealContractIssue, isRevealedHandCard, matchesRevealedHandInstance, pendingRevealedHands, validHandRevealBindings, lastHandReveal } from './revealed-hand-play';
 import { approvedAdvanceGroup, isApprovedAdvanceGroupEffect } from './advance-group-play';
@@ -1601,6 +1601,7 @@ function allHandFaceUpForbiddenByEffect(s: GameState, playerId: string): boolean
   });
 }
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, advanceGroupException = false): string | undefined {
+  if (hasEffectDefeat(s, p)) return 'defeated_cannot_play';
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
   if (d.mode !== 'automatic') return d.mode;
   if (c.controllerPlayerId !== p || !['hand', 'skill'].includes(c.zone) || player(s, p).status !== 'active') return 'illegal_action';
@@ -2586,6 +2587,7 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'play_source_card': {
+      if (hasEffectDefeat(s, p.id)) reject('defeated_cannot_play', 'A defeated player cannot play cards');
       const source = card(s, ctx.sourceCardId);
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
@@ -5494,7 +5496,7 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
   copy.round.activePhase = next; copy.round.roundNumber = round;
-  if (next === 'round_end' || round > s.round.roundNumber) delete runtime(copy).effectDefeats;
+  if (round > s.round.roundNumber) delete runtime(copy).effectDefeats;
   cleanupOngoing(copy); cleanupStatuses(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
 
@@ -5530,7 +5532,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
         })),
       } : r.pack.servantPackage;
       return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, commandSpells: Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3), masterCardId: p.masterCardId,
-        ...(p.locationId && effectDefeatedPlayerIds(s, p.locationId).includes(p.id) ? { effectDefeated: true } : {}),
+        ...(hasEffectDefeat(s, p.id) ? { effectDefeated: true } : {}),
         ...(p.locationId ? { locationId: p.locationId } : {}), handCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'hand').length,
         deckCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').length,
         ...(r.revealedServants.includes(p.id) && servantPackage && p.servantCardId === servantPackage.id
@@ -5983,6 +5985,7 @@ function recordConsecutivePlay(s: GameState, sourceId: string, faceDown: boolean
 
 function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], quota: 'regular' | 'effect' = 'regular', waiveManaCost = false,
   advanceGroupException = false): void {
+  if (hasEffectDefeat(s, playerId)) reject('defeated_cannot_play', 'A defeated player cannot play cards');
   if (new Set(choices.map(c => c.cardInstanceId)).size !== choices.length) reject('illegal_action', 'Duplicate card in play batch');
   const faceUpChoiceCount = choices.filter((choice) => choice.faceDown !== true).length;
   if (faceUpChoiceCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpChoiceCount)) {

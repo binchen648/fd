@@ -3135,6 +3135,7 @@ export class MatchSession {
     if (this.logs.some(entry => entry.type === 'standard_round_end_resolved' && entry.round === round)) return;
     const miyama = this.logs.filter(entry => entry.type === 'battle_resolved' && entry.round === round && entry.message === 'miyama_town').slice(-1)[0];
     const winners = (miyama?.payload?.winnerPlayerIds ?? []) as string[];
+    if (runtime) delete runtime.effectDefeats;
     const result = resolveStandardRoundEnd(this.state.players, round, winners);
     for (const player of this.state.players) if (result.eliminatedPlayerIds.includes(player.id)) player.status = 'eliminated';
     this.record('standard_round_end_resolved', `standard-end:${round}`, result);
