@@ -1,4 +1,5 @@
 import { dueRoundPlayBonuses } from './ability/round-play-bonus';
+import { validEffectDefeatState } from './ability/effect-defeat';
 import { CHALDEAS_REVEAL, CHALDEAS_SWAP, chaldeasSource, currentMatchDeckBottom, matchReveal, ordinarySituationDeck, type MatchReveal } from './ability/chaldeas-reveal';
 import { movementLocks } from './ability/movement-locks';
 import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
@@ -1091,6 +1092,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       playerIds.has(card.controllerPlayerId as string) && (packKind === 'trusted_authoring_fixture' ||
         Object.prototype.hasOwnProperty.call(definitions, card.definitionId as string)))) return false;
 
+  if (!validEffectDefeatState(value as unknown as GameState)) return false;
   const eventCatalog = isRestoreRecord(pack.eventCatalog) ? pack.eventCatalog : {};
   const eventIds = new Set([...eventCardById.keys(), ...Object.keys(eventCatalog)]);
   const eventArrays = ['eventDeck','eventOutsideGame'] as const;
