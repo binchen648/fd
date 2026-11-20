@@ -691,6 +691,21 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       for (const field of ['effects', 'conditions', 'cost', 'creates']) scan(a[field], field, id);
       if (invalidTerrainLayer(a)) issue('effects', 'Unsupported terrain layer shape', id);
       if (invalidSourceBoundAggregate(a) || (containsSourceBoundAggregate(a) && node(a.activation).requiresSourceState !== 'active')) issue('effects','Unsupported source-bound aggregate shape',id);
+      const validatePlayerEffectTargets = (v: unknown): void => {
+        if (Array.isArray(v)) { v.forEach(validatePlayerEffectTargets); return; }
+        if (!v || typeof v !== 'object') return;
+        const effect = node(v);
+        if (effect.type === 'apply_defeat_status' || (effect.type === 'adjust_command_seals' && effect.targetRef !== undefined)) {
+          if (!nodes(a.targets).some(target => target.type === 'player' && target.id === str(effect.targetRef))) {
+            issue('effects.targetRef', 'Effect requires a declared player target', id);
+          }
+          if (effect.type === 'apply_defeat_status' && Object.keys(effect).some(key => !['type', 'targetRef', 'includeController'].includes(key))) {
+            issue('effects', 'Unsupported effect defeat field', id);
+          }
+        }
+        Object.values(effect).forEach(validatePlayerEffectTargets);
+      };
+      validatePlayerEffectTargets(a.effects);
       const validatePlacement = (v: unknown): void => {
         if (Array.isArray(v)) { v.forEach(validatePlacement); return; }
         if (!v || typeof v !== 'object') return;

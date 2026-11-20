@@ -718,6 +718,8 @@ export function resolveBattlefield(
     const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
     const returnSilenceControllerDefeated = defeatedPreBattleTargets.includes(returnSilenceController);
     const winnerPlayerIds = returnSilenceControllerDefeated ? [] : [returnSilenceController];
+    const assignedDefeats = new Set(effectDefeatedPlayerIds(state, input.battlefieldId));
+    const allAssignedDefeated = participants.every(({ playerId }) => assignedDefeats.has(playerId));
     const loserIds = participants.map((participant) => participant.playerId)
       .filter((playerId) => returnSilenceControllerDefeated || playerId !== returnSilenceController);
     const battleResult: GameState["battleResults"][number] = {
@@ -726,12 +728,12 @@ export function resolveBattlefield(
       tied: false,
       ...(defeatedPreBattleTargets.length ? { excludedPlayerIds: defeatedPreBattleTargets } : {}),
       winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
-      margin: 8,
+      margin: allAssignedDefeated ? 0 : 8,
       vpReward: 0,
       baseVpPerWinner: 0,
       eventVpPool: 0,
       competitionVpPool: 0,
-      militaryAdjustments: loserIds.map((playerId) => ({ playerId, delta: -8 })),
+      militaryAdjustments: allAssignedDefeated ? [] : loserIds.map((playerId) => ({ playerId, delta: -8 })),
       participantBreakdowns: ranked,
     };
     const nextState: GameState = {

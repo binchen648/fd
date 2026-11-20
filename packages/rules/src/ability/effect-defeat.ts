@@ -16,12 +16,16 @@ export function immuneToEffectDefeat(state: GameState, playerId: string, battlef
     hasActiveRuleModifier(state, playerId, 'immune_to_defeat', 'add', { requireActivation: true });
 }
 
+export function hasEffectDefeat(state: GameState, playerId: string): boolean {
+  return (state.abilityRuntime?.effectDefeats ?? []).some(fact =>
+    fact.round === state.round.roundNumber && fact.targetPlayerIds.includes(playerId) &&
+    !immuneToEffectDefeat(state, playerId, state.players.find(player => player.id === playerId)?.locationId ?? fact.battlefieldId));
+}
+
 export function effectDefeatedPlayerIds(state: GameState, battlefieldId: string): string[] {
-  if (state.round.activePhase === 'round_end') return [];
-  const targets = (state.abilityRuntime?.effectDefeats ?? [])
-    .filter(fact => fact.round === state.round.roundNumber && fact.battlefieldId === battlefieldId)
-    .flatMap(fact => fact.targetPlayerIds);
-  return [...new Set(targets)].filter(id => !immuneToEffectDefeat(state, id, battlefieldId));
+  return state.players
+    .filter(player => player.locationId === battlefieldId && hasEffectDefeat(state, player.id))
+    .map(player => player.id);
 }
 
 function containsDefeatEffect(input: unknown): boolean {
@@ -35,7 +39,7 @@ export function validEffectDefeatState(state: GameState): boolean {
   const runtime = state.abilityRuntime;
   const facts = runtime?.effectDefeats;
   if (facts === undefined) return true;
-  if (!Array.isArray(facts) || state.round.activePhase === 'round_end' && facts.length > 0) return false;
+  if (!Array.isArray(facts)) return false;
   const players = new Set(state.players.map(player => player.id));
   return facts.every(fact => {
     if (!fact || typeof fact !== 'object' || Object.keys(fact).some(key => ![

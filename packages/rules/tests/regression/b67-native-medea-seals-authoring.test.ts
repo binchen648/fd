@@ -1,3 +1,4 @@
+import { playAbilityCardBatch } from '../../src/ability/interpreter';
 import { resolveBattlefield } from '../../src/core/combat-resolver';
 import {beforeAll,afterAll,describe,expect,it,vi} from 'vitest';
 import {loadPlaytestContentPack,compileLoadedPlaytestPack} from '../../../content/src/playtest-pack-loader';
@@ -27,7 +28,15 @@ describe('Actual A native Rule Breaker typed ledger from isolated B Rule Breaker
   }).nextState.battleResults.at(-1);
   expect(result?.winnerPlayerIds).toEqual([actor]);
   expect(result?.excludedPlayerIds).toContain(target);
+  const handCard = restored.state.cards.find(card => card.controllerPlayerId === target && card.zone === 'hand')!;
+  restored.state.round.prioritySeat = restored.state.players.find(player => player.id === target)!.seat;
+  const beforePlay = restored.getState();
+  expect(() => playAbilityCardBatch(restored.state, target, [{ cardInstanceId: handCard.instanceId }]))
+    .toThrow('A defeated player cannot play cards');
+  expect(restored.getState()).toEqual(beforePlay);
   advanceAbilityPhase(restored.state, 'round_end');
+  expect(restored.getPlayerView(actor).players.find(player => player.id === target)?.effectDefeated).toBe(true);
+  advanceAbilityPhase(restored.state, 'round_start', restored.state.round.roundNumber + 1);
   expect(restored.getPlayerView(actor).players.find(player => player.id === target)?.effectDefeated).toBeUndefined();
  });
  it('produces a zero-winner battle if every participant has an assigned defeat', () => {
