@@ -332,7 +332,7 @@ export default function MatchTable({
               <span className='seat-card__portrait'>{player.servantImageUrl ? <img src={player.servantImageUrl} alt='' /> : null}</span>
               <span className='seat-card__number'>{player.seat}</span>
               <span><strong>{player.name}</strong><small>{player.masterName} / {player.servantName}</small></span>
-              <span className='seat-card__stats'><b>{player.vp} VP</b><small>◇ {player.mana} · 令咒 {player.commandSpells}</small></span>
+              <span className='seat-card__stats'><b>{player.vp} VP</b>{player.effectDefeated && <small>效果败北</small>}<small>◇ {player.mana} · 令咒 {player.commandSpells}</small></span>
             </button>
           ))}
       </section>
