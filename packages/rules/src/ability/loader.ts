@@ -195,6 +195,7 @@ export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
 }
 
 const supportedTypes = new Set([
+  'apply_defeat_status',
   'replace_phase_abilities', 'schedule_at_player_action_end',
   'play_card_group',
   'reveal_hands', 'play_revealed_card', 'close_active_controlled_card', 'schedule_round_bonus',
@@ -312,7 +313,7 @@ const mechanicKeys = new Set(['attributesFromBinding', 'roundOffset', 'after', '
   'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
-  'targetRef', 'targetsFromBinding', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
+  'targetRef', 'includeController', 'targetsFromBinding', 'resultVar', 'optionalCost', 'selection', 'uses', 'conditions', 'locationKind', 'maxSteps', 'cardType', 'face', 'attribute', 'sourceCard',
   'includeSource', 'ignorePriority', 'ignoreRequirements',
   'object', 'controller', 'location', 'negated', 'tier', 'specificity',
   'source', 'interpretation', 'name',
@@ -559,6 +560,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
             nodes(raw.playRequirements).filter(isCloseActiveControlledCardRequirement).length !== 1) {
           issue(path, 'Round bonus requires an active on-play source and an exact close prerequisite', abilityId);
         }
+      }
+      if (n.type === 'apply_defeat_status' && (!str(n.targetRef) ||
+        (n.includeController !== undefined && typeof n.includeController !== 'boolean'))) {
+        issue(path, 'Defeat requires a player targetRef', abilityId);
       }
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);

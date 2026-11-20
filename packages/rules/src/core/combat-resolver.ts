@@ -1,3 +1,4 @@
+import { effectDefeatedPlayerIds } from '../ability/effect-defeat';
 import starterPack from "../data/cards/starter-pack.json";
 import type {
   BattleModifierBreakdown,
@@ -590,7 +591,9 @@ function buildBattleResultFromRanked(
     ...preBattleDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
   ])];
   const eligible = ranked.filter((participant) => !excludedPlayerIds.includes(participant.playerId));
-  const highestEligiblePower = eligible[0]?.effectivePower;
+  const assignedDefeats = new Set(effectDefeatedPlayerIds(state, battlefieldId));
+  const allAssignedDefeated = ranked.every(participant => assignedDefeats.has(participant.playerId));
+  const highestEligiblePower = eligible[0]?.effectivePower ?? (allAssignedDefeated ? 0 : undefined);
   if (highestEligiblePower === undefined) return null;
 
   const winners = eligible.filter((participant) => participant.effectivePower === highestEligiblePower);
@@ -705,7 +708,10 @@ export function resolveBattlefield(
     const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
       entry.round === state.round.roundNumber && entry.battlefieldId === input.battlefieldId);
     const participantIds = new Set(participants.map((participant) => participant.playerId));
-    const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+    const preBattleTargets = [...new Set([
+      ...matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds),
+      ...effectDefeatedPlayerIds(state, input.battlefieldId),
+    ])]
       .filter((playerId) => participantIds.has(playerId));
     const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
       ignoresBattleLossEffects(state, playerId, input.battlefieldId));
@@ -831,7 +837,10 @@ export function resolveBattlefield(
   const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
     entry.round === settlementState.round.roundNumber && entry.battlefieldId === input.battlefieldId);
   const participantIds = new Set(ranked.map((participant) => participant.playerId));
-  const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+  const preBattleTargets = [...new Set([
+      ...matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds),
+      ...effectDefeatedPlayerIds(settlementState, input.battlefieldId),
+    ])]
     .filter((playerId) => participantIds.has(playerId));
   const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
     ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));

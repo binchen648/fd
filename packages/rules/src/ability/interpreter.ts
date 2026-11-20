@@ -1,4 +1,5 @@
 import { isCloseActiveControlledCardRequirement, isRoundPlayBonusEffect, optionalRoundPlays } from './round-play-bonus';
+import { effectDefeatedPlayerIds, immuneToEffectDefeat } from './effect-defeat';
 import { CHALDEAS_SWAP, maySwapMatchReveal } from './chaldeas-reveal';
 import { handRevealContractIssue, isRevealedHandCard, matchesRevealedHandInstance, pendingRevealedHands, validHandRevealBindings, lastHandReveal } from './revealed-hand-play';
 import { approvedAdvanceGroup, isApprovedAdvanceGroupEffect } from './advance-group-play';
@@ -2405,6 +2406,28 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
   const unpreventable = a.ruleModifiers.some(m => m.rule === 'effect_prevention' && m.operation === 'ignore' && node(m.priority).tier === 'explicit_exception');
   if (r.preventEffects && !unpreventable) { r.events.push({ type: 'effect_prevented', playerId: p.id }); return; }
   switch (effect.type) {
+    case 'apply_defeat_status': {
+      const battlefieldId = p.locationId;
+      if (!battlefieldId || !isBattlefield(s, battlefieldId)) reject('invalid_state', 'Effect defeat requires a battlefield');
+      const ids = [...new Set(referencedPlayerIds(s, ctx, effect))]
+        .filter(id => effect.includeController === true || id !== p.id);
+      if (ids.some(id => player(s, id).status !== 'active' || player(s, id).locationId !== battlefieldId)) {
+        reject('illegal_target', 'Defeat target left the battlefield');
+      }
+      const targetPlayerIds = ids.filter(id => !immuneToEffectDefeat(s, id, battlefieldId) && !isProtectedFromOpponentEffects(s, id, p.id));
+      if (targetPlayerIds.length > 0) {
+        (r.effectDefeats ??= []).push({
+          round: s.round.roundNumber,
+          battlefieldId,
+          controllerId: p.id,
+          sourceCardId: ctx.sourceCardId,
+          sourceDefinitionId: card(s, ctx.sourceCardId).definitionId,
+          abilityId: ctx.abilityId,
+          targetPlayerIds,
+        });
+      }
+      break;
+    }
     case 'defeat_player': {
       stagePreBattleDefeat(s, ctx, a);
       break;
@@ -2707,22 +2730,27 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       break;
     }
     case 'adjust_command_seals': {
-      const current = Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3);
       const amount = numeric(s, ctx, effect.amount);
-      const next = Math.max(0, current + amount);
-      (p as unknown as { commandSpells: number }).commandSpells = next;
-      pushModeDirective(s, {
-        controllerId: p.id,
-        directive: str(effect.directive) || 'adjust_command_seals',
-        round: s.round.roundNumber,
-        sourceCardId: ctx.sourceCardId,
-        abilityId: ctx.abilityId,
-        amount,
-        commandSpells: next,
-        consumed: true,
-      });
-      if (current > 0 && next === 0) {
-        processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: p.id });
+      const targetRef = str(effect.targetRef);
+      const targets = targetRef ? referencedPlayerIds(s, ctx, effect).map(id => player(s, id)) : [p];
+      for (const target of targets) {
+        if (isProtectedFromOpponentEffects(s, target.id, p.id)) continue;
+        const current = Number((target as unknown as { commandSpells?: number }).commandSpells ?? 3);
+        const next = Math.max(0, current + amount);
+        (target as unknown as { commandSpells: number }).commandSpells = next;
+        pushModeDirective(s, {
+          controllerId: target.id,
+          directive: str(effect.directive) || 'adjust_command_seals',
+          round: s.round.roundNumber,
+          sourceCardId: ctx.sourceCardId,
+          abilityId: ctx.abilityId,
+          amount,
+          commandSpells: next,
+          consumed: true,
+        });
+        if (current > 0 && next === 0) {
+          processEvent(s, { id: nextId(s, 'empty-seals'), type: 'after_controller_loses_all_command_seals', playerId: target.id });
+        }
       }
       break;
     }
@@ -5477,7 +5505,9 @@ export function advanceAbilityPhase(s: GameState, next: PhaseName, round = s.rou
     runtime(copy).manaGainedThisRound = { round, byPlayer: {} };
     runtime(copy).playCounters = { round, cardsPlayedByPlayer: {}, faceUpCardsPlayedByPlayer: {}, attacksDeclaredByPlayer: {} };
   }
-  copy.round.activePhase = next; copy.round.roundNumber = round; cleanupOngoing(copy); cleanupStatuses(copy);
+  copy.round.activePhase = next; copy.round.roundNumber = round;
+  if (next === 'round_end' || round > s.round.roundNumber) delete runtime(copy).effectDefeats;
+  cleanupOngoing(copy); cleanupStatuses(copy);
   const type = next === 'battle' ? 'controller_combat_action_window' : next === 'action' ? 'controller_action_window' : next === 'round_end' ? 'round_end' : 'phase_changed';
 
   processEvent(copy, { id: nextId(copy, 'phase'), type }); runtime(copy).revision++; Object.assign(s, copy);
@@ -5512,6 +5542,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
         })),
       } : r.pack.servantPackage;
       return { id: p.id, seat: p.seat, mana: p.mana, vp: p.vp, commandSpells: Number((p as unknown as { commandSpells?: number }).commandSpells ?? 3), masterCardId: p.masterCardId,
+        ...(p.locationId && effectDefeatedPlayerIds(s, p.locationId).includes(p.id) ? { effectDefeated: true } : {}),
         ...(p.locationId ? { locationId: p.locationId } : {}), handCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'hand').length,
         deckCount: s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'deck').length,
         ...(r.revealedServants.includes(p.id) && servantPackage && p.servantCardId === servantPackage.id

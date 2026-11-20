@@ -1,0 +1,424 @@
+{
+  "schemaVersion": "fd-card-authoring-v1",
+  "archiveType": "servant_skill_card_archive",
+  "id": "servant.medea",
+  "name": "美狄亚",
+  "class": "Caster",
+  "sourcePolicy": {
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "final_rules"
+    ]
+  },
+  "deck": [
+    {
+      "cardId": "card.cardq1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.cardq2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.cardq3",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.carda1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.carda2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.carda2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.carda3",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.carda3",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.carda4",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.cardsurveil",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.cardluck",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.deck"
+    }
+  ],
+  "cards": [
+    {
+      "id": "servant.medea.skill.sc-medea-2",
+      "name": "阵地建造",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.medea"
+      },
+      "printedText": "X为16−（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": {
+          "formula": {
+            "op": "add",
+            "args": [
+              16,
+              {
+                "op": "multiply",
+                "args": [
+                  -2,
+                  {
+                    "var": "round.number"
+                  }
+                ]
+              }
+            ]
+          },
+          "printedExpression": "16−（当前回合数×2）"
+        },
+        "basePower": 2
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "cost": [],
+          "conditions": [],
+          "targets": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.medea.skill.sc-medea-2.residual",
+          "kind": "residual",
+          "printedClause": "残留",
+          "activation": {
+            "trigger": "on_card_played",
+            "opens": "immediate"
+          },
+          "effects": [],
+          "lifecycle": {
+            "duration": "while_card_active",
+            "cleanup": "when_card_leaves_active_area"
+          }
+        },
+        {
+          "cost": [],
+          "conditions": [
+            {
+              "type": "event_location_is",
+              "locationId": "magic_workshop"
+            }
+          ],
+          "targets": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.medea.skill.sc-medea-2.workshop-reward",
+          "kind": "forced_trigger",
+          "printedClause": "当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "activation": {
+            "trigger": "after_player_deployed_to_location",
+            "opens": "immediate",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "adjust_mana",
+              "amount": 1
+            },
+            {
+              "type": "adjust_victory_points",
+              "amount": 2
+            }
+          ],
+          "lifecycle": {}
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true,
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.skill.sc-medea-2",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "c1758618a2151ad5285cc4fb578e8644a8c1bf39a0e5bd6aec3170591126a141"
+      }
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-1",
+      "name": "神言魔术式",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.medea"
+      },
+      "printedText": "【真名解放】\n战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+      "cardFace": {
+        "typeLabel": "魔术",
+        "attributes": [
+          "魔术"
+        ],
+        "cost": 5,
+        "basePower": 8
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [],
+      "evidence": [
+        {
+          "kind": "chm",
+          "document": "FD全卡图鉴V2.0.chm",
+          "category": "servant/english",
+          "page": "美狄亚.htm",
+          "locator": "从者/魔术师/英文版/美狄亚.htm"
+        },
+        {
+          "kind": "development-image",
+          "document": "Fate_Domination-开发版",
+          "category": "servant",
+          "page": "images/servants/美狄亚.png",
+          "locator": "servant.medea/美狄亚"
+        }
+      ],
+      "referenceProgram": "references/fate-domination-b2f9fa1/docs/skill-rule-programs.json",
+      "source": {
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.skill.sc-medea-1",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "c01850ffc239160dcf0959c176270f28d9b958a334e87166a076366d731042f7",
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
+        "imageIndex": 4,
+        "imageSha256": "2c7edf53d83b9e4d5d5d6ae4c5df3d1894e9b269fd942570ee9732a156b83a72",
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-np",
+      "name": "万符必应破戒",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.medea"
+      },
+      "printedText": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+      "cardFace": {
+        "cost": 3,
+        "basePower": 0,
+        "attributes": [
+          "力量",
+          "宝具"
+        ],
+        "typeLabel": "力量/宝具"
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-medea-np.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】<每局游戏限一次>",
+          "activation": {
+            "trigger": "on_use_declared",
+            "opens": "immediate"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ],
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-medea-np.rule-breaker",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "exists_target",
+              "targetRef": "victim"
+            }
+          ],
+          "targets": [
+            {
+              "id": "victim",
+              "type": "player",
+              "selector": "players_at_same_battlefield",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ],
+          "bindings": [
+            {
+              "id": "originalSeals",
+              "read": "target.command_seals"
+            }
+          ],
+          "effects": [
+            {
+              "type": "adjust_command_seals",
+              "targetRef": "victim",
+              "amount": -1
+            },
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "lte",
+                    "left": {
+                      "op": "var",
+                      "var": "originalSeals"
+                    },
+                    "right": 1
+                  },
+                  "then": [
+                    {
+                      "type": "apply_defeat_status",
+                      "targetRef": "victim",
+                      "includeController": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "branch",
+              "branches": [
+                {
+                  "if": {
+                    "type": "lte",
+                    "left": {
+                      "op": "var",
+                      "var": "originalSeals"
+                    },
+                    "right": 0
+                  },
+                  "then": [
+                    {
+                      "type": "create_modifier",
+                      "modifier": {
+                        "type": "power_bonus",
+                        "aggregate": "total",
+                        "amount": 10,
+                        "duration": "this_round",
+                        "scope": {
+                          "subject": "controller"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "source": {
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.medea.skill.sc-medea-np",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "美狄亚.htm",
+            "locator": "从者/魔术师/英文版/美狄亚.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/美狄亚.png",
+            "locator": "servant.medea/美狄亚"
+          }
+        ],
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "a15b6e98527c1faa4914911d66597c7c139dab9653a3578fdb699271e4c52228",
+        "reviewedAgainstImage": false
+      }
+    }
+  ],
+  "openQuestions": [
+    "尚未接入 servant.medea.skill.sc-medea-np（万符必应破戒）"
+  ],
+  "resolvedQuestions": [
+    "2026-11-06用户确认动态费用低于0按0支付；复用原有威力公式AST。"
+  ],
+  "adapterNotes": [
+    "本包为部分技能，不是完整从者包。",
+    "独立候选通道，不注册生产包。",
+    "神言魔术式复用现有字段：主动声明并绑定当回合战场，真实战败后回收一张持有者自己的已移除万符必应破戒。按现有规则地图三战场编码，不改为战后追溯发动。"
+  ]
+}
