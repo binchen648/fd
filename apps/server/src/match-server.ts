@@ -3,6 +3,7 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { URL } from 'node:url';
 import { WebSocket, WebSocketServer, type RawData } from 'ws';
 import { RoomStore } from './room-store';
+import { staticClient } from './static-client';
 import {
   createMatchRoomHub,
   resolveMatchRoomId,
@@ -78,7 +79,8 @@ function parseRoomPath(pathname: string): { roomId: string; action: 'join' | 're
   return { roomId: decodeURIComponent(match[1]!), action: match[2] as 'join' | 'restore' };
 }
 
-export function createMatchServer(input: { hub?: MatchRoomHub; stateFile?: string } = {}): MatchServerHandle {
+export function createMatchServer(input: { hub?: MatchRoomHub; stateFile?: string; clientDist?: string; host?: string } = {}): MatchServerHandle {
+  const serveClient = input.clientDist ? staticClient(input.clientDist) : undefined;
   const hub = input.hub ?? createMatchRoomHub();
   const store = input.stateFile ? new RoomStore(input.stateFile) : undefined;
   try { store?.restore(hub); } catch (error) { store?.close(); throw error; }
@@ -167,6 +169,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub; stateFile?: strin
         broadcastRoom(roomPath.roomId, 'room_restored');
         return;
       }
+      if (serveClient?.(request, response, requestUrl.pathname)) return;
       sendJson(response, 404, { code: 'not_found', message: 'Unknown route' });
     } catch (error) {
       sendJson(response, 400, {
@@ -261,7 +264,7 @@ export function createMatchServer(input: { hub?: MatchRoomHub; stateFile?: strin
     wss,
     listen(port = 0) {
       return new Promise((resolve) => {
-        server.listen(port, '127.0.0.1', () => {
+        server.listen(port, input.host ?? '127.0.0.1', () => {
           const address = server.address();
           resolve(typeof address === 'object' && address ? address.port : port);
         });

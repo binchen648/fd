@@ -24,6 +24,18 @@ async function retainOpeningCards(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('App room product shell', () => {
+  it('does not offer old private credentials when opening an invitation for a different room', () => {
+    window.localStorage.setItem('fd.remote.match-room.connection', JSON.stringify({ roomId: 'old', clientId: 'host', reconnectToken: 'PRIVATE', httpBaseUrl: 'https://old.example', wsBaseUrl: 'wss://old.example' }));
+    window.history.replaceState({}, '', '/?join=new'); render(<App />);
+    expect(screen.getByLabelText('联机大厅')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: '打开远程桌面' })).not.toBeInTheDocument();
+    expect(screen.getByLabelText('房间')).toHaveValue('new');
+  });
+  it('shows a recoverable error for a malformed public invitation service', () => {
+    window.history.replaceState({}, '', '/?join=new&service=broken'); render(<App />);
+    expect(screen.getByRole('alert')).toHaveTextContent('服务地址无效');
+    expect(screen.getByLabelText('服务')).toBeInTheDocument();
+  });
   it('reconnects locally using private credentials absent from the public room DTO', () => {
     const room = createMatchRoom({ roomId: 'local-private-reconnect', hostClientId: 'host' });
     room.disconnect('host');

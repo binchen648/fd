@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "fd-phase3-review-attestation-v1",
+  "taskId": "P3-A-CLOUD-05",
+  "reviewer": "github:binchen648",
+  "reviewThread": "https://github.com/binchen648/fd/pull/688#issuecomment-6552350860",
+  "candidateSha": "42899ae6ddcfcde041d6b10e3d44a3cbedca1b79",
+  "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+  "independentVerification": {
+    "taskId": "A-CLOUD-05",
+    "reviewer": "/root/a_cloud_05_independent",
+    "candidate": "42899ae6ddcfcde041d6b10e3d44a3cbedca1b79",
+    "base": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+    "verdict": "TECHNICAL_PASS",
+    "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
+    "scope": "Unified built-client/HTTP/WebSocket entry and SakuraFrp integration readiness only; not actual public-provider acceptance",
+    "worktreeClean": true,
+    "blockingFindings": [],
+    "independentExecution": {
+      "marker": {
+        "passed": 1,
+        "exitCode": 0
+      },
+      "static": {
+        "passed": 1,
+        "exitCode": 0
+      },
+      "clientInviteAndApp": {
+        "passed": 13,
+        "exitCode": 0
+      },
+      "totalPassed": 15
+    },
+    "closedFindings": [
+      {
+        "priority": "P2",
+        "finding": "No-build confused ordinary and public build",
+        "resolution": "SHA-bound hidden public marker written only after public build; marker/changedindex tests and producer actual normal-build rejection reviewed"
+      },
+      {
+        "priority": "P2",
+        "finding": "Old private resume link on new room invite",
+        "resolution": "Resume link scoped to invitation room and service; independent App regression PASS"
+      },
+      {
+        "priority": "P2",
+        "finding": "Invalid invitation service crashed initial render",
+        "resolution": "Recoverable visible service error/current-origin fallback; invalid and HTTPS mixed-content tests PASS"
+      },
+      {
+        "priority": "P2",
+        "finding": "PORT0 mapping hint used0",
+        "resolution": "Actual listening address parsed; producer launcher smoke64781 matches actualHTTP"
+      },
+      {
+        "priority": "P2",
+        "finding": "URLuserinfo leaked into room invitation",
+        "resolution": "Final source strips username/password; synthetic basic-auth regression independently PASS; prior reproducer preserved"
+      }
+    ],
+    "reviewed": [
+      "Static requests restricted toGET/HEAD,allowed extensions,nonhidden paths and realpath under publicbuild;privatefiles/pathescape/symlinknegative coverage passes",
+      "Existing HTTP/WS authority/credentials/projections retained; loopbackdefault preserved; optionalHOST explicit",
+      "Invites clear FDprivatequery/hash and URLuserinfo; noownerreconnecttoken copied; guests randomidentity;HTTPS sameorigin mapsWSS",
+      "Launcher builds explicitpublicmode,validates publicmarker even no-build,uses private durablestate and actualporthint",
+      "Removing forced rules/content manualchunks avoids Nodebarrel imports in browserbundle without changing rule source; exact final public build/browser evidence reviewed",
+      "A-line audit report distinguishes historical candidate reports from merged main and finalCI, complete wire vs browser witnesses, and staticPages vs livebackend; no full943+1acceptance claim"
+    ],
+    "producerEvidenceReviewed": {
+      "exactCandidatePublicBrowser": {
+        "log": "browser-public-bound.log",
+        "result": "1 passed (11.7s)",
+        "contexts": 7,
+        "singleProductionOrigin": true,
+        "builtClient": true,
+        "uniqueGuestIdentities": 7,
+        "inviteCredentialFree": true,
+        "operationAndReload": true,
+        "privateFilesDenied": true,
+        "independentlyRerun": false
+      },
+      "normalProductionBrowser": {
+        "file": "normal-production-result.json",
+        "source": "6444f0e65522a84e4d0a556022c51f5fe4e3eb4d",
+        "result": "PASS local7seat builtclient/no pageerrors; final source differs onlyuserinfo strip+testasserts"
+      },
+      "launcher": {
+        "file": "launcher-smoke.json",
+        "result": "PASS actualtypecheck/publicbuild,port64781,health/index200,publicmarker"
+      },
+      "liveSakura": "NOT_RUN_NO_ACCOUNT_NODE"
+    },
+    "remainingGates": [
+      "Exact final assembledHEAD original+client+serverCI",
+      "Explicit user merge approval",
+      "Actual Sakuraaccount/node/HTTPSaddress/externalnetwork validation before any livepublicPASS"
+    ],
+    "limitations": [
+      "Reviewer independently executed15boundedtests and source/evidence audit; did not rerun fullCI or browser",
+      "No publicTLS/certificate,nodeavailability or seven-player internet delivery certified",
+      "No rule/authoring/generated content changes, migrationcredit or mergepermission granted"
+    ],
+    "repositoryWrites": false,
+    "evidence": [
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\independent-marker-42899ae6.log",
+        "sha256": "ac95e12d5f16bdc240a48c99ca52481988237c8682383f2b4aa12dae44c3e23f"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\independent-static-42899ae6.log",
+        "sha256": "b3f8ec2e7f4833688d8a10340c9b5a045245aa308be661022e26fdb2b542a2f4"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\independent-client-42899ae6.log",
+        "sha256": "23a5a9ed4cba6b4b184dcae45b5e9fa8a6d255eb23388b442ff153bce2ca1b77"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\browser-public-bound.log",
+        "sha256": "febedb8635208c8c67c0446ebc3fed5f196e6a3a20073dc3a94bd7fb206c2d3f"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\public-entry-result.json",
+        "sha256": "da49241074986c6047b826b66b8ca54860c97c18bc9e3beddca3293da310de22"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\launcher-smoke.json",
+        "sha256": "8e17d31fa0ae011aa44b7a413ab3ae6b6778f12d2b0e28b343e9886b7644a5b8"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\normal-build-rejected.log",
+        "sha256": "946eee4dec29909d4bf03ee0a1c686f32f15065a636d99ff672971102b06bb70"
+      },
+      {
+        "path": "D:\\fd-validation\\a-cloud-05-evidence-20261101\\normal-production-result.json",
+        "sha256": "91e486c03aefe9b488e8174b1e5f08f372b2fbe937485fd86db6cf317645e887"
+      }
+    ]
+  },
+  "publication": "Coordinator publishes independent agent review as postmerge next-slice handoff;not human merge consent. LiveSakura NOT_RUN. FinalheadCI pending."
+}

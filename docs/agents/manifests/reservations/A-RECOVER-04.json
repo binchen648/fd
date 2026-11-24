@@ -1,6 +1,6 @@
 {
   "taskId": "A-RECOVER-04",
-  "status": "GRANTED",
+  "status": "RELEASED",
   "owner": "Global Technical Lead / Product A Builder /root",
   "authority": "User implements approved seven-player recovery plan; single-writer scheduling under existing user delegation",
   "BaseCommit": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
@@ -56,16 +56,21 @@
   "reviewedCandidateSha": "1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946",
   "reviewCommit": "495d91b95722e37ce4d0cc323239158736a90367",
   "synchronizationCommit": "920d0d978d438271a12f02a0aaadea15330f1baf",
-  "remainingGates": [
-    "complete durable11round witness under unchanged5sec WS wait",
-    "exact final-head original+client+server CI",
-    "explicit user merge approval"
-  ],
+  "remainingGates": [],
   "scopeAddendum": {
     "authority": "User-authorized recovery implementation and same-owner Runtime scheduling; actual round7 end-to-end timeout requires minimal serialization fix; no rules/ability semantics changes",
     "preservedPriorCandidate": "7b8f62e96e876a846388730f215ed55f68ee2027",
     "preservedPriorIntegrationHead": "726a03fe8e9ff30adc7c024a197639068e2bea8c",
     "candidateState": "R1_CANDIDATE_UNDER_INTEGRATION_VALIDATION"
   },
-  "promotionPr": 688
+  "promotionPr": 688,
+  "releaseRecord": "docs/agents/manifests/releases/A-RECOVER-04-TO-A-CLOUD-05.json",
+  "postmerge": {
+    "main": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+    "Test": 41218741570,
+    "Build": 41218741549,
+    "Policy": 41218741685,
+    "Deploy": 41218741676,
+    "all": "success"
+  }
 }

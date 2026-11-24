@@ -1,0 +1,10 @@
+{
+  "taskId": "A-RECOVER-04",
+  "owner": "/root",
+  "state": "RELEASED",
+  "authority": "User-authorized same-owner scheduling after PR688 main all4workflowsPASS",
+  "main": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
+  "scope": "all A-RECOVER-04 ReservedFiles",
+  "frozenCandidatePreserved": "1d17b3f54b3e1eb2686e5d767e6a86c8f8d3f946",
+  "nextTask": "A-CLOUD-05"
+}

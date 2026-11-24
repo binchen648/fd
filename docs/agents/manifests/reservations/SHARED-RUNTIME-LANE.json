@@ -1,80 +1,65 @@
 {
   "schemaVersion": "fd-shared-runtime-lane-v1",
-  "updatedAt": "2026-10-31T11:21:01.774653+00:00",
+  "updatedAt": "2026-11-01T02:15:20.019682+00:00",
   "authority": "Explicit latest user Global Technical Lead single-writer instruction",
   "allowedWriterStates": [
     "GRANTED",
     "SUSPENDED",
     "RELEASED"
   ],
-  "precedence": "A-RECOVER-04 owns only listed hub/transport/server/client connection files; interpreter/loader excluded; CB-C02 suspended; A-ASSET-01 merged,postmerge Test/Build/Policy/Deploy PASS and explicitly RELEASED; no overlapping asset writes",
-  "activeRuntimeTask": "A-RECOVER-04",
+  "precedence": "A-RECOVER-04 merged and all main gates PASS,explicitlyRELEASED;A-CLOUD-05 sole named server/client public-entry writer;all rules/interpreter/loader excluded;CB-C02 suspended",
+  "activeRuntimeTask": null,
   "owner": "Global Technical Lead / Product A Builder /root",
   "binding": {
-    "branch": "codex/a-recover-04-seven-player-20261031",
-    "absoluteWorktree": "D:/fd-validation/a-recover-04-20261031"
+    "branch": "codex/a-cloud-05-public-hosting-20261101",
+    "absoluteWorktree": "D:/fd-validation/a-cloud-05-20261101"
   },
-  "requiredBase": "462bb82730eb29ca5cf90b0a89f3e1cdd6189c1a",
+  "requiredBase": "e63cdeb2a065a9f87c24039d2b08bbe059513fed",
   "resources": [
     {
-      "path": "apps/server/src/room-store.ts",
+      "path": "apps/server/src/static-client.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "apps/server/src/room-store.test.ts",
+      "path": "apps/server/src/static-client.test.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
       "path": "apps/server/src/match-server.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
       "path": "apps/server/src/index.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "packages/rules/src/match-room-hub.ts",
+      "path": "apps/client/src/state/public-playtest.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "packages/rules/tests/match-room-hub.test.ts",
+      "path": "apps/client/src/state/public-playtest.test.ts",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "packages/rules/tests/regression/seven-player-restart.test.ts",
+      "path": "apps/client/src/App.tsx",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "apps/client/src/state/match-room-client.ts",
+      "path": "apps/client/src/App.test.tsx",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
+      "taskId": "A-CLOUD-05"
     },
     {
-      "path": "apps/client/src/state/match-room-client.test.ts",
+      "path": "scripts/start-public-playtest.mjs",
       "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
-    },
-    {
-      "path": ".github/workflows/test.yml",
-      "state": "GRANTED",
-      "taskId": "A-RECOVER-04"
-    },
-    {
-      "path": "packages/rules/src/match-session.ts",
-      "taskId": "A-RECOVER-04",
-      "state": "GRANTED"
-    },
-    {
-      "path": "packages/rules/src/match-room.ts",
-      "taskId": "A-RECOVER-04",
-      "state": "GRANTED"
+      "taskId": "A-CLOUD-05"
     }
   ],
   "loader": {
@@ -118,8 +103,12 @@
       "taskManifest": "docs/agents/manifests/tasks/A-ASSET-01.json"
     },
     "A-RECOVER-04": {
-      "state": "GRANTED",
+      "state": "RELEASED",
       "taskManifest": "docs/agents/manifests/tasks/A-RECOVER-04.json"
+    },
+    "A-CLOUD-05": {
+      "state": "GRANTED",
+      "taskManifest": "docs/agents/manifests/tasks/A-CLOUD-05.json"
     }
   },
   "historicalDirtyInterpreter": {
@@ -134,5 +123,5 @@
     "No source in frozen worktrees changed"
   ],
   "releaseRecord": "docs/agents/manifests/releases/DR-P01-FULL-RELEASE-20261030.json",
-  "activeClientTask": "A-RECOVER-04"
+  "activeClientTask": "A-CLOUD-05"
 }
