@@ -5072,6 +5072,14 @@ function preflightFaceUpSelectedCount(a: AuthoringAbility, ctx: EffectContext, t
   return Number.isSafeInteger(min) && min > 0 ? min : 0;
 }
 
+function hasPotentialPreflightFaceUpPlay(effects: RuleNode[]): boolean {
+  return effects.some(effect =>
+    ((effect.type === 'play_source_card' || effect.type === 'play_selected_cards') && effect.face !== 'face_down') ||
+    (effect.type === 'play_card_group' && isApprovedAdvanceGroupEffect(effect)) ||
+    (effect.type === 'branch' && nodes(effect.branches).some(branch =>
+      hasPotentialPreflightFaceUpPlay(nodes(branch.then ?? branch.else)))));
+}
+
 function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: AuthoringAbility, effects: RuleNode[]): number {
   let additionalFaceUpCards = 0;
   for (const effect of effects) {
@@ -5087,7 +5095,7 @@ function countPreflightFaceUpEffectPlays(s: GameState, ctx: EffectContext, a: Au
       additionalFaceUpCards += preflightFaceUpSelectedCount(a, ctx, str(effect.target));
       continue;
     }
-    if (effect.type === 'branch') {
+    if (effect.type === 'branch' && hasPotentialPreflightFaceUpPlay([effect])) {
       const branch = nodes(effect.branches).find(b => b.else !== undefined || condition(s, ctx, node(b.if)));
       if (branch) additionalFaceUpCards += countPreflightFaceUpEffectPlays(s, ctx, a, nodes(branch.then ?? branch.else));
     }
