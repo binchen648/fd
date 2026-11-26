@@ -1,3 +1,4 @@
+import { referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
@@ -64,7 +65,7 @@ function activateAttack(session: ReturnType<typeof rules.createMatchSession>, ow
 }
 
 function productionSession() {
-  const session = rules.createMatchSession({ seed: 20260904, humanPlayerId: 'p3', humanPlayerIds: ['p3'] });
+  const session = rules.createMatchSession({ seed: 20260904, startingServantIds: referenceSevenServants, humanPlayerId: 'p3', humanPlayerIds: ['p3'] });
   expect(session.pairings.find((pairing) => pairing.playerId === 'p3')?.servant.id).toBe('servant.achilles');
   session.state.round.activePhase = 'battle';
   session.state.eventPlacements = [];
