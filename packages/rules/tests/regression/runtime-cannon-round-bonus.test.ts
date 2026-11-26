@@ -61,9 +61,10 @@ describe("King's Cannon signed Runtime contract", () => {
     const exactSkill = cannonArchive.cards[0];
     // Both companion definitions are fixture-only; the Cannon skill itself is unchanged.
     const companions = [1, 2].map(index => ({
-      ...exactSkill, id: index === 1 ? constructionId : `servant.kinggil.fixture-companion-${index}`,
+      ...exactSkill, id: index === 1 ? constructionId : 'servant.kinggil.skill.sc-kinggil-2',
       name: `Fixture companion ${index}`, playRequirements: [], abilities: [],
     }));
+    input.rules.archives = input.rules.archives.filter(archive => archive.id !== 'servant.kinggil');
     input.rules.archives.push({...cannonArchive, cards: [exactSkill, ...companions]});
     const compiled = compileExecutableCardPack(input);
     expect(compiled.cards[cannonId]!.abilities).toHaveLength(2);

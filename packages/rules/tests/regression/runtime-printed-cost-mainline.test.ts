@@ -50,6 +50,7 @@ it('compiles all three unchanged Kinggil skills and the actual deck', () => {
   const input = compileLoadedPlaytestPack(loadPlaytestContentPack('data/packs/fd-playtest-v1/pack.json', {
     workspaceRoot: process.cwd(),
   })).library;
+  input.rules.archives = input.rules.archives.filter(archive => archive.id !== 'servant.kinggil');
   input.rules.archives.push(structuredClone(archive));
   const compiled = compileExecutableCardPack(input);
   expect(compiled.decks['servant.kinggil']).toHaveLength(12);
