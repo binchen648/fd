@@ -2,14 +2,15 @@
   "schemaVersion": "fd-phase3-review-attestation-v1",
   "taskId": "P3-KINGGIL-PRODUCTION-20261127",
   "reviewer": "github:binchen648",
-  "reviewThread": "https://github.com/binchen648/fd/pull/700#issuecomment-7220032701",
-  "candidateSha": "418d147150343e87d5802f1f08579d0ff51d0c86",
+  "reviewThread": "https://github.com/binchen648/fd/pull/700#issuecomment-7220118543",
+  "candidateSha": "74229807c38e5026abeff2ac8172aa20965e8904",
   "conclusion": "IMPLEMENTATION_ACCEPTED_CANDIDATE",
   "actualIndependentReviewer": "/root/kinggil_final_gate_review",
   "independentReviewResult": "PASS",
   "independentTests": {
-    "passed": 40,
-    "failed": 0
+    "passed": 53,
+    "failed": 0,
+    "description": "40 unchanged integration cases reused at418d plus13 client cases at74229807"
   },
   "limitations": [
     "fdkb Reviewer Context UNKNOWN",
