@@ -16,7 +16,7 @@ describe('P3-E04-A111 current-main execution matrix', () => {
     ]);
     expect(matrix.allowedBatchOverlapIds).toEqual(matrix.acceptedBatchOverlapIds);
     expect(matrix.missingAcceptedIds).toEqual([]);
-    expect(matrix.missingGeneratedRegistryIds).toHaveLength(86);
+    expect(matrix.missingGeneratedRegistryIds).toHaveLength(85);
     expect(matrix.gateCPendingIdentityCount).toBe(111);
     expect(matrix.identities).toHaveLength(111);
     expect(matrix.identities.some((identity) => identity.canonicalIdentityId === 'master.tiamat.card.life-sea')).toBe(false);

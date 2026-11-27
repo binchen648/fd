@@ -1238,7 +1238,7 @@
       "entityKind": "servant",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/吉尔伽美什2.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -1251,7 +1251,7 @@
       "entityKind": "servant_overview",
       "capabilityStatus": "FULL",
       "htmPath": "chm-extract/吉尔伽美什2.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -1368,7 +1368,7 @@
       "entityKind": "servant",
       "capabilityStatus": "HOST_ADJUDICATED",
       "htmPath": "chm-extract/美狄亚.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -1381,7 +1381,7 @@
       "entityKind": "servant_overview",
       "capabilityStatus": "FULL",
       "htmPath": "chm-extract/美狄亚.htm",
-      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
       "imageIndex": 0,
       "reviewedAgainstImage": true,
       "issueCodes": [
@@ -2168,14 +2168,14 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kinggil source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "message": "servant.kinggil source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
       "entityId": "servant.kinggil",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.kinggil.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "message": "servant.kinggil.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
       "entityId": "servant.kinggil.overview",
       "field": "source.imagePath",
       "blocking": false
@@ -2238,14 +2238,14 @@
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.medea source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "message": "servant.medea source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
       "entityId": "servant.medea",
       "field": "source.imagePath",
       "blocking": false
     },
     {
       "code": "SOURCE_ASSET_UNVERIFIED",
-      "message": "servant.medea.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+      "message": "servant.medea.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
       "entityId": "servant.medea.overview",
       "field": "source.imagePath",
       "blocking": false

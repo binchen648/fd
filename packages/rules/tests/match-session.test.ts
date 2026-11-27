@@ -2,7 +2,7 @@ import { referenceSevenServants } from './acceptance/seven-roster-test-helpers';
 import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
-import { createMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
+import { createMatchSession as createProductionMatchSession, restoreMatchSession, restoreSession } from '../src/match-session';
 import { advanceAbilityPhase, projectAbilityState } from '../src/ability/interpreter';
 import { resolveBattlefield } from '../src/core/combat-resolver';
 import { applyBattleScoring } from '../src/core/scoring-resolver';
@@ -668,3 +668,5 @@ describe('MatchSession semi-auto runtime', () => {
     }
   }, 10_000);
 });
+
+function createMatchSession(options: Parameters<typeof createProductionMatchSession>[0] = {}) { return createProductionMatchSession({ startingServantIds: referenceSevenServants, ...options }); }

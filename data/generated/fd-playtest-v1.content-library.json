@@ -859,7 +859,7 @@
       },
       "source": {
         "htmPath": "chm-extract/吉尔伽美什2.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -1031,7 +1031,7 @@
       },
       "source": {
         "htmPath": "chm-extract/美狄亚.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -3498,7 +3498,7 @@
       },
       "source": {
         "htmPath": "chm-extract/吉尔伽美什2.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -3695,7 +3695,7 @@
       },
       "source": {
         "htmPath": "chm-extract/美狄亚.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -14521,11 +14521,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "58d603b953bcc61cd5dcdefae45d07a67cc5664164abae7a35688609664c4019",
+    "definitionHash": "2389046bd9295cf6f2002cfce63023c4002b530f66d5648243cf8698af92c0f3",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "58d603b953bcc61cd5dcdefae45d07a67cc5664164abae7a35688609664c4019"
+      "definitionHash": "2389046bd9295cf6f2002cfce63023c4002b530f66d5648243cf8698af92c0f3"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
