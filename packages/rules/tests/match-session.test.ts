@@ -1,5 +1,4 @@
 import { referenceSevenServants } from './acceptance/seven-roster-test-helpers';
-import { referenceSevenServants } from './acceptance/seven-roster-test-helpers';
 import { describe, expect, it } from 'vitest';
 
 import contentLibrary from '../../../data/generated/fd-playtest-v1.content-library.json';
