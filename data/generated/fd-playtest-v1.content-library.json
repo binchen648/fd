@@ -859,7 +859,7 @@
       },
       "source": {
         "htmPath": "chm-extract/吉尔伽美什2.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -3403,7 +3403,7 @@
       },
       "source": {
         "htmPath": "chm-extract/吉尔伽美什2.htm",
-        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_161019_929.png",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
         "imageIndex": 0,
         "reviewedAgainstImage": true
       }
@@ -13474,11 +13474,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "d014c1873400c8d3cdadff8d8bd0907256499402ed7d460ea0a225e7785c41f5",
+    "definitionHash": "fd752a7dc10a5fe533e47ab5feb5cf3bda6772ff01bd29a7337d1f1777b03433",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "d014c1873400c8d3cdadff8d8bd0907256499402ed7d460ea0a225e7785c41f5"
+      "definitionHash": "fd752a7dc10a5fe533e47ab5feb5cf3bda6772ff01bd29a7337d1f1777b03433"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {

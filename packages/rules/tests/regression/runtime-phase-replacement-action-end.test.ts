@@ -1,3 +1,4 @@
+import { referenceSevenServants } from '../acceptance/seven-roster-test-helpers';
 import {readFileSync} from 'node:fs';
 import {describe,expect,it} from 'vitest';
 import {createMatchSession} from '../../src/match-session';
@@ -7,7 +8,7 @@ import {restoreTrustedAuthoringFixtureSession} from '../trusted-authoring-fixtur
 const archive=JSON.parse(readFileSync('packages/rules/tests/fixtures/b-euryale-771ae323.json','utf8'));
 const src='sirens',target='independent',prelude='sc-euryale-2.prelude';
 function setup(mutate?:(raw:any)=>void){
- const session=createMatchSession({seed:20260907}),s=session.state,canonical=s.abilityRuntime!.pack,raw=structuredClone(archive);mutate?.(raw);const loaded=loadAuthoringJson(raw);expect(loaded.report).toEqual([]);
+ const session=createMatchSession({seed:20260907,startingServantIds:referenceSevenServants}),s=session.state,canonical=s.abilityRuntime!.pack,raw=structuredClone(archive);mutate?.(raw);const loaded=loadAuthoringJson(raw);expect(loaded.report).toEqual([]);
  delete s.abilityRuntime;initializeAbilityRuntime(s,{...canonical,cards:{...canonical.cards,...loaded.cards}});advanceAbilityPhase(s,'advance');s.round.prioritySeat=2;
  s.eventPlacements=[];s.currentSituationModifiers=[];
  for(const p of s.players){p.mana=10;p.vp=0;p.locationId='magic_workshop';}
