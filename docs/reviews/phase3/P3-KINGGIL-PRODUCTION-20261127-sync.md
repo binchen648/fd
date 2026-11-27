@@ -1,5 +1,3 @@
-# Kinggil integration synchronization
+# Kinggil final synchronization
 
-Base: a6dc94de8230367aafbe0b9a63dd8e666a30b6d3. Reviewed candidate: 418d147150343e87d5802f1f08579d0ff51d0c86.
-
-Only Kinggil production content, its required Runtime dependencies and affected historical fixtures are included. The production pool contains nine servants; a game still selects seven. Review evidence commit: 5ef2095c388c51e7ece7edd9689549ae31e6546e.
+Reviewed implementation 74229807c38e5026abeff2ac8172aa20965e8904. Runtime unchanged since418d1471. Independent incremental client review13/13 PASS. Formal pool nine, match selection seven.
