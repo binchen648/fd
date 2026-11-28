@@ -1,3 +1,4 @@
+import { cardManaCost, calculateCardPower } from '../../src/ability/interpreter';
 import { describe, expect, it } from 'vitest';
 import library from '../../../../data/generated/fd-playtest-v1.content-library.json';
 import { createMatchSession, restoreMatchSession } from '../../src/match-session';
@@ -25,5 +26,12 @@ describe('Medea in the generated production roster', () => {
     expect(cards.filter(card => ['hand', 'deck'].includes(card.zone)).map(card => card.definitionId).sort()).toEqual([...deck].sort());
     const restored = restoreMatchSession(session.serializeSession());
     expect(restored.state.players.find(player => player.id === owner.id)?.servantCardId).toBe(medea);
+  });
+  it.each([[1, 14], [4, 8], [7, 2], [8, 0]])('uses B114 Construction cost and printed power in round %i', (round, expectedCost) => {
+    const session = createMatchSession({ startingServantIds: referenceSevenServants.map(id => id === 'servant.artoria-alt' ? medea : id) });
+    const source = session.state.cards.find(card => card.definitionId === 'servant.medea.skill.sc-medea-2')!;
+    session.state.round.roundNumber = round;
+    expect(cardManaCost(session.state, source.instanceId)).toBe(expectedCost);
+    expect(calculateCardPower(session.state, source.instanceId).value).toBe(2);
   });
 });
