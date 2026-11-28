@@ -2,7 +2,7 @@
   "schemaVersion": "fd-planner-writer-reservation-same-owner-addendum-v1",
   "addendumId": "P3-JEANNE-ROSTER-SWAP-TEST-20261128",
   "reservationId": "P3-JEANNE-ROSTER-SWAP-TEST-20261128",
-  "status": "ACTIVE",
+  "status": "RELEASED",
   "authority": "User directs continued mainline integration and approves replacing one of the seven session seats with each admitted candidate for focused verification.",
   "recordedBy": "/root",
   "ownerTask": "AB-JEANNE-PRODUCTION-20261128",
@@ -32,5 +32,6 @@
   "independentVerifierScopeGrantedToImplementer": false,
   "productionWriteAuthorized": false,
   "sharedRuntimeWriteAuthorized": false,
-  "evidenceRoot": "D:/fd-validation/ab-jeanne-production-evidence-20261128"
+  "evidenceRoot": "D:/fd-validation/ab-jeanne-production-evidence-20261128",
+  "releasedAfterCandidateSha": "7fceda880d304865eb5c3d95c3257624224d5329"
 }
