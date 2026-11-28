@@ -5,7 +5,7 @@
 - Verified main base: `3c66f7fd37cb9200eeca2f774eaf864564564e54`.
 - Branch: `codex/ab-jeanne-production-20261128`.
 - Implementation and roster-test candidate: `7fceda880d304865eb5c3d95c3257624224d5329`.
-- Independent review evidence commit: `e97d605cc02938a157c3f968cce2842d29aabdc4`; result `PASS`, 21/21 review cases, bound to the implementation candidate.
+- Independent review evidence commit: `e97d605cc02938a157c3f968cce2842d29aabdc4`; result `PASS`, 21/21 review cases, bound to the implementation candidate. The attestation file at that commit has SHA256 `b7dd8b8767044923ebd0d460990c5680958c28f5c90d8063e7add0bae92f4110`.
 - Promotion synchronization commit: `83f267e25c563e0ed7db4df04b4fabf80aa595cb`.
 - This document is included in the final promotion head; the exact final SHA is bound in the PR promotion manifest and the external receipt.
 
