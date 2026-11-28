@@ -1,3 +1,3 @@
-# Medea production admission
+# Medea production delivery
 
-Implementation 9b67a645cb4e4547f2fcc4e019721f4314da6570. Gate B PASS:130 direct tests and68 independently recomputed Runtime/client cases. Rules typecheck and required source-assets PASS. Generated content reproduced byte-for-byte by reviewer. Required remote checks enforced before merge. fdkb task context UNKNOWN and full-game E2E unverified.
+Implementation candidate 126447bbe589cb197fd6faa086f03430eb7a4721. Independent Gate B review68 cases plus incremental FM05 review9/9 PASS. Final candidate direct suite130 prior cases plus incremental suite9/9 PASS; changed test root cause closed. Rules typecheck and strict source assets passed. Remote full CI must pass on this final SHA before merge. fdkb context UNKNOWN; full seven-player eleven-round E2E unverified.
