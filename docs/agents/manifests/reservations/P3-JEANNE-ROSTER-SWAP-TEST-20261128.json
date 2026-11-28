@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-same-owner-addendum-v1",
+  "addendumId": "P3-JEANNE-ROSTER-SWAP-TEST-20261128",
+  "reservationId": "P3-JEANNE-ROSTER-SWAP-TEST-20261128",
+  "status": "RELEASED",
+  "authority": "User directs continued mainline integration and approves replacing one of the seven session seats with each admitted candidate for focused verification.",
+  "recordedBy": "/root",
+  "ownerTask": "AB-JEANNE-PRODUCTION-20261128",
+  "ownerRole": "A",
+  "deliveryRole": "A-Line Runtime / Production Integration",
+  "ownerChanged": false,
+  "originalBinding": {
+    "branch": "codex/ab-jeanne-production-20261128",
+    "absoluteWorktree": "D:/fd-validation/ab-jeanne-production-20261128",
+    "requiredBase": "9b67a645cb4e4547f2fcc4e019721f4314da6570",
+    "disposition": "FROZEN_PRE_MERGE_CANDIDATE"
+  },
+  "newBinding": {
+    "branch": "codex/ab-jeanne-production-20261128",
+    "absoluteWorktree": "D:/fd-validation/ab-jeanne-production-20261128",
+    "requiredBase": "3c66f7fd37cb9200eeca2f774eaf864564564e54",
+    "observedRemoteMain": "3c66f7fd37cb9200eeca2f774eaf864564564e54",
+    "frozenContractCommit": "755d9655b90859c1a194434876b5b4d34e3a0e1e"
+  },
+  "literalPaths": [
+    "apps/client/src/state/fd-asset-registry.test.ts",
+    "docs/agents/manifests/tasks/P3-JEANNE-ROSTER-SWAP-TEST-20261128.json",
+    "docs/agents/manifests/reservations/P3-JEANNE-ROSTER-SWAP-TEST-20261128.json"
+  ],
+  "scopeRule": "Only deterministic seven-seat client projection coverage for Jeanne replacing one reference servant, plus this task and reservation record. Do not modify Runtime, authoring, generated content, production pack, CI, test selection, or timeouts.",
+  "acceptanceGranted": false,
+  "independentVerifierScopeGrantedToImplementer": false,
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "evidenceRoot": "D:/fd-validation/ab-jeanne-production-evidence-20261128",
+  "releasedAfterCandidateSha": "7fceda880d304865eb5c3d95c3257624224d5329"
+}

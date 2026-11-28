@@ -776,6 +776,89 @@
       }
     },
     {
+      "id": "servant.jeanne",
+      "name": "贞德",
+      "classTag": "Ruler",
+      "overviewCardId": "servant.jeanne.overview",
+      "startingDeck": {
+        "size": 12,
+        "entries": [
+          {
+            "entryType": "basic",
+            "attribute": "strength",
+            "printedValue": 1,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "strength",
+            "printedValue": 2,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "strength",
+            "printedValue": 3,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 1,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 2,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 2,
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.luck",
+            "copies": 4
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.surveil",
+            "copies": 2
+          }
+        ],
+        "attributeCounts": {
+          "strength": 3,
+          "agility": 2,
+          "magecraft": 1,
+          "special": 6
+        }
+      },
+      "skillCardIds": [
+        "servant.jeanne.skill.sc-jeanne-1",
+        "servant.jeanne.skill.sc-jeanne-3",
+        "servant.jeanne.skill.sc-jeanne-2"
+      ],
+      "linkedCards": {
+        "generated": []
+      },
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Authoring servant converted for seven-player product playtest."
+      },
+      "source": {
+        "htmPath": "chm-extract/贞德.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "servant.kinggil",
       "name": "吉尔伽美什(Caster)",
       "classTag": "Caster",
@@ -3485,6 +3568,91 @@
       "source": {
         "htmPath": "chm-extract/尤瑞艾莉.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_160409_161.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.jeanne.overview",
+      "name": "贞德",
+      "cardType": "servant_overview",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/贞德.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-1",
+      "name": "裁决者",
+      "cardType": "servant_skill",
+      "printedValue": 1,
+      "printedCost": 1,
+      "printedText": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/贞德.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+        "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-2",
+      "name": "吾主在此",
+      "cardType": "servant_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 3,
+      "printedCost": 4,
+      "printedText": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/贞德.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-3",
+      "name": "红莲圣女",
+      "cardType": "servant_skill",
+      "attribute": "special",
+      "attributes": [
+        "special"
+      ],
+      "printedValue": 8,
+      "printedCost": 6,
+      "printedText": "【真名解放】<每局游戏限一次>\n战斗阶段：使所有参与这场战斗的玩家【败北】。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/贞德.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
         "imageIndex": 2,
         "reviewedAgainstImage": true
       }
@@ -12205,6 +12373,456 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
+      "servant.jeanne.skill.sc-jeanne-1": {
+        "id": "servant.jeanne.skill.sc-jeanne-1",
+        "name": "裁决者",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "被动",
+          "attributes": [],
+          "cost": 1,
+          "basePower": 1
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-jeanne-1.ruler-binding",
+            "kind": "phase_action",
+            "printedClause": "此牌及其效果不可被复制或盗用。<每局游戏限三次>神明裁决-行动阶段：令两名其他玩家获得一枚【裁决者令咒】来对其束缚，你仅可束缚本局游戏束缚次数最少的玩家。只有进行束缚的裁决者可以于自己的行动阶段对被束缚者使用【裁决者令咒】。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window"
+            },
+            "conditions": [],
+            "targets": [
+              {
+                "id": "bound_players",
+                "type": "player",
+                "count": {
+                  "min": 2,
+                  "max": 2
+                },
+                "constraints": [
+                  {
+                    "type": "not_controller"
+                  },
+                  {
+                    "type": "least_ruler_binding_count"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "type": "grant_ruler_seals",
+                "target": "bound_players"
+              },
+              {
+                "type": "ruler_copy_steal_guard",
+                "policy": "forbid_source_and_effects"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_game",
+              "uses": 3,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.jeanne",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.jeanne.skill.sc-jeanne-3": {
+        "id": "servant.jeanne.skill.sc-jeanne-3",
+        "name": "红莲圣女",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "cost": 6,
+          "basePower": 8,
+          "attributes": [
+            "宝具"
+          ]
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-jeanne-3.reveal",
+            "kind": "declaration_reveal",
+            "printedClause": "【真名解放】<每局游戏限一次>",
+            "activation": {
+              "trigger": "on_use_declared",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "reveal_information",
+                "subject": "controller.servant",
+                "scope": "servant_package"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_game",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-jeanne-3.red-lotus",
+            "kind": "phase_action",
+            "printedClause": "战斗阶段：使所有参与这场战斗的玩家【败北】。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [
+              {
+                "type": "controller_at_battlefield"
+              }
+            ],
+            "targets": [
+              {
+                "id": "participants",
+                "type": "player",
+                "selector": "battle_participants_at_current_battlefield",
+                "count": {
+                  "min": 0,
+                  "max": 100
+                },
+                "selection": "all"
+              }
+            ],
+            "effects": [
+              {
+                "type": "apply_defeat_status",
+                "targetRef": "participants",
+                "includeController": true
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.jeanne",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.jeanne.skill.sc-jeanne-2": {
+        "id": "servant.jeanne.skill.sc-jeanne-2",
+        "name": "吾主在此",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "宝具",
+          "attributes": [
+            "宝具"
+          ],
+          "cost": 4,
+          "basePower": 3
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-jeanne-2.true-name-release",
+            "kind": "declaration_reveal",
+            "printedClause": "【真名解放】",
+            "activation": {
+              "trigger": "on_use_declared"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "reveal_information",
+                "subject": "controller.servant",
+                "scope": "servant_package"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-jeanne-2.luck-play",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [
+              {
+                "id": "players",
+                "type": "player",
+                "selector": "all_players",
+                "selection": "all",
+                "count": {
+                  "min": 0,
+                  "max": 100
+                }
+              }
+            ],
+            "effects": [
+              {
+                "type": "draw_cards",
+                "targetRef": "players",
+                "count": 1
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [
+              {
+                "rule": "card.playPhase",
+                "operation": "add",
+                "value": "combat",
+                "scope": {
+                  "subject": "all_players",
+                  "zone": "hand",
+                  "constraints": [
+                    {
+                      "type": "or",
+                      "conditions": [
+                        {
+                          "type": "has_card_id",
+                          "cardId": "basic.luck"
+                        },
+                        {
+                          "type": "has_card_id",
+                          "cardId": "card.luck"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "creates": [],
+            "lifecycle": {
+              "duration": "while_card_active"
+            },
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-jeanne-2.luck-power",
+            "kind": "passive",
+            "printedClause": "被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window"
+            },
+            "conditions": [
+              {
+                "type": "or",
+                "conditions": [
+                  {
+                    "type": "source_card_in_zone",
+                    "zone": "hand"
+                  },
+                  {
+                    "type": "source_card_in_zone",
+                    "zone": "skill"
+                  },
+                  {
+                    "type": "source_card_in_zone",
+                    "zone": "attack_area"
+                  },
+                  {
+                    "type": "source_card_in_zone",
+                    "zone": "field"
+                  }
+                ]
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "create_modifier",
+                "modifier": {
+                  "type": "power_bonus",
+                  "aggregate": "total",
+                  "amount": {
+                    "op": "multiply",
+                    "args": [
+                      2,
+                      {
+                        "op": "count_cards",
+                        "scope": "public_board",
+                        "constraints": [
+                          {
+                            "type": "or",
+                            "conditions": [
+                              {
+                                "type": "has_card_id",
+                                "cardId": "basic.luck"
+                              },
+                              {
+                                "type": "has_card_id",
+                                "cardId": "card.luck"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "duration": "this_round",
+                  "scope": {
+                    "subject": "controller"
+                  }
+                }
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {
+              "cleanup": "when_card_leaves_active_area"
+            },
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_round",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.jeanne",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
       "master.ciel.skill.s1a": {
         "id": "master.ciel.skill.s1a",
         "name": "埋葬机关的修女",
@@ -14370,6 +14988,18 @@
           "servant.medea.skill.sc-medea-np"
         ],
         "publicInformation": {}
+      },
+      "servant.jeanne": {
+        "id": "servant.jeanne",
+        "name": "贞德",
+        "class": "Ruler",
+        "kind": "servant",
+        "cardIds": [
+          "servant.jeanne.skill.sc-jeanne-1",
+          "servant.jeanne.skill.sc-jeanne-3",
+          "servant.jeanne.skill.sc-jeanne-2"
+        ],
+        "publicInformation": {}
       }
     },
     "decks": {
@@ -14512,6 +15142,20 @@
         "basic.surveil",
         "basic.luck",
         "basic.preparation"
+      ],
+      "servant.jeanne": [
+        "basic.strength.1",
+        "basic.strength.2",
+        "basic.strength.3",
+        "basic.agility.1",
+        "basic.agility.2",
+        "basic.magecraft.2",
+        "basic.luck",
+        "basic.luck",
+        "basic.luck",
+        "basic.luck",
+        "basic.surveil",
+        "basic.surveil"
       ]
     },
     "fallbackCommandSpells": {
@@ -14521,11 +15165,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "2389046bd9295cf6f2002cfce63023c4002b530f66d5648243cf8698af92c0f3",
+    "definitionHash": "08813391aca7acc0e9c2845790a3ef725704f35483bca56a73961862081899fb",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "2389046bd9295cf6f2002cfce63023c4002b530f66d5648243cf8698af92c0f3"
+      "definitionHash": "08813391aca7acc0e9c2845790a3ef725704f35483bca56a73961862081899fb"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -15711,97 +16355,157 @@
         "abilityIndex": 1,
         "path": "archives[16].cards[2].abilities[1]"
       },
-      "master.ciel.skill.s1a": {
-        "archiveId": "master.ciel",
+      "servant.jeanne.skill.sc-jeanne-1": {
+        "archiveId": "servant.jeanne",
         "archiveIndex": 17,
         "cardIndex": 0,
         "path": "archives[17].cards[0]"
       },
-      "master.ciel.skill.s1a#s1a.game-start-skill-provisioning": {
-        "archiveId": "master.ciel",
+      "servant.jeanne.skill.sc-jeanne-1#sc-jeanne-1.ruler-binding": {
+        "archiveId": "servant.jeanne",
         "archiveIndex": 17,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[17].cards[0].abilities[0]"
       },
-      "master.ciel.skill.s2": {
-        "archiveId": "master.ciel",
+      "servant.jeanne.skill.sc-jeanne-3": {
+        "archiveId": "servant.jeanne",
         "archiveIndex": 17,
         "cardIndex": 1,
         "path": "archives[17].cards[1]"
       },
-      "master.ciel.skill.s2#exorcism-uncontested-win": {
-        "archiveId": "master.ciel",
+      "servant.jeanne.skill.sc-jeanne-3#sc-jeanne-3.reveal": {
+        "archiveId": "servant.jeanne",
         "archiveIndex": 17,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[17].cards[1].abilities[0]"
       },
-      "master.ciel.skill.s2#clerical-convenience": {
-        "archiveId": "master.ciel",
+      "servant.jeanne.skill.sc-jeanne-3#sc-jeanne-3.red-lotus": {
+        "archiveId": "servant.jeanne",
         "archiveIndex": 17,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[17].cards[1].abilities[1]"
       },
-      "master.shiki-ryougi.skill.s1a": {
-        "archiveId": "master.shiki-ryougi",
+      "servant.jeanne.skill.sc-jeanne-2": {
+        "archiveId": "servant.jeanne",
+        "archiveIndex": 17,
+        "cardIndex": 2,
+        "path": "archives[17].cards[2]"
+      },
+      "servant.jeanne.skill.sc-jeanne-2#sc-jeanne-2.true-name-release": {
+        "archiveId": "servant.jeanne",
+        "archiveIndex": 17,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[17].cards[2].abilities[0]"
+      },
+      "servant.jeanne.skill.sc-jeanne-2#sc-jeanne-2.luck-play": {
+        "archiveId": "servant.jeanne",
+        "archiveIndex": 17,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[17].cards[2].abilities[1]"
+      },
+      "servant.jeanne.skill.sc-jeanne-2#sc-jeanne-2.luck-power": {
+        "archiveId": "servant.jeanne",
+        "archiveIndex": 17,
+        "cardIndex": 2,
+        "abilityIndex": 2,
+        "path": "archives[17].cards[2].abilities[2]"
+      },
+      "master.ciel.skill.s1a": {
+        "archiveId": "master.ciel",
         "archiveIndex": 18,
         "cardIndex": 0,
         "path": "archives[18].cards[0]"
       },
-      "master.shiki-ryougi.skill.s1a#s1a.game-start-skill-provisioning": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s1a#s1a.game-start-skill-provisioning": {
+        "archiveId": "master.ciel",
         "archiveIndex": 18,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[18].cards[0].abilities[0]"
       },
-      "master.shiki-ryougi.skill.s3": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s2": {
+        "archiveId": "master.ciel",
         "archiveIndex": 18,
         "cardIndex": 1,
         "path": "archives[18].cards[1]"
       },
-      "master.shiki-ryougi.skill.s3#required-additional-play": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s2#exorcism-uncontested-win": {
+        "archiveId": "master.ciel",
         "archiveIndex": 18,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[18].cards[1].abilities[0]"
       },
-      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s2#clerical-convenience": {
+        "archiveId": "master.ciel",
         "archiveIndex": 18,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[18].cards[1].abilities[1]"
       },
-      "master.shirou-emiya.skill.s2": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s1a": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 19,
         "cardIndex": 0,
         "path": "archives[19].cards[0]"
       },
-      "master.shirou-emiya.skill.s2#s2.game-start-skill-provisioning": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s1a#s1a.game-start-skill-provisioning": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 19,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[19].cards[0].abilities[0]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s3": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 19,
         "cardIndex": 1,
         "path": "archives[19].cards[1]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s3#required-additional-play": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 19,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[19].cards[1].abilities[0]"
+      },
+      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 19,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[19].cards[1].abilities[1]"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 20,
+        "cardIndex": 0,
+        "path": "archives[20].cards[0]"
+      },
+      "master.shirou-emiya.skill.s2#s2.game-start-skill-provisioning": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 20,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[20].cards[0].abilities[0]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 20,
+        "cardIndex": 1,
+        "path": "archives[20].cards[1]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 20,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[20].cards[1].abilities[0]"
       }
     }
   }

@@ -7,7 +7,9 @@
   "sourcePolicy": {
     "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
     "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Frozen F1 printed evidence plus accepted P3-R58/FB2-27 Ruler seal runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing."
+    "note": "Frozen F1 printed evidence plus accepted P3-R58/FB2-27 Ruler seal runtime semantics are authoritative. Locked Reference supplies static owner/card metadata only; Reference handler IDs are not runtime routing.",
+    "rosterArchive": "data/authoring-candidates/source-roster/servant.jeanne.json",
+    "redLotusRuntimeCommit": "3c088d68ae3654bda56d3cb1341b74a53e972e6d"
   },
   "cards": [
     {
@@ -115,6 +117,368 @@
           "rulerSealSubsystem": "P3-R58/FB2-27"
         }
       }
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-3",
+      "name": "红莲圣女",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.jeanne"
+      },
+      "printedText": "【真名解放】<每局游戏限一次>\n战斗阶段：使所有参与这场战斗的玩家【败北】。",
+      "cardFace": {
+        "cost": 6,
+        "basePower": 8,
+        "attributes": [
+          "宝具"
+        ]
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-jeanne-3.reveal",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】<每局游戏限一次>",
+          "activation": {
+            "trigger": "on_use_declared",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ],
+          "limit": {
+            "type": "per_game",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-jeanne-3.red-lotus",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：使所有参与这场战斗的玩家【败北】。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [
+            {
+              "type": "controller_at_battlefield"
+            }
+          ],
+          "targets": [
+            {
+              "id": "participants",
+              "type": "player",
+              "selector": "battle_participants_at_current_battlefield",
+              "count": {
+                "min": 0,
+                "max": 100
+              },
+              "selection": "all"
+            }
+          ],
+          "effects": [
+            {
+              "type": "apply_defeat_status",
+              "targetRef": "participants",
+              "includeController": true
+            }
+          ],
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "source": {
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.jeanne.skill.sc-jeanne-3",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "贞德.htm",
+            "locator": "从者/裁定者/英文版/贞德.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/贞德.png",
+            "locator": "servant.jeanne/贞德"
+          }
+        ],
+        "reviewedAgainstImage": true,
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "a9b8bdf15065634e1e185a8bfc161d373260ccdcc6b9b5dfc81adf7e82ee915a",
+        "htmPath": "chm-extract/贞德.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+        "imageIndex": 4,
+        "imageSha256": "8f1888fb53ba55f8b66d06541d52ff4310c8d82e8f802ddc219c10ef67e74c45"
+      }
+    },
+    {
+      "id": "servant.jeanne.skill.sc-jeanne-2",
+      "name": "吾主在此",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.jeanne"
+      },
+      "printedText": "【真名解放】被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "id": "sc-jeanne-2.true-name-release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-jeanne-2.luck-play",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：所有玩家抽一张牌。所有【幸运】牌获得：“被动/战斗阶段：打出此牌。”",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [
+            {
+              "id": "players",
+              "type": "player",
+              "selector": "all_players",
+              "selection": "all",
+              "count": {
+                "min": 0,
+                "max": 100
+              }
+            }
+          ],
+          "cost": [],
+          "effects": [
+            {
+              "type": "draw_cards",
+              "targetRef": "players",
+              "count": 1
+            }
+          ],
+          "ruleModifiers": [
+            {
+              "rule": "card.playPhase",
+              "operation": "add",
+              "value": "combat",
+              "scope": {
+                "subject": "all_players",
+                "zone": "hand",
+                "constraints": [
+                  {
+                    "type": "or",
+                    "conditions": [
+                      {
+                        "type": "has_card_id",
+                        "cardId": "basic.luck"
+                      },
+                      {
+                        "type": "has_card_id",
+                        "cardId": "card.luck"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "creates": [],
+          "lifecycle": {
+            "duration": "while_card_active"
+          },
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        },
+        {
+          "id": "sc-jeanne-2.luck-power",
+          "kind": "passive",
+          "printedClause": "被动/战斗阶段：场上每有一张正面表示的【幸运】牌，便获得合计威力+2。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window"
+          },
+          "conditions": [
+            {
+              "type": "or",
+              "conditions": [
+                {
+                  "type": "source_card_in_zone",
+                  "zone": "hand"
+                },
+                {
+                  "type": "source_card_in_zone",
+                  "zone": "skill"
+                },
+                {
+                  "type": "source_card_in_zone",
+                  "zone": "attack_area"
+                },
+                {
+                  "type": "source_card_in_zone",
+                  "zone": "field"
+                }
+              ]
+            }
+          ],
+          "targets": [],
+          "cost": [],
+          "effects": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "aggregate": "total",
+                "amount": {
+                  "op": "multiply",
+                  "args": [
+                    2,
+                    {
+                      "op": "count_cards",
+                      "scope": "public_board",
+                      "constraints": [
+                        {
+                          "type": "or",
+                          "conditions": [
+                            {
+                              "type": "has_card_id",
+                              "cardId": "basic.luck"
+                            },
+                            {
+                              "type": "has_card_id",
+                              "cardId": "card.luck"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "duration": "this_round",
+                "scope": {
+                  "subject": "controller"
+                }
+              }
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {
+            "cleanup": "when_card_leaves_active_area"
+          },
+          "responseWindow": {},
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic"
+          }
+        }
+      ],
+      "source": {
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.jeanne.skill.sc-jeanne-2",
+        "sourceRefs": [
+          {
+            "kind": "chm",
+            "document": "FD全卡图鉴V2.0.chm",
+            "category": "servant/english",
+            "page": "贞德.htm",
+            "locator": "从者/裁定者/英文版/贞德.htm"
+          },
+          {
+            "kind": "development-image",
+            "document": "Fate_Domination-开发版",
+            "category": "servant",
+            "page": "images/servants/贞德.png",
+            "locator": "servant.jeanne/贞德"
+          }
+        ]
+      }
     }
-  ]
+  ],
+  "deck": [
+    { "cardId": "card.cardb1" },
+    { "cardId": "card.cardb2" },
+    { "cardId": "card.cardb3" },
+    { "cardId": "card.cardq1" },
+    { "cardId": "card.cardq2" },
+    { "cardId": "card.carda2" },
+    { "cardId": "card.cardluck" },
+    { "cardId": "card.cardluck" },
+    { "cardId": "card.cardluck" },
+    { "cardId": "card.cardluck" },
+    { "cardId": "card.cardsurveil" },
+    { "cardId": "card.cardsurveil" }
+  ],
+  "openQuestions": [],
+  "authoringStatus": "COMPLETE_CANDIDATE_PENDING_REVIEW"
 }

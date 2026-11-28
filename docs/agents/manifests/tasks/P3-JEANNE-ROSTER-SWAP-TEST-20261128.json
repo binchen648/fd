@@ -1,0 +1,57 @@
+{
+  "taskId": "P3-JEANNE-ROSTER-SWAP-TEST-20261128",
+  "status": "READY_FOR_PROMOTION",
+  "owner": "A",
+  "recordedBy": "/root",
+  "authority": "User directs continued mainline integration and defines candidate-pool validation by replacing one of seven seats with each newly admitted servant.",
+  "baseCommit": "3c66f7fd37cb9200eeca2f774eaf864564564e54",
+  "branch": "codex/ab-jeanne-production-20261128",
+  "worktree": "D:/fd-validation/ab-jeanne-production-20261128",
+  "frozenContractCommit": "755d9655b90859c1a194434876b5b4d34e3a0e1e",
+  "reservedFiles": [
+    "apps/client/src/state/fd-asset-registry.test.ts",
+    "docs/agents/manifests/tasks/P3-JEANNE-ROSTER-SWAP-TEST-20261128.json",
+    "docs/agents/manifests/reservations/P3-JEANNE-ROSTER-SWAP-TEST-20261128.json"
+  ],
+  "allowedScope": "Add deterministic client projection coverage by replacing exactly one member of the seven-reference-servant session roster with Jeanne. Preserve the production candidate pool and all Runtime and card semantics.",
+  "forbiddenScope": [
+    "packages/rules/**",
+    "apps/server/**",
+    "data/authoring/**",
+    "data/generated/**",
+    "data/packs/**",
+    ".github/workflows/**",
+    "test selection and timeout changes",
+    "full seven-player eleven-round E2E"
+  ],
+  "acceptanceCriteria": [
+    "The reference seven-seat deck projection check remains deterministic and unchanged in meaning.",
+    "A real MatchSession replaces exactly one reference servant with Jeanne and projects her 12-card deck and private guide card.",
+    "Jeanne Runtime behavior remains covered by the existing focused direct suite.",
+    "The focused client test and final exact-head protected checks pass."
+  ],
+  "requiredTests": [
+    "npm --prefix apps/client test -- --run src/state/fd-asset-registry.test.ts",
+    "Jeanne direct production and Runtime consumer suite",
+    "Remote protected checks on final promotion SHA"
+  ],
+  "evidenceRoot": "D:/fd-validation/ab-jeanne-production-evidence-20261128",
+  "implementationCandidateSha": "7fceda880d304865eb5c3d95c3257624224d5329",
+  "independentReview": {
+    "reviewer": "/root/jeanne_production_review",
+    "result": "PASS",
+    "reviewedCandidateSha": "7fceda880d304865eb5c3d95c3257624224d5329",
+    "passed": 21,
+    "failed": 0
+  },
+  "localVerification": {
+    "clientCommand": "npm --prefix apps/client test -- --run src/state/fd-asset-registry.test.ts",
+    "clientExitCode": 0,
+    "clientPassed": 15,
+    "runtimeCommand": "npx vitest run packages/rules/tests/executable-card-pack.test.ts packages/rules/tests/spartacus-s2-consumer-migration.test.ts packages/rules/tests/regression/runtime-a-jeanne-s2.test.ts packages/rules/tests/regression/jeanne-production-roster.test.ts",
+    "runtimeExitCode": 0,
+    "runtimePassed": 112,
+    "typecheckCommand": "npx tsc -b packages/rules",
+    "typecheckExitCode": 0
+  }
+}

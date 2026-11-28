@@ -629,6 +629,11 @@ export function evaluateFormula(input: unknown, s: GameState, controllerId: stri
     }
     if (n.op === 'const') return visit(n.value);
     if (n.op === 'count_cards') {
+      if (n.scope === 'public_board') {
+        const count = s.cards.filter(c => ['attack_area', 'field'].includes(c.zone) && c.visibility.scope === 'public' &&
+          !runtime(s).cardState[c.instanceId]?.faceDown && nodes(n.constraints).every(x => constraint(s, ctx, c, x))).length;
+        lines.push({ label: '公开场上符合条件卡牌数量', value: count }); return count;
+      }
       if (n.owner !== 'controller') reject('unsupported', 'Unsupported formula owner');
       const count = s.cards.filter(c => c.ownerPlayerId === controllerId && c.zone === n.zone && nodes(n.constraints).every(x => constraint(s, ctx, c, x))).length;
       lines.push({ label: n.zone === 'discard' ? '弃牌堆 Luck 数量' : `${str(n.zone)} 卡牌数量`, value: count }); return count;
@@ -1614,6 +1619,20 @@ function allHandFaceUpForbiddenByEffect(s: GameState, playerId: string): boolean
       ['situation_restrictions', 'situation_play_forbid', 'play_card_attribute'].includes(rule) && !hasPlayRuleException(d, rule)));
   });
 }
+function hasAddedCombatPlayPhase(s: GameState, playerId: string, cardInstanceId: string): boolean {
+  const c = s.cards.find(candidate => candidate.instanceId === cardInstanceId);
+  if (!c || c.controllerPlayerId !== playerId || c.zone !== 'hand') return false;
+  return liveOngoing(s).some(o =>
+    o.startRound === s.round.roundNumber &&
+    o.ruleModifiers.some(m => {
+      const def = m.definition;
+      if (str(def.rule) !== 'card.playPhase' || str(def.operation) !== 'add' || str(def.value) !== 'combat') return false;
+      const scope = node(def.scope);
+      if (str(scope.subject) !== 'all_players' || str(scope.zone) !== 'hand') return false;
+      const modCtx = context(s, o.sourceCardId, o.abilityId);
+      return nodes(scope.constraints).every(x => constraint(s, modCtx, c, x));
+    }));
+}
 function playFailure(s: GameState, p: string, sourceId: string, faceDown = false, ignoreStagedAttackLimit = false, ignoreAttackLimit = false, ignoreTiming = false, allowRequiredAdditionalPlay = false, ignoreManaCost = false, advanceGroupException = false): string | undefined {
   if (hasEffectDefeat(s, p)) return 'defeated_cannot_play';
   const c = card(s, sourceId); const d = definition(s, sourceId); if (!d) return 'unsupported';
@@ -1623,7 +1642,8 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   const hasLegacyAppendOnlyMarker = d.abilities.some(a => a.effects.some(effect => effect.type === 'append_only_rule' && effect.rule !== 'ignore_battle_loss_effects'));
   const requiredAdditionalPlay = hasRequiredAdditionalPlayMarker(d);
   if (hasLegacyAppendOnlyMarker && (!allowRequiredAdditionalPlay || !requiredAdditionalPlay)) return 'append_only';
-  if (!ignoreTiming && (phase(s) !== d.playTiming.phase || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
+  const grantedCombatPlay = !faceDown && phase(s) === 'combat' && hasAddedCombatPlayPhase(s, p, sourceId);
+  if (!ignoreTiming && ((phase(s) !== d.playTiming.phase && !grantedCombatPlay) || s.round.prioritySeat !== player(s, p).seat)) return 'illegal_timing';
   if (faceDown && (!isAttack(d) || d.cardType === 'servant_skill')) return 'illegal_face_down';
   const forbidRules = ongoingCardPlayForbidRules(s, p, sourceId);
   const faceDownAttributeException = faceDown && !ignoreTiming && !!regularTurn(s, p) && c.zone === 'hand' && allHandFaceUpForbiddenByEffect(s, p);
@@ -1632,7 +1652,7 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   if (!faceDown && faceUpCardPlayLimitReached(s, p)) return 'face_up_card_play_limit_reached';
   const limit = perGamePlayLimit(d);
   if (limit && (runtime(s).abilityUsage[`play:${sourceId}:${limit.key}`] ?? 0) >= limit.uses) return 'card_limit_reached';
-  if (!ignoreAttackLimit && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
+  if (!ignoreAttackLimit && !grantedCombatPlay && attackPlayLimitReached(s, p, sourceId, ignoreStagedAttackLimit)) return 'attack_play_limit_reached';
   // The condition reader applies the controller exception once, only below
   // the threshold; previewing ordinary affordable skills needs no roster scan.
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r => str(r.type));
@@ -1834,7 +1854,7 @@ export function getLegalActions(s: GameState, playerId: string): LegalAction[] {
     const canRegularPlay = !turn || !attack || turn.movement !== 'pending' && turn.regularPlay === 'pending';
     if (canRegularPlay && !alreadyStaged && !playFailure(s, playerId, c.instanceId)) {
       if (!turn || !attack || regularAttackPlan(s, playerId, [{ type: 'play_card', cardInstanceId: c.instanceId }], true, planContext)) result.push({ type: 'play_card', cardInstanceId: c.instanceId });
-      if (s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
+      if (!(phase(s) === 'combat' && hasAddedCombatPlayPhase(s, playerId, c.instanceId)) && s.round.prioritySeat === p.seat && entersAttackArea(s, c.instanceId) && !staged.some((entry) => entry.cardInstanceId === c.instanceId && !entry.faceDown)) {
         if (!turn || regularAttackPlan(s, playerId, [{ type: 'play_card', cardInstanceId: c.instanceId }], false, planContext)) result.push({ type: 'stage_attack_card', cardInstanceId: c.instanceId });
       }
     }
@@ -2503,14 +2523,18 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     case 'draw_cards': {
       const count = numeric(s, ctx, effect.count);
       if (!Number.isSafeInteger(count) || count < 0) reject('invalid_count', 'Invalid draw count');
+      const targetIds = effect.targetRef ? referencedPlayerIds(s, ctx, effect) : [p.id];
+      for (const targetId of targetIds) {
+        if (player(s, targetId).status !== 'active') continue;
       for (let i = 0; i < count; i++) {
-        if (!s.cards.some(c => c.ownerPlayerId === p.id && c.zone === 'deck')) {
-          s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === 'discard').forEach(c => moveCard(s, c.instanceId, 'deck'));
-          shuffle(s, p.id);
+        if (!s.cards.some(c => c.ownerPlayerId === targetId && c.zone === 'deck')) {
+          s.cards.filter(c => c.ownerPlayerId === targetId && c.zone === 'discard').forEach(c => moveCard(s, c.instanceId, 'deck'));
+          shuffle(s, targetId);
         }
-        const top = s.cards.find(c => c.ownerPlayerId === p.id && c.zone === 'deck');
+        const top = s.cards.find(c => c.ownerPlayerId === targetId && c.zone === 'deck');
         if (!top) break;
         moveCard(s, top.instanceId, 'hand');
+      }
       }
       break;
     }
@@ -2935,6 +2959,11 @@ function findPendingTargetRestoreSpec(
     const count = node(target.count); const min = Number(count.min ?? 1); const max = Number(count.max ?? 1);
     const choices = candidates(s, ctx, target);
     if (choices.length < min) reject('no_legal_target', 'No legal target remains');
+    if (target.type === 'player' && target.selection === 'all' && effect.type === 'draw_cards') {
+      if (choices.length > max) reject('invalid_count', 'All-player draw targets exceed the declared bound');
+      ctx.selections[targetRef] = choices;
+      continue;
+    }
     if (a.activation.trigger === 'on_card_enters_skill_zone' && min === 0 && choices.length === 0) { ctx.selections[targetRef] = []; continue; }
     return { target, candidates: choices, min, max, remainingEffects: effects };
   }
@@ -5672,10 +5701,12 @@ function dispatch(s: GameState, playerId: string, command: AbilityCommand): void
       const failure = playFailure(s, playerId, command.cardInstanceId, command.faceDown === true);
       if (failure) reject(failure, 'Card cannot be played in the current state');
       if (!legal.some(a => a.type === 'play_card' && a.cardInstanceId === command.cardInstanceId && !!a.faceDown === !!command.faceDown)) reject('illegal_action', 'Card play is not available');
-      playBatch(s, playerId, [command]);
+      const grantedCombatPlay = !command.faceDown && phase(s) === 'combat' && hasAddedCombatPlayPhase(s, playerId, command.cardInstanceId);
+      playBatch(s, playerId, [command], grantedCombatPlay ? 'effect' : 'regular');
       break;
     }
     case 'stage_attack_card': {
+      if (phase(s) === 'combat' && hasAddedCombatPlayPhase(s, playerId, command.cardInstanceId)) reject('illegal_action', 'Combat-granted card play must use play_card');
       const owned = s.cards.find(c => c.instanceId === command.cardInstanceId && c.controllerPlayerId === playerId);
       if (!owned) reject('illegal_action', 'Card is not available');
       const currentStaged = stagedAttacks(s)[playerId] ?? [];
