@@ -22,7 +22,16 @@ The Runtime changes are limited to Jeanne's already reviewed Loader/Interpreter 
 - `npx tsc -b packages/rules`: exit 0.
 - `npm run verify:playtest-v1`: exit 0; 7 masters, 11 servants, 20 events, 132 starting-deck cards, zero private-view leaks.
 - `npm run verify:generated-content`: exit 0; generated content hashes were deterministic.
+- After the first exact-head CI exposed candidate-pool assumptions, the two directly affected test files were repaired and rerun: 9/9 passed; no production behavior or card semantics changed.
 - Independent review: `PASS` by `/root/jeanne_production_review`; attestation in `P3-JEANNE-PRODUCTION-20261128-attestation.json`.
+
+## Candidate-pool CI follow-up
+
+The first remote full Test check on promotion head `e10382c853184375abd83936691537118a3500a6` ran 239 files: 2,224 passed, 1 skipped, and 3 failed. Two failures were stale Ruler-consumer test assumptions after Jeanne's complete archive joined the pool; the third assumed a randomly selected roster would contain Tomoe after the pool expanded.
+
+The local red reproduction produced the same three failures (`jeanne-pool-ci-red-repro.log`, SHA256 `1dbb0e1dd3894b63a55571bb328a77f50153b3ece42c7b58ae35df0139e10f63`). The fix keeps the six frozen Ruler clause identities exact by selecting those source-grounded clauses, expects Jeanne in the production pack, continues excluding the other standalone archives, and pins the Tomoe/Gatou Runtime fixture to the seven-reference roster. The focused post-fix run passed 9/9 (`jeanne-pool-ci-fix-targeted.log`, SHA256 `6e98d955299acf2087726e070f3158b5c9a8a358771180f5d876d793b799d051`).
+
+The full protected Test check must be rerun on the updated final promotion head before merge.
 
 ## Known validation limit
 

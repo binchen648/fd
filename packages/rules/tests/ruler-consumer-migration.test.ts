@@ -89,7 +89,7 @@ describe('P3 Ruler consumer migration', () => {
       const archive = readArchive(owner);
       const loaded = rules.loadAuthoringJson(archive);
       expect(loaded.report).toEqual([]);
-      cards.push(...archive.cards);
+      cards.push(...archive.cards.filter((card: any) => card.id === USE || sha(card.printedText) === PARENT_SHA));
     }
     expect(cards.map(card => card.id).sort()).toEqual([...IDS].sort());
     for (const card of cards.filter(card => card.id !== USE)) {
@@ -145,10 +145,12 @@ describe('P3 Ruler consumer migration', () => {
     expect(state.players[0]!.vp).toBe(beforeVp + 2);
   });
 
-  it('keeps the migrated standalone archives outside the production playtest pack', () => {
+  it('keeps the other migrated standalone archives outside the production playtest pack', () => {
     const manifest = readFileSync(resolve(ROOT, 'data/packs/fd-playtest-v1/pack.json'), 'utf8');
-    for (const owner of ['servant.amakusa','servant.amor','servant.jeanne','servant.morgan','servant.oberon']) expect(manifest).not.toContain(`data/authoring/servants/${owner}.json`);
+    for (const owner of ['servant.amakusa','servant.amor','servant.morgan','servant.oberon']) expect(manifest).not.toContain(`data/authoring/servants/${owner}.json`);
+    expect(manifest).toContain('data/authoring/servants/servant.jeanne.json');
     const generated = readFileSync(resolve(ROOT, 'data/generated/fd-playtest-v1.content-library.json'), 'utf8');
-    for (const id of IDS) expect(generated).not.toContain(id);
+    expect(generated).toContain('servant.jeanne.skill.sc-jeanne-1');
+    for (const id of IDS.filter(id => !id.startsWith('servant.jeanne.'))) expect(generated).not.toContain(id);
   });
 });
