@@ -33,5 +33,18 @@
     "Targeted apps/client/src/state/fd-asset-registry.test.ts",
     "Remote PR protection checks on the final candidate SHA"
   ],
-  "evidenceRoot": "D:/fd-validation/ab-medea-siegfried-evidence-20261126"
+  "evidenceRoot": "D:/fd-validation/ab-medea-siegfried-evidence-20261126",
+  "implementationCandidateSha": "609b7534ab10e7c847da039abf825c08f90e3a3b",
+  "independentReview": {
+    "reviewer": "/root/medea_production_final_review",
+    "result": "PASS",
+    "reviewedCandidateSha": "609b7534ab10e7c847da039abf825c08f90e3a3b"
+  },
+  "localVerification": {
+    "command": "npm --prefix apps/client test -- --run src/state/fd-asset-registry.test.ts",
+    "exitCode": 0,
+    "passed": 14,
+    "failed": 0,
+    "logPath": "D:/fd-validation/ab-medea-siegfried-evidence-20261126/roster-swap-projection-test-20261128.log"
+  }
 }
