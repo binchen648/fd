@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "fd-planner-writer-reservation-same-owner-addendum-v1",
+  "addendumId": "P3-PRODUCTION-ROSTER-SWAP-TEST-20261128",
+  "reservationId": "P3-PRODUCTION-ROSTER-SWAP-TEST-20261128",
+  "status": "ACTIVE",
+  "authority": "User directs continued production integration and approves candidate-pool testing by replacing one of seven seats with a newly admitted servant.",
+  "recordedBy": "/root",
+  "ownerTask": "P3-PRODUCTION-ROSTER-SWAP-TEST-20261128",
+  "ownerRole": "Product A Builder /root",
+  "deliveryRole": "A-Line Production Integration",
+  "ownerChanged": false,
+  "originalBinding": {
+    "reservationId": "A-ASSET-01",
+    "branch": "codex/a-asset-01-client-gate-20261031",
+    "absoluteWorktree": "D:/fd-validation/a-asset-01-20261031",
+    "requiredBase": "b27b98019bcd253f25c1d74af82a81e74bacf5aa",
+    "disposition": "RELEASED_SAME_OWNER_SCOPE_REUSED_FOR_NARROW_CANDIDATE_POOL_PROJECTION_TEST"
+  },
+  "newBinding": {
+    "branch": "codex/ab-medea-mainline-v2-20261126",
+    "absoluteWorktree": "D:/fd-validation/ab-medea-siegfried-mainline-20261126",
+    "requiredBase": "d800e4523f28d08a53e8cca48387f95018c56248",
+    "observedRemoteMain": "de847f6a4fd43884ffebaa28c618c6e3545c001d"
+  },
+  "literalPaths": [
+    "apps/client/src/state/fd-asset-registry.test.ts",
+    "docs/agents/manifests/tasks/P3-PRODUCTION-ROSTER-SWAP-TEST-20261128.json",
+    "docs/agents/manifests/reservations/P3-PRODUCTION-ROSTER-SWAP-TEST-20261128.json"
+  ],
+  "scopeRule": "Only deterministic seven-seat baseline selection and one-seat replacement projection coverage for the admitted candidate. Preserve the production pack pool and all existing test selection/timeouts. No Runtime, authoring, generated content, or workflow edits.",
+  "acceptanceGranted": false,
+  "productionWriteAuthorized": false,
+  "sharedRuntimeWriteAuthorized": false,
+  "independentVerifierScopeGrantedToImplementer": false,
+  "evidenceRoot": "D:/fd-validation/ab-medea-siegfried-evidence-20261126"
+}

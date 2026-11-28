@@ -28,11 +28,6 @@ function expectAssetExists(url: string): void {
 }
 
 const expectedServantDeckEntries: Record<string, string[]> = {
-  'servant.euryale': [
-    'basic:strength:1:1', 'basic:strength:2:1',
-    'basic:agility:1:3', 'basic:agility:2:1', 'basic:agility:4:1',
-    'basic:magecraft:1:1', 'basic:magecraft:2:2', 'named:card.x-divine-core:2',
-  ],
   'servant.achilles': [
     'basic:strength:2:1',
     'basic:strength:3:1',
@@ -215,8 +210,13 @@ describe('FD asset registry', () => {
     expect(fixture.self.deck.entries.reduce((sum, entry) => sum + entry.copies, 0)).toBe(12);
   });
 
-  it('projects every servant starting deck from the reviewed overview cards', () => {
-    const session = createSevenAuthoringMatchSession();
+  it('projects the seven reference starting decks from the reviewed overview cards', () => {
+    const session = createMatchSession({
+      humanPlayerId: 'p1',
+      startingServantIds: [...approvedAuthoringServantIds],
+      seed: 20261128,
+    });
+    session.runUntilHumanInputOrRoundEnd();
     for (const pairing of session.pairings) {
       const fixture = projectSevenAuthoringSessionFixture(session, pairing.playerId);
       const servantDeckGuide = fixture.cards.find((card) => card.instanceId === fixture.self.servantDeckGuideCardId);
@@ -224,6 +224,22 @@ describe('FD asset registry', () => {
       expect(fixture.self.deck.entries.map(deckEntryKey).sort(), pairing.servant.id).toEqual([...expectedServantDeckEntries[pairing.servant.id]!].sort());
       expect(servantDeckGuide?.rulesSummaryZh, pairing.servant.id).toContain('初始牌库构成');
     }
+  });
+
+  it('projects Medea when one reference servant is replaced in the seven-seat roster', () => {
+    const startingServantIds: string[] = [...approvedAuthoringServantIds];
+    startingServantIds[0] = 'servant.medea';
+    const session = createMatchSession({ humanPlayerId: 'p1', startingServantIds, seed: 20261128 });
+    session.runUntilHumanInputOrRoundEnd();
+    const pairing = session.pairings.find((candidate) => candidate.servant.id === 'servant.medea');
+
+    expect(pairing).toBeDefined();
+    const fixture = projectSevenAuthoringSessionFixture(session, pairing!.playerId);
+    const servantDeckGuide = fixture.cards.find((card) => card.instanceId === fixture.self.servantDeckGuideCardId);
+
+    expect(fixture.self.deck.entries.reduce((sum, entry) => sum + entry.copies, 0)).toBe(12);
+    expect(servantDeckGuide).toMatchObject({ cardType: '从者牌库说明', visibility: '仅本人' });
+    expect(servantDeckGuide?.rulesSummaryZh).toContain('初始牌库构成');
   });
 
   it('projects Maiya Support Shot as a master skill card in her player workbench', () => {
