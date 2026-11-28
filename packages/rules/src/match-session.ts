@@ -1,3 +1,4 @@
+import { dueRoundPlayBonuses } from './ability/round-play-bonus';
 import { CHALDEAS_REVEAL, CHALDEAS_SWAP, chaldeasSource, currentMatchDeckBottom, matchReveal, ordinarySituationDeck, type MatchReveal } from './ability/chaldeas-reveal';
 import { movementLocks } from './ability/movement-locks';
 import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
@@ -726,6 +727,12 @@ function isRestoreAbilityRuntimeBoundary(value: unknown, packKind: MatchSessionR
   if (value.pendingPlayerActionEnds !== undefined && (!Array.isArray(value.pendingPlayerActionEnds) || !value.pendingPlayerActionEnds.every(entry =>
     isRestoreRecord(entry) && typeof entry.id === 'string' && typeof entry.controllerId === 'string' && isRestoreSafeInteger(entry.round) &&
     isRestoreEffectContext(entry.context)))) return false;
+  if (value.roundPlayBonuses !== undefined && (!Array.isArray(value.roundPlayBonuses) ||
+      !value.roundPlayBonuses.every(entry => isRestoreRecord(entry) &&
+        Object.keys(entry).length === 4 && typeof entry.beneficiaryId === 'string' &&
+        isRestoreSafeInteger(entry.dueRound) && Number(entry.dueRound) > 1 &&
+        typeof entry.playEventId === 'string' && entry.playEventId.length > 0 && typeof entry.drawn === 'boolean') ||
+      new Set(value.roundPlayBonuses.map(entry => entry.playEventId)).size !== value.roundPlayBonuses.length)) return false;
   if (value.playerActionEnds !== undefined && !isRestoreNonNegativeIntegerMap(value.playerActionEnds)) return false;
   if (value.combatWinRoundByPlayer !== undefined && !isRestoreNonNegativeIntegerMap(value.combatWinRoundByPlayer)) return false;
   if (value.lifecycleTransitions !== undefined && (!Array.isArray(value.lifecycleTransitions) || !value.lifecycleTransitions.every(isRestoreLifecycleTransition))) return false;
@@ -1099,6 +1106,8 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
   if (!value.eventPlacements.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds))) return false;
   const cardsByInstance = new Map(cards.map((card) => [card.instanceId as string, card] as const));
   const restoredEventPlacements = value.eventPlacements as Array<Record<string, unknown>>;
+  if (Array.isArray(abilityRuntime.roundPlayBonuses) && abilityRuntime.roundPlayBonuses.some(entry =>
+      !playerIds.has(entry.beneficiaryId))) return false;
   if (!isRestoreAbilityRuntimeReferences(abilityRuntime, playerIds, locationIds, cardsByInstance, pack, restoredEventPlacements)) return false;
   if (value.eventDiscardPile !== undefined && (!Array.isArray(value.eventDiscardPile) ||
       !value.eventDiscardPile.every((entry) => isRestoreEventPlacement(entry, locationIds, playerIds, eventIds, true)))) return false;
@@ -1636,8 +1645,7 @@ function projectInteractionWindows(state: GameState, viewerId: string): MatchInt
   }
   const fixedPaymentAction = view.legalActions.find((action) => action.type === 'play_card' && !action.faceDown);
   if (fixedPaymentAction?.type === 'play_card') {
-    const card = state.cards.find((candidate) => candidate.instanceId === fixedPaymentAction.cardInstanceId);
-    const cost = card ? Number(state.abilityRuntime?.pack.cards[card.definitionId]?.cardFace.cost ?? 0) : 0;
+    const cost = view.cards.find(card => card.instanceId === fixedPaymentAction.cardInstanceId)?.currentManaCost ?? 0;
     if (cost > 0) {
       windows.push({
         id: `fixed-payment:${fixedPaymentAction.cardInstanceId}`,
@@ -2757,7 +2765,17 @@ export class MatchSession {
       delete targetState.currentSituationCardId;
       const drawOrder = targetState.players.filter(player => player.status === 'active').sort((a, b) =>
         Number(a.seat < startingSeat) - Number(b.seat < startingSeat) || a.seat - b.seat);
-      for (const player of drawOrder) this.drawToHandLimit(targetState, player.id);
+      const runtime = targetState.abilityRuntime;
+      if (runtime?.roundPlayBonuses) runtime.roundPlayBonuses = runtime.roundPlayBonuses.filter(entry => entry.dueRound >= round);
+      for (const player of drawOrder) {
+        this.drawToHandLimit(targetState, player.id);
+        const bonuses = dueRoundPlayBonuses(targetState, player.id).filter(entry => !entry.drawn);
+        if (bonuses.length) {
+          const currentHand = targetState.cards.filter(card => card.ownerPlayerId === player.id && card.zone === 'hand').length;
+          this.drawToHandLimit(targetState, player.id, currentHand + bonuses.length * 2);
+          for (const bonus of bonuses) bonus.drawn = true;
+        }
+      }
       opening = { nextEvent: 0 };
       modeStateOf(targetState).roundOpening = opening;
       const original = round <= 8 ? targetState.situationDeck?.shift() : climaxSituations[round - 9]?.id;

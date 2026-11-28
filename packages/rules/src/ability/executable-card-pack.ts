@@ -885,6 +885,11 @@ export function compileExecutableCardPack(input: CompileInput): ExecutableCardPa
     if (card.ascensionSkill === true) deferred.add(card.id);
     if (['servant_skill', 'master_skill', 'command_spell'].includes(card.cardType) && !deferred.has(card.id)) card.initialZone = 'skill';
     validateCardReferences(card.abilities, cards, `cards.${card.id}.abilities`);
+    for (const [index, requirement] of card.playRequirements.entries()) {
+      if (requirement.type === 'close_active_controlled_card') {
+        validateCardReferences(requirement, cards, `cards.${card.id}.playRequirements[${index}]`);
+      }
+    }
     validateAbilityTargetReferences(card, cards);
     validateAbilityResolutionDataFlow(card, cards);
   }

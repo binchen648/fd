@@ -5,32 +5,78 @@
   "name": "吉尔伽美什(Caster)",
   "class": "Caster",
   "sourcePolicy": {
-    "phase3EvidenceCommit": "59f145434695d29bdd17e4cb3adc887e84182377",
-    "referenceMetadataCommit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-    "note": "Semantics come from frozen F1 plus accepted FB2-11/R33 and FB2-02/R19 contracts; locked Reference is used only for owner/static metadata."
+    "priority": [
+      "original_card_image",
+      "chm_association",
+      "final_rules"
+    ]
   },
+  "deck": [
+    {
+      "cardId": "card.cardb1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardb2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardb2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardq1",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardq2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardq2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.carda2",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.carda3",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.carda4",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardluck",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    },
+    {
+      "cardId": "card.cardpreparation",
+      "source": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.deck"
+    }
+  ],
   "cards": [
     {
       "id": "servant.kinggil.skill.sc-kinggil-1",
-      "aliases": [
-        "sc_kinggil_1"
-      ],
-      "legacyId": "sc_kinggil_1",
-      "name": "阵地建造（Caster Class）",
+      "name": "阵地建造",
       "cardType": "servant_skill",
       "owner": {
         "type": "servant",
         "id": "servant.kinggil"
       },
-      "printedText": "X为16-（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "printedText": "X为16−（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
       "cardFace": {
         "typeLabel": "魔术",
         "attributes": [
           "魔术"
         ],
-        "cost": 0,
-        "basePower": {
-          "printedExpression": "X",
+        "cost": {
           "formula": {
             "op": "add",
             "args": [
@@ -40,13 +86,15 @@
                 "args": [
                   -2,
                   {
-                    "var": "game.round_number"
+                    "var": "round.number"
                   }
                 ]
               }
             ]
-          }
-        }
+          },
+          "printedExpression": "16−（当前回合数×2）"
+        },
+        "basePower": 2
       },
       "playTiming": {
         "phase": "action",
@@ -60,91 +108,372 @@
       ],
       "abilities": [
         {
-          "id": "sc-kinggil-1.round-power",
-          "kind": "continuous_formula",
-          "printedClause": "X为16-（当前回合数×2）",
+          "cost": [],
+          "conditions": [],
+          "targets": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.kinggil.skill.sc-kinggil-1.residual",
+          "kind": "residual",
+          "printedClause": "残留",
           "activation": {
             "trigger": "on_card_played",
-            "requiresSourceState": "active"
+            "opens": "immediate"
           },
-          "execution": {
-            "mode": "automatic"
+          "effects": [],
+          "lifecycle": {
+            "duration": "while_card_active",
+            "cleanup": "when_card_leaves_active_area"
           }
         },
         {
-          "id": "sc-kinggil-1.deployment-reward",
+          "cost": [],
+          "conditions": [
+            {
+              "type": "event_location_is",
+              "locationId": "magic_workshop"
+            }
+          ],
+          "targets": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.kinggil.skill.sc-kinggil-1.workshop-reward",
           "kind": "forced_trigger",
-          "printedClause": "残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+          "printedClause": "当你部署于魔术工房时，获得1点魔力和2点战果。",
           "activation": {
-            "trigger": "after_player_deployed_to_battlefield",
-            "eventLocationId": "magic_workshop"
+            "trigger": "after_player_deployed_to_location",
+            "opens": "immediate",
+            "requiresSourceState": "active"
           },
           "effects": [
             {
               "type": "adjust_mana",
-              "player": "controller",
               "amount": 1
             },
             {
               "type": "adjust_victory_points",
-              "player": "controller",
               "amount": 2
             }
           ],
+          "lifecycle": {}
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/吉尔伽美什2.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true,
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.skill.sc-kinggil-1",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "c1758618a2151ad5285cc4fb578e8644a8c1bf39a0e5bd6aec3170591126a141"
+      }
+    },
+    {
+      "id": "servant.kinggil.skill.sc-kinggil-2",
+      "name": "王之财宝",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kinggil"
+      },
+      "printedText": "【真名解放】\n行动阶段：弃置你的所有手牌，然后令此牌获得被弃置牌的所有属性。\n战斗阶段：此牌威力翻倍。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 3,
+        "basePower": 3
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        }
+      ],
+      "abilities": [
+        {
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
           "execution": {
-            "mode": "automatic"
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.kinggil.skill.sc-kinggil-2.release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "activation": {
+            "trigger": "on_use_declared"
+          },
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ]
+        },
+        {
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.kinggil.skill.sc-kinggil-2.discard-attributes",
+          "kind": "phase_action",
+          "printedClause": "行动阶段：弃置你的所有手牌，然后令此牌获得被弃置牌的所有属性。",
+          "activation": {
+            "phase": "action",
+            "opens": "controller_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "move_all_remaining",
+              "from": "hand",
+              "to": {
+                "zone": "discard",
+                "owner": "controller"
+              },
+              "bind": "treasury_discarded"
+            },
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "attribute_bonus",
+                "attributesFromBinding": "treasury_discarded",
+                "scope": {
+                  "subject": "source_card"
+                },
+                "duration": "this_round",
+                "sourceMustRemainActive": true
+              }
+            }
+          ]
+        },
+        {
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {
+            "type": "per_round",
+            "uses": 1,
+            "scope": "this_card"
+          },
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          },
+          "id": "servant.kinggil.skill.sc-kinggil-2.double-current-power",
+          "kind": "phase_action",
+          "printedClause": "战斗阶段：此牌威力翻倍。",
+          "activation": {
+            "phase": "combat",
+            "opens": "controller_combat_action_window",
+            "requiresSourceState": "active"
+          },
+          "effects": [
+            {
+              "type": "create_modifier",
+              "modifier": {
+                "type": "power_bonus",
+                "operation": "multiply",
+                "rule": "attack.currentPower",
+                "amount": 2,
+                "scope": {
+                  "subject": "source_card"
+                },
+                "duration": "this_round",
+                "sourceMustRemainActive": true
+              }
+            }
+          ]
+        }
+      ],
+      "source": {
+        "htmPath": "chm-extract/吉尔伽美什2.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193747_059.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true,
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.skill.sc-kinggil-2",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "printedTextSha256": "4534ade4c8cc0b8ea34f4dd611a9aa66a7a6f2e6914cff8672604b79830df936"
+      },
+      "authoringStatus": "runtime_verified_candidate",
+      "adapterNotes": [
+        "2026-11-26 B98：A 线已交付王之财宝 Runtime（runtime-treasury-business.test.ts 20/20 PASS），loadAuthoringJson 0 错误；仍处独立候选通道，待独立审核。"
+      ],
+      "fieldContractEvidence": {
+        "BFieldSignatureCommit": "234eaf0e64919360dce0e08941267874b431b74c",
+        "AExactProspectiveAcceptanceCommit": "cfd49a70ca12dbc0d2b89c553f73437d0b75fdb1",
+        "AResponsePath": "docs/runtime/proposals/A-RUNTIME-BILLY-TREASURY-EXACT-CONTRACT-20261118.md",
+        "implementationAllowed": true,
+        "scope": "A Runtime consumer delivered and verified via runtime-treasury-business.test.ts."
+      }
+    },
+    {
+      "id": "servant.kinggil.skill.sc-kinggil-3",
+      "name": "王之号炮",
+      "cardType": "servant_skill",
+      "owner": {
+        "type": "servant",
+        "id": "servant.kinggil"
+      },
+      "printedText": "【真名解放】\n开炮！开炮！-你需关闭你激活的【阵地作成】才可打出此牌。下个回合，你于准备阶段抽牌后额外抽2张牌且于进行常规出牌时可以追加打出1张牌。",
+      "cardFace": {
+        "typeLabel": "宝具",
+        "attributes": [
+          "宝具"
+        ],
+        "cost": 4,
+        "basePower": 13
+      },
+      "playTiming": {
+        "phase": "action",
+        "window": "controller_play_card_window"
+      },
+      "playRequirements": [
+        {
+          "type": "skill_zone_mana_at_least",
+          "value": 8
+        },
+        {
+          "type": "close_active_controlled_card",
+          "cardId": "servant.kinggil.skill.sc-kinggil-1"
+        }
+      ],
+      "abilities": [
+        {
+          "id": "servant.kinggil.skill.sc-kinggil-3.release",
+          "kind": "declaration_reveal",
+          "printedClause": "【真名解放】",
+          "activation": {
+            "trigger": "on_use_declared",
+            "opens": "immediate"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "effects": [
+            {
+              "type": "reveal_information",
+              "subject": "controller.servant",
+              "scope": "servant_package"
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
+          }
+        },
+        {
+          "id": "servant.kinggil.skill.sc-kinggil-3.next-round-bonus",
+          "kind": "forced_trigger",
+          "printedClause": "开炮！开炮！-你需关闭你激活的【阵地作成】才可打出此牌。下个回合，你于准备阶段抽牌后额外抽2张牌且于进行常规出牌时可以追加打出1张牌。",
+          "activation": {
+            "trigger": "on_card_played",
+            "requiresSourceState": "active"
+          },
+          "conditions": [],
+          "targets": [],
+          "cost": [],
+          "effects": [
+            {
+              "type": "schedule_round_bonus",
+              "roundOffset": 1,
+              "after": "normal_preparation_draw",
+              "drawCards": 2,
+              "extraNormalPlays": 1
+            }
+          ],
+          "ruleModifiers": [],
+          "creates": [],
+          "lifecycle": {},
+          "responseWindow": {},
+          "limit": {},
+          "visibility": {},
+          "execution": {
+            "mode": "automatic",
+            "allowedOperations": []
           }
         }
       ],
-      "phase3Evidence": {
-        "f1Commit": "59f145434695d29bdd17e4cb3adc887e84182377",
-        "f1SourceReferences": [
-          {
-            "kind": "chm",
-            "document": "FD全卡图鉴V2.0.chm",
-            "category": "servant/english",
-            "page": "吉尔伽美什2.htm",
-            "locator": "从者/魔术师/英文版/吉尔伽美什2.htm"
-          },
-          {
-            "kind": "development-image",
-            "document": "Fate_Domination-开发版",
-            "category": "servant",
-            "page": "images/servants/吉尔伽美什(Caster).png",
-            "locator": "servant.kinggil/吉尔伽美什(Caster)"
-          }
-        ],
-        "f1ClauseSources": [
-          {
-            "document": "src/content/generated/legacy-content.json",
-            "locator": "servants[112].skills[0].text#line=1",
-            "sha256": "a65ce56a69bba9214eba95ab30154209228bcd28f7fec21f6317c8a70f421847"
-          },
-          {
-            "document": "src/content/generated/legacy-content.json",
-            "locator": "servants[112].skills[0].text#line=2",
-            "sha256": "2137380f5f57233a98494f45a9d12a848f3d1cf710101c60462c523ea3f1624f"
-          }
-        ],
-        "sourceTextSha256": "295a5b531db5d1031cbbb89dc677e76737b7d3b3c7ca70af59405cc84bd98c58",
-        "referenceStaticMetadata": {
-          "commit": "b2f9fa15fba07c63530bbf4612b03b8b704755f9",
-          "legacySkillId": "sc_kinggil_1",
-          "cost": 0,
-          "basePower": 2,
-          "legacyRequirement": 0,
-          "typeLabel": "魔术"
-        },
-        "canonicalSkillZoneManaRequirement": {
-          "value": 8,
-          "authority": "final_rules_9.4",
-          "note": "Legacy requirement is retained as evidence metadata only."
-        },
-        "acceptedContracts": {
-          "roundPower": "P3-R33/FB2-11",
-          "deploymentReward": "P3-R19/FB2-02"
-        }
+      "authoringStatus": "RUNTIME_VERIFIED_CANDIDATE",
+      "fieldContractEvidence": {
+        "path": "data/authoring-candidates/contracts/servant.kinggil.source-contract.json",
+        "AExactEnvelopeCommit": "40c7f6d8d799c6e33c2fb93dd24b223b8efde5de",
+        "BSignature": "EXACT_FIELDS_AND_PRINTED_ADDITIONAL_CARD_SEMANTICS_SIGNED",
+        "runtimeImplemented": true
+      },
+      "source": {
+        "jsonPath": "references/fate-domination-b2f9fa1/src/content/generated/legacy-content.json#servant.kinggil.skill.sc-kinggil-3",
+        "sourceSha256": "f52adc1426805e9cb5908ab79eea8b0d3f2f51d589cc243e04a6a1c1ff56bb66",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_193742_315.png",
+        "imageIndex": 4,
+        "imageSha256": "0d57806d6d5d54f33ac1a614e0f31d6caa2b74e942cc8a27f7d99dc301634be3",
+        "reviewedAgainstImage": true,
+        "htmPath": "chm-extract/吉尔伽美什2.htm",
+        "printedTextSha256": "17eb3afe56c393fce7c55d0b58e0c707a120ada004db28647e83519c2f243f65",
+        "reviewEvidence": "ReuseexistingSOURCE_SEMANTIC_CONTRACT directview, exactimageSHAverifiedunchanged"
       }
     }
-  ]
+  ],
+  "openQuestions": [],
+  "resolvedQuestions": [
+    "2026-11-06用户确认动态费用低于0按0支付；复用原有威力公式AST。",
+    "2026-11-26用户裁定确认清理过期 openQuestions：sc-kinggil-3（王之号炮，runtime-cannon-round-bonus.test.ts 9/9 PASS）与 sc-kinggil-2（王之财宝，runtime-treasury-business.test.ts 20/20 PASS）均已由 A 线交付且 loadAuthoringJson 0 错误。"
+  ],
+  "adapterNotes": [
+    "独立候选通道，不注册生产包；3 张技能卡与 12 张起手牌已完备，待独立审核。",
+    "2026-11-26 B98：王之财宝与王之号炮均已实测通过 Runtime 回归测试并清空过期 openQuestions。"
+  ],
+  "authoringStatus": "COMPLETE_CANDIDATE_PENDING_REVIEW"
 }

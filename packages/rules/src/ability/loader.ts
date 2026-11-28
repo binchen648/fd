@@ -48,6 +48,7 @@ import {
   isGameStartPlayerStatusAssignmentCandidate,
   isGameStartPlayerStatusAssignmentSemantic,
 } from './game-start-player-status-assignment';
+import { isCloseActiveControlledCardRequirement, isRoundPlayBonusEffect } from './round-play-bonus';
 import { locationIds } from '../schema/location';
 
 
@@ -56,6 +57,18 @@ export function node(value: unknown): RuleNode {
 }
 export function nodes(value: unknown): RuleNode[] { return Array.isArray(value) ? value.map(node) : []; }
 export function str(value: unknown): string { return typeof value === 'string' ? value : ''; }
+
+/** Only the signed printed turn-cost arithmetic is admitted at this boundary. */
+function validPrintedRoundCost(expression: unknown, depth = 0): boolean {
+  if (depth > 16) return false;
+  if (typeof expression === 'number') return Number.isSafeInteger(expression) && Math.abs(expression) <= 1_000_000;
+  const term = node(expression);
+  if (Object.keys(term).length === 1) return term.var === 'round.number' || term.var === 'game.round_number';
+  return Object.keys(term).length === 2 && (term.op === 'add' || term.op === 'multiply') &&
+    Array.isArray(term.args) && term.args.length >= 2 && term.args.length <= 16 &&
+    term.args.every(argument => validPrintedRoundCost(argument, depth + 1));
+}
+
 function isAcceptedMagicResistanceIndependentModifierLifecycle(rawAbility: RuleNode, modifier: RuleNode): boolean {
   if (str(rawAbility.kind) !== 'phase_action') return false;
   const activation = node(rawAbility.activation);
@@ -184,7 +197,7 @@ export function isAcceptedRoundActiveAttackPaidCostCombatPowerAbility(
 const supportedTypes = new Set([
   'replace_phase_abilities', 'schedule_at_player_action_end',
   'play_card_group',
-  'reveal_hands', 'play_revealed_card',
+  'reveal_hands', 'play_revealed_card', 'close_active_controlled_card', 'schedule_round_bonus',
   'controller_alone_at_battlefield', 'claim_and_discard_location_events', 'any_enabled_location',
   'skill_zone_mana_at_least', 'played_with_basic_attack', 'draw_cards', 'play_selected_cards', 'base_power_at_most',
   'reveal_information', 'set_zone_visibility', 'look_at_deck_top', 'move_card', 'move_all_remaining',
@@ -207,7 +220,7 @@ const supportedTypes = new Set([
   'controller_played_highest_cost_noble_phantasm_in_battle_this_round',
   'controller_strict_second_battle_power', 'defeat_highest_power_opponents',
   'highest_cost_noble_phantasm_cost_at_least', 'selected_count_at_least',
-  'create_modifier', 'not_location_kind', 'power_bonus', 'terrain_bonus', 'card_not_on_board', 'card_on_controller_battlefield', 'not_card_id',
+  'create_modifier', 'attribute_bonus', 'not_location_kind', 'power_bonus', 'terrain_bonus', 'card_not_on_board', 'card_on_controller_battlefield', 'not_card_id',
   // Master authoring adapters
   'record_master_directive', 'adjust_command_seals', 'set_mana', 'create_independent_deck',
   'draw_from_independent_deck', 'activate_card_by_id', 'replace_card_in_deck', 'return_card_by_definition',
@@ -295,7 +308,7 @@ const triggers = new Set(['on_use_declared', 'on_card_played', 'controller_actio
   // 部署到任意地点（含非战场，如魔术工房）
   'after_player_deployed_to_location',
 ]);
-const mechanicKeys = new Set(['type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
+const mechanicKeys = new Set(['attributesFromBinding', 'roundOffset', 'after', 'drawCards', 'extraNormalPlays', 'type', 'id', 'printedClause', 'scope', 'subject', 'owner', 'player', 'target', 'amount', 'count',
   'lossAmount', 'winnerRewardAmount',
   'resultZone', 'visibility', 'to', 'from', 'optional', 'excluding', 'branches', 'if', 'then', 'else', 'cardId', 'zone',
   'var', 'op', 'args', 'left', 'right', 'formula', 'formulaRef', 'printedExpression', 'constraints', 'value', 'min', 'max',
@@ -348,6 +361,15 @@ export function isAcceptedControllerSkillManaException(a: AuthoringAbility | Rul
     node(m.scope).subject === 'controller' && Object.keys(node(m.scope)).length === 1 &&
     Object.keys(m).every(k=>['id','printedClause','operation','rule','scope'].includes(k));
 }
+/** Exact dual-signed source-instance Treasury shapes; not a general multiplier ABI. */
+export function isAcceptedSourceCardModifier(n: RuleNode): boolean {
+  if (n.duration !== 'this_round' || n.sourceMustRemainActive !== true ||
+      Object.keys(node(n.scope)).length !== 1 || node(n.scope).subject !== 'source_card') return false;
+  if (n.type === 'power_bonus') return n.operation === 'multiply' && n.rule === 'attack.currentPower' && n.amount === 2 &&
+    Object.keys(n).every(k => ['type','operation','rule','amount','scope','duration','sourceMustRemainActive'].includes(k));
+  return n.type === 'attribute_bonus' && n.attributesFromBinding === 'treasury_discarded' &&
+    Object.keys(n).every(k => ['type','attributesFromBinding','scope','duration','sourceMustRemainActive'].includes(k));
+}
 export function isAcceptedSourceBoundAggregate(n: RuleNode): boolean {
   return n.type === 'power_bonus' && n.operation === 'add' && n.aggregate === 'total' && n.duration === 'this_round' &&
     n.sourceMustRemainActive === true && Number.isSafeInteger(n.amount) && Number(n.amount) >= 0 &&
@@ -358,7 +380,7 @@ function invalidSourceBoundAggregate(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(invalidSourceBoundAggregate);
   if (!value || typeof value !== 'object') return false;
   const n=node(value);
-  return (n.sourceMustRemainActive !== undefined && !isAcceptedSourceBoundAggregate(n)) || Object.values(n).some(invalidSourceBoundAggregate);
+  return (n.sourceMustRemainActive !== undefined && !isAcceptedSourceBoundAggregate(n) && !isAcceptedSourceCardModifier(n)) || Object.values(n).some(invalidSourceBoundAggregate);
 }
 function containsSourceBoundAggregate(value: unknown): boolean {
   if (Array.isArray(value)) return value.some(containsSourceBoundAggregate);
@@ -518,8 +540,34 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
       if (['move_source_event', 'move_event_card'].includes(str(n.type)) && !['event_deck', 'event_discard', 'event_outside_game', 'event_battlefield'].includes(str(node(n.to).zone))) {
         issue(`${path}.to.zone`, 'Unsupported or missing event destination zone', abilityId);
       }
+      if (n.type === 'close_active_controlled_card' &&
+          (!/^playRequirements\[\d+\]$/.test(path) || !isCloseActiveControlledCardRequirement(n))) {
+        issue(path, 'Invalid active-card close play requirement', abilityId);
+      }
+      if (n.type === 'schedule_round_bonus') {
+        const source = nodes(raw.abilities).find(ability => ability.id === abilityId);
+        const activation = node(source?.activation);
+        if (!isRoundPlayBonusEffect(n) || !nodes(source?.effects).includes(n) || source?.kind !== 'forced_trigger' ||
+            activation.trigger !== 'on_card_played' || activation.requiresSourceState !== 'active' ||
+            nodes(raw.playRequirements).filter(isCloseActiveControlledCardRequirement).length !== 1) {
+          issue(path, 'Round bonus requires an active on-play source and an exact close prerequisite', abilityId);
+        }
+      }
       if (n.optionalCost && str(node(n.optionalCost).type) !== 'pay_mana') issue(`${path}.optionalCost`, 'Only optional mana payment is supported', abilityId);
       if (n.type === 'look_at_deck_top' && (n.resultZone !== 'looked_cards' || n.count === undefined)) issue(`${path}.resultZone`, 'Deck look requires a count and looked_cards temporary zone', abilityId);
+      if (n.type === 'create_modifier' && node(n.modifier).type === 'power_bonus' &&
+          node(n.modifier).operation === 'multiply' && !isAcceptedSourceCardModifier(node(n.modifier))) {
+        issue(path, 'Unsupported source card multiplier', abilityId);
+      }
+      if (n.type === 'create_modifier' && node(n.modifier).type === 'attribute_bonus') {
+        const a = nodes(raw.abilities).find(a => str(a.id) === abilityId);
+        const effects = nodes(a?.effects), index = effects.indexOf(n);
+        const producer = effects.slice(0,index).find(e => e.type === 'move_all_remaining' && e.bind === node(n.modifier).attributesFromBinding);
+        if (!isAcceptedSourceCardModifier(node(n.modifier)) || !producer || producer.from !== 'hand' ||
+            node(producer.to).zone !== 'discard' || node(producer.to).owner !== 'controller' || producer.excluding !== undefined) {
+          issue(path, 'Source attributes require same-ability actual own-hand discard binding', abilityId);
+        }
+      }
       if (n.type === 'set_zone_visibility' && (n.visibility !== 'public' || n.zone !== 'discard')) issue(`${path}.visibility`, 'Only continuous public discard visibility is supported', abilityId);
       if (n.type === 'shuffle_zone_into_deck' && (node(n.from).zone !== 'discard' || node(n.to).zone !== 'deck')) issue(`${path}.from`, 'Only discard-to-deck shuffle is supported', abilityId);
       for (const [key, child] of Object.entries(n)) scan(child, `${path}.${key}`, abilityId);
@@ -532,7 +580,15 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
     if (face.semanticCategory !== undefined && face.semanticCategory !== OUTER_GOD_LIFE_CATEGORY) issue('cardFace.semanticCategory', 'Unsupported semantic card category');
     if (typeof face.basePower === 'string') issue('cardFace.basePower', 'String expressions are forbidden; provide a formula AST');
     scan(raw.playRequirements, 'playRequirements');
-    if (face.cost !== undefined && (typeof face.cost !== 'number' || !Number.isFinite(face.cost) || face.cost < 0)) issue('cardFace.cost', 'Expected a nonnegative printed mana cost');
+    if (face.cost !== undefined && !(typeof face.cost === 'number' && Number.isFinite(face.cost) && face.cost >= 0)) {
+      const cost = node(face.cost);
+      if (cost.formula === undefined || Object.keys(cost).some(key => key !== 'formula' && key !== 'printedExpression') ||
+          (cost.printedExpression !== undefined && typeof cost.printedExpression !== 'string')) {
+        issue('cardFace.cost', 'Expected a nonnegative printed mana cost or a formula object');
+      } else if (!validPrintedRoundCost(cost.formula)) {
+        issue('cardFace.cost.formula', 'Unsupported printed round-cost formula');
+      }
+    }
     const timing = node(raw.playTiming);
     const initialPlacement = raw.initialPlacement;
     if (initialPlacement !== undefined) {

@@ -1,3 +1,4 @@
+import { createMatchSession } from '@fd/rules';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -241,7 +242,8 @@ describe('FD asset registry', () => {
   });
 
   it('shows backend target-window notes in inspectable skill descriptions', () => {
-    const session = createSevenAuthoringMatchSession();
+    const session = createMatchSession({ humanPlayerId: 'p1', startingServantIds: [...approvedAuthoringServantIds] });
+    session.runUntilHumanInputOrRoundEnd();
     const ereshPairing = session.pairings.find((pairing) => pairing.servant.id === 'servant.ereshkigal')!;
     const fixture = projectSevenAuthoringSessionFixture(session, ereshPairing.playerId);
     const battleContinuation = fixture.cards.find((card) => card.definitionId === 'servant.ereshkigal.skill.sc-ereshkigal-1');
@@ -299,7 +301,9 @@ describe('FD asset registry', () => {
       masters: Array<{ id: string }>; servants: Array<{ id: string }>;
     };
     expect(generated.masters.map(entity => entity.id).sort()).toEqual([...approvedAuthoringMasterIds].sort());
-    expect(generated.servants.map(entity => entity.id).sort()).toEqual([...approvedAuthoringServantIds, 'servant.euryale'].sort());
+    const admittedServantIds = paths.filter(path => path.startsWith('data/authoring/servants/')).map(path =>
+      (JSON.parse(readFileSync(resolve(__dirname, '../../../..', path), 'utf8')) as { id: string }).id);
+    expect(generated.servants.map(entity => entity.id).sort()).toEqual(admittedServantIds.sort());
     for (const id of unapproved) expect(Object.prototype.hasOwnProperty.call(fdRealAssetManifest.entities, id), id).toBe(false);
   });
 

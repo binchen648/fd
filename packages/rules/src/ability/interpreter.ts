@@ -1,3 +1,4 @@
+import { isCloseActiveControlledCardRequirement, isRoundPlayBonusEffect, optionalRoundPlays } from './round-play-bonus';
 import { CHALDEAS_SWAP, maySwapMatchReveal } from './chaldeas-reveal';
 import { handRevealContractIssue, isRevealedHandCard, matchesRevealedHandInstance, pendingRevealedHands, validHandRevealBindings, lastHandReveal } from './revealed-hand-play';
 import { approvedAdvanceGroup, isApprovedAdvanceGroupEffect } from './advance-group-play';
@@ -25,7 +26,7 @@ import { boundCardInfo } from './binding-cards';
 import { cleanupStatuses, installStatus } from './status';
 import { movementLockAt } from './movement-locks';
 
-import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, validManaCostAuraModifier } from './loader';
+import { node, nodes, str, isAcceptedTerrainLayer, isAcceptedControllerSkillManaException, isAcceptedSourceBoundAggregate, isAcceptedSourceCardModifier, validManaCostAuraModifier } from './loader';
 import { hostOperations } from './types';
 import { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
 export { isCardZoneCoreDirectActionRouteCandidate, isCardZoneCoreDirectActionSemantic } from './card-zone-result-binding';
@@ -243,7 +244,7 @@ function extraAttackPlayAllowance(s: GameState, playerId: string): number {
 }
 function attackPlayAllowance(s: GameState, playerId: string): number {
   const normalAttackCount = runtime(s).playRulesVersion === 'legacy-v0' ? 1 : 2;
-  return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId);
+  return normalAttackCount + extraAttackPlayAllowance(s, playerId) + persistentExtraAttackAllowance(s, playerId) + optionalRoundPlays(s, playerId);
 }
 function attackPlayLimitReached(s: GameState, playerId: string, sourceId: string, ignoreStaged = false): boolean {
   if (!entersAttackArea(s, sourceId) || isRequiredAdditionalPlayCard(s, sourceId)) return false;
@@ -713,9 +714,10 @@ export function cardManaCost(s: GameState, instanceId: string): number {
   try {
     const source = card(s, instanceId);
     const printed = runtime(s).pack.cards[source.definitionId]?.cardFace.cost ?? 0;
-    const base = typeof printed === 'number' ? printed : evaluateFormula(printed, s, source.controllerPlayerId, instanceId).value;
+    const rawCost = typeof printed === 'number' ? printed : evaluateFormula(printed, s, source.controllerPlayerId, instanceId).value;
+    const base = typeof printed === 'number' ? rawCost : Math.max(0, rawCost);
     const aura = continuousManaCostAddition(s, source), total = base + aura;
-    if (!Number.isSafeInteger(base) || base < 0 || !Number.isSafeInteger(aura) || !Number.isSafeInteger(total)) {
+    if (!Number.isSafeInteger(rawCost) || base < 0 || !Number.isSafeInteger(aura) || !Number.isSafeInteger(total)) {
       reject('invalid_cost', 'Card mana cost must be a safe nonnegative integer');
     }
     return Math.max(0, total);
@@ -785,7 +787,7 @@ function modifierControllerApplies(s: GameState, modifierControllerId: string, s
   }
   return false;
 }
-export function calculateCardPower(s: GameState, sourceId: string): { value: number; lines: CalculationLine[] } {
+export function calculateCardPower(s: GameState, sourceId: string, environmentalPower = 0): { value: number; lines: CalculationLine[] } {
   if (runtime(s).cardState[sourceId]?.faceDown) return { value: 0, lines: [{ label: '暗置攻击无伤害结算', value: 0 }] };
   const source = card(s, sourceId); const d = definition(s, sourceId);
   const persistentLock = s.ruleOverrides?.masterSkillPowerLockIfSituationForbidsByPlayer?.[source.controllerPlayerId];
@@ -802,8 +804,18 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     else reject('unsupported', `Unsupported card power modifier: ${str(modifier.kind)}`);
     result.lines.push({ label: str(modifier.sourceId) || str(modifier.id) || 'card_power_modifier', value: result.value });
   }
+  if (!Number.isFinite(environmentalPower)) reject('invalid_modifier', 'Environmental power must be finite');
+  result.value += environmentalPower;
+  const startingSeat = s.round.startingSeat ?? 1;
+  const playerOrder = (controllerId: string): number => {
+    if (controllerId === source.controllerPlayerId) return 0;
+    const seat = s.players.find(candidate => candidate.id === controllerId)?.seat ?? startingSeat;
+    return (seat - startingSeat + s.players.length) % s.players.length + 1;
+  };
   const modifiers = liveOngoing(s).flatMap(o => o.ruleModifiers).sort((a, b) =>
-    Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception'));
+    Number(node(a.definition.priority).tier === 'explicit_exception') - Number(node(b.definition.priority).tier === 'explicit_exception') ||
+    playerOrder(a.controllerId) - playerOrder(b.controllerId) ||
+    Number(a.definition.operation === 'multiply') - Number(b.definition.operation === 'multiply'));
   for (const modifier of modifiers) {
     const m = modifier.definition; const scope = node(m.scope);
     // Only card-scoped power rules feed per-card power; battle.totalPower is read by the resolver.
@@ -817,6 +829,7 @@ export function calculateCardPower(s: GameState, sourceId: string): { value: num
     const amount = numeric(s, ctx, m.value);
     if (m.operation === 'set') result.value = amount;
     else if (m.operation === 'add') result.value += amount;
+    else if (m.operation === 'multiply' && m.rule === 'attack.currentPower' && scope.object === 'source_card' && amount === 2) result.value *= amount;
     else reject('unsupported', 'Unsupported power operation');
     result.lines.push({ label: str(m.printedClause) || str(m.id), value: result.value });
   }
@@ -1055,6 +1068,8 @@ function condition(s: GameState, ctx: EffectContext, c: RuleNode): boolean {
   if (c.negated === true) return !condition(s, ctx, { ...c, negated: undefined });
   const p = player(s, ctx.controllerId);
   switch (c.type) {
+    case 'close_active_controlled_card':
+      return isCloseActiveControlledCardRequirement(c) && !!activeClosePrerequisite(s, ctx.controllerId, c);
     case 'skill_zone_mana_at_least': {
       if (card(s, ctx.sourceCardId).zone !== 'skill' || p.mana >= Number(c.value)) return true;
       const cardDef = definition(s, ctx.sourceCardId);
@@ -1600,7 +1615,11 @@ function playFailure(s: GameState, p: string, sourceId: string, faceDown = false
   const requirements = d.playRequirements.concat(nodes(d.cardFace.requirements)).filter(r => str(r.type));
   if (!requirements.every(r => advanceGroupException && r.type === 'controller_seat_in_first_half' || condition(s, context(s, sourceId, ''), r))) return 'play_requirement';
   
-  if (!ignoreManaCost && !faceDown && player(s, p).mana < cardManaCost(s, sourceId)) return 'insufficient_mana';
+  if (!faceDown && (!ignoreManaCost || typeof d.cardFace.cost === 'object')) {
+    let cost: number;
+    try { cost = cardManaCost(s, sourceId); } catch { return 'invalid_cost'; }
+    if (!ignoreManaCost && player(s, p).mana < cost) return 'insufficient_mana';
+  }
   const unconfirmed = d.abilities.find(a => ['unsupported', 'text_unconfirmed'].includes(a.execution.mode));
   if (unconfirmed) return unconfirmed.execution.mode;
   if (!faceDown) {
@@ -1643,6 +1662,28 @@ function regularAttackOptions(s: GameState, playerId: string): PlayCardAction[][
     return options.length ? [options] : [];
   });
 }
+function activeClosePrerequisite(s: GameState, playerId: string, requirement: RuleNode, reserved = new Set<string>()): string | undefined {
+  return s.cards.find(candidate => candidate.controllerPlayerId === playerId && candidate.definitionId === requirement.cardId &&
+    !reserved.has(candidate.instanceId) && active(s, candidate.instanceId) &&
+    (candidate.zone === 'attack_area' || candidate.zone === 'field') &&
+    !isCardCloseForbidden(s, candidate.instanceId))?.instanceId;
+}
+
+function requiredPlayClosures(s: GameState, playerId: string, choices: readonly PlayCardAction[]): string[] | undefined {
+  const reserved = new Set(choices.map(choice => choice.cardInstanceId));
+  const closures: string[] = [];
+  for (const choice of choices) {
+    const requirements = definition(s, choice.cardInstanceId)?.playRequirements ?? [];
+    for (const requirement of requirements.filter(isCloseActiveControlledCardRequirement)) {
+      const instanceId = activeClosePrerequisite(s, playerId, requirement, reserved);
+      if (!instanceId) return undefined;
+      reserved.add(instanceId);
+      closures.push(instanceId);
+    }
+  }
+  return closures;
+}
+
 /** Find a complete legal simultaneous batch without executing triggers or paying any costs. */
 function regularAttackPlanContext(s: GameState, playerId: string) {
   const groups = regularAttackOptions(s, playerId);
@@ -1652,17 +1693,23 @@ function regularAttackPlanContext(s: GameState, playerId: string) {
   const battlefield = isBattlefield(s, player(s, playerId).locationId);
   const requireFaceUp = battlefield && !allHandFaceUpForbiddenByEffect(s, playerId);
   const allowance = Math.max(0, attackPlayAllowance(s, playerId) - attacksDeclaredThisRound(s, playerId));
-  return { groups, mandatory, mana, requireFaceUp, allowance };
+  return { groups, mandatory, mana, requireFaceUp, allowance, optional: optionalRoundPlays(s, playerId) };
 }
 function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAction[] = [], exact = false,
   planContext = regularAttackPlanContext(s, playerId)): PlayCardAction[] | undefined {
-  const { groups, mandatory, mana, requireFaceUp, allowance } = planContext;
+  const { groups, mandatory, mana, requireFaceUp, allowance, optional } = planContext;
   const ordinaryRequired = required.filter(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId));
   if (new Set(required.map(choice => choice.cardInstanceId)).size !== required.length) return undefined;
   if (ordinaryRequired.some(choice => !groups.some(group => group.some(option =>
     option.cardInstanceId === choice.cardInstanceId && !!option.faceDown === !!choice.faceDown)))) return undefined;
   const costOf = (choice: PlayCardAction) => choice.faceDown ? 0 : cardManaCost(s, choice.cardInstanceId);
-  const extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId)).reduce((sum, choice) => sum + costOf(choice), 0);
+  let extraCost: number;
+  try {
+    extraCost = required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId))
+      .reduce((sum, choice) => sum + costOf(choice), 0);
+  } catch {
+    return undefined;
+  }
   const find = (target: number, fixed: PlayCardAction[], additionalCost = 0, budget = mana): PlayCardAction[] | undefined => {
     const fixedIds = new Set(fixed.map(choice => choice.cardInstanceId));
     const remaining = groups.filter(group => !fixedIds.has(group[0]!.cardInstanceId));
@@ -1672,7 +1719,7 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
         if (mandatory.some(id => !picked.some(choice => choice.cardInstanceId === id))) return undefined;
         const faceUpCount = picked.filter(choice => !choice.faceDown).length + required.filter(choice => isRequiredAdditionalPlayCard(s, choice.cardInstanceId) && !choice.faceDown).length;
         if (requireFaceUp && picked.length > 0 && !faceUpCount || faceUpCount > 0 && faceUpCardPlayLimitReached(s, playerId, faceUpCount)) return undefined;
-        return picked;
+        return requiredPlayClosures(s, playerId, picked) ? picked : undefined;
       }
       const group = remaining[index];
       if (!group) return undefined;
@@ -1684,11 +1731,13 @@ function regularAttackPlan(s: GameState, playerId: string, required: PlayCardAct
     };
     return visit(0, fixed, fixed.reduce((sum, choice) => sum + costOf(choice), additionalCost));
   };
-  for (let target = Math.min(allowance, groups.length); target >= 0; target--) {
-    // The number due is determined from the pre-batch state, never from a selected underfilled batch.
+  const baselineAllowance = Math.max(0, allowance - optional);
+  for (let target = Math.min(baselineAllowance, groups.length); target >= 0; target--) {
+    // Determine the required batch without the optional cards, then allow explicitly selected extras.
     if (!find(target, [])) continue;
-    if (exact && ordinaryRequired.length !== target) return undefined;
-    const found = find(target, ordinaryRequired, extraCost);
+    const selectedCount = ordinaryRequired.length;
+    if (selectedCount > target + optional || (exact && selectedCount < target)) return undefined;
+    const found = find(Math.max(target, selectedCount), ordinaryRequired, extraCost);
     if (found && required.every(choice => !isRequiredAdditionalPlayCard(s, choice.cardInstanceId) ||
       !playFailure(s, playerId, choice.cardInstanceId, !!choice.faceDown, true, true, false, found.length > 0))) return found;
     return undefined;
@@ -1908,8 +1957,9 @@ function implicitCardTargets(s: GameState, ctx: EffectContext, target: unknown):
 }
 function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: RuleNode): void {
   const modifier = node(effect.modifier);
+  if (modifier.type === 'power_bonus' && modifier.operation === 'multiply' && !isAcceptedSourceCardModifier(modifier)) reject('unsupported', 'Unsupported source card multiplier');
   if (modifier.layer !== undefined && !isAcceptedTerrainLayer(modifier)) reject('unsupported', 'Unsupported terrain layer shape');
-  if (modifier.sourceMustRemainActive !== undefined && (!isAcceptedSourceBoundAggregate(modifier) || abilityDefinition(s,ctx.sourceCardId,ctx.abilityId).activation.requiresSourceState !== 'active' || !active(s,ctx.sourceCardId))) reject('unsupported','Unsupported source-bound aggregate shape');
+  if (modifier.sourceMustRemainActive !== undefined && (!isAcceptedSourceBoundAggregate(modifier) && !isAcceptedSourceCardModifier(modifier) || abilityDefinition(s,ctx.sourceCardId,ctx.abilityId).activation.requiresSourceState !== 'active' || !active(s,ctx.sourceCardId))) reject('unsupported','Unsupported source-bound aggregate shape');
   let scope = node(modifier.scope);
   const legacyTarget = str(modifier.target ?? effect.target);
   const bindingScope = node(scope.targetsFromBinding);
@@ -1968,6 +2018,17 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     }
     return;
   }
+  if (modifier.type === 'attribute_bonus') {
+    if (!isAcceptedSourceCardModifier(modifier)) reject('unsupported', 'Unsupported source attribute modifier');
+    const binding = ctx.bindings?.[str(modifier.attributesFromBinding)];
+    if (!binding || binding.effectType !== 'move_all_remaining' || !Array.isArray(binding.affectedCards) ||
+        binding.affectedCards.some(c => c.redacted || !Array.isArray(c.attributes))) reject('invalid_binding', 'Actual visible discard binding is required');
+    const attributes = [...new Set(binding.affectedCards!.flatMap(c => c.attributes!))];
+    runtime(s).ongoingEffects.push({id:nextId(s,'created-attributes'),sourceCardId:ctx.sourceCardId,abilityId:ctx.abilityId,controllerId:ctx.controllerId,
+      starts:'immediate',duration:'this_round',startRound:s.round.roundNumber,expiresAtRound:s.round.roundNumber+1,cleanup:'expire_after_duration',sourceMustRemainActive:true,publicZones:[],
+      ruleModifiers:[{sourceCardId:ctx.sourceCardId,controllerId:ctx.controllerId,definition:{rule:'card.attributes',operation:'add',scope:{object:'source_card'},attributes}}]});
+    return;
+  }
   if (modifier.type !== 'power_bonus') reject('unsupported', 'Unsupported created modifier');
   const amount = numeric(s, ctx, modifier.amount ?? modifier.value ?? 0);
   if (aggregate === 'total') {
@@ -2006,7 +2067,7 @@ function installCreatedPowerModifier(s: GameState, ctx: EffectContext, effect: R
     ruleModifiers: [{
       sourceCardId: ctx.sourceCardId,
       controllerId: ctx.controllerId,
-      definition: { id: str(modifier.id) || 'created_card_power', operation, rule: 'card.currentPower', scope: cardScope, value: amount },
+      definition: { id: str(modifier.id) || 'created_card_power', operation, rule: isAcceptedSourceCardModifier(modifier) ? str(modifier.rule) : 'card.currentPower', scope: cardScope, value: amount },
     }],
     publicZones: [],
   });
@@ -2447,6 +2508,19 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
         context: { controllerId: p.id, sourceCardId: ctx.sourceCardId, abilityId: ctx.abilityId, selections: {}, variables: {} } });
       break;
     }
+    case 'schedule_round_bonus': {
+      const event = ctx.event;
+      if (!isRoundPlayBonusEffect(effect) || event?.type !== 'on_card_played' ||
+          event.playerId !== p.id || event.sourceCardId !== ctx.sourceCardId ||
+          !event.playedCards?.some(entry => entry.instanceId === ctx.sourceCardId && !entry.faceDown)) {
+        reject('invalid_event', 'Round bonus requires a successful face-up play');
+      }
+      const bonuses = r.roundPlayBonuses ??= [];
+      if (!bonuses.some(entry => entry.playEventId === event.id)) {
+        bonuses.push({beneficiaryId: p.id, dueRound: s.round.roundNumber + 1, playEventId: event.id, drawn: false});
+      }
+      break;
+    }
     case 'reveal_hands': {
       const issue = handRevealContractIssue(a);
       if (issue) reject('unsupported', issue);
@@ -2485,6 +2559,9 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
       if (source.controllerPlayerId !== p.id || source.zone !== 'hand') reject('illegal_action', 'Source card is not playable from hand');
       if (isRequiredAdditionalPlayCard(s, ctx.sourceCardId)) reject('append_only', 'Required additional-play cards are not effect-playable');
       if (effect.face !== 'face_down' && faceUpCardPlayLimitReached(s, p.id)) reject('face_up_card_play_limit_reached', 'Face-up card play limit reached for this round');
+      const closures = requiredPlayClosures(s, p.id, [{type: 'play_card', cardInstanceId: ctx.sourceCardId}]);
+      if (!closures) reject('play_requirement', 'Required active controlled card is unavailable');
+      for (const instanceId of closures) closeOwnAttack(s, p.id, instanceId);
       recordConsecutivePlay(s, ctx.sourceCardId, effect.face === 'face_down');
       moveCard(s, ctx.sourceCardId, cardPlayClassification(s, ctx.sourceCardId).destinationZone);
       r.cardState[ctx.sourceCardId] = { active: effect.face === 'face_down' ? false : true, faceDown: effect.face === 'face_down', playedRound: s.round.roundNumber };
@@ -2565,8 +2642,22 @@ export function resolveEffect(s: GameState, ctx: EffectContext, effect: RuleNode
     }
     case 'move_all_remaining': {
       const excluded = Array.isArray(effect.excluding) ? effect.excluding.flatMap(x => ctx.selections[str(x)] ?? []) : [];
-      const moved = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === effect.from && !excluded.includes(c.instanceId))
-        .reduce((sum, c) => sum + moveCard(s, c.instanceId, str(node(effect.to).zone)), 0);
+      const selected = s.cards.filter(c => c.ownerPlayerId === p.id && c.zone === effect.from && !excluded.includes(c.instanceId));
+      const binding = str(effect.bind);
+      const affectedCards: ReturnType<typeof boundCardInfo>[] = [];
+      let moved = 0;
+      for (const candidate of selected) {
+        const info = binding ? boundCardInfo(s, ctx.controllerId, candidate.instanceId) : undefined;
+        const snapshot = info && !info.redacted
+          ? {...info, attributes: getEffectiveCardAttributes(s, candidate.instanceId)} : info;
+        if (moveCard(s, candidate.instanceId, str(node(effect.to).zone)) !== 1) continue;
+        moved++;
+        if (snapshot) affectedCards.push(snapshot);
+      }
+      if (binding) {
+        recordBinding(ctx, effect, moved, [p.id]);
+        ctx.bindings![binding]!.affectedCards = affectedCards;
+      }
       if (str(effect.resultVar)) ctx.variables[str(effect.resultVar)] = (ctx.variables[str(effect.resultVar)] ?? 0) + moved;
       break;
     }
@@ -3449,7 +3540,7 @@ function stageOpponentCloseToOne(s: GameState, ctx: EffectContext, a: AuthoringA
 /** Canonical self-close consumer: an owner's required close is not opponent prevention. */
 function closeOwnAttack(s: GameState, controllerId:string, instanceId:string):void {
  const target=card(s,instanceId),d=definition(s,instanceId),r=runtime(s),state=r.cardState[instanceId];
- if(target.controllerPlayerId!==controllerId||target.zone!=='attack_area'||!d||!state?.active||state.faceDown)reject('illegal_target','Required own attack is no longer active');
+ if(target.controllerPlayerId!==controllerId||!['attack_area','field'].includes(target.zone)||!d||!state?.active||state.faceDown)reject('illegal_target','Required own attack is no longer active');
  state.active=false;clearTransientCardTransformState(s,instanceId);
  const limiter=perGamePlayLimit(d);
  if(isResidualAttackCardDefinition(d)&&limiter&&(r.abilityUsage[`play:${instanceId}:${limiter.key}`]??0)>=limiter.uses){target.zone='removed_from_game';target.visibility={scope:'public'};state.faceDown=false;}
@@ -4456,9 +4547,10 @@ function hasAvailableManaForFixedCosts(s: GameState, ctx: EffectContext, a: Auth
     .filter((cost) => str(cost.type) === 'pay_mana')
     .reduce((sum, cost) => sum + Number(cost.amount ?? 0), 0);
   const sourcePlay = a.effects.find((effect) => str(effect.type) === 'play_source_card');
-  const printedPlayCost = sourcePlay && str(sourcePlay.face) !== 'face_down'
-    ? Number(definition(s, ctx.sourceCardId)?.cardFace.cost ?? 0)
-    : 0;
+  let printedPlayCost = 0;
+  if (sourcePlay && str(sourcePlay.face) !== 'face_down') {
+    try { printedPlayCost = cardManaCost(s, ctx.sourceCardId); } catch { return false; }
+  }
   const total = abilityCost + printedPlayCost;
   return Number.isSafeInteger(total) && player(s, ctx.controllerId).mana >= total;
 }
@@ -5452,7 +5544,7 @@ export function projectAbilityState(s: GameState, viewerId: string): AbilityPlay
       ...(!hidden && ['field','attack_area'].includes(c.zone) && physicalState?.boardLocationId ? {boardLocationId:physicalState.boardLocationId} : {}),
       ...(physicalState?.faceDown ? { faceDown: true } : {}),
       ...(!hidden && physicalState?.reversed ? { reversed: true } : {}),
-      ...(!hidden && physicalState?.attributeOverrides !== undefined ? { attributeOverrides: [...physicalState.attributeOverrides] } : {}) });
+      ...(!hidden && (physicalState?.attributeOverrides !== undefined || ongoing.some(o => o.sourceCardId === c.instanceId && o.ruleModifiers.some(m => m.definition.rule === 'card.attributes'))) ? { attributeOverrides: getEffectiveCardAttributes(s,c.instanceId) } : {}) });
   }
   if (d) {
     if (d.controllerId === viewerId) {
@@ -5891,6 +5983,9 @@ function playBatch(s: GameState, playerId: string, choices: PlayCardAction[], qu
     cost += paidMana;
   }
   if (cost > player(s, playerId).mana) reject('insufficient_mana', 'Cannot pay aggregate batch cost');
+  const closures = requiredPlayClosures(s, playerId, choices);
+  if (!closures) reject('play_requirement', 'Required active controlled card is unavailable');
+  for (const instanceId of closures) closeOwnAttack(s, playerId, instanceId);
   if (turn && quota === 'regular' && regularAttackChoices > 0) {
     const hand = s.cards.filter(c => c.controllerPlayerId === playerId && c.zone === 'hand');
     if (allHandFaceUpForbiddenByEffect(s, playerId)) {
