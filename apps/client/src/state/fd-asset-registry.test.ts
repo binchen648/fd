@@ -242,6 +242,22 @@ describe('FD asset registry', () => {
     expect(servantDeckGuide?.rulesSummaryZh).toContain('初始牌库构成');
   });
 
+  it('projects Jeanne when one reference servant is replaced in the seven-seat roster', () => {
+    const startingServantIds: string[] = [...approvedAuthoringServantIds];
+    startingServantIds[0] = 'servant.jeanne';
+    const session = createMatchSession({ humanPlayerId: 'p1', startingServantIds, seed: 20261128 });
+    session.runUntilHumanInputOrRoundEnd();
+    const pairing = session.pairings.find((candidate) => candidate.servant.id === 'servant.jeanne');
+
+    expect(pairing).toBeDefined();
+    const fixture = projectSevenAuthoringSessionFixture(session, pairing!.playerId);
+    const servantDeckGuide = fixture.cards.find((card) => card.instanceId === fixture.self.servantDeckGuideCardId);
+
+    expect(fixture.self.deck.entries.reduce((sum, entry) => sum + entry.copies, 0)).toBe(12);
+    expect(servantDeckGuide).toMatchObject({ cardType: '从者牌库说明', visibility: '仅本人' });
+    expect(servantDeckGuide?.rulesSummaryZh).toContain('初始牌库构成');
+  });
+
   it('projects Maiya Support Shot as a master skill card in her player workbench', () => {
     const session = createSevenAuthoringMatchSession();
     const maiyaPairing = session.pairings.find((pairing) => pairing.master.id === 'master.maiya')!;
