@@ -872,6 +872,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
         const acceptedCardCloseForbid = mode === 'automatic' && lifecycle.duration === 'this_round' &&
           isAcceptedControlledCardCloseForbidModifier(m);
         const acceptedFaceUpPlayLimit = acceptedFaceUpCardsPerRound && m === nodes(a.ruleModifiers)[0];
+        const acceptedCardPlayPhase = mode === 'automatic' && lifecycle.duration === 'while_card_active' &&
+          str(m.rule) === 'card.playPhase' && str(m.operation) === 'add' && str(m.value) === 'combat' &&
+          str(node(m.scope).subject) === 'all_players' && str(node(m.scope).zone) === 'hand' &&
+          nodes(node(m.scope).constraints).length > 0;
         const operationSupported = (ruleModifierOperations as readonly string[]).includes(str(m.operation)) ||
           (acceptedRewardModifier && m.operation === 'replace') ||
           (acceptedDeploymentModifier && m.operation === 'replace');
@@ -884,8 +888,10 @@ export function loadAuthoringJson(input: unknown): AuthoringPack {
           (acceptedDeploymentModifier && m.rule === 'deployment_destinations') ||
           (acceptedSkillUseForbid !== undefined && m.rule === 'skill_use') ||
           (acceptedCardCloseForbid && m.rule === 'card_close') ||
-          (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round');
+          (acceptedFaceUpPlayLimit && m.rule === 'face_up_cards_per_round') ||
+          (acceptedCardPlayPhase && m.rule === 'card.playPhase');
         if (!operationSupported || !ruleSupported) issue('ruleModifiers', 'Unmapped rule or operation', id);
+        if (m.rule === 'card.playPhase' && !acceptedCardPlayPhase) issue('ruleModifiers', 'Unsupported card.playPhase modifier shape', id);
         if (m.rule === 'skill_use' && acceptedSkillUseForbid === undefined) issue('ruleModifiers', 'Unsupported skill-use forbid selector shape', id);
         if (m.rule === 'card_close' && !acceptedCardCloseForbid) issue('ruleModifiers', 'Unsupported card-close forbid selector shape', id);
         if (m.rule === 'face_up_cards_per_round' && !acceptedFaceUpPlayLimit) issue('ruleModifiers', 'Unsupported face-up cards-per-round selector shape', id);

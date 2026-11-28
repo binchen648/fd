@@ -3,7 +3,7 @@
   "packId": "fd-playtest-v1",
   "summary": {
     "masters": 7,
-    "servants": 10,
+    "servants": 11,
     "events": 20,
     "blockingIssues": 0
   },
@@ -1233,6 +1233,71 @@
       ]
     },
     {
+      "entityId": "servant.jeanne",
+      "displayName": "贞德",
+      "entityKind": "servant",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/贞德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.jeanne.overview",
+      "displayName": "贞德",
+      "entityKind": "servant_overview",
+      "capabilityStatus": "FULL",
+      "htmPath": "chm-extract/贞德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "imageIndex": 0,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.jeanne.skill.sc-jeanne-1",
+      "displayName": "裁决者",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/贞德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "imageIndex": 1,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.jeanne.skill.sc-jeanne-2",
+      "displayName": "吾主在此",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/贞德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "imageIndex": 3,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
+      "entityId": "servant.jeanne.skill.sc-jeanne-3",
+      "displayName": "红莲圣女",
+      "entityKind": "servant_skill",
+      "capabilityStatus": "HOST_ADJUDICATED",
+      "htmPath": "chm-extract/贞德.htm",
+      "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "imageIndex": 2,
+      "reviewedAgainstImage": true,
+      "issueCodes": [
+        "SOURCE_ASSET_UNVERIFIED"
+      ]
+    },
+    {
       "entityId": "servant.kinggil",
       "displayName": "吉尔伽美什(Caster)",
       "entityKind": "servant",
@@ -2163,6 +2228,41 @@
       "code": "SOURCE_ASSET_UNVERIFIED",
       "message": "servant.euryale.skill.sc-euryale-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-01_160409_161.png",
       "entityId": "servant.euryale.skill.sc-euryale-3",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.jeanne source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "entityId": "servant.jeanne",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.jeanne.overview source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "entityId": "servant.jeanne.overview",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.jeanne.skill.sc-jeanne-1 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "entityId": "servant.jeanne.skill.sc-jeanne-1",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.jeanne.skill.sc-jeanne-2 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "entityId": "servant.jeanne.skill.sc-jeanne-2",
+      "field": "source.imagePath",
+      "blocking": false
+    },
+    {
+      "code": "SOURCE_ASSET_UNVERIFIED",
+      "message": "servant.jeanne.skill.sc-jeanne-3 source image was not verified in this checkout: chm-extract/图包/ScreenShot_2025-11-02_121913_358.png",
+      "entityId": "servant.jeanne.skill.sc-jeanne-3",
       "field": "source.imagePath",
       "blocking": false
     },
