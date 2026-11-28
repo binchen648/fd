@@ -942,6 +942,101 @@
       }
     },
     {
+      "id": "servant.medea",
+      "name": "美狄亚",
+      "classTag": "Caster",
+      "overviewCardId": "servant.medea.overview",
+      "startingDeck": {
+        "size": 12,
+        "entries": [
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 1,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 2,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "agility",
+            "printedValue": 3,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 1,
+            "copies": 1
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 2,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 3,
+            "copies": 2
+          },
+          {
+            "entryType": "basic",
+            "attribute": "magecraft",
+            "printedValue": 4,
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.surveil",
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.luck",
+            "copies": 1
+          },
+          {
+            "entryType": "named",
+            "attribute": "special",
+            "cardId": "basic.preparation",
+            "copies": 1
+          }
+        ],
+        "attributeCounts": {
+          "strength": 0,
+          "agility": 3,
+          "magecraft": 6,
+          "special": 3
+        }
+      },
+      "skillCardIds": [
+        "servant.medea.skill.sc-medea-2",
+        "servant.medea.skill.sc-medea-1",
+        "servant.medea.skill.sc-medea-np"
+      ],
+      "linkedCards": {
+        "generated": []
+      },
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Authoring servant converted for seven-player product playtest."
+      },
+      "source": {
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
       "id": "servant.tomoe",
       "name": "巴御前",
       "classTag": "Archer",
@@ -3587,6 +3682,113 @@
       "source": {
         "htmPath": "chm-extract/坂田金时.htm",
         "imagePath": "chm-extract/图包/ScreenShot_2025-11-02_112053_949.png",
+        "imageIndex": 3,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.medea.overview",
+      "name": "美狄亚",
+      "cardType": "servant_overview",
+      "capability": {
+        "status": "FULL"
+      },
+      "source": {
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
+        "imageIndex": 0,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-1",
+      "name": "神言魔术式",
+      "cardType": "servant_skill",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 8,
+      "printedCost": 5,
+      "printedText": "【真名解放】\n战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191711_446.png",
+        "imageIndex": 2,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-2",
+      "name": "阵地建造",
+      "cardType": "servant_skill",
+      "attribute": "magecraft",
+      "attributes": [
+        "magecraft"
+      ],
+      "printedValue": 2,
+      "printedCost": {
+        "formula": {
+          "op": "add",
+          "args": [
+            16,
+            {
+              "op": "multiply",
+              "args": [
+                -2,
+                {
+                  "var": "round.number"
+                }
+              ]
+            }
+          ]
+        },
+        "printedExpression": "16−（当前回合数×2）"
+      },
+      "printedText": "X为16−（当前回合数×2）\n残留：当你部署于魔术工房时，获得1点魔力和2点战果。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191716_950.png",
+        "imageIndex": 1,
+        "reviewedAgainstImage": true
+      }
+    },
+    {
+      "id": "servant.medea.skill.sc-medea-np",
+      "name": "万符必应破戒",
+      "cardType": "servant_skill",
+      "attribute": "strength",
+      "attributes": [
+        "strength",
+        "special"
+      ],
+      "printedValue": 0,
+      "printedCost": 3,
+      "printedText": "【真名解放】<每局游戏限一次>\n行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+      "timing": [
+        "action"
+      ],
+      "capability": {
+        "status": "HOST_ADJUDICATED",
+        "hostRulingReason": "Compiled from authoring archive for product playtest display; detailed automation remains in the rules interpreter."
+      },
+      "source": {
+        "htmPath": "chm-extract/美狄亚.htm",
+        "imagePath": "chm-extract/图包/ScreenShot_2025-11-01_191711_446.png",
         "imageIndex": 3,
         "reviewedAgainstImage": true
       }
@@ -11184,6 +11386,825 @@
         "destinationZone": "attack_area",
         "initialZone": "skill"
       },
+      "servant.medea.skill.sc-medea-2": {
+        "id": "servant.medea.skill.sc-medea-2",
+        "name": "阵地建造",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": {
+            "formula": {
+              "op": "add",
+              "args": [
+                16,
+                {
+                  "op": "multiply",
+                  "args": [
+                    -2,
+                    {
+                      "var": "round.number"
+                    }
+                  ]
+                }
+              ]
+            },
+            "printedExpression": "16−（当前回合数×2）"
+          },
+          "basePower": 2
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "servant.medea.skill.sc-medea-2.residual",
+            "kind": "residual",
+            "printedClause": "残留",
+            "activation": {
+              "trigger": "on_card_played",
+              "opens": "immediate"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {
+              "duration": "while_card_active",
+              "cleanup": "when_card_leaves_active_area"
+            },
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          },
+          {
+            "id": "servant.medea.skill.sc-medea-2.workshop-reward",
+            "kind": "forced_trigger",
+            "printedClause": "当你部署于魔术工房时，获得1点魔力和2点战果。",
+            "activation": {
+              "trigger": "after_player_deployed_to_location",
+              "opens": "immediate",
+              "requiresSourceState": "active"
+            },
+            "conditions": [
+              {
+                "type": "event_location_is",
+                "locationId": "magic_workshop"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "adjust_mana",
+                "amount": 1
+              },
+              {
+                "type": "adjust_victory_points",
+                "amount": 2
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": []
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.medea",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.medea.skill.sc-medea-1": {
+        "id": "servant.medea.skill.sc-medea-1",
+        "name": "神言魔术式",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "typeLabel": "魔术",
+          "attributes": [
+            "魔术"
+          ],
+          "cost": 5,
+          "basePower": 8
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-medea-1.reveal",
+            "kind": "declaration_reveal",
+            "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+            "activation": {
+              "trigger": "on_use_declared",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "reveal_information",
+                "subject": "controller.servant",
+                "scope": "servant_package"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-medea-1.init",
+            "kind": "forced_trigger",
+            "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+            "activation": {
+              "trigger": "on_card_played",
+              "requiresSourceState": "active"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "store_card_value",
+                "id": "medea-battle",
+                "value": 0
+              },
+              {
+                "type": "store_card_value",
+                "id": "medea-round",
+                "value": 0
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-medea-1.declare",
+            "kind": "phase_action",
+            "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+            "activation": {
+              "phase": "combat",
+              "opens": "controller_combat_action_window",
+              "requiresSourceState": "active"
+            },
+            "conditions": [
+              {
+                "type": "controller_at_battlefield"
+              }
+            ],
+            "targets": [],
+            "effects": [
+              {
+                "type": "store_card_value",
+                "id": "medea-round",
+                "value": {
+                  "var": "round.number"
+                }
+              },
+              {
+                "type": "branch",
+                "branches": [
+                  {
+                    "if": {
+                      "type": "controller_at_location_kind",
+                      "locationKind": "miyama_town"
+                    },
+                    "then": [
+                      {
+                        "type": "store_card_value",
+                        "id": "medea-battle",
+                        "value": 1
+                      }
+                    ]
+                  },
+                  {
+                    "if": {
+                      "type": "controller_at_location_kind",
+                      "locationKind": "shinto"
+                    },
+                    "then": [
+                      {
+                        "type": "store_card_value",
+                        "id": "medea-battle",
+                        "value": 2
+                      }
+                    ]
+                  },
+                  {
+                    "if": {
+                      "type": "controller_at_location_kind",
+                      "locationKind": "moon_holy_grail"
+                    },
+                    "then": [
+                      {
+                        "type": "store_card_value",
+                        "id": "medea-battle",
+                        "value": 3
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-medea-1.recover-1",
+            "kind": "forced_trigger",
+            "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+            "activation": {
+              "trigger": "after_controller_loses_battle",
+              "requiresSourceState": "active"
+            },
+            "conditions": [
+              {
+                "type": "event_location_is",
+                "locationId": "miyama_town"
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-battle"
+                },
+                "right": 1
+              },
+              {
+                "type": "lte",
+                "left": 1,
+                "right": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-battle"
+                }
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-round"
+                },
+                "right": {
+                  "var": "round.number"
+                }
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "var": "round.number"
+                },
+                "right": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-round"
+                }
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "removed_np"
+              }
+            ],
+            "targets": [
+              {
+                "id": "removed_np",
+                "type": "card_instance",
+                "scope": {
+                  "zone": "removed_from_game",
+                  "owner": "controller",
+                  "controller": "self"
+                },
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "visibility": "private_to_controller",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.medea.skill.sc-medea-np"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "type": "move_card",
+                "target": "removed_np",
+                "to": {
+                  "zone": "skill"
+                }
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-medea-1.recover-2",
+            "kind": "forced_trigger",
+            "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+            "activation": {
+              "trigger": "after_controller_loses_battle",
+              "requiresSourceState": "active"
+            },
+            "conditions": [
+              {
+                "type": "event_location_is",
+                "locationId": "shinto"
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-battle"
+                },
+                "right": 2
+              },
+              {
+                "type": "lte",
+                "left": 2,
+                "right": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-battle"
+                }
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-round"
+                },
+                "right": {
+                  "var": "round.number"
+                }
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "var": "round.number"
+                },
+                "right": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-round"
+                }
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "removed_np"
+              }
+            ],
+            "targets": [
+              {
+                "id": "removed_np",
+                "type": "card_instance",
+                "scope": {
+                  "zone": "removed_from_game",
+                  "owner": "controller",
+                  "controller": "self"
+                },
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "visibility": "private_to_controller",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.medea.skill.sc-medea-np"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "type": "move_card",
+                "target": "removed_np",
+                "to": {
+                  "zone": "skill"
+                }
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-medea-1.recover-3",
+            "kind": "forced_trigger",
+            "printedClause": "战斗阶段：若你在战斗中失败，将一张被移除的【万符必应破戒】加入你的技能区。",
+            "activation": {
+              "trigger": "after_controller_loses_battle",
+              "requiresSourceState": "active"
+            },
+            "conditions": [
+              {
+                "type": "event_location_is",
+                "locationId": "moon_holy_grail"
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-battle"
+                },
+                "right": 3
+              },
+              {
+                "type": "lte",
+                "left": 3,
+                "right": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-battle"
+                }
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-round"
+                },
+                "right": {
+                  "var": "round.number"
+                }
+              },
+              {
+                "type": "lte",
+                "left": {
+                  "var": "round.number"
+                },
+                "right": {
+                  "formulaRef": "card.storedValue",
+                  "id": "medea-round"
+                }
+              },
+              {
+                "type": "exists_target",
+                "targetRef": "removed_np"
+              }
+            ],
+            "targets": [
+              {
+                "id": "removed_np",
+                "type": "card_instance",
+                "scope": {
+                  "zone": "removed_from_game",
+                  "owner": "controller",
+                  "controller": "self"
+                },
+                "count": {
+                  "min": 1,
+                  "max": 1
+                },
+                "visibility": "private_to_controller",
+                "constraints": [
+                  {
+                    "type": "has_card_id",
+                    "cardId": "servant.medea.skill.sc-medea-np"
+                  }
+                ]
+              }
+            ],
+            "effects": [
+              {
+                "type": "move_card",
+                "target": "removed_np",
+                "to": {
+                  "zone": "skill"
+                }
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.medea",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
+      "servant.medea.skill.sc-medea-np": {
+        "id": "servant.medea.skill.sc-medea-np",
+        "name": "万符必应破戒",
+        "cardType": "servant_skill",
+        "cardFace": {
+          "cost": 3,
+          "basePower": 0,
+          "attributes": [
+            "力量",
+            "宝具"
+          ],
+          "typeLabel": "力量/宝具"
+        },
+        "playTiming": {
+          "phase": "action",
+          "window": "controller_play_card_window"
+        },
+        "playRequirements": [
+          {
+            "type": "skill_zone_mana_at_least",
+            "value": 8
+          }
+        ],
+        "abilities": [
+          {
+            "id": "sc-medea-np.true-name-release",
+            "kind": "declaration_reveal",
+            "printedClause": "【真名解放】<每局游戏限一次>",
+            "activation": {
+              "trigger": "on_use_declared",
+              "opens": "immediate"
+            },
+            "conditions": [],
+            "targets": [],
+            "effects": [
+              {
+                "type": "reveal_information",
+                "subject": "controller.servant",
+                "scope": "servant_package"
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {
+              "type": "per_game",
+              "uses": 1,
+              "scope": "this_card"
+            },
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          },
+          {
+            "id": "sc-medea-np.rule-breaker",
+            "kind": "phase_action",
+            "printedClause": "行动阶段：你所在战场的一名玩家失去一枚令咒，若其原本只有一枚或更少的令咒，另其【败北】。若其原本没有令咒，你总威力+10。",
+            "activation": {
+              "phase": "action",
+              "opens": "controller_action_window",
+              "requiresSourceState": "active"
+            },
+            "bindings": [
+              {
+                "id": "originalSeals",
+                "read": "target.command_seals"
+              }
+            ],
+            "conditions": [
+              {
+                "type": "exists_target",
+                "targetRef": "victim"
+              }
+            ],
+            "targets": [
+              {
+                "id": "victim",
+                "type": "player",
+                "selector": "players_at_same_battlefield",
+                "count": {
+                  "min": 1,
+                  "max": 1
+                }
+              }
+            ],
+            "effects": [
+              {
+                "type": "adjust_command_seals",
+                "targetRef": "victim",
+                "amount": -1
+              },
+              {
+                "type": "branch",
+                "branches": [
+                  {
+                    "if": {
+                      "type": "lte",
+                      "left": {
+                        "op": "var",
+                        "var": "originalSeals"
+                      },
+                      "right": 1
+                    },
+                    "then": [
+                      {
+                        "type": "apply_defeat_status",
+                        "targetRef": "victim",
+                        "includeController": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "branch",
+                "branches": [
+                  {
+                    "if": {
+                      "type": "lte",
+                      "left": {
+                        "op": "var",
+                        "var": "originalSeals"
+                      },
+                      "right": 0
+                    },
+                    "then": [
+                      {
+                        "type": "create_modifier",
+                        "modifier": {
+                          "type": "power_bonus",
+                          "aggregate": "total",
+                          "amount": 10,
+                          "duration": "this_round",
+                          "scope": {
+                            "subject": "controller"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cost": [],
+            "ruleModifiers": [],
+            "creates": [],
+            "lifecycle": {},
+            "responseWindow": {
+              "order": "turn_order",
+              "passBehavior": "decline_this_window"
+            },
+            "limit": {},
+            "visibility": {},
+            "execution": {
+              "mode": "automatic",
+              "allowedOperations": [
+                "adjust-mana",
+                "adjust-victory-points",
+                "move-card",
+                "create-status",
+                "skip-ability"
+              ]
+            }
+          }
+        ],
+        "mode": "automatic",
+        "ownerId": "servant.medea",
+        "playKind": "attack",
+        "destinationZone": "attack_area",
+        "initialZone": "skill"
+      },
       "master.ciel.skill.s1a": {
         "id": "master.ciel.skill.s1a",
         "name": "埋葬机关的修女",
@@ -13337,6 +14358,18 @@
           "servant.kinggil.skill.sc-kinggil-3"
         ],
         "publicInformation": {}
+      },
+      "servant.medea": {
+        "id": "servant.medea",
+        "name": "美狄亚",
+        "class": "Caster",
+        "kind": "servant",
+        "cardIds": [
+          "servant.medea.skill.sc-medea-2",
+          "servant.medea.skill.sc-medea-1",
+          "servant.medea.skill.sc-medea-np"
+        ],
+        "publicInformation": {}
       }
     },
     "decks": {
@@ -13465,6 +14498,20 @@
         "basic.luck",
         "basic.preparation",
         "basic.preparation"
+      ],
+      "servant.medea": [
+        "basic.agility.1",
+        "basic.agility.2",
+        "basic.agility.3",
+        "basic.magecraft.1",
+        "basic.magecraft.2",
+        "basic.magecraft.2",
+        "basic.magecraft.3",
+        "basic.magecraft.3",
+        "basic.magecraft.4",
+        "basic.surveil",
+        "basic.luck",
+        "basic.preparation"
       ]
     },
     "fallbackCommandSpells": {
@@ -13474,11 +14521,11 @@
       "master.maiya": "master.maiya.command-spell",
       "master.irisviel": "master.irisviel.command-spell"
     },
-    "definitionHash": "fd752a7dc10a5fe533e47ab5feb5cf3bda6772ff01bd29a7337d1f1777b03433",
+    "definitionHash": "2389046bd9295cf6f2002cfce63023c4002b530f66d5648243cf8698af92c0f3",
     "contentIdentity": {
       "packId": "fd-playtest-v1",
       "version": 1,
-      "definitionHash": "fd752a7dc10a5fe533e47ab5feb5cf3bda6772ff01bd29a7337d1f1777b03433"
+      "definitionHash": "2389046bd9295cf6f2002cfce63023c4002b530f66d5648243cf8698af92c0f3"
     },
     "sourceMap": {
       "master.kayneth.skill.double-master": {
@@ -14576,97 +15623,185 @@
         "abilityIndex": 1,
         "path": "archives[15].cards[2].abilities[1]"
       },
-      "master.ciel.skill.s1a": {
-        "archiveId": "master.ciel",
+      "servant.medea.skill.sc-medea-2": {
+        "archiveId": "servant.medea",
         "archiveIndex": 16,
         "cardIndex": 0,
         "path": "archives[16].cards[0]"
       },
-      "master.ciel.skill.s1a#s1a.game-start-skill-provisioning": {
-        "archiveId": "master.ciel",
+      "servant.medea.skill.sc-medea-2#servant.medea.skill.sc-medea-2.residual": {
+        "archiveId": "servant.medea",
         "archiveIndex": 16,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[16].cards[0].abilities[0]"
       },
-      "master.ciel.skill.s2": {
-        "archiveId": "master.ciel",
+      "servant.medea.skill.sc-medea-2#servant.medea.skill.sc-medea-2.workshop-reward": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 0,
+        "abilityIndex": 1,
+        "path": "archives[16].cards[0].abilities[1]"
+      },
+      "servant.medea.skill.sc-medea-1": {
+        "archiveId": "servant.medea",
         "archiveIndex": 16,
         "cardIndex": 1,
         "path": "archives[16].cards[1]"
       },
-      "master.ciel.skill.s2#exorcism-uncontested-win": {
-        "archiveId": "master.ciel",
+      "servant.medea.skill.sc-medea-1#sc-medea-1.reveal": {
+        "archiveId": "servant.medea",
         "archiveIndex": 16,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[16].cards[1].abilities[0]"
       },
-      "master.ciel.skill.s2#clerical-convenience": {
-        "archiveId": "master.ciel",
+      "servant.medea.skill.sc-medea-1#sc-medea-1.init": {
+        "archiveId": "servant.medea",
         "archiveIndex": 16,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[16].cards[1].abilities[1]"
       },
-      "master.shiki-ryougi.skill.s1a": {
-        "archiveId": "master.shiki-ryougi",
+      "servant.medea.skill.sc-medea-1#sc-medea-1.declare": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 1,
+        "abilityIndex": 2,
+        "path": "archives[16].cards[1].abilities[2]"
+      },
+      "servant.medea.skill.sc-medea-1#sc-medea-1.recover-1": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 1,
+        "abilityIndex": 3,
+        "path": "archives[16].cards[1].abilities[3]"
+      },
+      "servant.medea.skill.sc-medea-1#sc-medea-1.recover-2": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 1,
+        "abilityIndex": 4,
+        "path": "archives[16].cards[1].abilities[4]"
+      },
+      "servant.medea.skill.sc-medea-1#sc-medea-1.recover-3": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 1,
+        "abilityIndex": 5,
+        "path": "archives[16].cards[1].abilities[5]"
+      },
+      "servant.medea.skill.sc-medea-np": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 2,
+        "path": "archives[16].cards[2]"
+      },
+      "servant.medea.skill.sc-medea-np#sc-medea-np.true-name-release": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 2,
+        "abilityIndex": 0,
+        "path": "archives[16].cards[2].abilities[0]"
+      },
+      "servant.medea.skill.sc-medea-np#sc-medea-np.rule-breaker": {
+        "archiveId": "servant.medea",
+        "archiveIndex": 16,
+        "cardIndex": 2,
+        "abilityIndex": 1,
+        "path": "archives[16].cards[2].abilities[1]"
+      },
+      "master.ciel.skill.s1a": {
+        "archiveId": "master.ciel",
         "archiveIndex": 17,
         "cardIndex": 0,
         "path": "archives[17].cards[0]"
       },
-      "master.shiki-ryougi.skill.s1a#s1a.game-start-skill-provisioning": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s1a#s1a.game-start-skill-provisioning": {
+        "archiveId": "master.ciel",
         "archiveIndex": 17,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[17].cards[0].abilities[0]"
       },
-      "master.shiki-ryougi.skill.s3": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s2": {
+        "archiveId": "master.ciel",
         "archiveIndex": 17,
         "cardIndex": 1,
         "path": "archives[17].cards[1]"
       },
-      "master.shiki-ryougi.skill.s3#required-additional-play": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s2#exorcism-uncontested-win": {
+        "archiveId": "master.ciel",
         "archiveIndex": 17,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[17].cards[1].abilities[0]"
       },
-      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
-        "archiveId": "master.shiki-ryougi",
+      "master.ciel.skill.s2#clerical-convenience": {
+        "archiveId": "master.ciel",
         "archiveIndex": 17,
         "cardIndex": 1,
         "abilityIndex": 1,
         "path": "archives[17].cards[1].abilities[1]"
       },
-      "master.shirou-emiya.skill.s2": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s1a": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 18,
         "cardIndex": 0,
         "path": "archives[18].cards[0]"
       },
-      "master.shirou-emiya.skill.s2#s2.game-start-skill-provisioning": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s1a#s1a.game-start-skill-provisioning": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 18,
         "cardIndex": 0,
         "abilityIndex": 0,
         "path": "archives[18].cards[0].abilities[0]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s3": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 18,
         "cardIndex": 1,
         "path": "archives[18].cards[1]"
       },
-      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
-        "archiveId": "master.shirou-emiya",
+      "master.shiki-ryougi.skill.s3#required-additional-play": {
+        "archiveId": "master.shiki-ryougi",
         "archiveIndex": 18,
         "cardIndex": 1,
         "abilityIndex": 0,
         "path": "archives[18].cards[1].abilities[0]"
+      },
+      "master.shiki-ryougi.skill.s3#same-battlefield-private-hand-return": {
+        "archiveId": "master.shiki-ryougi",
+        "archiveIndex": 18,
+        "cardIndex": 1,
+        "abilityIndex": 1,
+        "path": "archives[18].cards[1].abilities[1]"
+      },
+      "master.shirou-emiya.skill.s2": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 19,
+        "cardIndex": 0,
+        "path": "archives[19].cards[0]"
+      },
+      "master.shirou-emiya.skill.s2#s2.game-start-skill-provisioning": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 19,
+        "cardIndex": 0,
+        "abilityIndex": 0,
+        "path": "archives[19].cards[0].abilities[0]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 19,
+        "cardIndex": 1,
+        "path": "archives[19].cards[1]"
+      },
+      "card.derived.master.shirou-emiya.ganjiang-moye#ganjiang-moye.append-only": {
+        "archiveId": "master.shirou-emiya",
+        "archiveIndex": 19,
+        "cardIndex": 1,
+        "abilityIndex": 0,
+        "path": "archives[19].cards[1].abilities[0]"
       }
     }
   }

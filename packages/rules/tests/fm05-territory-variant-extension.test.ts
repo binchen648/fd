@@ -18,7 +18,11 @@ const members = [
 ] as const;
 
 function readArchive(ownerId: string): any {
-  return JSON.parse(readFileSync(`data/authoring/servants/${ownerId}.json`, 'utf8'));
+  // This receipt tests the original FM05 migration, frozen before B114 production admission.
+  const path = ownerId === 'servant.medea'
+    ? 'packages/rules/tests/fixtures/fm05-medea-frozen-de847f6a.json'
+    : `data/authoring/servants/${ownerId}.json`;
+  return JSON.parse(readFileSync(path, 'utf8'));
 }
 
 function sha(value: string): string {
@@ -68,7 +72,7 @@ function deploy(state: GameState, id: string, playerId = 'p1', locationId = 'mag
   });
 }
 
-describe('P3-FM05 Territory Creation typography variant extension', () => {
+describe('Frozen P3-FM05 Territory Creation typography variant extension', () => {
   it('contains exactly the two dispatched identities with exact frozen source evidence', () => {
     expect(new Set(members.map(([, cardId]) => cardId)).size).toBe(2);
     for (const [ownerId, cardId, legacyId] of members) {

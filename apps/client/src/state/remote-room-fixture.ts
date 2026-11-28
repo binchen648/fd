@@ -83,6 +83,7 @@ export function projectRemoteRoomFixture(projection: MatchRoomProjection): Playt
         vp: player.vp,
         mana: player.mana,
         totalPower: player.totalPower,
+        ...(player.effectDefeated ? { effectDefeated: true } : {}),
         commandSpells: player.commandSpells ?? 3,
         isSelf: player.id === viewerId,
         publicMasterCardId: undefined,

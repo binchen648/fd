@@ -1,0 +1,50 @@
+{
+  "taskId": "P3-PRODUCTION-ROSTER-SWAP-TEST-20261128",
+  "status": "ACTIVE",
+  "owner": "Product A Builder /root",
+  "authority": "User directs continued production integration and confirms candidate-pool testing by replacing one of seven seats with each newly admitted servant; same owner scope transfer from released A-ASSET-01.",
+  "baseCommit": "d800e4523f28d08a53e8cca48387f95018c56248",
+  "branch": "codex/ab-medea-mainline-v2-20261126",
+  "worktree": "D:/fd-validation/ab-medea-siegfried-mainline-20261126",
+  "frozenContractCommit": "de847f6a4fd43884ffebaa28c618c6e3545c001d",
+  "reservedFiles": [
+    "apps/client/src/state/fd-asset-registry.test.ts",
+    "docs/agents/manifests/tasks/P3-PRODUCTION-ROSTER-SWAP-TEST-20261128.json",
+    "docs/agents/manifests/reservations/P3-PRODUCTION-ROSTER-SWAP-TEST-20261128.json"
+  ],
+  "allowedScope": "Stabilize the existing seven-seat client projection test and add a deterministic MatchSession projection check for the newly admitted Medea by replacing exactly one baseline servant. Keep the production pack candidate pool intact.",
+  "forbiddenScope": [
+    "packages/rules/**",
+    "apps/server/**",
+    "data/authoring/**",
+    "data/generated/**",
+    "data/packs/**",
+    ".github/workflows/**",
+    "test selection or timeout changes",
+    "full seven-player eleven-round E2E"
+  ],
+  "acceptanceCriteria": [
+    "The historical seven-servant deck projection assertion is deterministic and unchanged in meaning.",
+    "A real MatchSession containing Medea in one of seven seats projects her deck and guide card successfully.",
+    "The focused client test passes; the exact final PR SHA is rechecked by remote CI before merge.",
+    "No Runtime or card authoring code is changed."
+  ],
+  "requiredTests": [
+    "Targeted apps/client/src/state/fd-asset-registry.test.ts",
+    "Remote PR protection checks on the final candidate SHA"
+  ],
+  "evidenceRoot": "D:/fd-validation/ab-medea-siegfried-evidence-20261126",
+  "implementationCandidateSha": "609b7534ab10e7c847da039abf825c08f90e3a3b",
+  "independentReview": {
+    "reviewer": "/root/medea_production_final_review",
+    "result": "PASS",
+    "reviewedCandidateSha": "609b7534ab10e7c847da039abf825c08f90e3a3b"
+  },
+  "localVerification": {
+    "command": "npm --prefix apps/client test -- --run src/state/fd-asset-registry.test.ts",
+    "exitCode": 0,
+    "passed": 14,
+    "failed": 0,
+    "logPath": "D:/fd-validation/ab-medea-siegfried-evidence-20261126/roster-swap-projection-test-20261128.log"
+  }
+}

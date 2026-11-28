@@ -130,6 +130,7 @@ export interface PlaytestClientFixture {
     vp: number;
     mana: number;
     totalPower?: number;
+    effectDefeated?: boolean;
     commandSpells: number;
     isSelf: boolean;
     masterImageUrl?: string;

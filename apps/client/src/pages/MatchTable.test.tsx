@@ -28,6 +28,22 @@ it('projects a controlled attack in the local adapter while retaining its owner 
   expect(borrowed.ownerPlayerId).toBe('p2');
 });
 
+it('shows and clears the local seat defeat label using the current server view', () => {
+  const session = createSevenAuthoringMatchSession();
+  const projection = session.projectToClientState('p1');
+  const player = projection.view.players.find(entry => entry.id === 'p2')!;
+  const project = vi.spyOn(session, 'projectToClientState').mockReturnValue(projection);
+  player.effectDefeated = true;
+  const { rerender } = render(<MatchTable fixture={projectSevenAuthoringSessionFixture(session, 'p1')} />);
+  const seat = screen.getByRole('button', { name: /2：/ });
+  expect(within(seat).getByText('效果败北')).toBeVisible();
+  expect(screen.getAllByText('效果败北')).toHaveLength(1);
+  delete player.effectDefeated;
+  rerender(<MatchTable fixture={projectSevenAuthoringSessionFixture(session, 'p1')} />);
+  expect(screen.queryByText('效果败北')).not.toBeInTheDocument();
+  project.mockRestore();
+});
+
 const fixture: PlaytestClientFixture = {
   match: { round: 4, phase: '行动阶段', priorityPlayerId: 'player-1' },
   phaseTrack: [

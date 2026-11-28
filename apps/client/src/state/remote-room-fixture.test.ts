@@ -132,3 +132,12 @@ it('does not attach a basic face to a face-down opponent card', () => {
   expect(card.power).toBeUndefined();
   expect(card.imageUrl ?? '').not.toContain('basic-agility-3');
 });
+
+it('uses the current public defeat flag and clears it when the next projection omits it', () => {
+  const projection = buildProjection();
+  const player = projection.match!.view.players[0]!;
+  player.effectDefeated = true;
+  expect(projectRemoteRoomFixture(projection)?.players[0]?.effectDefeated).toBe(true);
+  delete player.effectDefeated;
+  expect(projectRemoteRoomFixture(projection)?.players[0]?.effectDefeated).toBeUndefined();
+});

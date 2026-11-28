@@ -1,3 +1,4 @@
+import type { EffectDefeat } from './effect-defeat';
 import type { LocationId } from '../schema/location';
 import type { PhaseName } from '../schema/game';
 
@@ -306,6 +307,7 @@ export interface SafeEvent {
 }
 export interface CardRuntimeState {
   active: boolean; faceDown: boolean; playedRound: number;
+  values?: Record<string, number>;
   /** Actual mana charged for this physical card by its latest authoritative play. */
   paidManaOnPlay?: number;
   /** Anchored battlefield of a placed field effect, independent of current controller location. */
@@ -351,6 +353,7 @@ export interface AbilityRuntime {
   pendingPresenceConcealmentDefeats?: PendingPresenceConcealmentDefeat[];
   /** FB2-45 server-owned round+battlefield defeat intents, independent from frozen-Power Presence Concealment state. */
   pendingPreBattleDefeats?: PendingPreBattleDefeat[];
+  effectDefeats?: EffectDefeat[];
   /** Server-owned post-scoring battle events waiting for Trigger Gateway settlement. */
   pendingPostBattleEvents?: AbilityEvent[];
   /** FB2-47 immutable first-seen authoritative root result facts, keyed by exact result id. */
@@ -435,7 +438,7 @@ export interface AbilityPlayerView {
   terrainSlots?: Record<string,{bonuses:number[];occupants:Array<string|null>}>;
   revision: number; phase: PhaseName; round: number; legalActions: LegalAction[];
   actionTurn?: ActionTurnProgress;
-  players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
+  players: { id: PlayerId; seat: number; mana: number; vp: number; commandSpells?: number; effectDefeated?: boolean; locationId?: string; totalPower?: number; masterCardId: string; handCount: number; deckCount: number; servantPackage?: ServantPackage }[];
   cards: { instanceId: string; definitionId?: string; ownerPlayerId: PlayerId; controllerPlayerId?: PlayerId; zone: string; publiclyVisible?: boolean; currentManaCost?: number | null; faceDown?: boolean; reversed?: boolean; attributeOverrides?: string[]; boardLocationId?: string }[];
   stagedAttacks?: { playerId: PlayerId; cards: PlayCardAction[] }[];
   pendingDecision?: {

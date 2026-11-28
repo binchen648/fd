@@ -1,3 +1,4 @@
+import { effectDefeatedPlayerIds } from '../ability/effect-defeat';
 import starterPack from "../data/cards/starter-pack.json";
 import type {
   BattleModifierBreakdown,
@@ -590,7 +591,9 @@ function buildBattleResultFromRanked(
     ...preBattleDefeatedPlayerIds.filter((playerId) => ranked.some((participant) => participant.playerId === playerId)),
   ])];
   const eligible = ranked.filter((participant) => !excludedPlayerIds.includes(participant.playerId));
-  const highestEligiblePower = eligible[0]?.effectivePower;
+  const assignedDefeats = new Set(effectDefeatedPlayerIds(state, battlefieldId));
+  const allAssignedDefeated = ranked.every(participant => assignedDefeats.has(participant.playerId));
+  const highestEligiblePower = eligible[0]?.effectivePower ?? (allAssignedDefeated ? 0 : undefined);
   if (highestEligiblePower === undefined) return null;
 
   const winners = eligible.filter((participant) => participant.effectivePower === highestEligiblePower);
@@ -705,13 +708,18 @@ export function resolveBattlefield(
     const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
       entry.round === state.round.roundNumber && entry.battlefieldId === input.battlefieldId);
     const participantIds = new Set(participants.map((participant) => participant.playerId));
-    const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+    const preBattleTargets = [...new Set([
+      ...matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds),
+      ...effectDefeatedPlayerIds(state, input.battlefieldId),
+    ])]
       .filter((playerId) => participantIds.has(playerId));
     const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
       ignoresBattleLossEffects(state, playerId, input.battlefieldId));
     const defeatedPreBattleTargets = preBattleTargets.filter((playerId) => !ignoredPreBattleTargets.includes(playerId));
     const returnSilenceControllerDefeated = defeatedPreBattleTargets.includes(returnSilenceController);
     const winnerPlayerIds = returnSilenceControllerDefeated ? [] : [returnSilenceController];
+    const assignedDefeats = new Set(effectDefeatedPlayerIds(state, input.battlefieldId));
+    const allAssignedDefeated = participants.every(({ playerId }) => assignedDefeats.has(playerId));
     const loserIds = participants.map((participant) => participant.playerId)
       .filter((playerId) => returnSilenceControllerDefeated || playerId !== returnSilenceController);
     const battleResult: GameState["battleResults"][number] = {
@@ -720,12 +728,12 @@ export function resolveBattlefield(
       tied: false,
       ...(defeatedPreBattleTargets.length ? { excludedPlayerIds: defeatedPreBattleTargets } : {}),
       winnerPlayerId: winnerPlayerIds.length === 1 ? winnerPlayerIds[0]! : null,
-      margin: 8,
+      margin: allAssignedDefeated ? 0 : 8,
       vpReward: 0,
       baseVpPerWinner: 0,
       eventVpPool: 0,
       competitionVpPool: 0,
-      militaryAdjustments: loserIds.map((playerId) => ({ playerId, delta: -8 })),
+      militaryAdjustments: allAssignedDefeated ? [] : loserIds.map((playerId) => ({ playerId, delta: -8 })),
       participantBreakdowns: ranked,
     };
     const nextState: GameState = {
@@ -831,7 +839,10 @@ export function resolveBattlefield(
   const matchingPendingPreBattle = allPendingPreBattle.filter((entry) =>
     entry.round === settlementState.round.roundNumber && entry.battlefieldId === input.battlefieldId);
   const participantIds = new Set(ranked.map((participant) => participant.playerId));
-  const preBattleTargets = [...new Set(matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds))]
+  const preBattleTargets = [...new Set([
+      ...matchingPendingPreBattle.flatMap((entry) => entry.targetPlayerIds),
+      ...effectDefeatedPlayerIds(settlementState, input.battlefieldId),
+    ])]
     .filter((playerId) => participantIds.has(playerId));
   const ignoredPreBattleTargets = preBattleTargets.filter((playerId) =>
     ignoresBattleLossEffects(settlementState, playerId, input.battlefieldId));

@@ -1,4 +1,5 @@
 import { dueRoundPlayBonuses } from './ability/round-play-bonus';
+import { validEffectDefeatState } from './ability/effect-defeat';
 import { CHALDEAS_REVEAL, CHALDEAS_SWAP, chaldeasSource, currentMatchDeckBottom, matchReveal, ordinarySituationDeck, type MatchReveal } from './ability/chaldeas-reveal';
 import { movementLocks } from './ability/movement-locks';
 import {assignDeploymentTerrain,normalizeTerrainState,releaseTerrain} from './ability/terrain-state';
@@ -37,7 +38,8 @@ import {
   type OpponentCloseToOneServerAuthoritySeal,
 } from './ability/opponent-close-to-one-authority';
 import { hmacSha256Hex, sha256Hex } from './ability/portable-sha256';
-import { clearTransientCardTransformState } from './ability/card-instance-state';
+import { declaredStoredCardValueIds } from './ability/loader';
+import { clearTransientCardTransformState, isStoredCardValueId } from './ability/card-instance-state';
 import { assertExecutableCardPack, type ExecutableCardPack } from './ability/executable-card-pack';
 import { isAcceptedLowerVpLoneBattlefieldDeploymentAbility } from './ability/deployment-destinations';
 import { flushBattleTerminalEvent, stageBattleTerminalEvent } from './ability/battle-terminal';
@@ -616,6 +618,7 @@ function isRestoreCardRuntimeState(value: unknown): boolean {
   return isRestoreRecord(value) && typeof value.active === 'boolean' && typeof value.faceDown === 'boolean' &&
     Number.isSafeInteger(value.playedRound) && (value.paidManaOnPlay === undefined ||
       (typeof value.paidManaOnPlay === 'number' && Number.isFinite(value.paidManaOnPlay))) &&
+    (value.values === undefined || isRestoreFiniteNumberMap(value.values) && Object.keys(value.values).every(isStoredCardValueId)) &&
     (value.reversed === undefined || typeof value.reversed === 'boolean') &&
     (value.attributeOverrides === undefined || isRestoreStringArray(value.attributeOverrides));
 }
@@ -955,6 +958,14 @@ function isRestoreAbilityRuntimeReferences(
   pack: Record<string, unknown>,
   eventPlacements: Array<Record<string, unknown>>,
 ): boolean {
+  for (const [instanceId, rawState] of Object.entries(value.cardState as Record<string, Record<string, unknown>>)) {
+    if (rawState.values === undefined) continue;
+    const source = cardsByInstance.get(instanceId);
+    const definition = source && (pack.cards as Record<string, Record<string, unknown>>)[source.definitionId as string];
+    if (!source || !definition || rawState.active !== true || rawState.faceDown === true || !['field','attack_area'].includes(source.zone as string)) return false;
+    const declarations = declaredStoredCardValueIds(definition);
+    if (!Object.keys(rawState.values as object).every(id => declarations.has(id))) return false;
+  }
   const playerKeyedMaps = [
     'playerStatusKeysByPlayer','combatWinRoundByPlayer','manaCaps','noblePhantasmCostsThisRound','movementDistanceThisRound',
     'battlefieldsPassedOrStayedThisRound',
@@ -1091,6 +1102,7 @@ function isRestoreGameState(value: unknown, packKind: MatchSessionRestorePackKin
       playerIds.has(card.controllerPlayerId as string) && (packKind === 'trusted_authoring_fixture' ||
         Object.prototype.hasOwnProperty.call(definitions, card.definitionId as string)))) return false;
 
+  if (!validEffectDefeatState(value as unknown as GameState)) return false;
   const eventCatalog = isRestoreRecord(pack.eventCatalog) ? pack.eventCatalog : {};
   const eventIds = new Set([...eventCardById.keys(), ...Object.keys(eventCatalog)]);
   const eventArrays = ['eventDeck','eventOutsideGame'] as const;
@@ -1357,7 +1369,12 @@ function isRestoreDeferredBattleProvenance(
   }
   if (!exactRestoreUnknown(terminal.battleParticipantIds, stableRestoreUnique(terminalParticipantIds))) return false;
   const remainingCanonical = canonicalQueue.filter((event) => !runtime.processedEvents.includes(event.id));
-  return exactRestoreUnknown(pending, remainingCanonical);
+  const withoutRedundantLocation = pending.map(event => {
+    const { locationId, ...canonical } = event;
+    return canonical;
+  });
+  if (pending.some(event => event.locationId !== undefined && event.locationId !== event.battlefieldId)) return false;
+  return exactRestoreUnknown(withoutRedundantLocation, remainingCanonical);
 }
 
 function isRestoreReplayEntry(value: unknown): value is MatchClientState['replay'][number] {
@@ -1963,7 +1980,7 @@ export class MatchSession {
     this.record('player_deployed', `${playerId}:deployed to ${locationId}`, { playerId, locationId });
     this.applyDeploymentLocationReward(playerId, locationId);
     const deployedLocation = getEnabledLocations(this.state.map, this.state.locationConfig).find((location) => location.id === locationId);
-    processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId });
+    processAbilityEvent(this.state, { id: `deploy-location:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_location', playerId, locationId });
     if (deployedLocation?.tags.includes('battlefield')) {
       this.assignTerrainOnDeployment(playerId, locationId, slots.usableSlotIndexes);
       processAbilityEvent(this.state, { id: `deploy:${this.state.round.roundNumber}:${playerId}`, type: 'after_player_deployed_to_battlefield', playerId, locationId });
@@ -2868,6 +2885,7 @@ export class MatchSession {
         battleParticipantIds: participants,
         battleParticipantPowers: Object.fromEntries((battle.participantBreakdowns ?? []).filter((participant) => participants.includes(participant.playerId)).map((participant) => [participant.playerId, participant.effectivePower])),
         battlefieldId: battle.battlefieldId,
+        locationId: battle.battlefieldId,
         battleResult: { winners: [...battle.winnerPlayerIds], loserIds },
       };
       if (!runtime.processedEvents.includes(resultId) && !pending.some((event) => event.id === resultId)) {
@@ -2888,6 +2906,7 @@ export class MatchSession {
           battleParticipantIds: participants,
           playerId,
           battlefieldId: battle.battlefieldId,
+          locationId: battle.battlefieldId,
           lossOrdinal: 1,
         };
         if (!runtime.processedEvents.includes(firstLossEvent.id) && !pending.some((event) => event.id === firstLossEvent.id)) {
@@ -2926,6 +2945,7 @@ export class MatchSession {
       const runtime = this.state.abilityRuntime!;
       if (runtime.pendingDecision || runtime.responseWindows.length || runtime.hostRequests.length) return;
       const event = structuredClone(runtime.pendingPostBattleEvents![0]!);
+      if (event.locationId === undefined && event.battlefieldId !== undefined) event.locationId = event.battlefieldId;
       processAbilityEvent(this.state, event);
       this.state.abilityRuntime!.pendingPostBattleEvents!.shift();
       this.record(
@@ -3125,6 +3145,7 @@ export class MatchSession {
     if (this.logs.some(entry => entry.type === 'standard_round_end_resolved' && entry.round === round)) return;
     const miyama = this.logs.filter(entry => entry.type === 'battle_resolved' && entry.round === round && entry.message === 'miyama_town').slice(-1)[0];
     const winners = (miyama?.payload?.winnerPlayerIds ?? []) as string[];
+    if (runtime) delete runtime.effectDefeats;
     const result = resolveStandardRoundEnd(this.state.players, round, winners);
     for (const player of this.state.players) if (result.eliminatedPlayerIds.includes(player.id)) player.status = 'eliminated';
     this.record('standard_round_end_resolved', `standard-end:${round}`, result);
